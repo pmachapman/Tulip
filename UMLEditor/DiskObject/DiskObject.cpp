@@ -378,7 +378,7 @@ BOOL CDiskObject::CreateDirectory( const CString& directory )
 		_TCHAR ext[ _MAX_EXT ];
 
 		// Split directory into parts
-		_tsplitpath( indir, drive, dir, fname, ext );
+		_tsplitpath_s( indir, drive, dir, fname, ext );
 
 		TCHAR currentDirectory[ _MAX_PATH ];
 		::GetCurrentDirectory( _MAX_PATH, currentDirectory );
@@ -399,7 +399,7 @@ BOOL CDiskObject::CreateDirectory( const CString& directory )
 					strComputer = _T( "\\\\" ) + parts.Left( findDir );
 					parts = parts.Right( parts.GetLength( ) - ( findDir + 1 ) );
 				}
-				_tcscpy( drive, strComputer );
+				_tcscpy_s( drive, strComputer );
 			}
 		}
 
@@ -1272,7 +1272,7 @@ void CDiskObject::QualifyFile( CString& str )
 	_TCHAR fname[ _MAX_FNAME ];
 	_TCHAR ext[ _MAX_EXT ];
 
-	_tsplitpath( str, drive, dir, fname, ext );
+	_tsplitpath_s( str, drive, dir, fname, ext );
 
 	if( !_tcsclen( drive ) )
 	{
@@ -1304,7 +1304,7 @@ void CDiskObject::QualifyFile( CString& str )
 		else if ( test.GetLength( ) && test[ 0 ] == _TCHAR( '\\' ) )
 		{
 			// Start from root
-			_tsplitpath( currentDirectory, drive, dir, fname, ext );
+			_tsplitpath_s( currentDirectory, drive, dir, fname, ext );
 			str = drive + str;
 		}
 		else

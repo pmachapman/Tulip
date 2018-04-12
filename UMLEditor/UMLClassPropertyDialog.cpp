@@ -154,7 +154,6 @@ void CUMLClassPropertyDialog::OnOK()
 
 	uml->CalcRestraints();
 
-	int t;
 	int max;
 	int style = ENTITY_TYPE_NONE;
 

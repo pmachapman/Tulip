@@ -2029,7 +2029,7 @@ void CUMLEntityContainer::GetBaseClassArray( CUMLEntityClass* obj, CStringArray&
 	CString baseClass = obj->GetProperties()->GetPropertyValue( _T( "baseClass" ) );
 	if( baseClass.GetLength() )
 	{
-		CTokenizer tok( baseClass, " " );
+		CTokenizer tok( baseClass, _T( " " ) );
 		int max = tok.GetSize();
 		for( int t = 0 ; t < max ; t++ )
 		{
