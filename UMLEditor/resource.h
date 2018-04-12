@@ -1,0 +1,126 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Developer Studio generated include file.
+// Used by UMLEditor.rc
+//
+#define IDD_UML_DIALOG_PROPERTY_PACKAGE 131
+#define IDD_UML_DIALOG_LINK_TITLE       132
+#define IDD_UML_DIALOG_PROPERTY_LINK    132
+#define IDD_UML_DIALOG_PROPERTY_LABEL   133
+#define IDR_UML_MENU_EDITOR_POPUP       133
+#define IDD_UML_DIALOG_PROPERTY_CLASS_ATTRIBUTE 134
+#define IDI_UML_ICON_UP                 135
+#define IDC_UML_CURSOR_DRAW             136
+#define IDC_UML_CURSOR_ATTACH           137
+#define IDC_UML_CURSOR_UP               138
+#define IDD_UML_DIALOG_PROPERTY_CLASS   139
+#define IDD_UML_DIALOG_PROPERTY_CLASS_OPERATION_PARAMETER 141
+#define IDR_UML_MENU_PACKAGE_POPUP      142
+#define IDD_UML_DIALOG_PROPERTY_INTERFACE 143
+#define IDR_UML_MENU_CLASS_POPUP        143
+#define IDD_UML_DIALOG_PROPERTY_EDITOR  144
+#define IDR_UML_MENU_LINK               144
+#define IDD_UML_DIALOG_PROPERTY_LIST_EDITOR 146
+#define IDD_UML_DIALOG_PROPERTY_CLASS_DISPLAY 147
+#define IDD_UML_DIALOG_GETTER_SETTER    149
+#define IDD_UML_DIALOG_PROPERTY_CLASS_OPERATION 150
+#define IDD_UML_DIALOG_PROPERTY_NOTE    151
+#define IDD_UML_DIALOG_PROPERTY_TEMPLATE 152
+#define IDC_UML_EDIT_LINK_TITLE         1000
+#define IDC_RADIO_ACCESS                1003
+#define IDC_RADIO5                      1004
+#define IDC_RADIO6                      1005
+#define IDC_EDIT_TEXT                   1006
+#define IDC_EDIT_TYPE                   1007
+#define IDC_BUTTON_FONT                 1008
+#define IDC_BUTTON_COLOR                1009
+#define IDC_BUTTON_VISIBILITY           1010
+#define IDC_RADIO_ASSOCIATION           1010
+#define IDC_CHECK_UNIDIRECTIONAL        1011
+#define IDC_EDIT_START_LABEL            1012
+#define IDC_EDIT_END_LABEL              1013
+#define IDC_RADIO_DEPENDENCY            1014
+#define IDC_RADIO_INHERITANCE           1015
+#define IDC_RADIO_COMPOSITION           1016
+#define IDC_EDIT_SECONDARY_START_LABEL  1017
+#define IDC_EDIT_SECONDARY_END_LABEL    1018
+#define IDC_LIST_ATTRIBUTES             1020
+#define IDC_LIST_OPERATIONS             1021
+#define IDC_BUTTON_ADD_ATTRIBUTE        1022
+#define IDC_BUTTON_ADD_OPERATION        1024
+#define IDC_EDIT_NAME                   1027
+#define IDC_CHECK_ABSTRACT              1030
+#define IDC_CHECK_STATIC                1031
+#define IDC_LIST_PARAMETERS             1032
+#define IDC_BUTTON_ADD                  1033
+#define IDC_EDIT_MULTIPLICITY           1042
+#define IDC_EDIT_INITIAL_VALUE          1043
+#define IDC_EDIT_PROPERTY_LIST          1044
+#define IDC_CHECK_CONST                 1048
+#define IDC_RADIO_PARTOF                1051
+#define IDC_CHECK_GRID                  1053
+#define IDC_CHECK_SHOW_GRID             1054
+#define IDC_CHECK_ONLY_PUBLIC           1055
+#define IDC_CHECK_NO_MARKERS            1056
+#define IDC_RADIO_INVISIBLE             1058
+#define IDC_CHECK_NO_ATTRIBUTES         1066
+#define IDC_CHECK_NO_OPERATIONS         1067
+#define IDC_CHECK_NO_ATTRIBUTE_NAMES    1069
+#define IDC_LIST_TAGS                   1070
+#define IDC_EDIT_VALUE                  1073
+#define IDC_BUTTON_DELETE               1075
+#define IDC_BUTTON_PROPERTY_LIST        1076
+#define IDC_BUTTON_UPDATE               1076
+#define IDC_BUTTON_AUTO_GENERATE        1079
+#define IDC_BUTTON_AUTO_GENERATE2       1080
+#define IDC_CHECK_IN                    1080
+#define IDC_CHECK_OUT                   1081
+#define IDC_CHECK_REFERENCE             1082
+#define IDC_COMBO_STEREOTYPE            1083
+#define IDC_COMBO_TAG                   1084
+#define IDC_EDIT_GETTER                 1089
+#define IDC_EDIT_SETTER                 1090
+#define IDC_CHECK_SHOW_MARGINS          1092
+#define IDC_RADIO_INTERFACE             1093
+#define IDC_BUTTON_CLOSE                1094
+#define IDC_EDIT_PARAMETER              1096
+#define IDS_UML_CLASS                   33447
+#define IDS_UML_PACKAGE                 33448
+#define IDS_UML_NOTE                    33449
+#define IDS_UML_LABEL                   33450
+#define IDS_UML_INTERFACE               33451
+#define IDS_UML_DELETE_OPERATION        33453
+#define IDS_UML_DELETE_ATTRIBUTE        33454
+#define IDS_UML_CLASS_MUST_HAVE_A_NAME  33455
+#define IDS_UML_ATTRIBUTE_MUST_HAVE_A_NAME 33456
+#define IDS_UML_OPERATION_MUST_HAVE_A_NAME 33457
+#define IDS_UML_ATTRIBUTE_MUST_HAVE_A_TYPE 33458
+#define IDS_UML_OPERATION_MUST_HAVE_A_TYPE 33459
+#define IDS_UML_PARAMETER_MUST_HAVE_A_TYPE 33460
+#define IDS_UML_PARAMETER_MUST_HAVE_A_NAME 33461
+#define IDS_UML_PACKAGE_EXISTS          33463
+#define IDS_UML_SELECT_FOLDER           33464
+#define IDS_UML_PROPERTY_LIST_TAG_MUST_HAVE_A_VALUE 33465
+#define IDS_UML_CREATEGETTERS_SETTERS   33466
+#define IDS_UML_MISSING_BRACKET         33467
+#define IDS_UML_MALFORMED_COMMENT       33468
+#define IDS_UML_CREATECTOR_DTOR         33469
+#define IDS_UML_GETTER_MUST_HAVE_A_NAME 33470
+#define IDS_UML_SETTER_MUST_HAVE_A_NAME 33471
+#define IDS_UML_GETSET_DEFINED          33472
+#define IDS_UML_MUST_SELECT_AN_ATTRIBUTE 33473
+#define ID_EDIT_COPY                    0xE122
+#define ID_EDIT_CUT                     0xE123
+#define ID_EDIT_PASTE                   0xE125
+#define IDS_UML_EXPORT_FINISHED         61446
+#define IDS_UML_TEMPLATE                61447
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        101
+#define _APS_NEXT_COMMAND_VALUE         61452
+#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif

@@ -13,6 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\UMLEditor">
+      <UniqueIdentifier>{962de215-f292-4b90-ae47-1cd09925d7d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UMLEditor\DiagramEditor">
+      <UniqueIdentifier>{8a08a440-0679-44a1-913e-6927fb5c2e98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UMLEditor\DiskObject">
+      <UniqueIdentifier>{6914eeb8-94ee-40de-a307-1e55b3409def}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UMLEditor\TextFile">
+      <UniqueIdentifier>{d5804e47-ad7b-4076-a565-45169564bc6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UMLEditor">
+      <UniqueIdentifier>{f45772f3-0fbd-4fce-9828-9a6f3ab1e27f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UMLEditor\DiagramEditor">
+      <UniqueIdentifier>{db79290e-a5f3-43a0-9261-fd8ffa8b0310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UMLEditor\TextFile">
+      <UniqueIdentifier>{84e852c9-dc90-4159-beb2-df66bff3da87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UMLEditor\DiskObject">
+      <UniqueIdentifier>{68762fad-0c84-4a6a-bc2c-fffce1108afc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tulip.h">
@@ -39,6 +63,165 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UMLEditor\DiskObject\DiskObject.h">
+      <Filter>Header Files\UMLEditor\DiskObject</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\DiagramEditor\DiagramClipboardHandler.h">
+      <Filter>Header Files\UMLEditor\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\DiagramEditor\DiagramEditor.h">
+      <Filter>Header Files\UMLEditor\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\DiagramEditor\DiagramEntity.h">
+      <Filter>Header Files\UMLEditor\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\DiagramEditor\DiagramEntityContainer.h">
+      <Filter>Header Files\UMLEditor\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\DiagramEditor\DiagramLine.h">
+      <Filter>Header Files\UMLEditor\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\DiagramEditor\DiagramMenu.h">
+      <Filter>Header Files\UMLEditor\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\DiagramEditor\DiagramPropertyDlg.h">
+      <Filter>Header Files\UMLEditor\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\DiagramEditor\GroupFactory.h">
+      <Filter>Header Files\UMLEditor\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\DiagramEditor\Tokenizer.h">
+      <Filter>Header Files\UMLEditor\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\DiagramEditor\UndoItem.h">
+      <Filter>Header Files\UMLEditor\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\TextFile\TextFile.h">
+      <Filter>Header Files\UMLEditor\TextFile</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\AddParameterDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\Attribute.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\AttributeContainer.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\ClassAttributePropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\ClassDisplayPropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\ClassOperationPropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\ExListBox.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\GetterSetterDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\LinkFactory.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\Operation.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\OperationContainer.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\Parameter.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\ParameterContainer.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\Property.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\PropertyContainer.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\PropertyListEditorDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\resource.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\StringHelpers.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLUndoItem.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLClassPropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLClipboardHandler.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLControlFactory.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEditor.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEditorPropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEntity.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEntityClass.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEntityClassTemplate.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEntityContainer.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEntityDummy.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEntityInterface.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEntityLabel.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEntityNote.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLEntityPackage.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLInterfacePropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLLabelPropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLLineSegment.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLLinkPropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLMenu.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLNotePropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLPackagePropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="UMLEditor\UMLTemplatePropertyDialog.h">
+      <Filter>Header Files\UMLEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tulip.cpp">
@@ -59,6 +242,162 @@
     <ClCompile Include="TulipView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UMLEditor\AddParameterDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\Attribute.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\TextFile\TextFile.cpp">
+      <Filter>Source Files\UMLEditor\TextFile</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\AttributeContainer.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\ClassAttributePropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\ClassDisplayPropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\ClassOperationPropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiagramEditor\DiagramClipboardHandler.cpp">
+      <Filter>Source Files\UMLEditor\DiagramEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiagramEditor\DiagramEditor.cpp">
+      <Filter>Source Files\UMLEditor\DiagramEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiagramEditor\DiagramEntity.cpp">
+      <Filter>Source Files\UMLEditor\DiagramEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiagramEditor\DiagramEntityContainer.cpp">
+      <Filter>Source Files\UMLEditor\DiagramEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiagramEditor\DiagramLine.cpp">
+      <Filter>Source Files\UMLEditor\DiagramEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiagramEditor\DiagramMenu.cpp">
+      <Filter>Source Files\UMLEditor\DiagramEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiagramEditor\DiagramPropertyDlg.cpp">
+      <Filter>Source Files\UMLEditor\DiagramEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiagramEditor\Tokenizer.cpp">
+      <Filter>Source Files\UMLEditor\DiagramEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiagramEditor\UndoItem.cpp">
+      <Filter>Source Files\UMLEditor\DiagramEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiagramEditor\GroupFactory.cpp">
+      <Filter>Source Files\UMLEditor\DiagramEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\DiskObject\DiskObject.cpp">
+      <Filter>Source Files\UMLEditor\DiskObject</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\ExListBox.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\GetterSetterDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\LinkFactory.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\Operation.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\OperationContainer.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\Parameter.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\ParameterContainer.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\Property.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\PropertyContainer.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\PropertyListEditorDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\StringHelpers.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLClassPropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLClipboardHandler.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLControlFactory.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEditor.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEditorPropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEntity.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEntityClass.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEntityClassTemplate.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEntityContainer.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEntityDummy.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEntityInterface.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEntityLabel.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEntityNote.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLEntityPackage.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLInterfacePropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLLabelPropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLLineSegment.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLLinkPropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLMenu.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLNotePropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLPackagePropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLTemplatePropertyDialog.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="UMLEditor\UMLUndoItem.cpp">
+      <Filter>Source Files\UMLEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tulip.reg" />
@@ -68,9 +407,21 @@
     <None Include="res\Tulip.rc2">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="UMLEditor\res\draw.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="UMLEditor\res\up.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="UMLEditor\res\attach.cur">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tulip.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="UMLEditor\UMLEditor.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -103,6 +454,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\Toolbar256.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="UMLEditor\res\up.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -1,0 +1,641 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_UML_DIALOG_GETTER_SETTER DIALOG DISCARDABLE  0, 0, 186, 71
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Create getter/setter"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_GETTER,10,10,105,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SETTER,10,40,105,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+    LTEXT           "Name of getter:",IDC_STATIC,10,0,50,8
+    LTEXT           "Name of setter",IDC_STATIC,10,30,47,8
+END
+
+IDD_UML_DIALOG_PROPERTY_CLASS DIALOG DISCARDABLE  0, 0, 257, 162
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Class properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_NAME,45,5,80,14,ES_AUTOHSCROLL
+    LISTBOX         IDC_LIST_ATTRIBUTES,5,30,120,60,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add...",IDC_BUTTON_ADD_ATTRIBUTE,5,95,45,14
+    PUSHBUTTON      "Gen Get/Set",IDC_BUTTON_AUTO_GENERATE,75,95,50,14
+    LISTBOX         IDC_LIST_OPERATIONS,130,30,120,60,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add...",IDC_BUTTON_ADD_OPERATION,130,95,45,14
+    PUSHBUTTON      "Gen ctor/dtor",IDC_BUTTON_AUTO_GENERATE2,200,95,50,14
+    EDITTEXT        IDC_EDIT_PROPERTY_LIST,55,115,175,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    PUSHBUTTON      "...",IDC_BUTTON_PROPERTY_LIST,235,115,15,14
+    DEFPUSHBUTTON   "OK",IDOK,5,135,45,14
+    PUSHBUTTON      "Cancel",IDCANCEL,55,135,45,14
+    PUSHBUTTON      "Visibility...",IDC_BUTTON_VISIBILITY,105,135,45,14
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,155,135,45,14
+    PUSHBUTTON      "Color...",IDC_BUTTON_COLOR,205,135,44,14
+    LTEXT           "Name",IDC_STATIC,5,5,20,8
+    LTEXT           "Attributes",IDC_STATIC,5,20,30,8
+    LTEXT           "Operations",IDC_STATIC,125,20,35,8
+    LTEXT           "Property list",IDC_STATIC,5,115,37,8
+    LTEXT           "Stereotype",IDC_STATIC,130,5,35,8
+    COMBOBOX        IDC_COMBO_STEREOTYPE,170,4,80,50,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_UML_DIALOG_PROPERTY_CLASS_ATTRIBUTE DIALOG DISCARDABLE  0, 0, 267, 90
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add/edit attribute"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_NAME,31,5,60,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TYPE,31,25,60,14,ES_AUTOHSCROLL
+    CONTROL         "Static",IDC_CHECK_STATIC,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,5,50,34,10
+    CONTROL         "Private",IDC_RADIO_ACCESS,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,105,10,38,10
+    CONTROL         "Protected",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,105,
+                    20,47,10
+    CONTROL         "Public",IDC_RADIO6,"Button",BS_AUTORADIOBUTTON,105,30,
+                    35,10
+    GROUPBOX        "Access",IDC_STATIC,95,0,65,45,WS_GROUP
+    EDITTEXT        IDC_EDIT_MULTIPLICITY,205,5,55,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_INITIAL_VALUE,205,25,55,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PROPERTY_LIST,80,50,160,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "...",IDC_BUTTON_PROPERTY_LIST,245,50,15,14
+    DEFPUSHBUTTON   "OK",IDOK,5,70,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,60,70,50,14
+    LTEXT           "Name",IDC_STATIC,5,5,20,8
+    LTEXT           "Type",IDC_STATIC,5,25,17,8
+    LTEXT           "Multiplicity",IDC_STATIC,165,5,33,8
+    LTEXT           "Initial value",IDC_STATIC,165,25,40,8
+    LTEXT           "Property list",IDC_STATIC,40,51,40,10
+END
+
+IDD_UML_DIALOG_PROPERTY_CLASS_DISPLAY DIALOG DISCARDABLE  0, 0, 132, 106
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Class object display settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,5,80,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,75,80,50,14
+    CONTROL         "Only public",IDC_CHECK_ONLY_PUBLIC,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,10,51,10
+    CONTROL         "No attributes",IDC_CHECK_NO_ATTRIBUTES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,20,56,10
+    CONTROL         "No operations",IDC_CHECK_NO_OPERATIONS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,30,60,10
+    CONTROL         "No operation attribute names",
+                    IDC_CHECK_NO_ATTRIBUTE_NAMES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,11,40,107,10
+    CONTROL         "No access markers",IDC_CHECK_NO_MARKERS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,55,77,10
+    GROUPBOX        "Class object settings",IDC_STATIC,5,0,120,75
+END
+
+IDD_UML_DIALOG_PROPERTY_CLASS_OPERATION DIALOG DISCARDABLE  0, 0, 257, 121
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add/edit operation"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_NAME,30,5,90,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TYPE,185,5,65,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PROPERTY_LIST,45,25,185,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "...",IDC_BUTTON_PROPERTY_LIST,235,25,15,15
+    CONTROL         "Abstract",IDC_CHECK_ABSTRACT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,50,42,10
+    CONTROL         "Static",IDC_CHECK_STATIC,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,60,34,10
+    CONTROL         "Const",IDC_CHECK_CONST,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,70,34,10
+    CONTROL         "Private",IDC_RADIO_ACCESS,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,70,50,38,10
+    CONTROL         "Protected",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,70,60,
+                    47,10
+    CONTROL         "Public",IDC_RADIO6,"Button",BS_AUTORADIOBUTTON,70,70,35,
+                    10
+    GROUPBOX        "Access",IDC_STATIC,60,40,65,45,WS_GROUP
+    LISTBOX         IDC_LIST_PARAMETERS,135,50,115,35,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add...",IDC_BUTTON_ADD,215,90,35,14
+    DEFPUSHBUTTON   "OK",IDOK,5,100,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,60,100,50,14
+    LTEXT           "Type",IDC_STATIC,5,40,17,8
+    LTEXT           "Parameters",IDC_STATIC,135,40,36,8
+    LTEXT           "Name",IDC_STATIC,5,5,20,8
+    LTEXT           "Return type",IDC_STATIC,145,5,38,8
+    LTEXT           "Property list",IDC_STATIC,5,25,37,8
+END
+
+IDD_UML_DIALOG_PROPERTY_CLASS_OPERATION_PARAMETER DIALOG DISCARDABLE  0, 0, 187, 90
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add parameter"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_NAME,45,5,75,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TYPE,45,25,75,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_INITIAL_VALUE,45,45,75,14,ES_AUTOHSCROLL
+    CONTROL         "In",IDC_CHECK_IN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    130,5,22,10
+    CONTROL         "Out",IDC_CHECK_OUT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,130,20,27,10
+    CONTROL         "Reference",IDC_CHECK_REFERENCE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,130,35,49,10
+    DEFPUSHBUTTON   "OK",IDOK,5,65,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,60,65,50,14
+    LTEXT           "Name",IDC_STATIC,5,5,20,8
+    LTEXT           "Type",IDC_STATIC,5,25,17,8
+    LTEXT           "Initial value",IDC_STATIC,5,45,36,8
+END
+
+IDD_UML_DIALOG_PROPERTY_EDITOR DIALOG DISCARDABLE  0, 0, 212, 90
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Editor properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,5,70,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,60,70,50,14
+    CONTROL         "Grid on",IDC_CHECK_GRID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,10,39,10
+    CONTROL         "Show grid",IDC_CHECK_SHOW_GRID,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,20,47,10
+    CONTROL         "Show margins",IDC_CHECK_SHOW_MARGINS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,5,40,60,10
+    GROUPBOX        "Grid",IDC_STATIC,5,0,60,35
+    CONTROL         "Only public",IDC_CHECK_ONLY_PUBLIC,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,75,10,51,10
+    CONTROL         "No attributes",IDC_CHECK_NO_ATTRIBUTES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,75,20,56,10
+    CONTROL         "No operations",IDC_CHECK_NO_OPERATIONS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,75,30,60,10
+    CONTROL         "No operation attribute names",
+                    IDC_CHECK_NO_ATTRIBUTE_NAMES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,75,40,107,10
+    CONTROL         "No access markers",IDC_CHECK_NO_MARKERS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,75,50,77,10
+    GROUPBOX        "Class object settings",IDC_STATIC,70,0,135,65
+    PUSHBUTTON      "Color...",IDC_BUTTON_COLOR,155,70,50,14
+END
+
+IDD_UML_DIALOG_PROPERTY_INTERFACE DIALOGEX 0, 0, 227, 52
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Interface properties"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_TEXT,5,10,215,15,ES_AUTOHSCROLL
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,115,30,50,14
+    PUSHBUTTON      "Color...",IDC_BUTTON_COLOR,170,30,50,14
+    DEFPUSHBUTTON   "OK",IDOK,5,30,50,14
+    LTEXT           "Interface name",IDC_STATIC,5,0,48,8
+    PUSHBUTTON      "Cancel",IDCANCEL,60,30,50,14
+END
+
+IDD_UML_DIALOG_PROPERTY_LABEL DIALOGEX 0, 0, 227, 81
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Label properties"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_TEXT,5,10,215,45,ES_MULTILINE | ES_WANTRETURN | 
+                    WS_VSCROLL
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,170,60,50,14
+    DEFPUSHBUTTON   "OK",IDOK,5,60,50,14
+    LTEXT           "Text:",IDC_STATIC,5,0,17,8
+    PUSHBUTTON      "Cancel",IDCANCEL,60,60,50,14
+END
+
+IDD_UML_DIALOG_PROPERTY_NOTE DIALOGEX 0, 0, 227, 81
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Note properties"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_TEXT,5,10,215,45,ES_MULTILINE | ES_WANTRETURN | 
+                    WS_VSCROLL
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,115,60,50,14
+    PUSHBUTTON      "Color...",IDC_BUTTON_COLOR,170,60,50,14
+    DEFPUSHBUTTON   "OK",IDOK,5,60,50,14
+    LTEXT           "Text:",IDC_STATIC,5,0,17,8
+    PUSHBUTTON      "Cancel",IDCANCEL,60,60,50,14
+END
+
+IDD_UML_DIALOG_PROPERTY_PACKAGE DIALOGEX 0, 0, 227, 52
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Package properties"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_TEXT,5,10,215,15,ES_AUTOHSCROLL
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,115,30,50,14
+    PUSHBUTTON      "Color...",IDC_BUTTON_COLOR,170,30,50,14
+    DEFPUSHBUTTON   "OK",IDOK,5,30,50,14
+    LTEXT           "Package name",IDC_STATIC,5,0,49,8
+    PUSHBUTTON      "Cancel",IDCANCEL,60,30,50,14
+END
+
+IDD_UML_DIALOG_PROPERTY_TEMPLATE DIALOG DISCARDABLE  0, 0, 257, 162
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Template properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT_NAME,45,5,80,14,ES_AUTOHSCROLL
+    LISTBOX         IDC_LIST_ATTRIBUTES,5,30,120,60,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add...",IDC_BUTTON_ADD_ATTRIBUTE,5,95,45,14
+    PUSHBUTTON      "Gen Get/Set",IDC_BUTTON_AUTO_GENERATE,75,95,50,14
+    LISTBOX         IDC_LIST_OPERATIONS,130,30,120,60,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add...",IDC_BUTTON_ADD_OPERATION,130,95,45,14
+    PUSHBUTTON      "Gen ctor/dtor",IDC_BUTTON_AUTO_GENERATE2,200,95,50,14
+    EDITTEXT        IDC_EDIT_PROPERTY_LIST,55,115,175,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    PUSHBUTTON      "...",IDC_BUTTON_PROPERTY_LIST,235,115,15,14
+    DEFPUSHBUTTON   "OK",IDOK,5,135,45,14
+    PUSHBUTTON      "Cancel",IDCANCEL,55,135,45,14
+    PUSHBUTTON      "Visibility...",IDC_BUTTON_VISIBILITY,105,135,45,14
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,155,135,45,14
+    PUSHBUTTON      "Color...",IDC_BUTTON_COLOR,205,135,44,14
+    LTEXT           "Name",IDC_STATIC,5,5,20,8
+    LTEXT           "Attributes",IDC_STATIC,5,20,30,8
+    LTEXT           "Operations",IDC_STATIC,125,20,35,8
+    LTEXT           "Property list",IDC_STATIC,5,115,37,8
+    LTEXT           "Parameter",IDC_STATIC,130,5,33,8
+    EDITTEXT        IDC_EDIT_PARAMETER,165,5,85,14,ES_AUTOHSCROLL
+END
+
+IDD_UML_DIALOG_PROPERTY_LINK DIALOG DISCARDABLE  0, 0, 227, 141
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Link properites"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Uni-directional",IDC_CHECK_UNIDIRECTIONAL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,135,10,61,10
+    CONTROL         "Association",IDC_RADIO_ASSOCIATION,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,10,40,52,10
+    CONTROL         "Dependency",IDC_RADIO_DEPENDENCY,"Button",
+                    BS_AUTORADIOBUTTON,10,49,57,10
+    CONTROL         "Inheritance",IDC_RADIO_INHERITANCE,"Button",
+                    BS_AUTORADIOBUTTON,70,40,51,10
+    CONTROL         "Composition",IDC_RADIO_COMPOSITION,"Button",
+                    BS_AUTORADIOBUTTON,70,49,54,10
+    CONTROL         "Part of",IDC_RADIO_PARTOF,"Button",BS_AUTORADIOBUTTON,
+                    130,40,37,10
+    CONTROL         "Invisible",IDC_RADIO_INVISIBLE,"Button",
+                    BS_AUTORADIOBUTTON,130,50,41,10
+    CONTROL         "Interface",IDC_RADIO_INTERFACE,"Button",
+                    BS_AUTORADIOBUTTON,175,40,44,10
+    GROUPBOX        "Link type",IDC_STATIC,5,30,215,35,WS_GROUP
+    EDITTEXT        IDC_EDIT_START_LABEL,40,70,30,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_END_LABEL,191,70,30,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SECONDARY_START_LABEL,40,90,30,14,
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SECONDARY_END_LABEL,191,90,30,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,5,115,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,61,115,50,14
+    PUSHBUTTON      "Font...",IDC_BUTTON_FONT,171,115,50,14
+    LTEXT           "Segment title",IDC_STATIC,5,0,42,8
+    LTEXT           "Start label",IDC_STATIC,5,70,32,8
+    LTEXT           "End label",IDC_STATIC,155,70,30,8
+    COMBOBOX        IDC_UML_EDIT_LINK_TITLE,5,10,125,55,CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_UML_DIALOG_PROPERTY_LIST_EDITOR DIALOG DISCARDABLE  0, 0, 202, 135
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Property list editor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_COMBO_TAG,5,10,65,40,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_VALUE,75,10,65,14,ES_AUTOHSCROLL
+    LISTBOX         IDC_LIST_TAGS,5,30,135,95,LBS_USETABSTOPS | 
+                    LBS_NOINTEGRALHEIGHT | LBS_WANTKEYBOARDINPUT | 
+                    WS_HSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "Save and exit",IDC_BUTTON_CLOSE,145,10,50,14
+    PUSHBUTTON      "Close",IDOK,145,30,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,145,50,50,14
+    PUSHBUTTON      "&Add",IDC_BUTTON_ADD,145,70,50,14
+    PUSHBUTTON      "&Update",IDC_BUTTON_UPDATE,145,90,50,14
+    PUSHBUTTON      "&Delete",IDC_BUTTON_DELETE,145,110,50,14
+    LTEXT           "Tag",IDC_STATIC,5,0,14,8
+    LTEXT           "Value",IDC_STATIC,75,0,19,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_UML_DIALOG_PROPERTY_CLASS DLGINIT
+BEGIN
+    IDC_COMBO_STEREOTYPE, 0x403, 1, 0
+"\000" 
+    IDC_COMBO_STEREOTYPE, 0x403, 9, 0
+0x6261, 0x7473, 0x6172, 0x7463, "\000" 
+    IDC_COMBO_STEREOTYPE, 0x403, 10, 0
+0x6e69, 0x6574, 0x6672, 0x6361, 0x0065, 
+    IDC_COMBO_STEREOTYPE, 0x403, 8, 0
+0x7475, 0x6c69, 0x7469, 0x0079, 
+    0
+END
+
+IDD_UML_DIALOG_PROPERTY_LINK DLGINIT
+BEGIN
+    IDC_UML_EDIT_LINK_TITLE, 0x403, 11, 0
+0x20ab, 0x7263, 0x6165, 0x6574, 0xbb20, "\000" 
+    IDC_UML_EDIT_LINK_TITLE, 0x403, 8, 0
+0x20ab, 0x7375, 0x2065, 0x00bb, 
+    IDC_UML_EDIT_LINK_TITLE, 0x403, 11, 0
+0x20ab, 0x7266, 0x6569, 0x646e, 0xbb20, "\000" 
+    IDC_UML_EDIT_LINK_TITLE, 0x403, 9, 0
+0x20ab, 0x6962, 0x646e, 0xbb20, "\000" 
+    IDC_UML_EDIT_LINK_TITLE, 0x403, 12, 0
+0x20ab, 0x7270, 0x7669, 0x7461, 0x2065, 0x00bb, 
+    IDC_UML_EDIT_LINK_TITLE, 0x403, 14, 0
+0x20ab, 0x7270, 0x746f, 0x6365, 0x6574, 0x2064, 0x00bb, 
+    IDC_UML_EDIT_LINK_TITLE, 0x403, 11, 0
+0x20ab, 0x6361, 0x6563, 0x7373, 0xbb20, "\000" 
+    IDC_UML_EDIT_LINK_TITLE, 0x403, 11, 0
+0x20ab, 0x6d69, 0x6f70, 0x7472, 0xbb20, "\000" 
+    0
+END
+
+IDD_UML_DIALOG_PROPERTY_LIST_EDITOR DLGINIT
+BEGIN
+    IDC_COMBO_TAG, 0x403, 10, 0
+0x6162, 0x6573, 0x6c43, 0x7361, 0x0073, 
+    IDC_COMBO_TAG, 0x403, 8, 0
+0x6976, 0x7472, 0x6175, 0x006c, 
+    IDC_COMBO_TAG, 0x403, 6, 0
+0x7571, 0x7265, 0x0079, 
+    IDC_COMBO_TAG, 0x403, 1, 0
+"\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_UML_MENU_EDITOR_POPUP MENU DISCARDABLE 
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Cut",                         ID_EDIT_CUT
+        MENUITEM "Copy",                        ID_EDIT_COPY
+        MENUITEM "Paste",                       ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "Group",                       57645
+        MENUITEM "Ungroup",                     57646
+    END
+END
+
+IDR_UML_MENU_CLASS_POPUP MENU DISCARDABLE 
+BEGIN
+    POPUP "_MENU_"
+    BEGIN
+        MENUITEM "Import...",                   198
+        MENUITEM SEPARATOR
+        MENUITEM "Cut",                         100
+        MENUITEM "Copy",                        101
+        MENUITEM "Duplicate",                   102
+        MENUITEM SEPARATOR
+        MENUITEM "Up",                          104
+        MENUITEM "Down",                        105
+        MENUITEM "To front",                    106
+        MENUITEM "To back",                     107
+        MENUITEM SEPARATOR
+        MENUITEM "Properties",                  103
+    END
+END
+
+IDR_UML_MENU_LINK MENU DISCARDABLE 
+BEGIN
+    POPUP "_MENU_"
+    BEGIN
+        MENUITEM "Cut",                         100
+        MENUITEM "Copy",                        101
+        MENUITEM "Duplicate",                   102
+        MENUITEM SEPARATOR
+        MENUITEM "Up",                          104
+        MENUITEM "Down",                        105
+        MENUITEM "To front",                    106
+        MENUITEM "To back",                     107
+        MENUITEM SEPARATOR
+        MENUITEM "Flip direction",              197
+        MENUITEM "Properties",                  103
+    END
+END
+
+IDR_UML_MENU_PACKAGE_POPUP MENU DISCARDABLE 
+BEGIN
+    POPUP "_MENU_"
+    BEGIN
+        MENUITEM "Open",                        199
+        MENUITEM SEPARATOR
+        MENUITEM "Cut",                         100
+        MENUITEM "Copy",                        101
+        MENUITEM "Duplicate",                   102
+        MENUITEM SEPARATOR
+        MENUITEM "Up",                          104
+        MENUITEM "Down",                        105
+        MENUITEM "To front",                    106
+        MENUITEM "To back",                     107
+        MENUITEM SEPARATOR
+        MENUITEM "Properties",                  103
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_UML_DIALOG_PROPERTY_TEMPLATE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 155
+    END
+
+    IDD_UML_DIALOG_PROPERTY_LINK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 220
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 134
+    END
+
+    IDD_UML_DIALOG_PROPERTY_LIST_EDITOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 195
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 128
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Swedish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_SVE)
+#ifdef _WIN32
+LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_UML_ICON_UP         ICON    DISCARDABLE     "res\\up.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_UML_CURSOR_ATTACH   CURSOR  DISCARDABLE     "res\\attach.cur"
+IDC_UML_CURSOR_DRAW     CURSOR  DISCARDABLE     "res\\draw.cur"
+IDC_UML_CURSOR_UP       CURSOR  DISCARDABLE     "res\\up.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UML_ATTRIBUTE_MUST_HAVE_A_NAME "The attribute must have a name"
+    IDS_UML_OPERATION_MUST_HAVE_A_NAME "The operation must have a name"
+    IDS_UML_ATTRIBUTE_MUST_HAVE_A_TYPE "The attribute must have a type"
+    IDS_UML_OPERATION_MUST_HAVE_A_TYPE "The operation must have a type"
+    IDS_UML_PARAMETER_MUST_HAVE_A_TYPE "The parameter must have a type"
+    IDS_UML_PARAMETER_MUST_HAVE_A_NAME "The parameter must have a name"
+    IDS_UML_PACKAGE_EXISTS  "A package with this name already exists"
+    IDS_UML_SELECT_FOLDER   "Select folder to export to"
+    IDS_UML_PROPERTY_LIST_TAG_MUST_HAVE_A_VALUE 
+                            "The property tag must have a value"
+    IDS_UML_CREATEGETTERS_SETTERS 
+                            "Are you sure you want to create getters/setters for the selected attribute?"
+    IDS_UML_MISSING_BRACKET "There is a missing bracket in the h-file, perhaps an inline function?"
+    IDS_UML_MALFORMED_COMMENT 
+                            "Can't find a matching end comment (*/) in the h-file"
+    IDS_UML_CREATECTOR_DTOR "Are you sure you want to generate a constructor and destructor for the class? Changes can't be undone."
+    IDS_UML_GETTER_MUST_HAVE_A_NAME "The getter must have a name"
+    IDS_UML_SETTER_MUST_HAVE_A_NAME "The setter must have a name"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UML_CLASS           "ClassName"
+    IDS_UML_PACKAGE         "PackageName"
+    IDS_UML_NOTE            "Note"
+    IDS_UML_LABEL           "Label"
+    IDS_UML_INTERFACE       "InterfaceName"
+    IDS_UML_DELETE_OPERATION 
+                            "Are you sure you want to delete the selected operation?"
+    IDS_UML_DELETE_ATTRIBUTE 
+                            "Are you sure you want to delete the selected attribute?"
+    IDS_UML_CLASS_MUST_HAVE_A_NAME "The class must have a name"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UML_GETSET_DEFINED  "Getter and setter already defined for the selected attribute."
+    IDS_UML_MUST_SELECT_AN_ATTRIBUTE "You must select an attribute"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UML_EXPORT_FINISHED "The export is finished"
+    IDS_UML_TEMPLATE        "Template"
+END
+
+#endif    // Swedish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
