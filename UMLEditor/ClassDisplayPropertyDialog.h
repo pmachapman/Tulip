@@ -14,12 +14,12 @@
 
 class CClassDisplayPropertyDialog : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CClassDisplayPropertyDialog(CWnd* pParent = NULL);
 
-// Dialog Data
-	//{{AFX_DATA(CClassDisplayPropertyDialog)
+	// Dialog Data
+		//{{AFX_DATA(CClassDisplayPropertyDialog)
 	enum { IDD = IDD_UML_DIALOG_PROPERTY_CLASS_DISPLAY };
 	BOOL	m_noattributenames;
 	BOOL	m_noattributes;
@@ -31,7 +31,7 @@ public:
 
 // Overrides
 	//{{AFX_VIRTUAL(CClassDisplayPropertyDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 

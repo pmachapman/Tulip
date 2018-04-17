@@ -11,43 +11,43 @@ class CUMLEditor : public CDiagramEditor
 {
 
 public:
-// Construction/initialization/destruction
+	// Construction/initialization/destruction
 	CUMLEditor();
 	virtual ~CUMLEditor();
-	virtual BOOL Create( DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, CDiagramEntityContainer* data = NULL );
+	virtual BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, CDiagramEntityContainer* data = NULL);
 
-// Operations
+	// Operations
 	BOOL	IsLinkSelected() const;
 	void	FlipLink();
 
 	CString GetPackage() const;
-	void SetPackage( const CString& package );
-	void SetDisplayOptions( int displayOption );
+	void SetPackage(const CString& package);
+	void SetDisplayOptions(int displayOption);
 	int GetDisplayOptions() const;
-	void SetColor( COLORREF col );
-	CUMLEntity* GetAllNamedObject( const CString& name ) const;
+	void SetColor(COLORREF col);
+	CUMLEntity* GetAllNamedObject(const CString& name) const;
 
-	virtual void	StartDrawingObject( CDiagramEntity* obj );
+	virtual void	StartDrawingObject(CDiagramEntity* obj);
 	virtual void	SelectAll();
 
-	void Save( CString& filename );
-	void Load( CString& filename );
+	void Save(CString& filename);
+	void Load(CString& filename);
 
-	void ExportCPP( const CString& project, BOOL bHeaderOnly = FALSE );
+	void ExportCPP(const CString& project, BOOL bHeaderOnly = FALSE);
 	void ExportHTML();
 	void ExportEMF();
 
-	void SetStripLeadingClassCharacter( BOOL stripLeadingClassLetter );
+	void SetStripLeadingClassCharacter(BOOL stripLeadingClassLetter);
 	BOOL GetStripLeadingClassCharacter() const;
 
 	void	Import();
 
 protected:
-// Overrides:
-	virtual void DrawObjects( CDC* dc, double zoom ) const;
-	virtual afx_msg void OnObjectCommand( UINT nID );
+	// Overrides:
+	virtual void DrawObjects(CDC* dc, double zoom) const;
+	virtual afx_msg void OnObjectCommand(UINT nID);
 
-// Message handlers
+	// Message handlers
 	virtual afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	virtual afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	virtual afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -57,18 +57,17 @@ protected:
 	virtual afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 
 private:
-// Private helpers
+	// Private helpers
 	void			ModifyLinkedPositions();
-	void			AdjustLinkedObjects( CUMLEntity* parent, CUMLEntity* filter = NULL );
-	CUMLEntity*		GetNamedObject( const CString& name ) const;
+	CUMLEntity*		GetNamedObject(const CString& name) const;
 
-	BOOL			IsConnected( CUMLLineSegment* link ) const;
-	CUMLEntity*		GetObjectAt( int index ) const;
+	BOOL			IsConnected(CUMLLineSegment* link) const;
+	CUMLEntity*		GetObjectAt(INT_PTR index) const;
 
 	BOOL			PartialLinesSelected() const;
 	CString			BrowseForFolder();
 
-// Private data
+	// Private data
 	BOOL	m_drawingLine;
 
 	HCURSOR	m_curDrawLine;
@@ -76,7 +75,7 @@ private:
 	HCURSOR	m_curUp;
 
 	CUMLEntityContainer*	GetUMLEntityContainer() const;
-	void	SetCursor( CPoint point );
+	void	SetCursor(CPoint point);
 
 	HICON	m_currentCursor;
 

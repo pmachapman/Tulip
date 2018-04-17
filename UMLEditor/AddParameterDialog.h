@@ -14,12 +14,12 @@
 
 class CAddParameterDialog : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CAddParameterDialog(CWnd* pParent = NULL);
 
-// Dialog Data
-	//{{AFX_DATA(CAddParameterDialog)
+	// Dialog Data
+		//{{AFX_DATA(CAddParameterDialog)
 	enum { IDD = IDD_UML_DIALOG_PROPERTY_CLASS_OPERATION_PARAMETER };
 	CEdit	m_typeCtrl;
 	CEdit	m_nameCtrl;
@@ -31,12 +31,12 @@ public:
 	BOOL	m_reference;
 	//}}AFX_DATA
 
-	void			SetParameter( CParameter* parameter );
+	void			SetParameter(CParameter* parameter);
 	CParameter*		GetParameter();
 
-// Overrides
-	//{{AFX_VIRTUAL(CAddParameterDialog)
-	protected:
+	// Overrides
+		//{{AFX_VIRTUAL(CAddParameterDialog)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 
@@ -50,7 +50,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CParameter*	m_parameter;
+	CParameter * m_parameter;
 };
 
 //{{AFX_INSERT_LOCATION}}

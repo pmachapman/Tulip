@@ -286,7 +286,7 @@ BOOL CDiagramEntity::GetDefaultFromString( CString& str )
 		data = data.Left( data.GetLength() - 1 ); // Strip the ';'
 
 	CTokenizer tok( data ); 
-	int size = tok.GetSize();
+	INT_PTR size = tok.GetSize();
 	if( size >= 7 )
 	{
 		double left;
@@ -324,7 +324,7 @@ BOOL CDiagramEntity::GetDefaultFromString( CString& str )
 
 		// Rebuild rest of string
 		str = _T( "" );
-		for( int t = count ; t < size ; t++ )
+		for(INT_PTR t = count ; t < size ; t++ )
 		{
 			tok.GetAt( t, data );
 

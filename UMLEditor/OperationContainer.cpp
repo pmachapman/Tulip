@@ -7,10 +7,10 @@
 
 	Purpose :		A container for "COperation"s
 
-	Description :	The class has a "CObArray" to store the "COperation"s, and 
-					manages memory automatically. 
+	Description :	The class has a "CObArray" to store the "COperation"s, and
+					manages memory automatically.
 
-	Usage :			Use to handle arrays of operations. As memory will be 
+	Usage :			Use to handle arrays of operations. As memory will be
 					freed automatically, use "Copy" to copy contents.
 
    ========================================================================*/
@@ -37,7 +37,7 @@ COperationContainer::COperationContainer()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -48,7 +48,7 @@ COperationContainer::~COperationContainer()
 	Function :		COperationContainer::~COperationContainer
 	Description :	Destructor
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
@@ -64,38 +64,38 @@ COperationContainer::~COperationContainer()
 ////////////////////////////////////////////////////////////////////
 // Public functions
 //
-void COperationContainer::Copy( COperationContainer & operations )
+void COperationContainer::Copy(COperationContainer & operations)
 /* ============================================================
 	Function :		COperationContainer::Copy
-	Description :	Copy the contents of operations to this 
+	Description :	Copy the contents of operations to this
 					container.
 	Access :		Public
-					
+
 	Return :		void
-	Parameters :	COperationContainer & operations	-	Container to 
+	Parameters :	COperationContainer & operations	-	Container to
 															copy from
 
-	Usage :			Call to copy data from one container to 
+	Usage :			Call to copy data from one container to
 					another.
 
    ============================================================*/
 {
 
 	RemoveAll();
-	int max = operations.GetSize();
-	m_operations.SetSize( max );
-	for( int t = 0 ; t < max ; t++ )
-		m_operations.SetAt( t, ( operations.GetAt( t ) )->Clone() );
+	INT_PTR max = operations.GetSize();
+	m_operations.SetSize(max);
+	for (INT_PTR t = 0; t < max; t++)
+		m_operations.SetAt(t, (operations.GetAt(t))->Clone());
 
 }
 
-int COperationContainer::GetSize( ) const
+INT_PTR COperationContainer::GetSize() const
 /* ============================================================
 	Function :		COperationContainer::GetSize
-	Description :	Gets the number of operations in the 
+	Description :	Gets the number of operations in the
 					container.
 	Access :		Public
-					
+
 	Return :		int	-	The number of operations
 	Parameters :	none
 
@@ -108,13 +108,13 @@ int COperationContainer::GetSize( ) const
 
 }
 
-COperation* COperationContainer::GetAt( int index) const
+COperation* COperationContainer::GetAt(INT_PTR index) const
 /* ============================================================
 	Function :		COperationContainer::GetAt
 	Description :	Get the operation at "index"
 	Access :		Public
-					
-	Return :		COperation*	-	Operation, or "NULL" if out 
+
+	Return :		COperation*	-	Operation, or "NULL" if out
 									of bounds.
 	Parameters :	int index	-	Index of object to get.
 
@@ -125,19 +125,19 @@ COperation* COperationContainer::GetAt( int index) const
 
 	COperation* result = NULL;
 
-	if( index > -1 && index < GetSize() )
-		result = static_cast< COperation* >( m_operations.GetAt( index ) );
+	if (index > -1 && index < GetSize())
+		result = static_cast<COperation*>(m_operations.GetAt(index));
 
 	return result;
 
 }
 
-void COperationContainer::RemoveAt( int index)
+void COperationContainer::RemoveAt(INT_PTR index)
 /* ============================================================
 	Function :		COperationContainer::RemoveAt
 	Description :	Remove operation at "index"
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	int index	-	Index to remove operation at.
 
@@ -146,15 +146,15 @@ void COperationContainer::RemoveAt( int index)
    ============================================================*/
 {
 
-	if( index > -1 && index < GetSize() )
+	if (index > -1 && index < GetSize())
 	{
-		delete GetAt( index );
-		m_operations.RemoveAt( index );
+		delete GetAt(index);
+		m_operations.RemoveAt(index);
 	}
 
 }
 
-void COperationContainer::RemoveAll( )
+void COperationContainer::RemoveAll()
 /* ============================================================
 	Function :		COperationContainer::RemoveAll
 	Description :	Remove all objects from container.
@@ -168,12 +168,12 @@ void COperationContainer::RemoveAll( )
    ============================================================*/
 {
 
-	while( GetSize() )
-		RemoveAt( 0 );
+	while (GetSize())
+		RemoveAt(0);
 
 }
 
-void COperationContainer::Add( COperation * operation )
+void COperationContainer::Add(COperation * operation)
 /* ============================================================
 	Function :		COperationContainer::Add
 	Description :	Add an operation to the container.
@@ -182,23 +182,23 @@ void COperationContainer::Add( COperation * operation )
 	Return :		void
 	Parameters :	COperation * operation	-	Operation to add
 
-	Usage :			Call to add an operation to the container. 
+	Usage :			Call to add an operation to the container.
 					The container owns the object.
 
    ============================================================*/
 {
 
-	m_operations.Add( operation );
+	m_operations.Add(operation);
 
 }
 
-CString COperationContainer::GetString( int format ) const
+CString COperationContainer::GetString(int format) const
 /* ============================================================
 	Function :		COperationContainer::GetString
-	Description :	Get a string representation of all 
+	Description :	Get a string representation of all
 					operations in format "format".
 	Access :		Public
-					
+
 	Return :		CString		-	Resulting string
 	Parameters :	int format	-	Format to use.
 
@@ -214,56 +214,56 @@ CString COperationContainer::GetString( int format ) const
 {
 
 	CString result;
-	if( format == STRING_FORMAT_SAVE )
-		for( int t = 0 ; t < GetSize() ; t++ )
-			result += _T( "," ) + GetAt( t )->GetString();
+	if (format == STRING_FORMAT_SAVE)
+		for (int t = 0; t < GetSize(); t++)
+			result += _T(",") + GetAt(t)->GetString();
 
 	return result;
 
 }
 
-void COperationContainer::SetSize( int size )
+void COperationContainer::SetSize(INT_PTR size)
 /* ============================================================
 	Function :		COperationContainer::SetSize
 	Description :	Set the size of the container
 	Access :		Public
 
 	Return :		void
-	Parameters :	int size	-	
-					
-	Usage :			Can be used to speed up container operations 
+	Parameters :	int size	-
+
+	Usage :			Can be used to speed up container operations
 					if the size is already known.
 
    ============================================================*/
 {
 
-	m_operations.SetSize( size );
+	m_operations.SetSize(size);
 
 }
 
-void COperationContainer::SetAt( int index, COperation* obj )
+void COperationContainer::SetAt(INT_PTR index, COperation* obj)
 /* ============================================================
 	Function :		COperationContainer::SetAt
 	Description :	Sets "obj" at index "index" in the container.
 	Access :		Public
 
 	Return :		void
-	Parameters :	int index		-	Index where obj should 
+	Parameters :	int index		-	Index where obj should
 										be added
 					CAttribute* obj	-	Object to add.
-					
-	Usage :			Call to directly set an object. Note that the 
-					container should be empty, with just "SetSize" 
-					called. As the function is included for 
-					speedier operations, as little error 
-					checking as possible is made. If an object 
-					is set into a slot with an exisiting object, 
+
+	Usage :			Call to directly set an object. Note that the
+					container should be empty, with just "SetSize"
+					called. As the function is included for
+					speedier operations, as little error
+					checking as possible is made. If an object
+					is set into a slot with an exisiting object,
 					a memory leak will result.
 
    ============================================================*/
 {
 
-	if( index > -1 && index < GetSize() )
-		m_operations.SetAt( index, obj );
+	if (index > -1 && index < GetSize())
+		m_operations.SetAt(index, obj);
 
 }

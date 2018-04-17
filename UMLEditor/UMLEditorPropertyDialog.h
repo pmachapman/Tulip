@@ -14,12 +14,12 @@
 
 class CUMLEditorPropertyDialog : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CUMLEditorPropertyDialog(CWnd* pParent = NULL);
 
-// Dialog Data
-	//{{AFX_DATA(CUMLEditorPropertyDialog)
+	// Dialog Data
+		//{{AFX_DATA(CUMLEditorPropertyDialog)
 	enum { IDD = IDD_UML_DIALOG_PROPERTY_EDITOR };
 	BOOL	m_grid;
 	BOOL	m_nomarkers;
@@ -33,9 +33,9 @@ public:
 
 	COLORREF	m_color;
 
-// Overrides
-	//{{AFX_VIRTUAL(CUMLEditorPropertyDialog)
-	protected:
+	// Overrides
+		//{{AFX_VIRTUAL(CUMLEditorPropertyDialog)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 

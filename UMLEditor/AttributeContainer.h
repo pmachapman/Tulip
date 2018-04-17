@@ -15,18 +15,18 @@ public:
 	CAttributeContainer();
 	virtual ~CAttributeContainer();
 
-// Operations
-	void Copy( CAttributeContainer & attributes );
-	int GetSize(  ) const;
-	CAttribute* GetAt( int index ) const;
-	void RemoveAt( int index );
-	void RemoveAll(  );
-	void Add( CAttribute * attribute );
-	CString GetString( int format = STRING_FORMAT_SAVE ) const;
-	void SetSize( int size );
-	void SetAt( int index, CAttribute* obj );
+	// Operations
+	void Copy(CAttributeContainer & attributes);
+	INT_PTR GetSize() const;
+	CAttribute* GetAt(INT_PTR index) const;
+	void RemoveAt(int index);
+	void RemoveAll();
+	void Add(CAttribute * attribute);
+	CString GetString(int format = STRING_FORMAT_SAVE) const;
+	void SetSize(int size);
+	void SetAt(int index, CAttribute* obj);
 
-// Attributes
+	// Attributes
 private:
 	CObArray m_attributes;
 

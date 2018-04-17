@@ -5,11 +5,11 @@ class CLinkFactory
 {
 
 public:
-// Implementation
+	// Implementation
 	static CString GetID();
 
 private:
-// Private data
+	// Private data
 	static int s_currentID;
 
 };

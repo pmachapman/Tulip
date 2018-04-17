@@ -17,14 +17,14 @@
 
 class CUMLClassPropertyDialog : public CDiagramPropertyDlg
 {
-// Construction
+	// Construction
 public:
 	CUMLClassPropertyDialog(CWnd* pParent = NULL);
 
 	virtual void SetValues();
 
-// Dialog Data
-	//{{AFX_DATA(CUMLClassPropertyDialog)
+	// Dialog Data
+		//{{AFX_DATA(CUMLClassPropertyDialog)
 	enum { IDD = IDD_UML_DIALOG_PROPERTY_CLASS };
 	CExListBox	m_operation;
 	CExListBox	m_attribute;
@@ -37,7 +37,7 @@ public:
 
 // Overrides
 	//{{AFX_VIRTUAL(CUMLClassPropertyDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 
@@ -55,8 +55,8 @@ protected:
 	afx_msg void OnButtonVisibility();
 	afx_msg void OnButtonAutoGenerate2();
 	//}}AFX_MSG
-	LRESULT OnListboxDblClick( WPARAM id, LPARAM );
-	LRESULT OnListboxDelete( WPARAM id, LPARAM );
+	LRESULT OnListboxDblClick(WPARAM id, LPARAM);
+	LRESULT OnListboxDelete(WPARAM id, LPARAM);
 
 	DECLARE_MESSAGE_MAP()
 

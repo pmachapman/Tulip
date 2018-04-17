@@ -5,14 +5,14 @@
 
 	Date :			2004-06-21
 
-	Purpose :		"CClassDisplayPropertyDialog" derives from "CDialog" 
-					and is a wrapper for the class display properties 
+	Purpose :		"CClassDisplayPropertyDialog" derives from "CDialog"
+					and is a wrapper for the class display properties
 					dialog.
 
 	Description :	A standard Wizard-created dialog box class.
 
-	Usage :			Call to edit the display properties of the class 
-					object. The display properties are for example if access 
+	Usage :			Call to edit the display properties of the class
+					object. The display properties are for example if access
 					markers should be displayed, if only public attributes/
 					operation should be displayed etc.
 
@@ -32,18 +32,18 @@ static char THIS_FILE[] = __FILE__;
 
 CClassDisplayPropertyDialog::CClassDisplayPropertyDialog(CWnd* pParent /*=NULL*/)
 	: CDialog(CClassDisplayPropertyDialog::IDD, pParent)
-/* ============================================================
-	Function :		CClassDisplayPropertyDialog::CClassDisplayPropertyDialog
-	Description :	Constructor
-	Access :		Public
+	/* ============================================================
+		Function :		CClassDisplayPropertyDialog::CClassDisplayPropertyDialog
+		Description :	Constructor
+		Access :		Public
 
-	Return :		void
-	Parameters :	CWnd* pParent	-	Dialog parent
+		Return :		void
+		Parameters :	CWnd* pParent	-	Dialog parent
 
-	Usage :			Call to edit the display setting of a class
-					object.
+		Usage :			Call to edit the display setting of a class
+						object.
 
-   ============================================================*/
+	   ============================================================*/
 {
 	//{{AFX_DATA_INIT(CClassDisplayPropertyDialog)
 	m_noattributenames = FALSE;
@@ -63,8 +63,8 @@ void CClassDisplayPropertyDialog::DoDataExchange(CDataExchange* pDX)
 
 	Return :		void
 	Parameters :	CDataExchange* pDX	-	Pointer to exchange object
-					
-	Usage :			Called from MFC to exchange and validate 
+
+	Usage :			Called from MFC to exchange and validate
 					dialog data.
 
    ============================================================*/

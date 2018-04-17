@@ -10,17 +10,17 @@
 
 	Description :	A standard Class-Wizard created dialog box class.
 
-	Usage :			In the "CUMLEntity"-derived class, add a member of 
-					the "CUMLInterfacePropertyDialog"-derived class, and call 
+	Usage :			In the "CUMLEntity"-derived class, add a member of
+					the "CUMLInterfacePropertyDialog"-derived class, and call
 					"SetPropertyDialog" in the constructor.
 
-					The dialog is displayed as a modeless dialog. The 
+					The dialog is displayed as a modeless dialog. The
 					editor will hide the dialog automatically when another
-					object is selected, no special Close-button is 
+					object is selected, no special Close-button is
 					necessary.
 
-					The dialog template with the resource id 
-					"IDD_UML_DIALOG_PROPERTY_LINK" 
+					The dialog template with the resource id
+					"IDD_UML_DIALOG_PROPERTY_LINK"
 					must be added to the project.
 
    ========================================================================
@@ -43,17 +43,17 @@ static char THIS_FILE[] = __FILE__;
 
 CUMLLinkPropertyDialog::CUMLLinkPropertyDialog(CWnd* pParent /*=NULL*/)
 	: CDiagramPropertyDlg(CUMLLinkPropertyDialog::IDD, pParent)
-/* ============================================================
-	Function :		CUMLLinkPropertyDialog::CUMLLinkPropertyDialog
-	Description :	Constructor
-	Access :		Public
-					
-	Return :		void
-	Parameters :	CWnd* pParent	-	Dialog parent
+	/* ============================================================
+		Function :		CUMLLinkPropertyDialog::CUMLLinkPropertyDialog
+		Description :	Constructor
+		Access :		Public
 
-	Usage :			
+		Return :		void
+		Parameters :	CWnd* pParent	-	Dialog parent
 
-   ============================================================*/
+		Usage :
+
+	   ============================================================*/
 {
 	//{{AFX_DATA_INIT(CUMLLinkPropertyDialog)
 	m_unidirectional = FALSE;
@@ -75,8 +75,8 @@ void CUMLLinkPropertyDialog::DoDataExchange(CDataExchange* pDX)
 
 	Return :		void
 	Parameters :	CDataExchange* pDX	-	Pointer to exchange object
-					
-	Usage :			Called from MFC to exchange and validate 
+
+	Usage :			Called from MFC to exchange and validate
 					dialog data.
 
    ============================================================*/
@@ -103,7 +103,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CUMLLinkPropertyDialog message handlers
 
-void CUMLLinkPropertyDialog::OnOK() 
+void CUMLLinkPropertyDialog::OnOK()
 /* ============================================================
 	Function :		CUMLLinkPropertyDialog::OnOK
 	Description :	Handler for the dialog OK-button.
@@ -119,59 +119,59 @@ void CUMLLinkPropertyDialog::OnOK()
 
 	UpdateData();
 
-	CUMLLineSegment* uml = static_cast< CUMLLineSegment* >( GetEntity() );
+	CUMLLineSegment* uml = static_cast<CUMLLineSegment*>(GetEntity());
 
-	uml->SetEndLabel( m_endlabel );
-	uml->SetStartLabel( m_startlabel );
-	uml->SetSecondaryEndLabel( m_secondaryendlabel );
-	uml->SetSecondaryStartLabel( m_secondarystartlabel );
-	uml->SetTitle( m_title );
-	uml->SetFont( m_font );
+	uml->SetEndLabel(m_endlabel);
+	uml->SetStartLabel(m_startlabel);
+	uml->SetSecondaryEndLabel(m_secondaryendlabel);
+	uml->SetSecondaryStartLabel(m_secondarystartlabel);
+	uml->SetTitle(m_title);
+	uml->SetFont(m_font);
 
-	switch( m_linktype )
+	switch (m_linktype)
 	{
-		case TYPE_ASSOCIATION:
-			uml->SetLineStyle( STYLE_NONE );
-			break;
-		case TYPE_DEPENDANCY:
-			uml->SetLineStyle( STYLE_DASHED );
-			break;
-		case TYPE_INHERITANCE:
-			uml->SetLineStyle( STYLE_ARROWHEAD );
-			break;
-		case TYPE_COMPOSITION:
-			uml->SetLineStyle( STYLE_FILLED_DIAMOND );
-			break;
-		case TYPE_PARTOF:
-			uml->SetLineStyle( STYLE_CIRCLECROSS );
-			break;
-		case TYPE_INVISIBLE:
-			uml->SetLineStyle( STYLE_INVISIBLE );
-		case TYPE_INTERFACE:
-			uml->SetLineStyle( STYLE_ARROWHEAD );
-			uml->AddLineStyle( STYLE_DASHED );
-			break;
+	case TYPE_ASSOCIATION:
+		uml->SetLineStyle(STYLE_NONE);
+		break;
+	case TYPE_DEPENDANCY:
+		uml->SetLineStyle(STYLE_DASHED);
+		break;
+	case TYPE_INHERITANCE:
+		uml->SetLineStyle(STYLE_ARROWHEAD);
+		break;
+	case TYPE_COMPOSITION:
+		uml->SetLineStyle(STYLE_FILLED_DIAMOND);
+		break;
+	case TYPE_PARTOF:
+		uml->SetLineStyle(STYLE_CIRCLECROSS);
+		break;
+	case TYPE_INVISIBLE:
+		uml->SetLineStyle(STYLE_INVISIBLE);
+	case TYPE_INTERFACE:
+		uml->SetLineStyle(STYLE_ARROWHEAD);
+		uml->AddLineStyle(STYLE_DASHED);
+		break;
 	}
 
-	if( m_unidirectional )
-		uml->AddLineStyle( STYLE_FILLED_ARROWHEAD );
+	if (m_unidirectional)
+		uml->AddLineStyle(STYLE_FILLED_ARROWHEAD);
 
 	Redraw();
-	ShowWindow( SW_HIDE );
+	ShowWindow(SW_HIDE);
 	GetRedrawWnd()->SetFocus();
 
 }
 
-void CUMLLinkPropertyDialog::OnCancel() 
+void CUMLLinkPropertyDialog::OnCancel()
 /* ============================================================
 	Function :		CUMLNotePropertyDialog::OnCancel
 	Description :	Called when the ESC-key is pressed.
 	Access :		Protected
-			
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			Called from MFC. Overridden to close the 
+	Usage :			Called from MFC. Overridden to close the
 					dialog.
 
    ============================================================*/
@@ -182,25 +182,25 @@ void CUMLLinkPropertyDialog::OnCancel()
 
 }
 
-void CUMLLinkPropertyDialog::SetValues() 
+void CUMLLinkPropertyDialog::SetValues()
 /* ============================================================
 	Function :		CUMLNotePropertyDialog::SetValues
-	Description :	Set the values in the dialog from the 
+	Description :	Set the values in the dialog from the
 					attached object.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Will be called by the framework and the 
-					attached object to initialize the dialog. 
-					The editbox is filled with the contents of 
+	Usage :			Will be called by the framework and the
+					attached object to initialize the dialog.
+					The editbox is filled with the contents of
 					the object title attribute.
 
    ============================================================*/
 {
 
-	CUMLLineSegment* uml = static_cast< CUMLLineSegment* >( GetEntity() );
+	CUMLLineSegment* uml = static_cast<CUMLLineSegment*>(GetEntity());
 
 	m_endlabel = uml->GetEndLabel();
 	m_startlabel = uml->GetStartLabel();
@@ -210,31 +210,31 @@ void CUMLLinkPropertyDialog::SetValues()
 
 	int style = uml->GetLineStyle();
 	m_linktype = TYPE_ASSOCIATION;
-	if( style & STYLE_DASHED )
+	if (style & STYLE_DASHED)
 		m_linktype = TYPE_DEPENDANCY;
-	if( style & STYLE_ARROWHEAD )
+	if (style & STYLE_ARROWHEAD)
 		m_linktype = TYPE_INHERITANCE;
-	if( style & STYLE_FILLED_DIAMOND )
+	if (style & STYLE_FILLED_DIAMOND)
 		m_linktype = TYPE_COMPOSITION;
-	if( style & STYLE_CIRCLECROSS )
+	if (style & STYLE_CIRCLECROSS)
 		m_linktype = TYPE_PARTOF;
-	if( style & STYLE_INVISIBLE )
+	if (style & STYLE_INVISIBLE)
 		m_linktype = TYPE_INVISIBLE;
-	if( style & STYLE_DASHED && style & STYLE_ARROWHEAD )
+	if (style & STYLE_DASHED && style & STYLE_ARROWHEAD)
 		m_linktype = TYPE_INTERFACE;
 
 	m_unidirectional = FALSE;
-	if( style & STYLE_FILLED_ARROWHEAD )
+	if (style & STYLE_FILLED_ARROWHEAD)
 		m_unidirectional = TRUE;
 
 	m_font = uml->GetFont();
 
-	if( m_hWnd )
-		UpdateData( FALSE );
+	if (m_hWnd)
+		UpdateData(FALSE);
 
 }
 
-void CUMLLinkPropertyDialog::OnButtonFont() 
+void CUMLLinkPropertyDialog::OnButtonFont()
 /* ============================================================
 	Function :		CUMLLinkPropertyDialog::OnButtonFont
 	Description :	Handler for the dialog button Font
@@ -249,12 +249,12 @@ void CUMLLinkPropertyDialog::OnButtonFont()
 {
 
 	CFont font;
-	CUMLLineSegment* uml = static_cast< CUMLLineSegment* >( GetEntity() );
-	font.CreatePointFont( 120, uml->GetFont() );
+	CUMLLineSegment* uml = static_cast<CUMLLineSegment*>(GetEntity());
+	font.CreatePointFont(120, uml->GetFont());
 	LOGFONT lf;
-	font.GetLogFont( &lf );
-	CFontDialog	dlg( &lf );
-	if( dlg.DoModal() == IDOK )
+	font.GetLogFont(&lf);
+	CFontDialog	dlg(&lf);
+	if (dlg.DoModal() == IDOK)
 		m_font = dlg.GetFaceName();
-	
+
 }

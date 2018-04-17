@@ -17,15 +17,15 @@ public:
 	COperation();
 	virtual ~COperation();
 
-	BOOL operator==( const COperation& operation );
+	BOOL operator==(const COperation& operation);
 
-// Operations
-	CString ToString( BOOL nomarkers, BOOL nooperationattributenames );
-	COperation* Clone( );
-	static COperation* FromString( const CString& str );
-	CString GetString( int format = STRING_FORMAT_SAVE ) const;
+	// Operations
+	CString ToString(BOOL nomarkers, BOOL nooperationattributenames);
+	COperation* Clone();
+	static COperation* FromString(const CString& str);
+	CString GetString(int format = STRING_FORMAT_SAVE) const;
 
-// Attributes
+	// Attributes
 	int maintype;					// Static or virtual
 	int access;						// public, private, protected
 	CString name;					// variable name

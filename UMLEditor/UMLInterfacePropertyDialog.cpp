@@ -5,22 +5,22 @@
 
 	Date :			2004-04-29
 
-	Purpose :		"CUMLInterfacePropertyDialog" is a dialog box wrapper derived from 
-					"CDiagramPropertyDlg", used by "CUMLEntity"-derived 
+	Purpose :		"CUMLInterfacePropertyDialog" is a dialog box wrapper derived from
+					"CDiagramPropertyDlg", used by "CUMLEntity"-derived
 					objects to edit the object title attribute.
 
 	Description :	Class-Wizard created class.
 
-	Usage :			In the "CUMLEntity"-derived class, add a member of 
-					the "CUMLInterfacePropertyDialog"-derived class, and call 
+	Usage :			In the "CUMLEntity"-derived class, add a member of
+					the "CUMLInterfacePropertyDialog"-derived class, and call
 					"SetPropertyDialog" in the constructor.
 
-					The dialog is displayed as a modeless dialog. The 
+					The dialog is displayed as a modeless dialog. The
 					editor will hide the dialog automatically when another
-					object is selected, no special Close-button is 
+					object is selected, no special Close-button is
 					necessary.
 
-					The dialog template with the res id "IDD_UML_DIALOG_PROPERTY_INTERFACE" 
+					The dialog template with the res id "IDD_UML_DIALOG_PROPERTY_INTERFACE"
 					must be added to the project.
    ========================================================================*/
 
@@ -39,17 +39,17 @@ static char THIS_FILE[] = __FILE__;
 
 CUMLInterfacePropertyDialog::CUMLInterfacePropertyDialog(CWnd* pParent /*=NULL*/)
 	: CDiagramPropertyDlg(CUMLInterfacePropertyDialog::IDD, pParent)
-/* ============================================================
-	Function :		CUMLInterfacePropertyDialog::CUMLInterfacePropertyDialog
-	Description :	Constructor
-	Access :		Public
-					
-	Return :		void
-	Parameters :	CWnd* pParent	-	Dialog parent
+	/* ============================================================
+		Function :		CUMLInterfacePropertyDialog::CUMLInterfacePropertyDialog
+		Description :	Constructor
+		Access :		Public
 
-	Usage :			
+		Return :		void
+		Parameters :	CWnd* pParent	-	Dialog parent
 
-   ============================================================*/
+		Usage :
+
+	   ============================================================*/
 {
 
 	//{{AFX_DATA_INIT(CUMLInterfacePropertyDialog)
@@ -63,11 +63,11 @@ CUMLInterfacePropertyDialog::~CUMLInterfacePropertyDialog()
 	Function :		CUMLInterfacePropertyDialog::~CUMLInterfacePropertyDialog
 	Description :	Destructor
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -81,8 +81,8 @@ void CUMLInterfacePropertyDialog::DoDataExchange(CDataExchange* pDX)
 
 	Return :		void
 	Parameters :	CDataExchange* pDX	-	Pointer to exchange object
-					
-	Usage :			Called from MFC to exchange and validate 
+
+	Usage :			Called from MFC to exchange and validate
 					dialog data.
 
    ============================================================*/
@@ -105,43 +105,43 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CUMLInterfacePropertyDialog message handlers
 
-void CUMLInterfacePropertyDialog::OnOK() 
+void CUMLInterfacePropertyDialog::OnOK()
 /* ============================================================
 	Function :		CUMLInterfacePropertyDialog::OnOK
 	Description :	Called when the Apply-key is pressed.
 	Access :		Protected
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			Called from MFC. Updates the attached object 
+	Usage :			Called from MFC. Updates the attached object
 					and hides the modeless dialog.
 
    ============================================================*/
 {
 
-	CUMLEntityInterface* uml = static_cast< CUMLEntityInterface* >( GetEntity() );
+	CUMLEntityInterface* uml = static_cast<CUMLEntityInterface*>(GetEntity());
 
 	UpdateData();
-	uml->SetTitle( m_text );
-	uml->SetBkColor( m_color );
-	uml->SetFont( m_font );
+	uml->SetTitle(m_text);
+	uml->SetBkColor(m_color);
+	uml->SetFont(m_font);
 	Redraw();
-	ShowWindow( SW_HIDE );
+	ShowWindow(SW_HIDE);
 	GetRedrawWnd()->SetFocus();
 
 }
 
-void CUMLInterfacePropertyDialog::OnCancel() 
+void CUMLInterfacePropertyDialog::OnCancel()
 /* ============================================================
 	Function :		CUMLInterfacePropertyDialog::OnCancel
 	Description :	Called when the ESC-key is pressed.
 	Access :		Protected
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			Called from MFC. Overridden to close the 
+	Usage :			Called from MFC. Overridden to close the
 					dialog.
 
    ============================================================*/
@@ -155,36 +155,36 @@ void CUMLInterfacePropertyDialog::OnCancel()
 /////////////////////////////////////////////////////////////////////////////
 // CUMLInterfacePropertyDialog overrides
 
-void CUMLInterfacePropertyDialog::SetValues() 
+void CUMLInterfacePropertyDialog::SetValues()
 /* ============================================================
 	Function :		CUMLInterfacePropertyDialog::SetValues
-	Description :	Set the values in the dialog from the 
+	Description :	Set the values in the dialog from the
 					attached object.
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			Will be called by the framework and the 
-					attached object to initialize the dialog. 
-					The editbox is filled with the contents of 
+	Usage :			Will be called by the framework and the
+					attached object to initialize the dialog.
+					The editbox is filled with the contents of
 					the object title attribute.
 
    ============================================================*/
 {
 
-	CUMLEntityInterface* uml = static_cast< CUMLEntityInterface* >( GetEntity() );
+	CUMLEntityInterface* uml = static_cast<CUMLEntityInterface*>(GetEntity());
 
 	m_text = uml->GetTitle();
 	m_color = uml->GetBkColor();
 	m_font = uml->GetFont();
 
-	if( m_hWnd )
-		UpdateData( FALSE );
+	if (m_hWnd)
+		UpdateData(FALSE);
 
 }
 
-void CUMLInterfacePropertyDialog::OnButtonFont() 
+void CUMLInterfacePropertyDialog::OnButtonFont()
 /* ============================================================
 	Function :		CUMLInterfacePropertyDialog::OnButtonFont
 	Description :	Handler for the dialog button Font
@@ -199,16 +199,16 @@ void CUMLInterfacePropertyDialog::OnButtonFont()
 {
 
 	CFont font;
-	CUMLEntityInterface* uml = static_cast< CUMLEntityInterface* >( GetEntity() );
-	font.CreatePointFont( 120, uml->GetFont() );
+	CUMLEntityInterface* uml = static_cast<CUMLEntityInterface*>(GetEntity());
+	font.CreatePointFont(120, uml->GetFont());
 	LOGFONT lf;
-	font.GetLogFont( &lf );
-	CFontDialog	dlg( &lf );
-	if( dlg.DoModal() == IDOK )
+	font.GetLogFont(&lf);
+	CFontDialog	dlg(&lf);
+	if (dlg.DoModal() == IDOK)
 		m_font = dlg.GetFaceName();
-	
+
 }
-void CUMLInterfacePropertyDialog::OnButtonColor() 
+void CUMLInterfacePropertyDialog::OnButtonColor()
 /* ============================================================
 	Function :		CUMLInterfacePropertyDialog::OnButtonColor
 	Description :	Handler for the dialog button Color
@@ -222,10 +222,10 @@ void CUMLInterfacePropertyDialog::OnButtonColor()
    ============================================================*/
 {
 
-	CUMLEntityInterface* uml = static_cast< CUMLEntityInterface* >( GetEntity() );
+	CUMLEntityInterface* uml = static_cast<CUMLEntityInterface*>(GetEntity());
 	COLORREF color = uml->GetBkColor();
-	CColorDialog	dlg( color );
-	if( dlg.DoModal() == IDOK )
+	CColorDialog	dlg(color);
+	if (dlg.DoModal() == IDOK)
 		m_color = dlg.GetColor();
-	
+
 }

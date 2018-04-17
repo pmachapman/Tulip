@@ -5,19 +5,19 @@
 
 	Date :			2004-06-21
 
-	Purpose :		"CUMLEntityInterface" is derived from "CUMLEntity" and 
+	Purpose :		"CUMLEntityInterface" is derived from "CUMLEntity" and
 					represents an UML interface object.
 
-	Description :	The "CUMLEntity"-derived objects are the drawing objects 
-					of the UML-editor. "CUMLEntityInterface" is linkable at 
-					the top, left, right and bottom middle points. A 
-					non-selectable title is displayed above the UML-symbol 
-					for the interface. The interface will currently not 
+	Description :	The "CUMLEntity"-derived objects are the drawing objects
+					of the UML-editor. "CUMLEntityInterface" is linkable at
+					the top, left, right and bottom middle points. A
+					non-selectable title is displayed above the UML-symbol
+					for the interface. The interface will currently not
 					generate any code.
 
-	Usage :			When loading, create with "CUMLControlFactory::CreateFromString". 
-					Otherwise, create instances in the application view or dialog and 
-					add them to the editor with "StartDrawingObject". The 
+	Usage :			When loading, create with "CUMLControlFactory::CreateFromString".
+					Otherwise, create instances in the application view or dialog and
+					add them to the editor with "StartDrawingObject". The
 					editor takes responsibility for the object.
 
    ========================================================================*/
@@ -49,18 +49,18 @@ CUMLEntityInterface::CUMLEntityInterface()
    ============================================================*/
 {
 
-	SetDefaultSize( CSize( 32, 32 ) );
+	SetDefaultSize(CSize(32, 32));
 
 	CString title;
-	title.LoadString( IDS_UML_INTERFACE );
-	SetTitle( title );
+	title.LoadString(IDS_UML_INTERFACE);
+	SetTitle(title);
 
-	SetType( _T( "uml_interface" ) );
-	SetConstraints( GetDefaultSize(), GetDefaultSize() );
+	SetType(_T("uml_interface"));
+	SetConstraints(GetDefaultSize(), GetDefaultSize());
 
-	SetBkColor( RGB( 255, 255, 217 ) );
+	SetBkColor(RGB(255, 255, 217));
 
-	SetPropertyDialog( &m_dlg, CUMLInterfacePropertyDialog::IDD );
+	SetPropertyDialog(&m_dlg, CUMLInterfacePropertyDialog::IDD);
 
 }
 
@@ -79,7 +79,7 @@ CUMLEntityInterface::~CUMLEntityInterface()
    ============================================================*/
 {
 
-	if( m_dlg.m_hWnd )
+	if (m_dlg.m_hWnd)
 		m_dlg.DestroyWindow();
 
 }
@@ -87,8 +87,8 @@ CUMLEntityInterface::~CUMLEntityInterface()
 CDiagramEntity* CUMLEntityInterface::Clone()
 /* ============================================================
 	Function :		CUMLEntityInterface::Clone
-	Description :	Creates a new object of this type, copies 
-					the data from this object, and returns the 
+	Description :	Creates a new object of this type, copies
+					the data from this object, and returns the
 					new one.
 	Access :		Public
 
@@ -101,33 +101,33 @@ CDiagramEntity* CUMLEntityInterface::Clone()
 {
 
 	CUMLEntityInterface* obj = new CUMLEntityInterface;
-	obj->Copy( this );
+	obj->Copy(this);
 	return obj;
 
 }
 
-CDiagramEntity* CUMLEntityInterface::CreateFromString( const CString& str )
+CDiagramEntity* CUMLEntityInterface::CreateFromString(const CString& str)
 /* ============================================================
 	Function :		CUMLEntityInterface::CreateFromString
-	Description :	Static factory function that creates and 
-					returns an instance of this class if "str" 
+	Description :	Static factory function that creates and
+					returns an instance of this class if "str"
 					is a valid representation.
 	Access :		Public
 
-	Return :		CDiagramEntity*		-	The object, or "NULL" 
-											if "str" is not a 
-											representation of 
+	Return :		CDiagramEntity*		-	The object, or "NULL"
+											if "str" is not a
+											representation of
 											this type.
-	Parameters :	const CString& str	-	The string to create 
+	Parameters :	const CString& str	-	The string to create
 											from.
-					
-	Usage :			Can be used as a factory for text file loads. 
+
+	Usage :			Can be used as a factory for text file loads.
 
    ============================================================*/
 {
 
 	CUMLEntityInterface* obj = new CUMLEntityInterface;
-	if(!obj->FromString( str ) )
+	if (!obj->FromString(str))
 	{
 		delete obj;
 		obj = NULL;
@@ -137,7 +137,7 @@ CDiagramEntity* CUMLEntityInterface::CreateFromString( const CString& str )
 
 }
 
-void CUMLEntityInterface::Draw( CDC* dc, CRect rect )
+void CUMLEntityInterface::Draw(CDC* dc, CRect rect)
 /* ============================================================
 	Function :		CUMLEntityInterface::Draw
 	Description :	Draws this object.
@@ -146,61 +146,61 @@ void CUMLEntityInterface::Draw( CDC* dc, CRect rect )
 	Return :		void
 	Parameters :	CDC* dc		-	"CDC" to draw to
 					CRect rect	-	Rectangle to draw to
-					
+
 	Usage :			Call to draw the object.
 
    ============================================================*/
 {
 
-	int cutoff = round( static_cast< double >( GetMarkerSize().cx ) * GetZoom() );
-	int height = round( 12.0 * GetZoom() );
-	dc->SelectStockObject( BLACK_PEN );
+	int cutoff = round(static_cast<double>(GetMarkerSize().cx) * GetZoom());
+	int height = round(12.0 * GetZoom());
+	dc->SelectStockObject(BLACK_PEN);
 	CBrush bk;
-	bk.CreateSolidBrush( GetBkColor() );
-	dc->SelectObject( &bk );
+	bk.CreateSolidBrush(GetBkColor());
+	dc->SelectObject(&bk);
 
-	dc->Ellipse( rect );
+	dc->Ellipse(rect);
 
 	CString str = GetTitle();
-	if( str )
+	if (str)
 	{
 		CFont font;
-		dc->SetBkMode( TRANSPARENT );
-		font.CreateFont( -height, 0,0,0,FW_BOLD,0,0,0,0,0,0,0,0, GetFont() );
-		CFont* oldfont = dc->SelectObject( &font );
+		dc->SetBkMode(TRANSPARENT);
+		font.CreateFont(-height, 0, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, GetFont());
+		CFont* oldfont = dc->SelectObject(&font);
 
-		CRect textRect( rect );
+		CRect textRect(rect);
 		textRect.bottom = textRect.top;
-		textRect.top -= round( 14.0 * GetZoom() );
+		textRect.top -= round(14.0 * GetZoom());
 
-		int width = dc->GetTextExtent( str ).cx + cutoff * 2;
+		int width = dc->GetTextExtent(str).cx + cutoff * 2;
 		int diff = width - textRect.Width();
-		if( diff > 0 )
+		if (diff > 0)
 		{
 			textRect.left -= diff / 2;
 			textRect.right += diff / 2;
 		}
 
-		dc->DrawText( str, textRect, DT_SINGLELINE | DT_CENTER );
-		dc->SelectObject( oldfont );
+		dc->DrawText(str, textRect, DT_SINGLELINE | DT_CENTER);
+		dc->SelectObject(oldfont);
 	}
 
-	dc->SelectStockObject( BLACK_PEN );
-	dc->SelectStockObject( WHITE_BRUSH );
+	dc->SelectStockObject(BLACK_PEN);
+	dc->SelectStockObject(WHITE_BRUSH);
 
 }
 
-int CUMLEntityInterface::GetLinkCode( CPoint point ) const
+int CUMLEntityInterface::GetLinkCode(CPoint point) const
 /* ============================================================
 	Function :		CUMLEntityInterface::GetLinkCode
-	Description :	Returns the link code of this object for 
+	Description :	Returns the link code of this object for
 					the position "point".
 	Access :		Public
 
 	Return :		int				-	Link code of position
 	Parameters :	CPoint point	-	Position to text
-					
-	Usage :			
+
+	Usage :
 					The possible link types are:
 						"LINK_TOP" Link at the top
 						"LINK_BOTTOM" Link at the bottom
@@ -215,34 +215,34 @@ int CUMLEntityInterface::GetLinkCode( CPoint point ) const
 	int result = LINK_NONE;
 	CRect rect;
 
-	rect = GetLinkMarkerRect( LINK_LEFT );
-	if( rect.PtInRect( point ) )
+	rect = GetLinkMarkerRect(LINK_LEFT);
+	if (rect.PtInRect(point))
 		result = LINK_LEFT;
 
-	rect = GetLinkMarkerRect( LINK_TOP );
-	if( rect.PtInRect( point ) )
+	rect = GetLinkMarkerRect(LINK_TOP);
+	if (rect.PtInRect(point))
 		result = LINK_TOP;
 
-	rect = GetLinkMarkerRect( LINK_RIGHT );
-	if( rect.PtInRect( point ) )
+	rect = GetLinkMarkerRect(LINK_RIGHT);
+	if (rect.PtInRect(point))
 		result = LINK_RIGHT;
 
-	rect = GetLinkMarkerRect( LINK_BOTTOM );
-	if( rect.PtInRect( point ) )
+	rect = GetLinkMarkerRect(LINK_BOTTOM);
+	if (rect.PtInRect(point))
 		result = LINK_BOTTOM;
 
 	return result;
 
 }
 
-HCURSOR CUMLEntityInterface::GetCursor( int hit ) const
+HCURSOR CUMLEntityInterface::GetCursor(int hit) const
 /* ============================================================
 	Function :		CDiagramEntity::GetCursor
 	Description :	Returns the cursor for the given hit point.
 	Access :		Public
-					
+
 	Return :		HCURSOR	-	The cursor to show
-	Parameters :	int hit	-	The hit point constant ("DEHT_") 
+	Parameters :	int hit	-	The hit point constant ("DEHT_")
 								to get the cursor for.
 
 	Usage :			We will only return the cursor for the body.
@@ -261,27 +261,27 @@ HCURSOR CUMLEntityInterface::GetCursor( int hit ) const
    ============================================================*/
 {
 
-	HCURSOR cursor = LoadCursor( NULL, IDC_ARROW );
-	if( hit == DEHT_BODY )
-		cursor = LoadCursor( NULL, IDC_SIZEALL );
+	HCURSOR cursor = LoadCursor(NULL, IDC_ARROW);
+	if (hit == DEHT_BODY)
+		cursor = LoadCursor(NULL, IDC_SIZEALL);
 
 	return cursor;
 
 }
 
-void CUMLEntityInterface::DrawSelectionMarkers( CDC* dc, CRect rect ) const
+void CUMLEntityInterface::DrawSelectionMarkers(CDC* dc, CRect rect) const
 /* ============================================================
 	Function :		CDiagramEntity::DrawSelectionMarkers
-	Description :	Draws the selection markers for the 
+	Description :	Draws the selection markers for the
 					object.
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	CDC* dc		-	The "CDC" to draw to
 					CRect rect	-	The real object rectangle.
-					
-	Usage :			rect is the true rectangle (zoomed) of the 
-					object. We will only draw the markers in the 
+
+	Usage :			rect is the true rectangle (zoomed) of the
+					object. We will only draw the markers in the
 					corners.
 
    ============================================================*/
@@ -290,30 +290,30 @@ void CUMLEntityInterface::DrawSelectionMarkers( CDC* dc, CRect rect ) const
 	// Draw selection markers
 	CRect rectSelect;
 
-	dc->SelectStockObject( BLACK_BRUSH );
-	rectSelect = GetSelectionMarkerRect( DEHT_TOPLEFT, rect );
-	dc->Rectangle( rectSelect );
+	dc->SelectStockObject(BLACK_BRUSH);
+	rectSelect = GetSelectionMarkerRect(DEHT_TOPLEFT, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_TOPRIGHT, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_TOPRIGHT, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_BOTTOMLEFT, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_BOTTOMLEFT, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_BOTTOMRIGHT, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_BOTTOMRIGHT, rect);
+	dc->Rectangle(rectSelect);
 
 }
 
-CString CUMLEntityInterface::Export( UINT format ) const
+CString CUMLEntityInterface::Export(UINT format) const
 /* ============================================================
 	Function :		CUMLEntityInterface::Export
 	Description :	Exports this object to the desired format.
 	Access :		Public
-					
+
 	Return :		CString		-	Result
 	Parameters :	UINT format	-	Format to export to
-					
+
 	Usage :			"format" can be one of the following:
 						"EXPORT_CPP" Export to cpp-files
 						"EXPORT_H" Export to header files
@@ -324,36 +324,36 @@ CString CUMLEntityInterface::Export( UINT format ) const
 
 	CString result;
 
-	if( format == EXPORT_HTML )
+	if (format == EXPORT_HTML)
 	{
 		CRect rect = GetRect();
 
 		int font_size = 12;
 		int cut = GetMarkerSize().cx;
 
-		CString color = ColorrefToString( GetBkColor() );
+		CString color = ColorrefToString(GetBkColor());
 
-		CRect textRect( rect );
+		CRect textRect(rect);
 		textRect.bottom = textRect.top;
 		textRect.top -= font_size + 2;
 
 		CDC* dc = CWnd::GetDesktopWindow()->GetDC();
 		CFont font;
-		font.CreateFont( -font_size, 0,0,0,FW_BOLD,0,0,0,0,0,0,0,0, GetFont() );
-		CFont* oldfont = dc->SelectObject( &font );
-		int width = dc->GetTextExtent( GetTitle() ).cx + cut * 2;
-		dc->SelectObject( oldfont );
-		CWnd::GetDesktopWindow()->ReleaseDC( dc );
+		font.CreateFont(-font_size, 0, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, GetFont());
+		CFont* oldfont = dc->SelectObject(&font);
+		int width = dc->GetTextExtent(GetTitle()).cx + cut * 2;
+		dc->SelectObject(oldfont);
+		CWnd::GetDesktopWindow()->ReleaseDC(dc);
 
 		int diff = width - textRect.Width();
-		if( diff > 0 )
+		if (diff > 0)
 		{
 			textRect.left -= diff / 2;
 			textRect.right += diff / 2;
 		}
 
-		result.Format( _T( "<div style='position:absolute;left:%i;top:%i;width:32;height:32;background-color:#%s;background-image:url(\"images/interface.gif\");background-repeat:no-repeat;'>&nbsp;</div>\n<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:%i;font-weight:bold;text-align:center;'>%s</div>" ),
-			rect.left, rect.top, color, textRect.left, textRect.top, textRect.Width(), textRect.Height(), GetFont(), font_size, GetTitle() );
+		result.Format(_T("<div style='position:absolute;left:%i;top:%i;width:32;height:32;background-color:#%s;background-image:url(\"images/interface.gif\");background-repeat:no-repeat;'>&nbsp;</div>\n<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:%i;font-weight:bold;text-align:center;'>%s</div>"),
+			rect.left, rect.top, color, textRect.left, textRect.top, textRect.Width(), textRect.Height(), GetFont(), font_size, GetTitle());
 	}
 
 	return result;

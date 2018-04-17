@@ -14,12 +14,12 @@
 
 class CGetterSetterDialog : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CGetterSetterDialog(CWnd* pParent = NULL);
 
-// Dialog Data
-	//{{AFX_DATA(CGetterSetterDialog)
+	// Dialog Data
+		//{{AFX_DATA(CGetterSetterDialog)
 	enum { IDD = IDD_UML_DIALOG_GETTER_SETTER };
 	CEdit	m_setterCtrl;
 	CEdit	m_getterCtrl;
@@ -30,9 +30,9 @@ public:
 	BOOL m_noset;
 	BOOL m_noget;
 
-// Overrides
-	//{{AFX_VIRTUAL(CGetterSetterDialog)
-	protected:
+	// Overrides
+		//{{AFX_VIRTUAL(CGetterSetterDialog)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 

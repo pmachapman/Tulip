@@ -5,12 +5,12 @@
 
 	Date :			06/02/04
 
-	Purpose :		The "CAttribute" class - derived from "CObject" - represents 
-					a single attribute in an UML-class. The attributes are 
+	Purpose :		The "CAttribute" class - derived from "CObject" - represents
+					a single attribute in an UML-class. The attributes are
 					stored in a "CObArray" in the "CAttributeContainer" class.
 
-	Description :	The class is mainly a holder for attribute attributes (!) 
-					and functions to create them and get string 
+	Description :	The class is mainly a holder for attribute attributes (!)
+					and functions to create them and get string
 					representations in different formats.
 
 	Usage :			Create and store in a "CAttributeContainer" instance.
@@ -39,7 +39,7 @@ CAttribute::CAttribute()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -52,79 +52,79 @@ CAttribute::CAttribute()
 CAttribute::~CAttribute()
 /* ============================================================
 	Function :		CAttribute::~CAttribute
-	Description :	Destructor					
+	Description :	Destructor
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
 }
 
 // Implementation
-CString CAttribute::ToString( BOOL nomarkers )
+CString CAttribute::ToString(BOOL nomarkers)
 /* ============================================================
 	Function :		CAttribute::ToString
 	Description :	Returns a string representation in UML-
-					format for presenting the attribute 
+					format for presenting the attribute
 					on screen.
 	Access :		Public
 
-	Return :		
+	Return :
 	Parameters :	CAttribute* obj	-	Attribute to display
-					BOOL nomarkers	-	If access markers should 
+					BOOL nomarkers	-	If access markers should
 										be displayed or hidden.
 
-	Usage :			Call to get a string to display on screen. 
-					The function takes display settings into 
+	Usage :			Call to get a string to display on screen.
+					The function takes display settings into
 					consideration.
 
    ============================================================*/
 {
 
 	CString output;
-	if( stereotype.GetLength() )
-		output = _T( "« " ) + stereotype +  _T( " » " );
+	if (stereotype.GetLength())
+		output = _T("« ") + stereotype + _T(" » ");
 
-	if( !nomarkers )
+	if (!nomarkers)
 	{
-		if( access == ACCESS_TYPE_PRIVATE )
-			output = _T( "-" );
-		if( access == ACCESS_TYPE_PROTECTED )
-			output = _T( "#" );
-		if( access == ACCESS_TYPE_PUBLIC )
-			output = _T( "+" );
+		if (access == ACCESS_TYPE_PRIVATE)
+			output = _T("-");
+		if (access == ACCESS_TYPE_PROTECTED)
+			output = _T("#");
+		if (access == ACCESS_TYPE_PUBLIC)
+			output = _T("+");
 	}
 	output += name;
-	output += _T( ":" );
+	output += _T(":");
 	output += type;
 
-	if( multiplicity.GetLength() )
-		output += _T( "[ " ) + multiplicity + _T( " ]" );
+	if (multiplicity.GetLength())
+		output += _T("[ ") + multiplicity + _T(" ]");
 
-	if( defaultvalue.GetLength() )
-		output += _T( " = " ) + defaultvalue;
+	if (defaultvalue.GetLength())
+		output += _T(" = ") + defaultvalue;
 
-	output += properties.GetString( STRING_FORMAT_UML );
+	output += properties.GetString(STRING_FORMAT_UML);
 
 	return output;
 
 }
 
-CAttribute* CAttribute::Clone( )
+CAttribute* CAttribute::Clone()
 /* ============================================================
 	Function :		CAttribute::Clone
-	Description :	Creates and return a clone of this 
+	Description :	Creates and return a clone of this
 					attribute.
 	Access :		Public
 
 	Return :		CAttribute*	-	New attribute
 	Parameters :	none
 
-	Usage :			Call to clone the attribute, for example 
+	Usage :			Call to clone the attribute, for example
 					when copying the parent UML-class object.
 
    ============================================================*/
@@ -139,7 +139,7 @@ CAttribute* CAttribute::Clone( )
 
 	obj->multiplicity = multiplicity;
 	obj->defaultvalue = defaultvalue;
-	obj->properties.Copy( properties );
+	obj->properties.Copy(properties);
 
 	obj->stereotype = stereotype;
 
@@ -147,27 +147,27 @@ CAttribute* CAttribute::Clone( )
 
 }
 
-CAttribute* CAttribute::FromString( const CString& str )
+CAttribute* CAttribute::FromString(const CString& str)
 /* ============================================================
 	Function :		CAttribute::FromString
-	Description :	Creates a new "CAttribute" from the string "str"			
+	Description :	Creates a new "CAttribute" from the string "str"
 	Access :		Public
 
-	Return :		CAttribute*			-	New attribute or "NULL" 
-											if "str" doesn't 
+	Return :		CAttribute*			-	New attribute or "NULL"
+											if "str" doesn't
 											represent an attribute.
-	Parameters :	const CString& str	-	String to create 
+	Parameters :	const CString& str	-	String to create
 											attribute from
 
-	Usage :			Call - for example - when loading diagrams 
+	Usage :			Call - for example - when loading diagrams
 					from a file.
 
    ============================================================*/
 {
 	CAttribute* at = NULL;
 
-	CTokenizer tok( str, _T( "|" ) );
-	if( tok.GetSize() >= 8 )
+	CTokenizer tok(str, _T("|"));
+	if (tok.GetSize() >= 8)
 	{
 		at = new CAttribute;
 		CString	multi;
@@ -175,23 +175,23 @@ CAttribute* CAttribute::FromString( const CString& str )
 		CString	propertylist;
 		CString stereotype;
 
-		tok.GetAt(0, at->maintype );
-		tok.GetAt(1, at->access );
-		tok.GetAt(2, at->name );
-		tok.GetAt(3, at->type );
-		tok.GetAt(4, multi );
-		tok.GetAt(5, defaultvalue );
-		tok.GetAt(6, propertylist );
-		tok.GetAt(7, stereotype );
+		tok.GetAt(0, at->maintype);
+		tok.GetAt(1, at->access);
+		tok.GetAt(2, at->name);
+		tok.GetAt(3, at->type);
+		tok.GetAt(4, multi);
+		tok.GetAt(5, defaultvalue);
+		tok.GetAt(6, propertylist);
+		tok.GetAt(7, stereotype);
 
-		UnmakeSaveString( multi );
-		UnmakeSaveString( defaultvalue );
-		UnmakeSaveString( propertylist );
-		UnmakeSaveString( stereotype );
+		UnmakeSaveString(multi);
+		UnmakeSaveString(defaultvalue);
+		UnmakeSaveString(propertylist);
+		UnmakeSaveString(stereotype);
 
 		at->multiplicity = multi;
 		at->defaultvalue = defaultvalue;
-		at->properties.FromString( propertylist );
+		at->properties.FromString(propertylist);
 		at->stereotype = stereotype;
 
 	}
@@ -200,10 +200,10 @@ CAttribute* CAttribute::FromString( const CString& str )
 
 }
 
-CString CAttribute::GetString( int format ) const
+CString CAttribute::GetString(int format) const
 /* ============================================================
 	Function :		CAttribute::GetString
-	Description :	Returns a string representation of the 
+	Description :	Returns a string representation of the
 					object in the format specified.
 	Access :		Public
 
@@ -222,19 +222,19 @@ CString CAttribute::GetString( int format ) const
 {
 
 	CString result;
-	if( format == STRING_FORMAT_SAVE )
+	if (format == STRING_FORMAT_SAVE)
 	{
-		CString multi( multiplicity );
-		CString defval( defaultvalue );
-		CString propertylist( properties.GetString( STRING_FORMAT_SAVE ) );
-		CString stereo( stereotype );
+		CString multi(multiplicity);
+		CString defval(defaultvalue);
+		CString propertylist(properties.GetString(STRING_FORMAT_SAVE));
+		CString stereo(stereotype);
 
-		MakeSaveString( multi );
-		MakeSaveString( defval );
-		MakeSaveString( propertylist );
-		MakeSaveString( stereo );
+		MakeSaveString(multi);
+		MakeSaveString(defval);
+		MakeSaveString(propertylist);
+		MakeSaveString(stereo);
 
-		result.Format( _T( "%i|%i|%s|%s|%s|%s|%s|%s" ), 
+		result.Format(_T("%i|%i|%s|%s|%s|%s|%s|%s"),
 			maintype,
 			access,
 			name,
@@ -246,26 +246,26 @@ CString CAttribute::GetString( int format ) const
 		);
 	}
 
-	if( format == STRING_FORMAT_H )
+	if (format == STRING_FORMAT_H)
 	{
-		if( maintype & ENTITY_TYPE_STATIC )
-			result += _T( "static " );
+		if (maintype & ENTITY_TYPE_STATIC)
+			result += _T("static ");
 
-		result += type + _T( " " );
+		result += type + _T(" ");
 		result += name;
-		if( multiplicity.GetLength() )
+		if (multiplicity.GetLength())
 		{
-			CString multiplicity( multiplicity );
-			int found = multiplicity.Find( _T( "." ) );
-			while( found != -1 )
+			CString multiplicity(multiplicity);
+			int found = multiplicity.Find(_T("."));
+			while (found != -1)
 			{
-				multiplicity = multiplicity.Right( multiplicity.GetLength() - ( found + 1 ) );
-				found = multiplicity.Find( _T( "." ) );
+				multiplicity = multiplicity.Right(multiplicity.GetLength() - (found + 1));
+				found = multiplicity.Find(_T("."));
 			}
 
-			result += _T( "[ " ) + multiplicity +  _T( " ]" );
+			result += _T("[ ") + multiplicity + _T(" ]");
 		}
-		result += _T( ";" );
+		result += _T(";");
 	}
 
 	return result;

@@ -14,13 +14,13 @@ public:
 	// Construction/destruction
 	CProperty();
 	virtual ~CProperty();
-	CProperty( CProperty* property );
-	CProperty( const CString& tag, const CString& val );
-	CString GetString( int format = STRING_FORMAT_SAVE ) const;
+	CProperty(CProperty* property);
+	CProperty(const CString& tag, const CString& val);
+	CString GetString(int format = STRING_FORMAT_SAVE) const;
 
-	static CProperty* FromString( const CString& str );
+	static CProperty* FromString(const CString& str);
 
-// Attributes
+	// Attributes
 	CString key;
 	CString value;
 

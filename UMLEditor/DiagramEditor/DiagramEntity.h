@@ -34,7 +34,7 @@ class CDiagramPropertyDlg;
 class CDiagramEntity : public CObject
 {
 
-friend class CDiagramEntityContainer;
+	friend class CDiagramEntityContainer;
 
 public:
 
@@ -49,97 +49,97 @@ protected:
 public:
 
 	virtual	CDiagramEntity* Clone();
-	virtual void	Copy( CDiagramEntity* obj );
+	virtual void	Copy(CDiagramEntity* obj);
 
-	virtual BOOL	FromString( const CString& str );
-	virtual CString	Export( UINT format = 0 ) const;
+	virtual BOOL	FromString(const CString& str);
+	virtual CString	Export(UINT format = 0) const;
 	virtual CString	GetString() const;
-	static	CDiagramEntity* CreateFromString( const CString& str );
+	static	CDiagramEntity* CreateFromString(const CString& str);
 
 	// Object rectangle handling
 	virtual CRect	GetRect() const;
-	virtual void	SetRect( CRect rect );
-	virtual void	SetRect( double left, double top, double right, double bottom );
-	virtual void	MoveRect( double x, double y );
+	virtual void	SetRect(CRect rect);
+	virtual void	SetRect(double left, double top, double right, double bottom);
+	virtual void	MoveRect(double x, double y);
 
 	double			GetLeft() const;
 	double			GetRight() const;
 	double			GetTop() const;
 	double			GetBottom() const;
 
-	virtual void	SetLeft( double left );
-	virtual void	SetRight( double right );
-	virtual void	SetTop( double top );
-	virtual void	SetBottom( double bottom );
+	virtual void	SetLeft(double left);
+	virtual void	SetRight(double right);
+	virtual void	SetTop(double top);
+	virtual void	SetBottom(double bottom);
 
-	virtual void	SetMinimumSize( CSize minimumSize );
+	virtual void	SetMinimumSize(CSize minimumSize);
 	virtual CSize	GetMinimumSize() const;
-	virtual void	SetMaximumSize( CSize minimumSize );
+	virtual void	SetMaximumSize(CSize minimumSize);
 	virtual CSize	GetMaximumSize() const;
-	virtual void	SetConstraints( CSize min, CSize max );
+	virtual void	SetConstraints(CSize min, CSize max);
 
 	double			GetZoom() const;
 
 	// Selection handling
-	virtual void	Select( BOOL selected );
+	virtual void	Select(BOOL selected);
 	virtual BOOL	IsSelected() const;
-	virtual BOOL	BodyInRect( CRect rect ) const;
+	virtual BOOL	BodyInRect(CRect rect) const;
 
 	// Interaction
-	virtual int		GetHitCode( CPoint point ) const;
-	virtual int		GetHitCode( const CPoint& point, const CRect& rect ) const;
+	virtual int		GetHitCode(CPoint point) const;
+	virtual int		GetHitCode(const CPoint& point, const CRect& rect) const;
 
-	virtual BOOL	DoMessage( UINT msg, CDiagramEntity* sender, CWnd* from = NULL );
+	virtual BOOL	DoMessage(UINT msg, CDiagramEntity* sender, CWnd* from = NULL);
 
 	// Auxilliary
-	virtual void	ShowProperties( CWnd* parent, BOOL show = TRUE );
-	virtual void	ShowPopup( CPoint point, CWnd* parent );
+	virtual void	ShowProperties(CWnd* parent, BOOL show = TRUE);
+	virtual void	ShowPopup(CPoint point, CWnd* parent);
 
 	// Visuals
-	virtual void	Draw( CDC* dc, CRect rect );
-	virtual HCURSOR GetCursor( int hit ) const;
-	virtual void	DrawObject( CDC* dc, double zoom );
+	virtual void	Draw(CDC* dc, CRect rect);
+	virtual HCURSOR GetCursor(int hit) const;
+	virtual void	DrawObject(CDC* dc, double zoom);
 
 	// Properties
 	virtual CString	GetTitle() const;
-	virtual void	SetTitle( CString title );
+	virtual void	SetTitle(CString title);
 
 	virtual CString	GetName() const;
-	virtual void	SetName( CString name );
+	virtual void	SetName(CString name);
 
 	CString			GetType() const;
-	void			SetType( CString type );
+	void			SetType(CString type);
 
 	int				GetGroup() const;
-	void			SetGroup( int group );
+	void			SetGroup(int group);
 
-	BOOL			LoadFromString( CString& data );
+	BOOL			LoadFromString(CString& data);
 
 
 protected:
 
 	// Selection
-	virtual void	DrawSelectionMarkers( CDC* dc, CRect rect ) const;
-	virtual CRect	GetSelectionMarkerRect( UINT marker, CRect rect ) const;
+	virtual void	DrawSelectionMarkers(CDC* dc, CRect rect) const;
+	virtual CRect	GetSelectionMarkerRect(UINT marker, CRect rect) const;
 
 	// Visuals
-	void			GetFont( LOGFONT& lf ) const;
+	void			GetFont(LOGFONT& lf) const;
 
 	// Properties
-	void			SetMarkerSize( CSize markerSize );
+	void			SetMarkerSize(CSize markerSize);
 	CSize			GetMarkerSize() const;
 
-	void			SetZoom( double zoom );
+	void			SetZoom(double zoom);
 
-	void						SetParent( CDiagramEntityContainer* parent );
+	void						SetParent(CDiagramEntityContainer* parent);
 	CDiagramEntityContainer*	GetParent() const;
 
-	void						SetPropertyDialog( CDiagramPropertyDlg* dlg, UINT resid );
+	void						SetPropertyDialog(CDiagramPropertyDlg* dlg, UINT resid);
 	CDiagramPropertyDlg*		GetPropertyDialog() const;
 
 	virtual CString				GetDefaultGetString() const;
-	virtual CString				GetHeaderFromString( CString& str );
-	virtual BOOL				GetDefaultFromString( CString& str );
+	virtual CString				GetHeaderFromString(CString& str);
+	virtual BOOL				GetDefaultFromString(CString& str);
 
 private:
 

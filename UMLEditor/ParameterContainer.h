@@ -14,22 +14,22 @@ public:
 	CParameterContainer();
 	virtual ~CParameterContainer();
 
-	BOOL operator==( const CParameterContainer& parameters );
-	void Copy( CParameterContainer& parameters );
+	BOOL operator==(const CParameterContainer& parameters);
+	void Copy(CParameterContainer& parameters);
 
-// Operations
-	int GetSize( ) const;
-	CParameter* GetAt( int index ) const;
-	void RemoveAt( int index );
-	void RemoveAll( );
-	void Remove( CParameter* parameter );
-	void Add( CParameter* parameter );
+	// Operations
+	INT_PTR GetSize() const;
+	CParameter* GetAt(INT_PTR index) const;
+	void RemoveAt(INT_PTR index);
+	void RemoveAll();
+	void Remove(CParameter* parameter);
+	void Add(CParameter* parameter);
 
-	CString GetString( int format = STRING_FORMAT_SAVE ) const;
-	CString ToString( BOOL nooperationattributenames ) const;
-	void	FromString( const CString& str );
+	CString GetString(int format = STRING_FORMAT_SAVE) const;
+	CString ToString(BOOL nooperationattributenames) const;
+	void	FromString(const CString& str);
 
-// Attributes
+	// Attributes
 private:
 	CObArray m_parameters;
 

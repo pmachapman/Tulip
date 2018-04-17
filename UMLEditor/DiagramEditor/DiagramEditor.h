@@ -35,8 +35,8 @@
 #define KEY_ALL				0xFFFFFFFF
 
 #ifndef ID_EDIT_GROUP
-	#define ID_EDIT_GROUP		ID_EDIT_REDO + 1
-	#define ID_EDIT_UNGROUP		ID_EDIT_GROUP + 1
+#define ID_EDIT_GROUP		ID_EDIT_REDO + 1
+#define ID_EDIT_UNGROUP		ID_EDIT_GROUP + 1
 #endif
 
 #define WHEEL_SCROLL	0
@@ -54,106 +54,106 @@ public:
 	CDiagramEditor();
 	virtual ~CDiagramEditor();
 
-	virtual BOOL Create( DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, CDiagramEntityContainer* data = NULL );
+	virtual BOOL Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, CDiagramEntityContainer* data = NULL);
 
 	virtual void Clear();
 
-	void SetDiagramEntityContainer( CDiagramEntityContainer* objs );
+	void SetDiagramEntityContainer(CDiagramEntityContainer* objs);
 	CDiagramEntityContainer* GetDiagramEntityContainer() const;
 
 	// Visuals
-	virtual void	Draw( CDC* dc, CRect rect ) const;
-	virtual void	Print( CDC* dc, CRect rect, double zoom );
+	virtual void	Draw(CDC* dc, CRect rect) const;
+	virtual void	Print(CDC* dc, CRect rect, double zoom);
 
 protected:
-	virtual void EraseBackground( CDC* dc, CRect rect ) const;
-	virtual void DrawBackground( CDC* dc, CRect rect, double zoom ) const;
-	virtual void DrawGrid( CDC* dc, CRect rect, double zoom ) const;
-	virtual void DrawMargins( CDC* dc, CRect rect, double zoom ) const;
-	virtual void DrawObjects( CDC* dc, double zoom ) const;
-	virtual void DrawSelectionMarkers( CDC* dc ) const;
+	virtual void EraseBackground(CDC* dc, CRect rect) const;
+	virtual void DrawBackground(CDC* dc, CRect rect, double zoom) const;
+	virtual void DrawGrid(CDC* dc, CRect rect, double zoom) const;
+	virtual void DrawMargins(CDC* dc, CRect rect, double zoom) const;
+	virtual void DrawObjects(CDC* dc, double zoom) const;
+	virtual void DrawSelectionMarkers(CDC* dc) const;
 
 public:
 	// Property Accessors
-	void		SetVirtualSize( const CSize& size );
+	void		SetVirtualSize(const CSize& size);
 	CSize		GetVirtualSize() const;
 
-	void		SetBackgroundColor( COLORREF col );
+	void		SetBackgroundColor(COLORREF col);
 	COLORREF	GetBackgroundColor() const;
-	void		SetNonClientColor( COLORREF col );
+	void		SetNonClientColor(COLORREF col);
 
-	void		ShowGrid( BOOL grid );
+	void		ShowGrid(BOOL grid);
 	BOOL		IsGridVisible() const;
 
-	void		SetGridColor( COLORREF col );
+	void		SetGridColor(COLORREF col);
 	COLORREF	GetGridColor() const;
 
-	void		SetGridPenStyle(int style );
+	void		SetGridPenStyle(int style);
 	int			GetGridPenStyle() const;
 
-	void		SetGridSize( CSize size );
+	void		SetGridSize(CSize size);
 	CSize		GetGridSize() const;
 
-	void		SetSnapToGrid( BOOL snap );
+	void		SetSnapToGrid(BOOL snap);
 	BOOL		GetSnapToGrid() const;
 
-	void		SetResize( BOOL bgresize );
+	void		SetResize(BOOL bgresize);
 	BOOL		GetResize() const;
-	void		SetResizeZone( BOOL bgresize );
+	void		SetResizeZone(BOOL bgresize);
 	int			GetResizeZone() const;
 
-	void		SetMargins( int left, int top, int right, int bottom );
-	void		GetMargins( int& left, int& top, int& right, int& bottom ) const;
-	void		SetMarginColor( COLORREF marginColor );
+	void		SetMargins(int left, int top, int right, int bottom);
+	void		GetMargins(int& left, int& top, int& right, int& bottom) const;
+	void		SetMarginColor(COLORREF marginColor);
 	COLORREF	GetMarginColor() const;
-	void		ShowMargin( BOOL show );
+	void		ShowMargin(BOOL show);
 	BOOL		IsMarginVisible() const;
 
 	int			GetRestraints() const;
-	void		SetRestraints( int restraint );
+	void		SetRestraints(int restraint);
 
 	BOOL		GetMultidraw() const;
-	void		SetMultidraw( BOOL multidraw );
+	void		SetMultidraw(BOOL multidraw);
 
-	virtual void	SetZoom( double zoom );
+	virtual void	SetZoom(double zoom);
 	double			GetZoom() const;
-	void			SetZoomFactor( double zoomfactor );
+	void			SetZoomFactor(double zoomfactor);
 	double			GetZoomFactor() const;
-	void			SetZoomMax( double zoommax );
+	void			SetZoomMax(double zoommax);
 	double			GetZoomMax() const;
-	void			SetZoomMin( double zoommin );
+	void			SetZoomMin(double zoommin);
 	double			GetZoomMin() const;
 
 	void		ZoomToFitScreen();
-	BOOL		ZoomToFit( CPoint start, CSize size );
-	BOOL		ZoomToFit( CSize size );
+	BOOL		ZoomToFit(CPoint start, CSize size);
+	BOOL		ZoomToFit(CSize size);
 	void		ScrollIntoView();
-	void		ScrollIntoView( CDiagramEntity* obj );
+	void		ScrollIntoView(CDiagramEntity* obj);
 
 	CSize		GetMarkerSize() const;
-	void		SetMarkerSize( CSize markerSize );
+	void		SetMarkerSize(CSize markerSize);
 
 	UINT		GetKeyboardInterface() const;
-	void		SetKeyboardInterface( int keyInterface );
+	void		SetKeyboardInterface(int keyInterface);
 
-	void		SetPopupMenu( CDiagramMenu* popupmenu );
+	void		SetPopupMenu(CDiagramMenu* popupmenu);
 	CDiagramMenu* GetPopupMenu() const;
 
 	BOOL		IsModified() const;
-	void		SetModified( BOOL dirty );
+	void		SetModified(BOOL dirty);
 
 	// Data access
-	virtual void	AddObject( CDiagramEntity* obj );
-	virtual void	MoveObject( CDiagramEntity* obj, const CRect& rect );
+	virtual void	AddObject(CDiagramEntity* obj);
+	virtual void	MoveObject(CDiagramEntity* obj, const CRect& rect);
 
-	int				GetObjectCount() const;
-	int				GetSelectCount() const;
-	CDiagramEntity* GetObject( int index ) const;
+	INT_PTR			GetObjectCount() const;
+	INT_PTR			GetSelectCount() const;
+	CDiagramEntity* GetObject(int index) const;
 	BOOL			IsDrawing() const;
 	CDiagramEntity* GetSelectedObject() const;
 	BOOL			IsAnyObjectSelected() const;
 
-	virtual void	StartDrawingObject( CDiagramEntity* obj );
+	virtual void	StartDrawingObject(CDiagramEntity* obj);
 
 	// Group object operations
 	virtual void	New();
@@ -181,12 +181,12 @@ public:
 	// Panning
 	BOOL			GetPanning() const;
 	CPoint			GetPanningOrigin() const;
-	void			SetPanning( BOOL panning );
-	void			SetPanningOrigin( CPoint point );
-	virtual void	DrawPanning( CDC* dc ) const;
+	void			SetPanning(BOOL panning);
+	void			SetPanningOrigin(CPoint point);
+	virtual void	DrawPanning(CDC* dc) const;
 
 	// Scroll-wheel
-	void			SetScrollWheelMode( int mode );
+	void			SetScrollWheelMode(int mode);
 	int				GetScrollWheelMode() const;
 
 	// Single object operations
@@ -197,38 +197,38 @@ public:
 	void		Bottom();
 
 	// Background resizing
-	virtual int		GetHitCode( CPoint point );
-	virtual CRect	GetSelectionMarkerRect( UINT marker ) const;
-	virtual HCURSOR GetCursor( int hit ) const;
+	virtual int		GetHitCode(CPoint point);
+	virtual CRect	GetSelectionMarkerRect(UINT marker) const;
+	virtual HCURSOR GetCursor(int hit) const;
 
 	// Command enablers for Doc/View apps
-	void		UpdateCut( CCmdUI* pCmdUI ) const;
-	void		UpdateCopy( CCmdUI* pCmdUI ) const;
-	void		UpdatePaste( CCmdUI* pCmdUI ) const;
-	void		UpdateUndo( CCmdUI* pCmdUI ) const;
-	void		UpdateGroup( CCmdUI* pCmdUI ) const;
-	void		UpdateUngroup( CCmdUI* pCmdUI ) const;
+	void		UpdateCut(CCmdUI* pCmdUI) const;
+	void		UpdateCopy(CCmdUI* pCmdUI) const;
+	void		UpdatePaste(CCmdUI* pCmdUI) const;
+	void		UpdateUndo(CCmdUI* pCmdUI) const;
+	void		UpdateGroup(CCmdUI* pCmdUI) const;
+	void		UpdateUngroup(CCmdUI* pCmdUI) const;
 
 	// Property handling
 	void		ShowProperties();
 
 	// Saving and loading
-	virtual void Save( CStringArray& stra );
-	virtual BOOL FromString( const CString& str );
+	virtual void Save(CStringArray& stra);
+	virtual BOOL FromString(const CString& str);
 
 protected:
-	virtual void	SaveObjects( CStringArray& stra );
+	virtual void	SaveObjects(CStringArray& stra);
 
-	virtual void	SetInteractMode( int interactMode, int subMode = 0 );
+	virtual void	SetInteractMode(int interactMode, int subMode = 0);
 	virtual int		GetInteractMode() const;
 	virtual			CDiagramEntity* GetDrawingObject();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CDiagramEditor)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CDiagramEditor)
+		//}}AFX_VIRTUAL
 
-	// Generated message map functions
+		// Generated message map functions
 protected:
 	//{{AFX_MSG(CDiagramEditor)
 	afx_msg void OnPaint();
@@ -247,11 +247,11 @@ protected:
 	virtual afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	//}}AFX_MSG
 
-	virtual afx_msg void OnObjectCommand( UINT nID );
-	virtual afx_msg BOOL OnMouseWheel( UINT nFlags, short zDelta, CPoint pt );
-	virtual afx_msg void OnMButtonDown( UINT nFlags, CPoint point );
-	afx_msg void OnKillFocus( CWnd* pNewWnd );
-	afx_msg void OnTimer( UINT nIDEvent );
+	virtual afx_msg void OnObjectCommand(UINT nID);
+	virtual afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	virtual afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnKillFocus(CWnd* pNewWnd);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 	afx_msg void OnEditCut();
 	afx_msg void OnEditCopy();
@@ -261,11 +261,11 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	void SetInternalDiagramEntityContainer( CDiagramEntityContainer* objs );
+	void SetInternalDiagramEntityContainer(CDiagramEntityContainer* objs);
 	virtual HCURSOR GetCursor();
 
-	virtual void SetHScroll( int pos );
-	virtual void SetVScroll( int pos );
+	virtual void SetHScroll(int pos);
+	virtual void SetVScroll(int pos);
 
 private:
 
@@ -315,7 +315,7 @@ private:
 
 	CPoint		m_panOrigin;
 	BOOL		m_panning;
-	UINT		m_panningTimer;
+	UINT_PTR	m_panningTimer;
 
 	// Data pointer
 	CDiagramEntityContainer*	m_objs;	// Pointer to data
@@ -328,33 +328,33 @@ private:
 
 public:
 	// Coordinate conversions
-	void		ScreenToVirtual( CRect& rect ) const;
-	void		ScreenToVirtual( CPoint& point ) const;
-	void		ScreenToVirtual( CSize& size ) const;
-	void		VirtualToScreen( CRect& rect ) const;
-	void		VirtualToScreen( CPoint& point ) const;
+	void		ScreenToVirtual(CRect& rect) const;
+	void		ScreenToVirtual(CPoint& point) const;
+	void		ScreenToVirtual(CSize& size) const;
+	void		VirtualToScreen(CRect& rect) const;
+	void		VirtualToScreen(CPoint& point) const;
 
 protected:
 	// Scroll
 	void		SetupScrollbars();
-	int			HScroll( int scroll );
-	int			VScroll( int scroll );
-	CPoint		ScrollPoint( CPoint point );
+	int			HScroll(int scroll);
+	int			VScroll(int scroll);
+	CPoint		ScrollPoint(CPoint point);
 
 	// Coordinate modifications
-	int			SnapX( int coord ) const;
-	int			SnapY( int coord ) const;
+	int			SnapX(int coord) const;
+	int			SnapY(int coord) const;
 	CSize		GetContainingSize() const;
-	void		InsideRestraints( double& x, double& y );
-	void		AdjustForRestraints( double& left, double& top, double& right, double& bottom );
-	void		AdjustForRestraints( double& xpos, double& ypos );
-	BOOL		OutsideRestraints( CPoint point );
+	void		InsideRestraints(double& x, double& y);
+	void		AdjustForRestraints(double& left, double& top, double& right, double& bottom);
+	void		AdjustForRestraints(double& xpos, double& ypos);
+	BOOL		OutsideRestraints(CPoint point);
 
 private:
 	// Misc internal functions
-	void		SetInternalVirtualSize( const CSize& size );
+	void		SetInternalVirtualSize(const CSize& size);
 	void		RemoveUnselectedPropertyDialogs();
-	void		ShowPopup( CPoint point );
+	void		ShowPopup(CPoint point);
 
 	// Panning cursors
 	HCURSOR		m_cursorNorth;

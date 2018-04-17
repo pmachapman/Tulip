@@ -10,15 +10,15 @@
 class CGroupFactory
 {
 public:
-// Construction/destruction
+	// Construction/destruction
 
-// Operations
+	// Operations
 
 public:
 	static int GetNewGroup();
 
 
-// Attributes
+	// Attributes
 
 private:
 	static int m_sCurrentGroup;

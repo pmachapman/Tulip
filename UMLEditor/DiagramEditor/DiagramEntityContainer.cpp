@@ -5,75 +5,75 @@
 
 	Date :			2004-03-29
 
-	Purpose :		"CDiagramEntityContainer" contains the data for a 
-					"CDiagramEditor". It manages mass operations such as 
-					copying, pasting and undo. It is completely separated 
-					from "CDiagramEditor" to allow the package to be used 
-					in a doc/view app. This is also the reason why some 
+	Purpose :		"CDiagramEntityContainer" contains the data for a
+					"CDiagramEditor". It manages mass operations such as
+					copying, pasting and undo. It is completely separated
+					from "CDiagramEditor" to allow the package to be used
+					in a doc/view app. This is also the reason why some
 					functionality is accessible in both this class and ïn
 					"CDiagramEditor".
 
-	Description :	The class contains a "CObArray" with the instances of 
-					"CDiagramEntity"-derived classes that is the current data 
-					for an editor. It also contains a pointer to a 
-					"CDiagramClipboardHandler"-instance that works as the 
+	Description :	The class contains a "CObArray" with the instances of
+					"CDiagramEntity"-derived classes that is the current data
+					for an editor. It also contains a pointer to a
+					"CDiagramClipboardHandler"-instance that works as the
 					'clipboard' for an editor. Furthermore, It contains an
 					"CObArray" of "CObArray"s that is the undo stack.
 
-					The Undo-functionality is implemented as a simple FILO-stack 
-					of "CObArray" pointers. Before any change that should be 
-					undoable, "Snapshot" is called to add new entries to 
-					the Undo-stack. This is normally managed by the editor, 
+					The Undo-functionality is implemented as a simple FILO-stack
+					of "CObArray" pointers. Before any change that should be
+					undoable, "Snapshot" is called to add new entries to
+					the Undo-stack. This is normally managed by the editor,
 					and need only be done manually for added functionality.
 
-					Note that the "CDiagramEntityContainer" should normally 
-					not call "Snapshot" itself - in the case of, for example, 
-					additions to "m_objs", the container can not and should 
+					Note that the "CDiagramEntityContainer" should normally
+					not call "Snapshot" itself - in the case of, for example,
+					additions to "m_objs", the container can not and should
 					not know if it is an undoable operation.
 
-	Usage :			Normally, this class need not be derived from. A 
-					"CDiagramEditor" needs an instance of 
-					"CDiagramEntityContainer" to hold the object data. This 
-					instance can either be external, as for a doc/view app 
-					where the container belongs to the document, or 
-					internal, as for a dialog application where the editor 
-					will manage all of the data. In the first case, a 
-					"CDiagramEntityContainer" member should be declared in 
-					the document class, and a pointer to it submitted to 
-					the "Create"-call of the "CDiagramEditor" (or by calling 
-					"CDiagramEditor::SetCDiagramEntityContainer"). In the 
-					second case, nothing special need to be done - the 
-					"CDiagramEntityContainer" will be created during the 
-					"CDiagramEditor::Create" call automatically if no pointer 
+	Usage :			Normally, this class need not be derived from. A
+					"CDiagramEditor" needs an instance of
+					"CDiagramEntityContainer" to hold the object data. This
+					instance can either be external, as for a doc/view app
+					where the container belongs to the document, or
+					internal, as for a dialog application where the editor
+					will manage all of the data. In the first case, a
+					"CDiagramEntityContainer" member should be declared in
+					the document class, and a pointer to it submitted to
+					the "Create"-call of the "CDiagramEditor" (or by calling
+					"CDiagramEditor::SetCDiagramEntityContainer"). In the
+					second case, nothing special need to be done - the
+					"CDiagramEntityContainer" will be created during the
+					"CDiagramEditor::Create" call automatically if no pointer
 					is submitted.
-					
-					The container is not using the Windows clipboard 
-					(because of instantiation questions on derived 
-					entities), but rather an external clipboard handler 
-					derived from "CDiagramClipboardHandler". This handler is 
-					set calling "SetClipboardHandler", and several containers 
-					can share the same handler. If no clipboard handler is 
+
+					The container is not using the Windows clipboard
+					(because of instantiation questions on derived
+					entities), but rather an external clipboard handler
+					derived from "CDiagramClipboardHandler". This handler is
+					set calling "SetClipboardHandler", and several containers
+					can share the same handler. If no clipboard handler is
 					set, a default internal one will be used.
 
-					"CDiagramEntityContainer" manages all data internally, 
+					"CDiagramEntityContainer" manages all data internally,
 					all internal objects are deleted in the class "dtor".
 
    ========================================================================
 	Changes :		19/4 2004	Made RemoveAt virtual.
-					20/4 2004	Made several Undo- and Copy/Paste functions 
-								virtual. Added array accessors for derived 
-								classes. Moved the member function Find to 
+					20/4 2004	Made several Undo- and Copy/Paste functions
+								virtual. Added array accessors for derived
+								classes. Moved the member function Find to
 								protected.
-					30/4 2004	Copy/paste-handling removed to a separate 
-								class to allow several containers to share 
+					30/4 2004	Copy/paste-handling removed to a separate
+								class to allow several containers to share
 								the same clipboard.
 					30/4 2004	Changed c-style casts to static_cast
    ========================================================================
 					20/5 2004	Made GetAt virtual
-					30/5 2004	RemoveAll, added check to see if there are 
+					30/5 2004	RemoveAll, added check to see if there are
 								any items in the object array.
-					30/5 2004	Made RemoveAll access data container objects 
-								directly, to avoid chained deletes in 
+					30/5 2004	Made RemoveAll access data container objects
+								directly, to avoid chained deletes in
 								derived classes.
    ========================================================================
 					26/6 2004	Added group handling (Unruled Boy).
@@ -100,7 +100,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEntityContainer construction/destruction/initialization
 
-CDiagramEntityContainer::CDiagramEntityContainer( CDiagramClipboardHandler* clip )
+CDiagramEntityContainer::CDiagramEntityContainer(CDiagramClipboardHandler* clip)
 /* ============================================================
 	Function :		CDiagramEntityContainer::CDiagramEntityContainer
 	Description :	Constructor
@@ -109,16 +109,16 @@ CDiagramEntityContainer::CDiagramEntityContainer( CDiagramClipboardHandler* clip
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
 
 	m_clip = clip;
 
-	SetUndoStackSize( 0 );
+	SetUndoStackSize(0);
 	Clear();
-	SetVirtualSize( CSize( 0, 0 ) );
+	SetVirtualSize(CSize(0, 0));
 
 }
 
@@ -131,7 +131,7 @@ CDiagramEntityContainer::~CDiagramEntityContainer()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -149,7 +149,7 @@ void CDiagramEntityContainer::Clear()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to remove data from the container. The 
+	Usage :			Call to remove data from the container. The
 					Paste-array will be kept.
 
    ============================================================*/
@@ -157,49 +157,49 @@ void CDiagramEntityContainer::Clear()
 
 	RemoveAll();
 	ClearUndo();
-	SetModified( FALSE );
+	SetModified(FALSE);
 
 }
 
 CString CDiagramEntityContainer::GetString() const
 /* ============================================================
 	Function :		CDiagramEntityContainer::GetString
-	Description :	Returns a string representation of the 
+	Description :	Returns a string representation of the
 					virtual paper size
 	Access :		Public
 
 	Return :		CString	-	Resulting string
 	Parameters :	none
 
-	Usage :			Call to get a string representing the paper 
-					size of the container. The format is 
-					"paper:x,y;" where "x" and "y" are the 
+	Usage :			Call to get a string representing the paper
+					size of the container. The format is
+					"paper:x,y;" where "x" and "y" are the
 					horisontal and vertical sizes.
 
    ============================================================*/
 {
 
 	CString str;
-	str.Format( _T( "paper:%i,%i;" ), GetVirtualSize().cx, GetVirtualSize().cy );
+	str.Format(_T("paper:%i,%i;"), GetVirtualSize().cx, GetVirtualSize().cy);
 	return str;
 
 }
 
-BOOL CDiagramEntityContainer::FromString( const CString& str )
+BOOL CDiagramEntityContainer::FromString(const CString& str)
 /* ============================================================
 	Function :		CDiagramEntityContainer::FromString
 	Description :	Sets the virtual paper size from a string.
 	Access :		Public
 
-	Return :		BOOL				-	"TRUE" if the string 
-											represented a 
+	Return :		BOOL				-	"TRUE" if the string
+											represented a
 											paper.
-	Parameters :	const CString& str	-	The string 
+	Parameters :	const CString& str	-	The string
 											representation.
-					
-	Usage :			Call to set the paper size of the container 
-					from a string. The format is "paper:x,y;" 
-					where "x" and "y" are the horisontal and 
+
+	Usage :			Call to set the paper size of the container
+					from a string. The format is "paper:x,y;"
+					where "x" and "y" are the horisontal and
 					vertical sizes.
 
    ============================================================*/
@@ -207,30 +207,30 @@ BOOL CDiagramEntityContainer::FromString( const CString& str )
 
 	BOOL result = FALSE;
 
-	CTokenizer main( str, _T( ":" ) );
+	CTokenizer main(str, _T(":"));
 	CString header;
 	CString data;
-	if( main.GetSize() == 2 )
+	if (main.GetSize() == 2)
 	{
-		main.GetAt( 0, header );
-		main.GetAt( 1, data );
+		main.GetAt(0, header);
+		main.GetAt(1, data);
 		header.TrimLeft();
 		header.TrimRight();
 		data.TrimLeft();
 		data.TrimRight();
-		if( header == _T( "paper" ) )
+		if (header == _T("paper"))
 		{
-			CTokenizer tok( data.Left( data.GetLength() - 1 ) );
-			int size = tok.GetSize();
-			if( size == 2 )
+			CTokenizer tok(data.Left(data.GetLength() - 1));
+			INT_PTR size = tok.GetSize();
+			if (size == 2)
 			{
 				int right;
 				int bottom;
 
-				tok.GetAt(0, right );
-				tok.GetAt(1, bottom );
+				tok.GetAt(0, right);
+				tok.GetAt(1, bottom);
 
-				SetVirtualSize( CSize( right, bottom ) );
+				SetVirtualSize(CSize(right, bottom));
 				result = TRUE;
 			}
 		}
@@ -240,30 +240,30 @@ BOOL CDiagramEntityContainer::FromString( const CString& str )
 
 }
 
-void CDiagramEntityContainer::Export( CStringArray& stra, UINT format ) const
+void CDiagramEntityContainer::Export(CStringArray& stra, UINT format) const
 /* ============================================================
 	Function :		CDiagramEntityContainer::Export
 	Description :	Exports all objects to format format.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CStringArray& stra	-	"CStingArray" that 
-											will be filled with 
-											data on return. 
+	Parameters :	CStringArray& stra	-	"CStingArray" that
+											will be filled with
+											data on return.
 					UINT format			-	Format to save to.
-					
-	Usage :			Call to export the contents of the container 
-					to a "CStringArray". "Export" will - of course - 
+
+	Usage :			Call to export the contents of the container
+					to a "CStringArray". "Export" will - of course -
 					have to be defined for the derived objects.
 
    ============================================================*/
 {
 
-	int max = GetSize();
-	for( int t = 0 ; t < max ; t++ )
+	INT_PTR max = GetSize();
+	for (INT_PTR t = 0; t < max; t++)
 	{
-		CDiagramEntity* obj = GetAt( t );
-		stra.Add( obj->Export( format ) );
+		CDiagramEntity* obj = GetAt(t);
+		stra.Add(obj->Export(format));
 	}
 
 }
@@ -271,7 +271,7 @@ void CDiagramEntityContainer::Export( CStringArray& stra, UINT format ) const
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEntityContainer data access
 
-int CDiagramEntityContainer::GetSize() const
+INT_PTR CDiagramEntityContainer::GetSize() const
 /* ============================================================
 	Function :		CDiagramEntityContainer::GetSize
 	Description :	Returns the number of objects in the data
@@ -281,7 +281,7 @@ int CDiagramEntityContainer::GetSize() const
 	Return :		int		-	The number of objects.
 	Parameters :	none
 
-	Usage :			Call to get the number of objects currently 
+	Usage :			Call to get the number of objects currently
 					in the data array of the container.
 
    ============================================================*/
@@ -291,7 +291,7 @@ int CDiagramEntityContainer::GetSize() const
 
 }
 
-void CDiagramEntityContainer::Add( CDiagramEntity* obj )
+void CDiagramEntityContainer::Add(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Add
 	Description :	Add an object to the data.
@@ -299,85 +299,85 @@ void CDiagramEntityContainer::Add( CDiagramEntity* obj )
 
 	Return :		void
 	Parameters :	CDiagramEntity* obj	-	The object to add.
-					
+
 	Usage :			Call to add a new object to the container.
 
    ============================================================*/
 {
 
-	obj->SetParent( this );
-	m_objs.Add( obj );
-	SetModified( TRUE );
+	obj->SetParent(this);
+	m_objs.Add(obj);
+	SetModified(TRUE);
 
 }
 
-CDiagramEntity* CDiagramEntityContainer::GetAt( int index ) const
+CDiagramEntity* CDiagramEntityContainer::GetAt(INT_PTR index) const
 /* ============================================================
 	Function :		CDiagramEntityContainer::GetAt
 	Description :	Gets the object at position "index".
 	Access :		Public
 
-	Return :		CDiagramEntity*	-	The object or "NULL" if 
+	Return :		CDiagramEntity*	-	The object or "NULL" if
 										out of range.
-	Parameters :	int index		-	The index to get data 
+	Parameters :	int index		-	The index to get data
 										from
-					
-	Usage :			Call to get a specific object from the 
+
+	Usage :			Call to get a specific object from the
 					container.
 
    ============================================================*/
 {
 
 	CDiagramEntity* result = NULL;
-	if( index < m_objs.GetSize() && index >= 0 )
-		result = static_cast< CDiagramEntity* >( m_objs.GetAt( index ) );
+	if (index < m_objs.GetSize() && index >= 0)
+		result = static_cast<CDiagramEntity*>(m_objs.GetAt(index));
 	return result;
 
 }
 
-void CDiagramEntityContainer::SetAt( int index, CDiagramEntity* obj )
+void CDiagramEntityContainer::SetAt(INT_PTR index, CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::SetAt
 	Description :	Sets an object at position "index".
 	Access :		Public
 
 	Return :		void
-	Parameters :	int index			-	Index to set data 
+	Parameters :	int index			-	Index to set data
 											at.
 					CDiagramEntity* obj	-	Object to set.
-					
+
 	Usage :			Internal function. Used by "Swap".
 
    ============================================================*/
 {
 
-	m_objs.SetAt( index, obj );
-	SetModified( TRUE );
+	m_objs.SetAt(index, obj);
+	SetModified(TRUE);
 
 }
 
-void CDiagramEntityContainer::RemoveAt( int index )
+void CDiagramEntityContainer::RemoveAt(INT_PTR index)
 /* ============================================================
 	Function :		CDiagramEntityContainer::RemoveAt
 	Description :	Removes the object at index.
 	Access :		Public
 
 	Return :		void
-	Parameters :	int index	-	The index of the object 
+	Parameters :	int index	-	The index of the object
 									to remove.
-					
-	Usage :			Call to remove a specific object. Memory is 
+
+	Usage :			Call to remove a specific object. Memory is
 					freed.
 
    ============================================================*/
 {
 
-	CDiagramEntity* obj = GetAt( index );
-	if( obj )
+	CDiagramEntity* obj = GetAt(index);
+	if (obj)
 	{
 		delete obj;
-		m_objs.RemoveAt( index );
-		SetModified( TRUE );
+		m_objs.RemoveAt(index);
+		SetModified(TRUE);
 	}
 
 }
@@ -391,27 +391,27 @@ void CDiagramEntityContainer::RemoveAll()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to remove all data objects in the 
-					container. Undo- and paste arrays are not 
+	Usage :			Call to remove all data objects in the
+					container. Undo- and paste arrays are not
 					emptied.
-					Allocated memory is released. Undo and 
+					Allocated memory is released. Undo and
 					paste not deleted.
 
    ============================================================*/
 {
 
-	int max = m_objs.GetSize();
-	if( max )
+	INT_PTR max = m_objs.GetSize();
+	if (max)
 	{
 
-		for( int t = 0 ; t < max ; t++ )
+		for (INT_PTR t = 0; t < max; t++)
 		{
-			CDiagramEntity* obj = static_cast< CDiagramEntity* >( m_objs.GetAt( t ) );
+			CDiagramEntity* obj = static_cast<CDiagramEntity*>(m_objs.GetAt(t));
 			delete obj;
 		}
 
 		m_objs.RemoveAll();
-		SetModified( TRUE );
+		SetModified(TRUE);
 
 	}
 
@@ -426,23 +426,23 @@ void CDiagramEntityContainer::RemoveAllSelected()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to remove all selected objects from the 
+	Usage :			Call to remove all selected objects from the
 					container. Releases allocated data
 
    ============================================================*/
 {
 
-	int max = m_objs.GetSize() - 1;
-	for( int t = max ; t >= 0 ; t-- )
-		if( GetAt( t )->IsSelected() )
-			RemoveAt( t );
+	INT_PTR max = m_objs.GetSize() - 1;
+	for (INT_PTR t = max; t >= 0; t--)
+		if (GetAt(t)->IsSelected())
+			RemoveAt(t);
 
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEntityContainer property access
 
-void CDiagramEntityContainer::SetVirtualSize( CSize size )
+void CDiagramEntityContainer::SetVirtualSize(CSize size)
 /* ============================================================
 	Function :		CDiagramEntityContainer::SetVirtualSize
 	Description :	Sets the current virtual paper size.
@@ -450,9 +450,9 @@ void CDiagramEntityContainer::SetVirtualSize( CSize size )
 
 	Return :		void
 	Parameters :	CSize size	-	The size to set
-					
-	Usage :			Call to set the paper size. Note that 
-					"SetModified( TRUE )" might have to be called 
+
+	Usage :			Call to set the paper size. Note that
+					"SetModified( TRUE )" might have to be called
 					as well.
 
    ============================================================*/
@@ -498,7 +498,7 @@ BOOL CDiagramEntityContainer::IsModified() const
 
 }
 
-void CDiagramEntityContainer::SetModified( BOOL dirty )
+void CDiagramEntityContainer::SetModified(BOOL dirty)
 /* ============================================================
 	Function :		CDiagramEntityContainer::SetModified
 	Description :	Sets the state of the modified flag
@@ -506,7 +506,7 @@ void CDiagramEntityContainer::SetModified( BOOL dirty )
 
 	Return :		void
 	Parameters :	BOOL dirty	-	"TRUE" if data is changed.
-					
+
 	Usage :			Call to mark the data as modified.
 
    ============================================================*/
@@ -519,104 +519,104 @@ void CDiagramEntityContainer::SetModified( BOOL dirty )
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEntityContainer single object handlers
 
-void CDiagramEntityContainer::Remove( CDiagramEntity* obj )
+void CDiagramEntityContainer::Remove(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Remove
 	Description :	Removes the object.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDiagramEntity* obj	-	The object to 
+	Parameters :	CDiagramEntity* obj	-	The object to
 											remove.
-					
-	Usage :			Call to remove "obj" - if it exists - from the 
+
+	Usage :			Call to remove "obj" - if it exists - from the
 					container. Allocated memory is released.
 
    ============================================================*/
 {
 
-	int index = Find( obj );
-	if( index != -1 )
-		RemoveAt( index );
+	int index = Find(obj);
+	if (index != -1)
+		RemoveAt(index);
 
 }
 
-void CDiagramEntityContainer::Duplicate( CDiagramEntity* obj )
+void CDiagramEntityContainer::Duplicate(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Duplicate
-	Description :	Duplicates the object and adds the new 
+	Description :	Duplicates the object and adds the new
 					one 10 pixels offset down and right.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDiagramEntity* obj	-	The object to 
-											duplicate.	
-					
-	Usage :			Call to create a copy of the selected 
+	Parameters :	CDiagramEntity* obj	-	The object to
+											duplicate.
+
+	Usage :			Call to create a copy of the selected
 					element.
 
    ============================================================*/
 {
 
-	int index = Find( obj );
-	if( index != -1 )
+	int index = Find(obj);
+	if (index != -1)
 	{
 		CDiagramEntity* newobj = obj->Clone();
-		newobj->SetRect( newobj->GetLeft() + 10, newobj->GetTop() + 10, newobj->GetRight() + 10, newobj->GetBottom() + 10 );
-		Add( newobj );
+		newobj->SetRect(newobj->GetLeft() + 10, newobj->GetTop() + 10, newobj->GetRight() + 10, newobj->GetBottom() + 10);
+		Add(newobj);
 	}
 
 }
 
-void CDiagramEntityContainer::Cut( CDiagramEntity* obj )
+void CDiagramEntityContainer::Cut(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Cut
-	Description :	Cuts out the object and puts it into the 
+	Description :	Cuts out the object and puts it into the
 					'clipboard'
 	Access :		Public
 
 	Return :		void
 	Parameters :	CDiagramEntity* obj	-	The object to cut.
-					
-	Usage :			Call in response to a Cut-command. See also 
+
+	Usage :			Call in response to a Cut-command. See also
 					the functions for copy/paste below.
 
    ============================================================*/
 {
 
-	Copy( obj );
-	Remove( obj );
+	Copy(obj);
+	Remove(obj);
 
 }
 
-void CDiagramEntityContainer::Copy( CDiagramEntity* obj )
+void CDiagramEntityContainer::Copy(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Copy
 	Description :	Copies the object to the 'clipboard'.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDiagramEntity* obj	-	The object to copy.	
-					
-	Usage :			Call in response to a Copy-command. Note 
-					that obj will only be copied to the 
-					clipboard, not the screen. See also the 
+	Parameters :	CDiagramEntity* obj	-	The object to copy.
+
+	Usage :			Call in response to a Copy-command. Note
+					that obj will only be copied to the
+					clipboard, not the screen. See also the
 					functions for copy/paste below.
 
    ============================================================*/
 {
 
-	ASSERT( obj );
+	ASSERT(obj);
 
-	if( m_clip == NULL )
+	if (m_clip == NULL)
 		m_clip = &m_internalClip;
 
-	if( obj )
-		m_clip->Copy( obj );
+	if (obj)
+		m_clip->Copy(obj);
 
 }
 
-void CDiagramEntityContainer::Up( CDiagramEntity* obj )
+void CDiagramEntityContainer::Up(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Up
 	Description :	Moves the object one step up in the z-
@@ -624,19 +624,19 @@ void CDiagramEntityContainer::Up( CDiagramEntity* obj )
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDiagramEntity* obj	-	The object to move.	
-					
+	Parameters :	CDiagramEntity* obj	-	The object to move.
+
 	Usage :			Call to move "obj" in the z-order.
 
    ============================================================*/
 {
 
-	int index = Find( obj );
-	Swap( index, index + 1);
+	INT_PTR index = Find(obj);
+	Swap(index, index + 1);
 
 }
 
-void CDiagramEntityContainer::Down( CDiagramEntity* obj )
+void CDiagramEntityContainer::Down(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Down
 	Description :	Moves the object one step down in the z-
@@ -644,40 +644,40 @@ void CDiagramEntityContainer::Down( CDiagramEntity* obj )
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDiagramEntity* obj	-	The object to move.	
-					
+	Parameters :	CDiagramEntity* obj	-	The object to move.
+
 	Usage :			Call to move "obj" in the z-order.
 
    ============================================================*/
 {
 
-	int index = Find( obj );
-	Swap( index, index - 1);
+	INT_PTR index = Find(obj);
+	Swap(index, index - 1);
 
 }
 
-void CDiagramEntityContainer::Front( CDiagramEntity* obj )
+void CDiagramEntityContainer::Front(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Front
 	Description :	Moves "obj" to the top of the z-order.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDiagramEntity* obj	-	The object to move.	
-					
+	Parameters :	CDiagramEntity* obj	-	The object to move.
+
 	Usage :			Call to move "obj" in the z-order.
 
    ============================================================*/
 {
 
-	int index = Find( obj );
-	m_objs.RemoveAt( index );
-	m_objs.Add( obj );
-	SetModified( TRUE );
+	int index = Find(obj);
+	m_objs.RemoveAt(index);
+	m_objs.Add(obj);
+	SetModified(TRUE);
 
 }
 
-void CDiagramEntityContainer::Bottom( CDiagramEntity* obj )
+void CDiagramEntityContainer::Bottom(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Bottom
 	Description :	Moves "obj" to the bottom of the z-order.
@@ -685,23 +685,23 @@ void CDiagramEntityContainer::Bottom( CDiagramEntity* obj )
 
 	Return :		void
 	Parameters :	CDiagramEntity* obj	-	The object to move.
-					
+
 	Usage :			Call to move "obj" in the z-order.
 
    ============================================================*/
 {
 
-	int index = Find( obj );
-	m_objs.RemoveAt( index );
-	m_objs.InsertAt( 0, obj );
-	SetModified( TRUE );
+	int index = Find(obj);
+	m_objs.RemoveAt(index);
+	m_objs.InsertAt(0, obj);
+	SetModified(TRUE);
 
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEntityContainer copy/paste is implemented as separate class.
 
-void CDiagramEntityContainer::SetClipboardHandler( CDiagramClipboardHandler* clip )
+void CDiagramEntityContainer::SetClipboardHandler(CDiagramClipboardHandler* clip)
 /* ============================================================
 	Function :		CDiagramEntityContainer::SetClipboardHandler
 	Description :	Sets the container clipboard class.
@@ -711,10 +711,10 @@ void CDiagramEntityContainer::SetClipboardHandler( CDiagramClipboardHandler* cli
 	Parameters :	CDiagramClipboardHandler* clip	-	A pointer
 														to the
 														class
-					
-	Usage :			Call to set the clipboard handler for this 
-					container. The same clipboard handler 
-					instance can be used for several containers 
+
+	Usage :			Call to set the clipboard handler for this
+					container. The same clipboard handler
+					instance can be used for several containers
 					to allow several editors (in an MDI-
 					application) to share the same clipboard.
 
@@ -728,7 +728,7 @@ void CDiagramEntityContainer::SetClipboardHandler( CDiagramClipboardHandler* cli
 CDiagramClipboardHandler* CDiagramEntityContainer::GetClipboardHandler()
 /* ============================================================
 	Function :		CDiagramEntityContainer::GetClipboardHandler
-	Description :	Returns a pointer to the current clipboard 
+	Description :	Returns a pointer to the current clipboard
 					handler.
 	Access :		Public
 
@@ -747,43 +747,43 @@ CDiagramClipboardHandler* CDiagramEntityContainer::GetClipboardHandler()
 void CDiagramEntityContainer::CopyAllSelected()
 /* ============================================================
 	Function :		CDiagramEntityContainer::CopyAllSelected
-	Description :	Clones all selected object to the paste 
+	Description :	Clones all selected object to the paste
 					array.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to copy all selected objects to the 
+	Usage :			Call to copy all selected objects to the
 					clipboard. "Paste" will put them on screen.
 
    ============================================================*/
 {
 
-	if( m_clip == NULL )
+	if (m_clip == NULL)
 		m_clip = &m_internalClip;
 
-	m_clip->CopyAllSelected( this );
+	m_clip->CopyAllSelected(this);
 
 }
 
-int CDiagramEntityContainer::ObjectsInPaste()
+INT_PTR CDiagramEntityContainer::ObjectsInPaste()
 /* ============================================================
 	Function :		CDiagramEntityContainer::ObjectsInPaste
-	Description :	Returns the number of objects in the paste 
+	Description :	Returns the number of objects in the paste
 					array.
 	Access :		Public
 
 	Return :		int		-	The number of objects.
 	Parameters :	none
 
-	Usage :			Call to get the number of objects in the 
+	Usage :			Call to get the number of objects in the
 					clipboard.
 
    ============================================================*/
 {
 
-	if( m_clip == NULL )
+	if (m_clip == NULL)
 		m_clip = &m_internalClip;
 
 	return m_clip->ObjectsInPaste();
@@ -799,13 +799,13 @@ void CDiagramEntityContainer::ClearPaste()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to clear the clipboard. All memory is 
+	Usage :			Call to clear the clipboard. All memory is
 					released.
 
    ============================================================*/
 {
 
-	if( m_clip == NULL )
+	if (m_clip == NULL)
 		m_clip = &m_internalClip;
 
 	m_clip->ClearPaste();
@@ -815,63 +815,63 @@ void CDiagramEntityContainer::ClearPaste()
 void CDiagramEntityContainer::Paste()
 /* ============================================================
 	Function :		CDiagramEntityContainer::Paste
-	Description :	Clones the contents of the paste array 
+	Description :	Clones the contents of the paste array
 					into the container data array.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to paste the contents of the clipboard 
+	Usage :			Call to paste the contents of the clipboard
 					to screen.
 
    ============================================================*/
 {
 
-	if( m_clip == NULL )
+	if (m_clip == NULL)
 		m_clip = &m_internalClip;
 
-	m_clip->Paste( this );
+	m_clip->Paste(this);
 
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEntityContainer message handling
 
-void CDiagramEntityContainer::SendMessageToObjects( int command, BOOL selected, CDiagramEntity* sender, CWnd* from )
+void CDiagramEntityContainer::SendMessageToObjects(int command, BOOL selected, CDiagramEntity* sender, CWnd* from)
 /* ============================================================
 	Function :		CDiagramEntityContainer::SendMessageToObjects
-	Description :	Sends "command" to objects. 
+	Description :	Sends "command" to objects.
 	Access :		Public
 
 	Return :		void
 	Parameters :	int command				-	The command to send.
-					BOOL selected			-	If "TRUE", the command 
-												will only be sent to 
-												selected objects, 
-												otherwise, it will be 
+					BOOL selected			-	If "TRUE", the command
+												will only be sent to
+												selected objects,
+												otherwise, it will be
 												sent to all objects.
-					CDiagramEntity* sender	-	Original sender 
-												or "NULL" if not 
+					CDiagramEntity* sender	-	Original sender
+												or "NULL" if not
 												an object.
 
-	Usage :			Call this member to send messages to 
-					(selected) objects in the range "CMD_START" 
-					to "CMD_END" inclusively (defined in 
+	Usage :			Call this member to send messages to
+					(selected) objects in the range "CMD_START"
+					to "CMD_END" inclusively (defined in
 					DiagramEntity.h). Calls the object "DoCommand".
 
    ============================================================*/
 {
 
 	BOOL stop = FALSE;
-	int max = m_objs.GetSize();
-	for( int t = 0 ; t < max ; t++ )
+	INT_PTR max = m_objs.GetSize();
+	for (INT_PTR t = 0; t < max; t++)
 	{
-		CDiagramEntity* obj = GetAt( t );
-		if( !stop && ( !selected || obj->IsSelected() ) )
+		CDiagramEntity* obj = GetAt(t);
+		if (!stop && (!selected || obj->IsSelected()))
 		{
-			stop = obj->DoMessage( command, sender, from );
-			SetModified( TRUE );
+			stop = obj->DoMessage(command, sender, from);
+			SetModified(TRUE);
 		}
 	}
 
@@ -880,19 +880,19 @@ void CDiagramEntityContainer::SendMessageToObjects( int command, BOOL selected, 
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEntityContainer private helpers
 
-int CDiagramEntityContainer::Find( CDiagramEntity* testobj )
+int CDiagramEntityContainer::Find(CDiagramEntity* testobj)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Find
-	Description :	Finds the index of object "testobj" in the 
+	Description :	Finds the index of object "testobj" in the
 					data array.
 	Access :		Protected
 
-	Return :		int						-	Index of the 
-												object or -1 
+	Return :		int						-	Index of the
+												object or -1
 												if not found.
 	Parameters :	CDiagramEntity* testobj	-	Object to find.
-					
-	Usage :			Internal function. 
+
+	Usage :			Internal function.
 
    ============================================================*/
 {
@@ -900,9 +900,9 @@ int CDiagramEntityContainer::Find( CDiagramEntity* testobj )
 	int index = -1;
 	CDiagramEntity* obj;
 	int count = 0;
-	while( ( obj = GetAt( count ) ) )
+	while ((obj = GetAt(count)))
 	{
-		if( obj == testobj )
+		if (obj == testobj)
 			index = count;
 		count++;
 	}
@@ -911,7 +911,7 @@ int CDiagramEntityContainer::Find( CDiagramEntity* testobj )
 
 }
 
-void CDiagramEntityContainer::Swap( int index1, int index2 )
+void CDiagramEntityContainer::Swap(INT_PTR index1, INT_PTR index2)
 /* ============================================================
 	Function :		CDiagramEntityContainer::Swap
 	Description :	Swaps the elements at "index1" and "index2".
@@ -920,20 +920,20 @@ void CDiagramEntityContainer::Swap( int index1, int index2 )
 	Return :		void
 	Parameters :	int index1	-	First object to swap
 					int index2	-	Second object to swap
-					
-	Usage :			Internal function. Used to move objects up 
+
+	Usage :			Internal function. Used to move objects up
 					or down in the z-order.
 
    ============================================================*/
 {
 
-	int max = m_objs.GetSize();
-	if( index1 >= 0 && index1 < max && index2 >= 0 && index2 < max )
+	INT_PTR max = m_objs.GetSize();
+	if (index1 >= 0 && index1 < max && index2 >= 0 && index2 < max)
 	{
-		CDiagramEntity* obj1 = GetAt( index1 );
-		CDiagramEntity* obj2 = GetAt( index2 );
-		SetAt( index1, obj2 );
-		SetAt( index2, obj1 );
+		CDiagramEntity* obj1 = GetAt(index1);
+		CDiagramEntity* obj2 = GetAt(index2);
+		SetAt(index1, obj2);
+		SetAt(index2, obj1);
 	}
 
 }
@@ -941,7 +941,7 @@ void CDiagramEntityContainer::Swap( int index1, int index2 )
 void CDiagramEntityContainer::Undo()
 /* ============================================================
 	Function :		CDiagramEntityContainer::Undo
-	Description :	Sets the container data to the last entry 
+	Description :	Sets the container data to the last entry
 					in the undo stack.
 	Access :		Public
 
@@ -953,30 +953,30 @@ void CDiagramEntityContainer::Undo()
    ============================================================*/
 {
 
-	if( m_undo.GetSize() )
+	if (m_undo.GetSize())
 	{
 		// We remove all current data
 		RemoveAll();
 
 		// We get the last entry from the undo-stack
 		// and clone it into the container data
-		CUndoItem* undo = static_cast< CUndoItem* >( m_undo.GetAt( m_undo.GetUpperBound() ) );
-		int count = ( undo->arr ).GetSize();
-		for( int t = 0 ; t < count ; t++ )
+		CUndoItem* undo = static_cast<CUndoItem*>(m_undo.GetAt(m_undo.GetUpperBound()));
+		INT_PTR count = (undo->arr).GetSize();
+		for (INT_PTR t = 0; t < count; t++)
 		{
 
-			CDiagramEntity* obj = static_cast< CDiagramEntity* >( ( undo->arr ).GetAt( t ) );
-			Add( obj->Clone() );
+			CDiagramEntity* obj = static_cast<CDiagramEntity*>((undo->arr).GetAt(t));
+			Add(obj->Clone());
 
 		}
 
 		// Set the saved virtual size as well
-		SetVirtualSize( undo->pt );
+		SetVirtualSize(undo->pt);
 
 		// We remove the entry from the undo-stack
 		delete undo;
 
-		m_undo.RemoveAt( m_undo.GetUpperBound() );
+		m_undo.RemoveAt(m_undo.GetUpperBound());
 
 	}
 
@@ -985,55 +985,55 @@ void CDiagramEntityContainer::Undo()
 void CDiagramEntityContainer::Snapshot()
 /* ============================================================
 	Function :		CDiagramEntityContainer::Snapshot
-	Description :	Copies the current state of the data to 
+	Description :	Copies the current state of the data to
 					the undo-stack.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to add the current state to the undo-stack. 
-					If the undo stack has a maximum size and 
-					the stack will grow above the stack limit, 
+	Usage :			Call to add the current state to the undo-stack.
+					If the undo stack has a maximum size and
+					the stack will grow above the stack limit,
 					the first undo array will be removed.
 
    ============================================================*/
 {
 
-	if( m_maxstacksize > 0 && m_undo.GetSize() == m_maxstacksize )
+	if (m_maxstacksize > 0 && m_undo.GetSize() == m_maxstacksize)
 	{
-		delete m_undo.GetAt( 0 );
-		m_undo.RemoveAt( 0 );
+		delete m_undo.GetAt(0);
+		m_undo.RemoveAt(0);
 	}
 
 	CUndoItem* undo = new CUndoItem;
 
-	while( !undo && m_undo.GetSize() )
+	while (!undo && m_undo.GetSize())
 	{
 
 		// We seem - however unlikely -
 		// to be out of memory.
 		// Remove first element in
 		// undo-stack and try again
-		delete m_undo.GetAt( 0 );
-		m_undo.RemoveAt( 0 );
+		delete m_undo.GetAt(0);
+		m_undo.RemoveAt(0);
 		undo = new CUndoItem;
 
 	}
 
-	if( undo )
+	if (undo)
 	{
 
 		// Save current virtual size
 		undo->pt = GetVirtualSize();
 
 		// Save all objects
-		int count = m_objs.GetSize();
-		for( int t = 0 ; t < count ; t++ )
-			( undo->arr ).Add( GetAt( t )->Clone() );
+		INT_PTR count = m_objs.GetSize();
+		for (INT_PTR t = 0; t < count; t++)
+			(undo->arr).Add(GetAt(t)->Clone());
 
 		// Add to undo stack
-		m_undo.Add( undo );
+		m_undo.Add(undo);
 
 	}
 
@@ -1048,16 +1048,16 @@ void CDiagramEntityContainer::ClearUndo()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to clear the undo-stack. All memory will 
+	Usage :			Call to clear the undo-stack. All memory will
 					be deleted.
 
    ============================================================*/
 {
 
-	int count = m_undo.GetSize() - 1;
-	for( int t = count ; t >= 0 ; t-- )
+	INT_PTR count = m_undo.GetSize() - 1;
+	for (INT_PTR t = count; t >= 0; t--)
 	{
-		CUndoItem* undo = static_cast< CUndoItem* >( m_undo.GetAt( t ) );
+		CUndoItem* undo = static_cast<CUndoItem*>(m_undo.GetAt(t));
 		// Remove the stack entry itself.
 		delete undo;
 	}
@@ -1080,21 +1080,21 @@ BOOL CDiagramEntityContainer::IsUndoPossible()
    ============================================================*/
 {
 
-	return m_undo.GetSize();
+	return m_undo.GetSize() > 0;
 
 }
 
 
-void CDiagramEntityContainer::SetUndoStackSize( int maxstacksize )
+void CDiagramEntityContainer::SetUndoStackSize(int maxstacksize)
 /* ============================================================
 	Function :		CDiagramEntityContainer::SetUndoStackSize
 	Description :	Sets the size of the undo stack.
 	Access :		Public
 
 	Return :		void
-	Parameters :	int maxstacksize	-	New size. -1 means 
+	Parameters :	int maxstacksize	-	New size. -1 means
 											no limit, 0 no undo.
-					
+
 	Usage :			Call to set the max undo stack size.
 
    ============================================================*/
@@ -1122,44 +1122,44 @@ int CDiagramEntityContainer::GetUndoStackSize() const
 
 }
 
-CObArray* CDiagramEntityContainer::GetData() 
+CObArray* CDiagramEntityContainer::GetData()
 /* ============================================================
 	Function :		CDiagramEntityContainer::GetData
 	Description :	Accessor for the internal data array
 	Access :		Public
 
-	Return :		CObArray*	-	A pointer to the internal 
+	Return :		CObArray*	-	A pointer to the internal
 									data array.
 	Parameters :	none
 
-	Usage :			Call to access the internal data array. To 
+	Usage :			Call to access the internal data array. To
 					be used in derived classes.
 
    ============================================================*/
-{ 
+{
 
-	return &m_objs; 
+	return &m_objs;
 
 }
 
-CObArray* CDiagramEntityContainer::GetPaste()	
+CObArray* CDiagramEntityContainer::GetPaste()
 /* ============================================================
 	Function :		CDiagramEntityContainer::GetPaste
 	Description :	Accessor for the internal paste array
 	Access :		Protected
 
-	Return :		CObArray*	-	A pointer to the paste 
+	Return :		CObArray*	-	A pointer to the paste
 									array
 	Parameters :	none
 
-	Usage :			Call to access the internal paste array. To 
+	Usage :			Call to access the internal paste array. To
 					be used in derived classes.
 
    ============================================================*/
-{ 
+{
 
 	CObArray* arr = NULL;
-	if( m_clip )
+	if (m_clip)
 		arr = m_clip->GetData();
 
 	return arr;
@@ -1172,15 +1172,15 @@ CObArray* CDiagramEntityContainer::GetUndo()
 	Description :	Accessor for the internal undo array
 	Access :		Protected
 
-	Return :		CObArray*	-	A pointer to the undo 
+	Return :		CObArray*	-	A pointer to the undo
 									array
 	Parameters :	none
 
-	Usage :			Call to access the internal undo array. To 
+	Usage :			Call to access the internal undo array. To
 					be used in derived classes.
 
    ============================================================*/
-{ 
+{
 
 	return &m_undo;
 
@@ -1189,18 +1189,18 @@ CObArray* CDiagramEntityContainer::GetUndo()
 void CDiagramEntityContainer::Group()
 /* ============================================================
 	Function :		CDiagramEntityContainer::Group
-	Description :	Groups the currently selected objects into 
+	Description :	Groups the currently selected objects into
 					the same group.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to group all selected items into the 
+	Usage :			Call to group all selected items into the
 					same group.
-					Grouped objects can be moved as a 
-					single entity. Technically, when one object 
-					in a group is selected, all other objects 
+					Grouped objects can be moved as a
+					single entity. Technically, when one object
+					in a group is selected, all other objects
 					are also selected automatically.
 
    ============================================================*/
@@ -1209,10 +1209,10 @@ void CDiagramEntityContainer::Group()
 	CDiagramEntity* obj;
 	int count = 0;
 	int group = CGroupFactory::GetNewGroup();
-	while( ( obj = GetAt( count ) ) )
+	while ((obj = GetAt(count)))
 	{
-		if( obj->IsSelected() )
-			obj->SetGroup( group );
+		if (obj->IsSelected())
+			obj->SetGroup(group);
 		count++;
 	}
 
@@ -1227,10 +1227,10 @@ void CDiagramEntityContainer::Ungroup()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to ungroup all selected items. 
-					Grouped objects can be moved as a 
-					single entity. Technically, when one object 
-					in a group is selected, all other objects 
+	Usage :			Call to ungroup all selected items.
+					Grouped objects can be moved as a
+					single entity. Technically, when one object
+					in a group is selected, all other objects
 					are also selected automatically.
 
    ============================================================*/
@@ -1238,10 +1238,10 @@ void CDiagramEntityContainer::Ungroup()
 
 	CDiagramEntity* obj;
 	int count = 0;
-	while( ( obj = GetAt( count ) ) )
+	while ((obj = GetAt(count)))
 	{
-		if( obj->IsSelected() )
-			obj->SetGroup( 0 );
+		if (obj->IsSelected())
+			obj->SetGroup(0);
 		count++;
 	}
 
@@ -1250,14 +1250,14 @@ void CDiagramEntityContainer::Ungroup()
 CSize CDiagramEntityContainer::GetTotalSize()
 /* ============================================================
 	Function :		CDiagramEntityContainer::GetTotalSize
-	Description :	Gets the minimum bounding size for the 
+	Description :	Gets the minimum bounding size for the
 					objects in the container.
-	Access :		
+	Access :
 
 	Return :		CSize	-	Minimum bounding size
 	Parameters :	none
 
-	Usage :			Call to get the screen size of the objects 
+	Usage :			Call to get the screen size of the objects
 					in the container.
 
    ============================================================*/
@@ -1268,35 +1268,35 @@ CSize CDiagramEntityContainer::GetTotalSize()
 
 	CDiagramEntity* obj;
 	int count = 0;
-	while( ( obj = GetAt( count ) ) )
+	while ((obj = GetAt(count)))
 	{
 
-		width = max( width, obj->GetLeft() );
-		width = max( width, obj->GetRight() );
-		height = max( height, obj->GetTop() );
-		height = max( height, obj->GetBottom() );
+		width = max(width, obj->GetLeft());
+		width = max(width, obj->GetRight());
+		height = max(height, obj->GetTop());
+		height = max(height, obj->GetBottom());
 
 		count++;
 
 	}
 
-	return CSize( round( width - start.x ), round( height - start.y ) );
+	return CSize(round(width - start.x), round(height - start.y));
 
 }
 
 CPoint CDiagramEntityContainer::GetStartPoint()
 /* ============================================================
 	Function :		CDiagramEntityContainer::GetStartPoint
-	Description :	Gets the starting screen position of the 
-					objects in the container (normally the 
+	Description :	Gets the starting screen position of the
+					objects in the container (normally the
 					top-left corner of the top-left object).
-	Access :		
+	Access :
 
-	Return :		CPoint	-	Top-left position of the 
+	Return :		CPoint	-	Top-left position of the
 								objects.
 	Parameters :	none
 
-	Usage :			Call to get the starting point on screen of 
+	Usage :			Call to get the starting point on screen of
 					the objects.
 
    ============================================================*/
@@ -1308,28 +1308,28 @@ CPoint CDiagramEntityContainer::GetStartPoint()
 	CDiagramEntity* obj;
 	int count = 0;
 
-	while( ( obj = GetAt( count ) ) )
+	while ((obj = GetAt(count)))
 	{
 
-		startx = min( startx, obj->GetLeft() );
-		startx = min( startx, obj->GetRight() );
-		starty = min( starty, obj->GetTop() );
-		starty = min( starty, obj->GetBottom() );
+		startx = min(startx, obj->GetLeft());
+		startx = min(startx, obj->GetRight());
+		starty = min(starty, obj->GetTop());
+		starty = min(starty, obj->GetBottom());
 
 		count++;
 
 	}
 
-	return CPoint( round( startx ), round( starty ) );
+	return CPoint(round(startx), round(starty));
 
 }
 
-int	CDiagramEntityContainer::GetSelectCount() const
+INT_PTR	CDiagramEntityContainer::GetSelectCount() const
 /* ============================================================
 	Function :		int	CDiagramEntityContainer::GetSelectCount
-	Description :	Gets the number of currently selected 
+	Description :	Gets the number of currently selected
 					objects in the container.
-	Access :		
+	Access :
 
 	Return :		int		-	Currently selected objects.
 	Parameters :	none
@@ -1339,10 +1339,10 @@ int	CDiagramEntityContainer::GetSelectCount() const
    ============================================================*/
 {
 
-	int max = GetSize();
-	int count = 0;
-	for( int t = 0 ; t < max ; t++ )
-		if( GetAt( t )->IsSelected() )
+	INT_PTR max = GetSize();
+	INT_PTR count = 0;
+	for (INT_PTR t = 0; t < max; t++)
+		if (GetAt(t)->IsSelected())
 			count++;
 
 	return count;
@@ -1351,16 +1351,16 @@ int	CDiagramEntityContainer::GetSelectCount() const
 
 void CDiagramEntityContainer::SelectAll()
 {
-	int max = GetSize();
-	for( int t = 0 ; t < max ; t++ )
-		GetAt( t )->Select( TRUE );
+	INT_PTR max = GetSize();
+	for (INT_PTR t = 0; t < max; t++)
+		GetAt(t)->Select(TRUE);
 }
 
 void CDiagramEntityContainer::UnselectAll()
 {
-	int max = GetSize();
-	for( int t = 0 ; t < max ; t++ )
-		GetAt( t )->Select( FALSE );
+	INT_PTR max = GetSize();
+	for (INT_PTR t = 0; t < max; t++)
+		GetAt(t)->Select(FALSE);
 }
 
 #pragma warning( default : 4706 )

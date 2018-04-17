@@ -5,27 +5,27 @@
 
 	Date :			2004-03-29
 
-	Purpose :		"CDiagramEditor" encapsulates a basic vector editor geared 
-					towards diagrams rather than graphics. It supports 
-					virtual screens both smaller and larger than the window, 
-					snap to grid, copy/paste, unlimited undo, zoom etc. It 
-					can be added to both dialogbox- and doc/view apps due to 
+	Purpose :		"CDiagramEditor" encapsulates a basic vector editor geared
+					towards diagrams rather than graphics. It supports
+					virtual screens both smaller and larger than the window,
+					snap to grid, copy/paste, unlimited undo, zoom etc. It
+					can be added to both dialogbox- and doc/view apps due to
 					the use of a separate container for data.
 
-					Normally, this class need only to be inherited from when 
-					the drawing functionality is insufficient - many of the 
+					Normally, this class need only to be inherited from when
+					the drawing functionality is insufficient - many of the
 					settings can be modified through member accessors.
 
-	Description :	The class derives from "CWnd", and handles Windows messages 
-					relevant to the operations. 
+	Description :	The class derives from "CWnd", and handles Windows messages
+					relevant to the operations.
 
-	Usage :			
+	Usage :
 
    ========================================================================
 	Changes :		8/4  2004	SendMessageToObjects sets TRUE flag
 								sending message only to selected objects.
 					9/4  2004	Made some message mapping functions
-								virtual to allow enhancements in 
+								virtual to allow enhancements in
 								derived classes.
 					9/4  2004	Added accessors for states to allow
 								access for derived classes
@@ -33,74 +33,74 @@
 								ctrl+clicking item (to not move lines)
 					28/4 2004	Setting scrollbar positions to zero
 								in Clear
-					29/4 2004	Sending this window as a parent to the 
-								property dialog. This is to be able to 
-								redraw the editor properly after changes 
+					29/4 2004	Sending this window as a parent to the
+								property dialog. This is to be able to
+								redraw the editor properly after changes
 								to the dialog.
 					30/4 2004	Changed c-style casts to static_cast
 					30/4 2004	Remove ShowProperties-const-ness.
    ========================================================================
-					14/5 2004	Added access to m_subMode in 
+					14/5 2004	Added access to m_subMode in
 								SetInteractMode
-					14/5 2004	Made OnObjectCommand virtual to allow 
+					14/5 2004	Made OnObjectCommand virtual to allow
 								interception in derived classes.
 					15/5 2004	Made GetBackgroundColor const.
 					20/5 2004	Made SelectAll virtual.
-					24/5 2004	Added virtual size check against the client 
+					24/5 2004	Added virtual size check against the client
 								rect in HScroll and VScroll (Graham).
    ========================================================================
 					24/6 2004	Corrected bug in SetZoom, where the minimum
 								zoom value was not honoured (pgrohs).
-					24/6 2004	Zeroing m_internalData after delete to 
+					24/6 2004	Zeroing m_internalData after delete to
 								avoid crash. (pgrohs).
 					26/6 2004	Added group handling (Unruled Boy).
    ========================================================================
-					26/6 2004	Corrected bug in alignment handling - all 
+					26/6 2004	Corrected bug in alignment handling - all
 								objects, not only selected, where modified.
 								Also made functions virtual.
-					29/6 2004	Added ZoomToFitScreen and 
+					29/6 2004	Added ZoomToFitScreen and
 								mousewheel-handling (John A. Johnson).
 					30/6 2004	Added panning (John A. Johnson).
-					3/7	 2004	Made AddObject virtual and added the virtual 
-								MoveObject function. This is to allow 
-								trapping of added or moved objects in the 
-								editor in derived classes. Also made 
-								clipboard-functions and DeleteAllSelected 
+					3/7	 2004	Made AddObject virtual and added the virtual
+								MoveObject function. This is to allow
+								trapping of added or moved objects in the
+								editor in derived classes. Also made
+								clipboard-functions and DeleteAllSelected
 								virtual.
 					5/7	2004	Made Clear virtual.
 					5/7	2004	Added virtual GetCursor function.
-					6/7	2004	Correction in VirtualToScreen, not deducting 
+					6/7	2004	Correction in VirtualToScreen, not deducting
 								scrollbar positions any longer (Wolfgang Busch).
 					6/7	2004	Coordinate conversion functions made public.
 								(Wolfgang Busch).
    ========================================================================
-					12/7 2004	Added scroll wheel mode. By calling 
-								SetScrollWheelMode( WHEEL_SCROLL/WHEEL_ZOOM), 
+					12/7 2004	Added scroll wheel mode. By calling
+								SetScrollWheelMode( WHEEL_SCROLL/WHEEL_ZOOM),
 								the scroll wheel will either scroll or zoom.
    ========================================================================
-					16/7 2004	Added virtual to more message handlers, 
+					16/7 2004	Added virtual to more message handlers,
 								among them the scrollbar ones.
 					16/7 2004	Added virtual to SetZoom.
-					16/7 2004	Added virtual functions to set the 
-								scrollbar positions to get one single point 
+					16/7 2004	Added virtual functions to set the
+								scrollbar positions to get one single point
 								where this is made.
-					25/7 2004	Checking if the cursor is outside of 
-								restraint when placing an item in 
+					25/7 2004	Checking if the cursor is outside of
+								restraint when placing an item in
 								OnLButtonDown.
    ========================================================================
 					3/8	 2004	Added ScrollIntoView commands
-					4/8	 2004	Fixed bug with selection markers - 
-								virtualization of the mouse coordinates was 
-								in discord with the selection marker 
+					4/8	 2004	Fixed bug with selection markers -
+								virtualization of the mouse coordinates was
+								in discord with the selection marker
 								rectangles. (Marc G)
    ========================================================================
-					9/8	 2004	Added new ScrollIntoView command taking 
+					9/8	 2004	Added new ScrollIntoView command taking
 								object as an inparam.
-					19/8 2004	Fixed bug in hit testing objects when 
+					19/8 2004	Fixed bug in hit testing objects when
 								zooming in OnLButtonDown (Marc G)
    ========================================================================
-					28/8 2004	Added check for non-normalized rect when 
-								hit-testing in OnLButtonDown, as lines 
+					28/8 2004	Added check for non-normalized rect when
+								hit-testing in OnLButtonDown, as lines
 								have them.
   ========================================================================*/
 
@@ -128,24 +128,24 @@ CDiagramEditor::CDiagramEditor()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
 
-	m_bkgndCol = ::GetSysColor( COLOR_WINDOW );
-	m_nonClientBkgndCol = ::GetSysColor( COLOR_3DSHADOW );
+	m_bkgndCol = ::GetSysColor(COLOR_WINDOW);
+	m_nonClientBkgndCol = ::GetSysColor(COLOR_3DSHADOW);
 
-	m_gridCol = RGB( 192, 192, 192 );
+	m_gridCol = RGB(192, 192, 192);
 	m_grid = TRUE;
 	m_gridStyle = PS_SOLID;
-	m_gridSize = CSize( 8, 8 );
+	m_gridSize = CSize(8, 8);
 
 	m_snap = FALSE;
 	m_bgResize = FALSE;
 	m_bgResizeZone = 10;
 	m_bgResizeSelected = FALSE;
-	m_markerSize = CSize( 8, 8 );
+	m_markerSize = CSize(8, 8);
 
 	m_drawObj = NULL;
 	m_objs = NULL;
@@ -159,7 +159,7 @@ CDiagramEditor::CDiagramEditor()
 	m_rightMargin = 8;
 	m_bottomMargin = 16;
 	m_margin = FALSE;
-	m_marginColor = RGB( 128, 128, 255 );
+	m_marginColor = RGB(128, 128, 255);
 
 	m_popupMenu = NULL;
 	m_multiDraw = FALSE;
@@ -173,16 +173,16 @@ CDiagramEditor::CDiagramEditor()
 
 	m_keyInterface = KEY_ALL;
 
-	m_cursorNorth		= ::LoadCursor( NULL, IDC_SIZENS );
-	m_cursorNorthEast	= ::LoadCursor( NULL, IDC_SIZENESW );
-	m_cursorEast		= ::LoadCursor( NULL, IDC_SIZEWE );
-	m_cursorSouthEast	= ::LoadCursor( NULL, IDC_SIZENWSE );
-	m_cursorSouth		= ::LoadCursor( NULL, IDC_SIZENS );
-	m_cursorSouthWest	= ::LoadCursor( NULL, IDC_SIZENESW );
-	m_cursorWest		= ::LoadCursor( NULL, IDC_SIZEWE );
-	m_cursorNorthWest	= ::LoadCursor( NULL, IDC_SIZENWSE );
+	m_cursorNorth = ::LoadCursor(NULL, IDC_SIZENS);
+	m_cursorNorthEast = ::LoadCursor(NULL, IDC_SIZENESW);
+	m_cursorEast = ::LoadCursor(NULL, IDC_SIZEWE);
+	m_cursorSouthEast = ::LoadCursor(NULL, IDC_SIZENWSE);
+	m_cursorSouth = ::LoadCursor(NULL, IDC_SIZENS);
+	m_cursorSouthWest = ::LoadCursor(NULL, IDC_SIZENESW);
+	m_cursorWest = ::LoadCursor(NULL, IDC_SIZEWE);
+	m_cursorNorthWest = ::LoadCursor(NULL, IDC_SIZENWSE);
 
-	SetScrollWheelMode( WHEEL_SCROLL );
+	SetScrollWheelMode(WHEEL_SCROLL);
 
 	Clear();
 
@@ -197,7 +197,7 @@ CDiagramEditor::~CDiagramEditor()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -227,21 +227,21 @@ void CDiagramEditor::Clear()
 	m_interactMode = MODE_NONE;
 	m_zoom = 1.0;
 	m_bgResizeSelected = FALSE;
-	m_deltaPoint = CSize( 0, 0 );
+	m_deltaPoint = CSize(0, 0);
 	m_multiSelObj = NULL;
 	m_drawing = FALSE;
 
-	SetPanning( FALSE );
+	SetPanning(FALSE);
 
 	delete m_drawObj;
 	m_drawObj = NULL;
 
-	if( m_hWnd )
+	if (m_hWnd)
 	{
 
 		SetupScrollbars();
-		SetHScroll( 0 );
-		SetVScroll( 0 );
+		SetHScroll(0);
+		SetVScroll(0);
 
 		RedrawWindow();
 
@@ -249,44 +249,44 @@ void CDiagramEditor::Clear()
 
 }
 
-BOOL CDiagramEditor::Create( DWORD dwStyle, const RECT &rect, CWnd *pParentWnd, CDiagramEntityContainer* data )
+BOOL CDiagramEditor::Create(DWORD dwStyle, const RECT &rect, CWnd *pParentWnd, CDiagramEntityContainer* data)
 /* ============================================================
 	Function :		CDiagramEditor::Create
 	Description :	Creates a "CDiagramEditor" window.
 	Access :		Public
 
 	Return :		BOOL							-	"TRUE" if success
-	Parameters :	DWORD dwStyle					-	Window styles for 
+	Parameters :	DWORD dwStyle					-	Window styles for
 														the editor
 					const RECT &rect				-	Window rectangle
-					CWnd *pParentWnd				-	Parent of the 
+					CWnd *pParentWnd				-	Parent of the
 														editor
-					CDiagramEntityContainer* data	-	Pointer to data. 
+					CDiagramEntityContainer* data	-	Pointer to data.
 														Might be "NULL".
-					
-	Usage :			If data is "NULL", a "CDiagramEntityContainer" 
-					will be created internally, and the instance 
-					of the editor will be responsible for the 
+
+	Usage :			If data is "NULL", a "CDiagramEntityContainer"
+					will be created internally, and the instance
+					of the editor will be responsible for the
 					container deletion.
 
    ============================================================*/
 {
-	if( data == NULL )
+	if (data == NULL)
 	{
 		m_internalData = new CDiagramEntityContainer;
-		SetInternalDiagramEntityContainer( m_internalData );
+		SetInternalDiagramEntityContainer(m_internalData);
 	}
 	else
-		SetDiagramEntityContainer( data );
+		SetDiagramEntityContainer(data);
 
-	BOOL res = CWnd::Create( NULL, NULL, dwStyle, rect, pParentWnd, NULL );
+	BOOL res = CWnd::Create(NULL, NULL, dwStyle, rect, pParentWnd, NULL);
 	CSize virtualSize;
-	if( GetVirtualSize().cx == 0 &&  GetVirtualSize().cy == 0 )
-		virtualSize = CSize( rect.right - rect.left, rect.bottom - rect.top );
+	if (GetVirtualSize().cx == 0 && GetVirtualSize().cy == 0)
+		virtualSize = CSize(rect.right - rect.left, rect.bottom - rect.top);
 	else
 		virtualSize = GetVirtualSize();
 
-	SetInternalVirtualSize( virtualSize );
+	SetInternalVirtualSize(virtualSize);
 
 	return res;
 
@@ -295,7 +295,7 @@ BOOL CDiagramEditor::Create( DWORD dwStyle, const RECT &rect, CWnd *pParentWnd, 
 void CDiagramEditor::New()
 /* ============================================================
 	Function :		CDiagramEditor::New
-	Description :	Clears the current 'page' and creates a 
+	Description :	Clears the current 'page' and creates a
 					new one.
 	Access :		Public
 
@@ -307,50 +307,50 @@ void CDiagramEditor::New()
    ============================================================*/
 {
 
-	SetRedraw( FALSE );
+	SetRedraw(FALSE);
 	Clear();
 	m_objs->Clear();
-	SetRedraw( TRUE );
+	SetRedraw(TRUE);
 	RedrawWindow();
 
 }
 
-void CDiagramEditor::SetDiagramEntityContainer( CDiagramEntityContainer* objs )
+void CDiagramEditor::SetDiagramEntityContainer(CDiagramEntityContainer* objs)
 /* ============================================================
 	Function :		CDiagramEditor::SetDiagramEntityContainer
 	Description :	Sets the data container for the editor.
 	Access :		Public
-					
+
 	Return :		void
-	Parameters :	CDiagramEntityContainer* objs	-	the data 
+	Parameters :	CDiagramEntityContainer* objs	-	the data
 														container
-					
-	Usage :			If this function is used, the caller is 
-					responsible for deleting the container. Can 
+
+	Usage :			If this function is used, the caller is
+					responsible for deleting the container. Can
 					be called before or after "Create".
 
    ============================================================*/
 {
 
-	if( m_internalData )
+	if (m_internalData)
 		delete m_internalData;
 
 	m_internalData = NULL;
 
-	SetInternalDiagramEntityContainer ( objs );
+	SetInternalDiagramEntityContainer(objs);
 
 }
 
-void CDiagramEditor::SetInternalDiagramEntityContainer( CDiagramEntityContainer* objs )
+void CDiagramEditor::SetInternalDiagramEntityContainer(CDiagramEntityContainer* objs)
 /* ============================================================
 	Function :		CDiagramEditor::SetInternalDiagramEntityContainer
 	Description :	Sets the internal data container pointer.
 	Access :		Protected
 
 	Return :		void
-	Parameters :	CDiagramEntityContainer* objs	-	A pointer to the 
+	Parameters :	CDiagramEntityContainer* objs	-	A pointer to the
 														container to set.
-					
+
 	Usage :			Internal function.
 
    ============================================================*/
@@ -366,14 +366,14 @@ CDiagramEntityContainer* CDiagramEditor::GetDiagramEntityContainer() const
 	Description :	Returns a pointer to the data container.
 	Access :		Public
 
-	Return :		CDiagramEntityContainer*	-	The current data 
-													container (might 
+	Return :		CDiagramEntityContainer*	-	The current data
+													container (might
 													be "NULL").
 	Parameters :	none
 
-	Usage :			If modifications are made to the contents of 
-					the container, "SetModified" must be called as 
-					appropriate. If visual changes are expected, 
+	Usage :			If modifications are made to the contents of
+					the container, "SetModified" must be called as
+					appropriate. If visual changes are expected,
 					"RedrawWindow" must be called for the editor.
 
    ============================================================*/
@@ -383,7 +383,7 @@ CDiagramEntityContainer* CDiagramEditor::GetDiagramEntityContainer() const
 
 }
 
-BEGIN_MESSAGE_MAP( CDiagramEditor, CWnd )
+BEGIN_MESSAGE_MAP(CDiagramEditor, CWnd)
 	//{{AFX_MSG_MAP( CDiagramEditor )
 	ON_WM_PAINT()
 	ON_WM_ERASEBKGND()
@@ -405,23 +405,23 @@ BEGIN_MESSAGE_MAP( CDiagramEditor, CWnd )
 	ON_WM_KILLFOCUS()
 	ON_WM_TIMER()
 	ON_WM_MOUSEWHEEL()
-	ON_COMMAND_RANGE( CMD_START, CMD_END, OnObjectCommand )
+	ON_COMMAND_RANGE(CMD_START, CMD_END, OnObjectCommand)
 
-	ON_COMMAND( ID_EDIT_CUT, OnEditCut )
-	ON_COMMAND( ID_EDIT_COPY, OnEditCopy )
-	ON_COMMAND( ID_EDIT_PASTE, OnEditPaste )
-	ON_COMMAND( ID_EDIT_GROUP, OnEditGroup )
-	ON_COMMAND( ID_EDIT_UNGROUP, OnEditUngroup )
+	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
+	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
+	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
+	ON_COMMAND(ID_EDIT_GROUP, OnEditGroup)
+	ON_COMMAND(ID_EDIT_UNGROUP, OnEditUngroup)
 
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor painting
 
-void CDiagramEditor::OnPaint() 
+void CDiagramEditor::OnPaint()
 /* ============================================================
 	Function :		CDiagramEditor::OnPaint
-	Description :	Draws the screen. A memory "CDC" is created 
+	Description :	Draws the screen. A memory "CDC" is created
 					and drawn to.
 	Access :		Protected
 
@@ -433,63 +433,63 @@ void CDiagramEditor::OnPaint()
    ============================================================*/
 {
 
-	CPaintDC outputdc( this );
+	CPaintDC outputdc(this);
 
 	// Getting coordinate data
 	CRect rect;
-	GetClientRect( &rect );
+	GetClientRect(&rect);
 
 	SCROLLINFO sih;
-	sih.cbSize = sizeof( SCROLLINFO );
+	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
 	SCROLLINFO siv;
-	siv.cbSize = sizeof( SCROLLINFO );
+	siv.cbSize = sizeof(SCROLLINFO);
 	siv.fMask = SIF_POS;
-	if( !GetScrollInfo( SB_HORZ, &sih ) )
+	if (!GetScrollInfo(SB_HORZ, &sih))
 		sih.nPos = 0;
-	if( !GetScrollInfo( SB_VERT, &siv ) )
+	if (!GetScrollInfo(SB_VERT, &siv))
 		siv.nPos = 0;
 
 	CRect totalRect;
-	int virtwidth = round( static_cast< double >( GetVirtualSize().cx ) * GetZoom() ) + 1;
-	int virtheight = round( static_cast< double >( GetVirtualSize().cy ) * GetZoom() ) + 1;
-	totalRect.SetRect( 0, 0, virtwidth, virtheight );
+	int virtwidth = round(static_cast<double>(GetVirtualSize().cx) * GetZoom()) + 1;
+	int virtheight = round(static_cast<double>(GetVirtualSize().cy) * GetZoom()) + 1;
+	totalRect.SetRect(0, 0, virtwidth, virtheight);
 
 	// Creating memory CDC
 	CDC dc;
-	dc.CreateCompatibleDC( &outputdc );
+	dc.CreateCompatibleDC(&outputdc);
 	CBitmap bmp;
-	bmp.CreateCompatibleBitmap( &outputdc, rect.right, rect.bottom );
-	CBitmap* oldbmp = dc.SelectObject( &bmp );
+	bmp.CreateCompatibleBitmap(&outputdc, rect.right, rect.bottom);
+	CBitmap* oldbmp = dc.SelectObject(&bmp);
 
 	// Painting
-	EraseBackground( &dc, rect );
+	EraseBackground(&dc, rect);
 
-	dc.SetWindowOrg( sih.nPos, siv.nPos );
+	dc.SetWindowOrg(sih.nPos, siv.nPos);
 
-	Draw( &dc, totalRect );
+	Draw(&dc, totalRect);
 
 	// Blit the memory CDC to screen
-	outputdc.BitBlt( 0, 0, rect.right, rect.bottom, &dc, sih.nPos, siv.nPos, SRCCOPY );
-	dc.SelectObject( oldbmp );
+	outputdc.BitBlt(0, 0, rect.right, rect.bottom, &dc, sih.nPos, siv.nPos, SRCCOPY);
+	dc.SelectObject(oldbmp);
 
 }
 
-void CDiagramEditor::Draw( CDC* dc, CRect rect ) const
+void CDiagramEditor::Draw(CDC* dc, CRect rect) const
 /* ============================================================
 	Function :		CDiagramEditor::Draw
-	Description :	Calls a series of (virtual) functions to 
-					draw to "dc". "rect" is the total rectangle 
+	Description :	Calls a series of (virtual) functions to
+					draw to "dc". "rect" is the total rectangle
 					to draw to.
 	Access :		Public
 
 	Return :		void
 	Parameters :	CDC* dc		-	The "CDC" to draw to.
-					CRect rect	-	The complete rectangle 
+					CRect rect	-	The complete rectangle
 									(including non-visible areas)
-					
-	Usage :			Should not normally be called from user code. 
-					Can be called to draw the complete window. 
+
+	Usage :			Should not normally be called from user code.
+					Can be called to draw the complete window.
 					Can be overriden to change drawing order.
 
    ============================================================*/
@@ -497,71 +497,71 @@ void CDiagramEditor::Draw( CDC* dc, CRect rect ) const
 
 	double zoom = GetZoom();
 
-	DrawBackground( dc, rect, zoom );
+	DrawBackground(dc, rect, zoom);
 
-	if( m_grid )
-		DrawGrid( dc, rect, zoom );
+	if (m_grid)
+		DrawGrid(dc, rect, zoom);
 
-	if( m_margin )
-		DrawMargins( dc, rect, zoom );
+	if (m_margin)
+		DrawMargins(dc, rect, zoom);
 
-	DrawObjects( dc, zoom );
+	DrawObjects(dc, zoom);
 
-	if( m_bgResize && m_bgResizeSelected )
-		DrawSelectionMarkers( dc );
+	if (m_bgResize && m_bgResizeSelected)
+		DrawSelectionMarkers(dc);
 
-	if( GetPanning() )
-		DrawPanning( dc );
+	if (GetPanning())
+		DrawPanning(dc);
 
 }
 
-void CDiagramEditor::Print( CDC* dc, CRect rect, double zoom ) 
+void CDiagramEditor::Print(CDC* dc, CRect rect, double zoom)
 /* ============================================================
 	Function :		CDiagramEditor::Print
-	Description :	Prints the editor to printer or print a 
+	Description :	Prints the editor to printer or print a
 					preview.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDC* dc		-	Printer- or preview "CDC" to 
+	Parameters :	CDC* dc		-	Printer- or preview "CDC" to
 									draw to.
 					CRect rect	-	Total rect of editor.
 					double zoom	-	Desired zoom value.
-					
-	Usage :			The function should be called to print the 
-					editor to a printer or print preview. This 
-					is because the zoom will most likely be set 
-					to something different from the editor itself. 
-					A good zoom factor can be calculated from 
-					the difference between the screen- and 
+
+	Usage :			The function should be called to print the
+					editor to a printer or print preview. This
+					is because the zoom will most likely be set
+					to something different from the editor itself.
+					A good zoom factor can be calculated from
+					the difference between the screen- and
 					printer resolution:
 
 					"printerDC.GetDeviceCaps( LOGPIXELSX ) / screenDC.GetDeviceCaps( LOGPIXELSX )"
 
-					The grid, margin and selection markers are 
+					The grid, margin and selection markers are
 					not printed.
-					Can be overriden to change drawing order, or 
+					Can be overriden to change drawing order, or
 					add drawing of the grid etc.
    ============================================================*/
 {
 
 	UnselectAll();
-	DrawBackground( dc, rect, zoom );
-	DrawObjects( dc, zoom );
+	DrawBackground(dc, rect, zoom);
+	DrawObjects(dc, zoom);
 
 }
 
-BOOL CDiagramEditor::OnEraseBkgnd( CDC* ) 
+BOOL CDiagramEditor::OnEraseBkgnd(CDC*)
 /* ============================================================
 	Function :		CDiagramEditor::OnEraseBkgnd
-	Description :	Handles the "WM_ERASEBKGND" message. Handled 
-					to avoid flicker - the editor is completely 
+	Description :	Handles the "WM_ERASEBKGND" message. Handled
+					to avoid flicker - the editor is completely
 					redrawn in "OnPaint".
 	Access :		Protected
 
-	Return :		BOOL	-	
-	Parameters :	CDC*	-	
-					
+	Return :		BOOL	-
+	Parameters :	CDC*	-
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
@@ -574,7 +574,7 @@ BOOL CDiagramEditor::OnEraseBkgnd( CDC* )
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor painting virtuals
 
-void CDiagramEditor::EraseBackground( CDC* dc, CRect rect ) const
+void CDiagramEditor::EraseBackground(CDC* dc, CRect rect) const
 /* ============================================================
 	Function :		CDiagramEditor::EraseBackground
 	Description :	Draws the non-client background
@@ -583,18 +583,18 @@ void CDiagramEditor::EraseBackground( CDC* dc, CRect rect ) const
 	Return :		void
 	Parameters :	CDC* dc		-	"CDC" to draw to.
 					CRect rect	-	Total rect to draw to.
-					
-	Usage :			Virtual. Can be overridden in a derived class 
+
+	Usage :			Virtual. Can be overridden in a derived class
 					to erase the non-client area.
 
    ============================================================*/
 {
 
-	dc->FillSolidRect( rect, m_nonClientBkgndCol );
+	dc->FillSolidRect(rect, m_nonClientBkgndCol);
 
 }
 
-void CDiagramEditor::DrawBackground( CDC* dc, CRect rect, double /*zoom*/) const
+void CDiagramEditor::DrawBackground(CDC* dc, CRect rect, double /*zoom*/) const
 /* ============================================================
 	Function :		CDiagramEditor::DrawBackground
 	Description :	Draws the virtual background
@@ -603,22 +603,22 @@ void CDiagramEditor::DrawBackground( CDC* dc, CRect rect, double /*zoom*/) const
 	Return :		void
 	Parameters :	CDC* dc			-	"CDC" to draw to.
 					CRect rect		-	Total rect to draw to.
-					double (zoom)	-	Current zoom level. 
-										Coordinates can be 
-										multiplied with this 
+					double (zoom)	-	Current zoom level.
+										Coordinates can be
+										multiplied with this
 										value to get scaled.
-					
-	Usage :			Virtual. Can be overridden in a derived 
+
+	Usage :			Virtual. Can be overridden in a derived
 					class to draw the virtual paper area.
 
    ============================================================*/
 {
 
-	dc->FillSolidRect( &rect, m_bkgndCol );
+	dc->FillSolidRect(&rect, m_bkgndCol);
 
 }
 
-void CDiagramEditor::DrawGrid( CDC* dc, CRect rect, double zoom ) const
+void CDiagramEditor::DrawGrid(CDC* dc, CRect rect, double zoom) const
 /* ============================================================
 	Function :		CDiagramEditor::DrawGrid
 	Description :	Draws the grid
@@ -627,13 +627,13 @@ void CDiagramEditor::DrawGrid( CDC* dc, CRect rect, double zoom ) const
 	Return :		void
 	Parameters :	CDC* dc		-	"CDC" to draw to.
 					CRect rect	-	Total rect to draw to.
-					double zoom	-	Current zoom level. 
-									Coordinates can be 
-									multiplied with this value 
+					double zoom	-	Current zoom level.
+									Coordinates can be
+									multiplied with this value
 									to get scaled.
-					
-	Usage :			Virtual. Can be overridden in a derived 
-					class to draw the grid. Will not be called 
+
+	Usage :			Virtual. Can be overridden in a derived
+					class to draw the grid. Will not be called
 					if the grid is not visible.
 
    ============================================================*/
@@ -643,9 +643,9 @@ void CDiagramEditor::DrawGrid( CDC* dc, CRect rect, double zoom ) const
 	int gridstyle = GetGridPenStyle();
 
 	CPen pen;
-	pen.CreatePen( gridstyle, 1, gridcol );
+	pen.CreatePen(gridstyle, 1, gridcol);
 
-	dc->SelectObject( &pen );
+	dc->SelectObject(&pen);
 
 	// To avoid accumulating rounding errors, we don't
 	// precalculate the grid size for the given zoom...
@@ -657,23 +657,23 @@ void CDiagramEditor::DrawGrid( CDC* dc, CRect rect, double zoom ) const
 	int stepy = GetVirtualSize().cy / GetGridSize().cy;
 
 	// ...instead we calculate the position of each line.
-	for( int x = 0 ; x <= stepx ; x++ )
+	for (int x = 0; x <= stepx; x++)
 	{
-		dc->MoveTo( round( static_cast< double >( GetGridSize().cx * x ) * zoom ), 0 );
-		dc->LineTo( round( static_cast< double >( GetGridSize().cx * x ) * zoom ), height );
+		dc->MoveTo(round(static_cast<double>(GetGridSize().cx * x) * zoom), 0);
+		dc->LineTo(round(static_cast<double>(GetGridSize().cx * x) * zoom), height);
 	}
 
-	for( int y = 0; y <= stepy ; y++ )
+	for (int y = 0; y <= stepy; y++)
 	{
-		dc->MoveTo( 0, round( static_cast< double >( GetGridSize().cy * y ) * zoom ) );
-		dc->LineTo( width, round( static_cast< double >( GetGridSize().cy * y ) * zoom ) );
+		dc->MoveTo(0, round(static_cast<double>(GetGridSize().cy * y) * zoom));
+		dc->LineTo(width, round(static_cast<double>(GetGridSize().cy * y) * zoom));
 	}
 
-	dc->SelectStockObject( BLACK_PEN );
+	dc->SelectStockObject(BLACK_PEN);
 
 }
 
-void CDiagramEditor::DrawMargins( CDC* dc, CRect rect, double zoom ) const
+void CDiagramEditor::DrawMargins(CDC* dc, CRect rect, double zoom) const
 /* ============================================================
 	Function :		CDiagramEditor::DrawMargins
 	Description :	Draws the margins.
@@ -682,55 +682,55 @@ void CDiagramEditor::DrawMargins( CDC* dc, CRect rect, double zoom ) const
 	Return :		void
 	Parameters :	CDC* dc		-	"CDC" to draw to.
 					CRect rect	-	Total rect to draw to.
-					double zoom	-	Current zoom level. 
-									Coordinates can be 
-									multiplied with this value 
+					double zoom	-	Current zoom level.
+									Coordinates can be
+									multiplied with this value
 									to get scaled.
-					
-	Usage :			Virtual. Can be overridden in a derived 
-					class to draw the margins. Will not be 
+
+	Usage :			Virtual. Can be overridden in a derived
+					class to draw the margins. Will not be
 					called if margins are not visible.
 
    ============================================================*/
 {
 
 	CPen pen;
-	pen.CreatePen( PS_SOLID, 0, m_marginColor );
-	dc->SelectObject( &pen );
+	pen.CreatePen(PS_SOLID, 0, m_marginColor);
+	dc->SelectObject(&pen);
 
-	CPoint leftTop( rect.left + round( static_cast< double >( m_leftMargin ) * zoom ), rect.top + round( static_cast< double >( m_topMargin ) * zoom ) );
-	CPoint leftBottom( rect.left + round( static_cast< double >( m_leftMargin ) * zoom ), rect.bottom - round( static_cast< double >( m_bottomMargin ) * zoom ) - 1 );
-	CPoint rightTop( rect.right - round( static_cast< double >( m_rightMargin ) * zoom ) - 1, rect.top + round( static_cast< double >( m_topMargin ) * zoom ) );
-	CPoint rightBottom( rect.right - round( static_cast< double >( m_rightMargin ) * zoom ) - 1, rect.bottom - round( static_cast< double >( m_bottomMargin ) * zoom ) - 1 );
+	CPoint leftTop(rect.left + round(static_cast<double>(m_leftMargin) * zoom), rect.top + round(static_cast<double>(m_topMargin) * zoom));
+	CPoint leftBottom(rect.left + round(static_cast<double>(m_leftMargin) * zoom), rect.bottom - round(static_cast<double>(m_bottomMargin) * zoom) - 1);
+	CPoint rightTop(rect.right - round(static_cast<double>(m_rightMargin) * zoom) - 1, rect.top + round(static_cast<double>(m_topMargin) * zoom));
+	CPoint rightBottom(rect.right - round(static_cast<double>(m_rightMargin) * zoom) - 1, rect.bottom - round(static_cast<double>(m_bottomMargin) * zoom) - 1);
 
-	if( m_leftMargin )
+	if (m_leftMargin)
 	{
-		dc->MoveTo( leftTop );
-		dc->LineTo( leftBottom );
+		dc->MoveTo(leftTop);
+		dc->LineTo(leftBottom);
 	}
 
-	if( m_rightMargin )
+	if (m_rightMargin)
 	{
-		dc->MoveTo( rightTop );
-		dc->LineTo( rightBottom );
+		dc->MoveTo(rightTop);
+		dc->LineTo(rightBottom);
 	}
-	if( m_topMargin )
+	if (m_topMargin)
 	{
-		dc->MoveTo( leftTop );
-		dc->LineTo( rightTop );
+		dc->MoveTo(leftTop);
+		dc->LineTo(rightTop);
 	}
-	if( m_bottomMargin )
+	if (m_bottomMargin)
 	{
-		dc->MoveTo( leftBottom );
-		dc->LineTo( rightBottom );
+		dc->MoveTo(leftBottom);
+		dc->LineTo(rightBottom);
 	}
 
-	dc->SelectStockObject( BLACK_PEN );
+	dc->SelectStockObject(BLACK_PEN);
 
 
 }
 
-void CDiagramEditor::DrawObjects( CDC* dc, double zoom ) const
+void CDiagramEditor::DrawObjects(CDC* dc, double zoom) const
 /* ============================================================
 	Function :		CDiagramEditor::DrawObjects
 	Description :	Draws the object.
@@ -738,28 +738,28 @@ void CDiagramEditor::DrawObjects( CDC* dc, double zoom ) const
 
 	Return :		void
 	Parameters :	CDC* dc		-	"CDC" to draw to.
-					double zoom	-	Current zoom level. 
-									Coordinates can be 
-									multiplied with this value 
+					double zoom	-	Current zoom level.
+									Coordinates can be
+									multiplied with this value
 									to get scaled.
-					
-	Usage :			Virtual. Can be overridden in a derived 
+
+	Usage :			Virtual. Can be overridden in a derived
 					class to draw the data objects.
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		int count = 0;
 		CDiagramEntity* obj;
-		while( ( obj = m_objs->GetAt( count++ ) ) )
-			obj->DrawObject( dc, zoom );
+		while ((obj = m_objs->GetAt(count++)))
+			obj->DrawObject(dc, zoom);
 	}
 
 }
 
-void CDiagramEditor::DrawSelectionMarkers( CDC* dc ) const
+void CDiagramEditor::DrawSelectionMarkers(CDC* dc) const
 /* ============================================================
 	Function :		CDiagramEditor::DrawSelectionMarkers
 	Description :	Draws the selection markers.
@@ -767,17 +767,17 @@ void CDiagramEditor::DrawSelectionMarkers( CDC* dc ) const
 
 	Return :		void
 	Parameters :	CDC* dc	-	The "CDC" to draw to.
-					
-	Usage :			Virtual. Can be overridden in a derived 
-					class to draw the selection markers in 
-					another way than the default black 
-					rectangles. The selection rects are 
-					displayed if the editor has background 
-					resizing enabled and the user clicks in 
-					the resize area around the virtual page 
-					border. Selection markers are displayed 
-					to allow resizing of the virtual page 
-					with the mouse. 
+
+	Usage :			Virtual. Can be overridden in a derived
+					class to draw the selection markers in
+					another way than the default black
+					rectangles. The selection rects are
+					displayed if the editor has background
+					resizing enabled and the user clicks in
+					the resize area around the virtual page
+					border. Selection markers are displayed
+					to allow resizing of the virtual page
+					with the mouse.
 
    ============================================================*/
 {
@@ -785,53 +785,53 @@ void CDiagramEditor::DrawSelectionMarkers( CDC* dc ) const
 	// Draw selection markers
 	CRect rectSelect;
 
-	dc->SelectStockObject( BLACK_BRUSH );
-	rectSelect = GetSelectionMarkerRect( DEHT_TOPLEFT );
-	dc->Rectangle( rectSelect );
+	dc->SelectStockObject(BLACK_BRUSH);
+	rectSelect = GetSelectionMarkerRect(DEHT_TOPLEFT);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_TOPMIDDLE );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_TOPMIDDLE);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_TOPRIGHT );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_TOPRIGHT);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_BOTTOMLEFT );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_BOTTOMLEFT);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_BOTTOMMIDDLE );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_BOTTOMMIDDLE);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_BOTTOMRIGHT );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_BOTTOMRIGHT);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_RIGHTMIDDLE );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_RIGHTMIDDLE);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_LEFTMIDDLE );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_LEFTMIDDLE);
+	dc->Rectangle(rectSelect);
 
 }
 
-CRect CDiagramEditor::GetSelectionMarkerRect( UINT marker ) const
+CRect CDiagramEditor::GetSelectionMarkerRect(UINT marker) const
 /* ============================================================
 	Function :		CDiagramEditor::GetSelectionMarkerRect
 	Description :	Returns the selection rect for marker
 	Access :		Public
 
-	Return :		CRect		-	The rect of the selection 
+	Return :		CRect		-	The rect of the selection
 									marker.
-	Parameters :	UINT marker	-	The marker to get the rect 
-									for ("DEHT_"-constants 
+	Parameters :	UINT marker	-	The marker to get the rect
+									for ("DEHT_"-constants
 									defined in DiagramEntity.h)
-					
-	Usage :			Virtual. Can be overridden in a derived 
-					class to change the selection rects for 
-					the virtual page. The selection rects are 
-					displayed if the editor has background 
-					resizing enabled and the user clicks in 
-					the resize area around the virtual page 
-					border. Selection markers are displayed 
-					to allow resizing of the virtual page 
+
+	Usage :			Virtual. Can be overridden in a derived
+					class to change the selection rects for
+					the virtual page. The selection rects are
+					displayed if the editor has background
+					resizing enabled and the user clicks in
+					the resize area around the virtual page
+					border. Selection markers are displayed
+					to allow resizing of the virtual page
 					with the mouse.
 					"marker" can be one of the following:
 						"DEHT_NONE" No hit-point
@@ -847,69 +847,69 @@ CRect CDiagramEditor::GetSelectionMarkerRect( UINT marker ) const
    ============================================================*/
 {
 
-	CRect rect( 0, 0, round( static_cast< double >( GetVirtualSize().cx ) * GetZoom() ), 
-						round( static_cast< double >( GetVirtualSize().cy ) * GetZoom() ) );
+	CRect rect(0, 0, round(static_cast<double>(GetVirtualSize().cx) * GetZoom()),
+		round(static_cast<double>(GetVirtualSize().cy) * GetZoom()));
 
 	CRect rectMarker;
 	int horz = m_markerSize.cx / 2;
 	int vert = m_markerSize.cy / 2;
 
-	switch( marker )
+	switch (marker)
 	{
-		case DEHT_TOPLEFT:
-			rectMarker.SetRect( rect.left - horz, 
-								rect.top - vert, 
-								rect.left + horz, 
-								rect.top + vert );
+	case DEHT_TOPLEFT:
+		rectMarker.SetRect(rect.left - horz,
+			rect.top - vert,
+			rect.left + horz,
+			rect.top + vert);
 		break;
 
-		case DEHT_TOPMIDDLE:
-			rectMarker.SetRect( rect.left + ( rect.Width() / 2 ) - horz, 
-								rect.top - vert, 
-								rect.left + ( rect.Width() / 2 ) + horz, 
-								rect.top + vert );
+	case DEHT_TOPMIDDLE:
+		rectMarker.SetRect(rect.left + (rect.Width() / 2) - horz,
+			rect.top - vert,
+			rect.left + (rect.Width() / 2) + horz,
+			rect.top + vert);
 		break;
 
-		case DEHT_TOPRIGHT:
-			rectMarker.SetRect( rect.right - horz, 
-								rect.top - vert, 
-								rect.right + horz, 
-								rect.top + vert );
+	case DEHT_TOPRIGHT:
+		rectMarker.SetRect(rect.right - horz,
+			rect.top - vert,
+			rect.right + horz,
+			rect.top + vert);
 		break;
 
-		case DEHT_BOTTOMLEFT:
-			rectMarker.SetRect( rect.left - horz, 
-								rect.bottom - vert, 
-								rect.left + horz, 
-								rect.bottom + vert );
+	case DEHT_BOTTOMLEFT:
+		rectMarker.SetRect(rect.left - horz,
+			rect.bottom - vert,
+			rect.left + horz,
+			rect.bottom + vert);
 		break;
 
-		case DEHT_BOTTOMMIDDLE:
-			rectMarker.SetRect( rect.left + ( rect.Width() / 2 ) - horz, 
-								rect.bottom - vert, 
-								rect.left + ( rect.Width() / 2 ) + horz, 
-								rect.bottom + vert );
+	case DEHT_BOTTOMMIDDLE:
+		rectMarker.SetRect(rect.left + (rect.Width() / 2) - horz,
+			rect.bottom - vert,
+			rect.left + (rect.Width() / 2) + horz,
+			rect.bottom + vert);
 		break;
 
-		case DEHT_BOTTOMRIGHT:
-			rectMarker.SetRect( rect.right - horz, 
-								rect.bottom - vert, 
-								rect.right + horz, 
-								rect.bottom + vert );
+	case DEHT_BOTTOMRIGHT:
+		rectMarker.SetRect(rect.right - horz,
+			rect.bottom - vert,
+			rect.right + horz,
+			rect.bottom + vert);
 		break;
 
-		case DEHT_LEFTMIDDLE:
-			rectMarker.SetRect( rect.left - horz, 
-								rect.top + ( rect.Height() / 2 ) - vert, 
-								rect.left + horz, 
-								rect.top + ( rect.Height() / 2 ) + vert );
+	case DEHT_LEFTMIDDLE:
+		rectMarker.SetRect(rect.left - horz,
+			rect.top + (rect.Height() / 2) - vert,
+			rect.left + horz,
+			rect.top + (rect.Height() / 2) + vert);
 		break;
 
-		case DEHT_RIGHTMIDDLE:
-			rectMarker.SetRect( rect.right - horz, 
-								rect.top + ( rect.Height() / 2 ) - vert, 
-								rect.right + horz, 
-								rect.top + ( rect.Height() / 2 ) + vert );
+	case DEHT_RIGHTMIDDLE:
+		rectMarker.SetRect(rect.right - horz,
+			rect.top + (rect.Height() / 2) - vert,
+			rect.right + horz,
+			rect.top + (rect.Height() / 2) + vert);
 		break;
 	}
 
@@ -920,7 +920,7 @@ CRect CDiagramEditor::GetSelectionMarkerRect( UINT marker ) const
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor property accessors
 
-void CDiagramEditor::SetVirtualSize( const CSize& size )
+void CDiagramEditor::SetVirtualSize(const CSize& size)
 /* ============================================================
 	Function :		CDiagramEditor::SetVirtualSize
 	Description :	Sets the size of the virtual paper.
@@ -928,41 +928,41 @@ void CDiagramEditor::SetVirtualSize( const CSize& size )
 
 	Return :		void
 	Parameters :	const CSize& size	-	New virtual size.
-					
-	Usage :			The virtual page of the editor is the 
-					'paper' where the user can draw. This 
+
+	Usage :			The virtual page of the editor is the
+					'paper' where the user can draw. This
 					function marks the data as changed.
 
    ============================================================*/
 {
 
-	ASSERT( m_objs );
-	SetInternalVirtualSize( size );
-	m_objs->SetModified( TRUE );
+	ASSERT(m_objs);
+	SetInternalVirtualSize(size);
+	m_objs->SetModified(TRUE);
 
 }
 
-void CDiagramEditor::SetInternalVirtualSize( const CSize& size )
+void CDiagramEditor::SetInternalVirtualSize(const CSize& size)
 /* ============================================================
 	Function :		CDiagramEditor::SetInternalVirtualSize
-	Description :	Changes the virtual page size without 
+	Description :	Changes the virtual page size without
 					setting the data as modified.
 	Access :		Private
 
 	Return :		void
 	Parameters :	const CSize& size	-	New virtual size.
-					
-	Usage :			Internal function. 
+
+	Usage :			Internal function.
 
    ============================================================*/
 {
-	if( m_objs && size != GetVirtualSize() )
+	if (m_objs && size != GetVirtualSize())
 	{
 
-		m_objs->SetVirtualSize( size );
+		m_objs->SetVirtualSize(size);
 
 		SetupScrollbars();
-		if( m_hWnd )
+		if (m_hWnd)
 			RedrawWindow();
 
 	}
@@ -978,95 +978,95 @@ CSize CDiagramEditor::GetVirtualSize() const
 	Return :		CSize	-	The current virtual size.
 	Parameters :	none
 
-	Usage :			The virtual page of the editor is the 
-					'paper' where the user can draw. 
+	Usage :			The virtual page of the editor is the
+					'paper' where the user can draw.
 
    ============================================================*/
 {
 
-	CRect rect( 0, 0, 0, 0 );
-	if( m_hWnd )
-		GetClientRect( &rect );
-	CSize size( CSize( 0, 0 ) );
+	CRect rect(0, 0, 0, 0);
+	if (m_hWnd)
+		GetClientRect(&rect);
+	CSize size(CSize(0, 0));
 
-	if( m_objs )
+	if (m_objs)
 		size = m_objs->GetVirtualSize();
 
-	if( size.cx == 0 )
+	if (size.cx == 0)
 		size.cx = rect.right;
-	if( size.cy == 0 )
+	if (size.cy == 0)
 		size.cy = rect.bottom;
 
 	return size;
 
 }
 
-void CDiagramEditor::SetBackgroundColor( COLORREF col )
+void CDiagramEditor::SetBackgroundColor(COLORREF col)
 /* ============================================================
 	Function :		CDiagramEditor::SetBackgroundColor
 	Description :	Sets the background color.
 	Access :		Public
 
 	Return :		void
-	Parameters :	COLORREF col	-	New background color 
+	Parameters :	COLORREF col	-	New background color
 										to set.
-					
-	Usage :			The background is the virtual area of the 
-					editor (might both be smaller or bigger 
+
+	Usage :			The background is the virtual area of the
+					editor (might both be smaller or bigger
 					than the client rect).
 
    ============================================================*/
 {
 
 	m_bkgndCol = col;
-	if( m_hWnd )
+	if (m_hWnd)
 		RedrawWindow();
 
 }
 
-void CDiagramEditor::SetNonClientColor( COLORREF col )
+void CDiagramEditor::SetNonClientColor(COLORREF col)
 /* ============================================================
 	Function :		CDiagramEditor::SetNonClientColor
 	Description :	Sets the non-client area color.
 	Access :		Public
 
 	Return :		void
-	Parameters :	COLORREF col	-	New non-client area 
+	Parameters :	COLORREF col	-	New non-client area
 										color.
-					
-	Usage :			The non-client color is the color of the 
+
+	Usage :			The non-client color is the color of the
 					area outside the virtual page.
 
    ============================================================*/
 {
 
 	m_nonClientBkgndCol = col;
-	if( m_hWnd )
+	if (m_hWnd)
 		RedrawWindow();
 
 }
 
-void CDiagramEditor::ShowGrid( BOOL grid )
+void CDiagramEditor::ShowGrid(BOOL grid)
 /* ============================================================
 	Function :		CDiagramEditor::ShowGrid
 	Description :	Sets grid visibility.
 	Access :		Public
 
 	Return :		void
-	Parameters :	BOOL grid	-	"TRUE" to show the grid, "FALSE" 
+	Parameters :	BOOL grid	-	"TRUE" to show the grid, "FALSE"
 									to hide.
-					
-	Usage :			If the grid is visible, it will be drawn 
-					using the grid pen style and color. The 
-					grid lines will not be scaled with the 
-					zoom (the space between them will of 
+
+	Usage :			If the grid is visible, it will be drawn
+					using the grid pen style and color. The
+					grid lines will not be scaled with the
+					zoom (the space between them will of
 					course be, however)
 
    ============================================================*/
 {
 
 	m_grid = grid;
-	if( m_hWnd )
+	if (m_hWnd)
 		RedrawWindow();
 
 }
@@ -1080,10 +1080,10 @@ BOOL CDiagramEditor::IsGridVisible() const
 	Return :		BOOL	-	"TRUE" if grid is visible.
 	Parameters :	none
 
-	Usage :			If the grid is visible, it will be drawn 
-					using the grid pen style and color. The 
-					grid lines will not be scaled with the 
-					zoom (the space between them will of 
+	Usage :			If the grid is visible, it will be drawn
+					using the grid pen style and color. The
+					grid lines will not be scaled with the
+					zoom (the space between them will of
 					course be, however)
 
    ============================================================*/
@@ -1093,7 +1093,7 @@ BOOL CDiagramEditor::IsGridVisible() const
 
 }
 
-void CDiagramEditor::SetGridColor( COLORREF col )
+void CDiagramEditor::SetGridColor(COLORREF col)
 /* ============================================================
 	Function :		CDiagramEditor::SetGridColor
 	Description :	Sets a new grid pen color.
@@ -1101,18 +1101,18 @@ void CDiagramEditor::SetGridColor( COLORREF col )
 
 	Return :		void
 	Parameters :	COLORREF col	-	New grid pen color.
-					
-	Usage :			If the grid is visible, it will be drawn 
-					using the grid pen style and color. The 
-					grid lines will not be scaled with the 
-					zoom (the space between them will of 
+
+	Usage :			If the grid is visible, it will be drawn
+					using the grid pen style and color. The
+					grid lines will not be scaled with the
+					zoom (the space between them will of
 					course be, however)
 
    ============================================================*/
 {
 
 	m_gridCol = col;
-	if( m_hWnd )
+	if (m_hWnd)
 		RedrawWindow();
 
 }
@@ -1126,10 +1126,10 @@ COLORREF CDiagramEditor::GetGridColor() const
 	Return :		COLORREF	-	The current grid color.
 	Parameters :	none
 
-	Usage :			If the grid is visible, it will be drawn 
-					using the grid pen style and color. The 
-					grid lines will not be scaled with the 
-					zoom (the space between them will of 
+	Usage :			If the grid is visible, it will be drawn
+					using the grid pen style and color. The
+					grid lines will not be scaled with the
+					zoom (the space between them will of
 					course be, however)
 
    ============================================================*/
@@ -1139,7 +1139,7 @@ COLORREF CDiagramEditor::GetGridColor() const
 
 }
 
-void CDiagramEditor::SetGridSize( CSize size )
+void CDiagramEditor::SetGridSize(CSize size)
 /* ============================================================
 	Function :		CDiagramEditor::SetGridSize
 	Description :	Sets a new grid size.
@@ -1147,17 +1147,17 @@ void CDiagramEditor::SetGridSize( CSize size )
 
 	Return :		void
 	Parameters :	CSize size	-	The new grid size.
-					
-	Usage :			If snap to grid is on, added, moved and 
-					resized objects snap to the closest grid 
-					position. If the background is resized, it 
+
+	Usage :			If snap to grid is on, added, moved and
+					resized objects snap to the closest grid
+					position. If the background is resized, it
 					will also snap to the grid.
 
    ============================================================*/
 {
 
 	m_gridSize = size;
-	if( m_hWnd )
+	if (m_hWnd)
 		RedrawWindow();
 
 }
@@ -1171,9 +1171,9 @@ CSize CDiagramEditor::GetGridSize() const
 	Return :		CSize	-	The current grid size.
 	Parameters :	none
 
-	Usage :			If snap to grid is on, added, moved and 
-					resized objects snap to the closest grid 
-					position. If the background is resized, it 
+	Usage :			If snap to grid is on, added, moved and
+					resized objects snap to the closest grid
+					position. If the background is resized, it
 					will also snap to the grid.
 
    ============================================================*/
@@ -1183,28 +1183,28 @@ CSize CDiagramEditor::GetGridSize() const
 
 }
 
-void CDiagramEditor::SetGridPenStyle( int style )
+void CDiagramEditor::SetGridPenStyle(int style)
 /* ============================================================
 	Function :		CDiagramEditor::SetGridPenStyle
 	Description :	Sets the new grid pen style.
 	Access :		Public
 
 	Return :		void
-	Parameters :	int style	-	The new pen style, one of 
-									the style constants for 
+	Parameters :	int style	-	The new pen style, one of
+									the style constants for
 									"CreatePen".
-					
-	Usage :			The grid (if visible) is drawn with a pen 
-					created with the grid pen style. The grid 
-					lines will not be scaled with the zoom 
-					(the space between them will of course be, 
+
+	Usage :			The grid (if visible) is drawn with a pen
+					created with the grid pen style. The grid
+					lines will not be scaled with the zoom
+					(the space between them will of course be,
 					however)
 
    ============================================================*/
 {
 
 	m_gridStyle = style;
-	if( m_hWnd )
+	if (m_hWnd)
 		RedrawWindow();
 
 }
@@ -1215,14 +1215,14 @@ int CDiagramEditor::GetGridPenStyle() const
 	Description :	Returns the pen style for the grid.
 	Access :		Public
 
-	Return :		int		-	The pen style, one of the style 
+	Return :		int		-	The pen style, one of the style
 								constants for "CreatePen".
 	Parameters :	none
 
-	Usage :			The grid (if visible) is drawn with a pen 
-					created with the grid pen style. The grid 
-					lines will not be scaled with the zoom 
-					(the space between them will of course be, 
+	Usage :			The grid (if visible) is drawn with a pen
+					created with the grid pen style. The grid
+					lines will not be scaled with the zoom
+					(the space between them will of course be,
 					however)
 
    ============================================================*/
@@ -1232,19 +1232,19 @@ int CDiagramEditor::GetGridPenStyle() const
 
 }
 
-void CDiagramEditor::SetSnapToGrid( BOOL snap )
+void CDiagramEditor::SetSnapToGrid(BOOL snap)
 /* ============================================================
 	Function :		CDiagramEditor::SetSnapToGrid
 	Description :	Enable/disable snap to grid.
 	Access :		Public
 
 	Return :		void
-	Parameters :	BOOL snap	-	"TRUE" if objects should 
+	Parameters :	BOOL snap	-	"TRUE" if objects should
 									snap to grid.
-					
-	Usage :			If snap to grid is on, added, moved and 
-					resized objects snap to the closest grid 
-					position. If the background is resized, it 
+
+	Usage :			If snap to grid is on, added, moved and
+					resized objects snap to the closest grid
+					position. If the background is resized, it
 					will also snap to the grid.
 
    ============================================================*/
@@ -1263,9 +1263,9 @@ BOOL CDiagramEditor::GetSnapToGrid() const
 	Return :		BOOL	-	"TRUE" if snap is on.
 	Parameters :	none
 
-	Usage :			If snap to grid is on, added, moved and 
-					resized objects snap to the closest grid 
-					position. If the background is resized, it 
+	Usage :			If snap to grid is on, added, moved and
+					resized objects snap to the closest grid
+					position. If the background is resized, it
 					will also snap to the grid.
 
    ============================================================*/
@@ -1275,19 +1275,19 @@ BOOL CDiagramEditor::GetSnapToGrid() const
 
 }
 
-void CDiagramEditor::SetResize( BOOL bgresize )
+void CDiagramEditor::SetResize(BOOL bgresize)
 /* ============================================================
 	Function :		CDiagramEditor::SetResize
 	Description :	Enables/disables background resizing.
 	Access :		Public
 
 	Return :		void
-	Parameters :	BOOL bgresize	-	"TRUE" if background 
+	Parameters :	BOOL bgresize	-	"TRUE" if background
 										resizing is enabled.
-					
-	Usage :			If background resizing is enabled and the 
-					user clicks between the resize zone value 
-					and the virtual edge, the background is 
+
+	Usage :			If background resizing is enabled and the
+					user clicks between the resize zone value
+					and the virtual edge, the background is
 					displayed as selected.
 
    ============================================================*/
@@ -1304,13 +1304,13 @@ BOOL CDiagramEditor::GetResize() const
 					flag.
 	Access :		Public
 
-	Return :		BOOL	-	"TRUE" if background resizing is 
+	Return :		BOOL	-	"TRUE" if background resizing is
 								enabled.
 	Parameters :	none
 
-	Usage :			If background resizing is enabled and the 
-					user clicks between the resize zone value 
-					and the virtual edge, the background is 
+	Usage :			If background resizing is enabled and the
+					user clicks between the resize zone value
+					and the virtual edge, the background is
 					displayed as selected.
 
    ============================================================*/
@@ -1320,7 +1320,7 @@ BOOL CDiagramEditor::GetResize() const
 
 }
 
-void CDiagramEditor::SetResizeZone( int bgresizezone )
+void CDiagramEditor::SetResizeZone(int bgresizezone)
 /* ============================================================
 	Function :		CDiagramEditor::SetResizeZone
 	Description :	Sets a new resize zone for the editor.
@@ -1328,10 +1328,10 @@ void CDiagramEditor::SetResizeZone( int bgresizezone )
 
 	Return :		void
 	Parameters :	int bgresizezone	-	New resize width.
-					
-	Usage :			If background resizing is enabled and the 
-					user clicks between the resize zone value 
-					and the virtual edge, the background is 
+
+	Usage :			If background resizing is enabled and the
+					user clicks between the resize zone value
+					and the virtual edge, the background is
 					displayed as selected.
 
    ============================================================*/
@@ -1350,9 +1350,9 @@ int CDiagramEditor::GetResizeZone() const
 	Return :		int		-	The resize zone in pixels.
 	Parameters :	none
 
-	Usage :			If background resizing is enabled and the 
-					user clicks between the resize zone value 
-					and the virtual edge, the background is 
+	Usage :			If background resizing is enabled and the
+					user clicks between the resize zone value
+					and the virtual edge, the background is
 					displayed as selected.
 
    ============================================================*/
@@ -1362,7 +1362,7 @@ int CDiagramEditor::GetResizeZone() const
 
 }
 
-void CDiagramEditor::SetMargins( int left, int top, int right, int bottom )
+void CDiagramEditor::SetMargins(int left, int top, int right, int bottom)
 /* ============================================================
 	Function :		CDiagramEditor::SetMargins
 	Description :	Sets margins for the virtual screen.
@@ -1373,7 +1373,7 @@ void CDiagramEditor::SetMargins( int left, int top, int right, int bottom )
 					int top		-	New top margin.
 					int right	-	New right margin.
 					int bottom	-	New bottom margin.
-					
+
 	Usage :			Call to set new margins for the editor.
 
    ============================================================*/
@@ -1386,7 +1386,7 @@ void CDiagramEditor::SetMargins( int left, int top, int right, int bottom )
 
 }
 
-void CDiagramEditor::GetMargins( int& left, int& top, int& right, int& bottom ) const
+void CDiagramEditor::GetMargins(int& left, int& top, int& right, int& bottom) const
 /* ============================================================
 	Function :		CDiagramEditor::GetMargins
 	Description :	Return the current margin.
@@ -1397,7 +1397,7 @@ void CDiagramEditor::GetMargins( int& left, int& top, int& right, int& bottom ) 
 					int& top	-	Current top margin.
 					int& right	-	Current right margin.
 					int& bottom	-	Current bottom margin.
-					
+
 	Usage :			Call to get the margins of the editor.
 
    ============================================================*/
@@ -1410,7 +1410,7 @@ void CDiagramEditor::GetMargins( int& left, int& top, int& right, int& bottom ) 
 
 }
 
-void CDiagramEditor::SetMarginColor( COLORREF marginColor )
+void CDiagramEditor::SetMarginColor(COLORREF marginColor)
 /* ============================================================
 	Function :		CDiagramEditor::SetMarginColor
 	Description :	Set current margin colors.
@@ -1418,7 +1418,7 @@ void CDiagramEditor::SetMarginColor( COLORREF marginColor )
 
 	Return :		void
 	Parameters :	COLORREF marginColor	-	The new color.
-					
+
 	Usage :			Call to set the margin color.
 
    ============================================================*/
@@ -1426,7 +1426,7 @@ void CDiagramEditor::SetMarginColor( COLORREF marginColor )
 
 	m_marginColor = marginColor;
 
-	if( m_hWnd )
+	if (m_hWnd)
 		RedrawWindow();
 
 }
@@ -1449,16 +1449,16 @@ COLORREF CDiagramEditor::GetMarginColor() const
 
 }
 
-void CDiagramEditor::ShowMargin( BOOL show )
+void CDiagramEditor::ShowMargin(BOOL show)
 /* ============================================================
 	Function :		CDiagramEditor::ShowMargin
 	Description :	Show/hide margins.
 	Access :		Public
 
 	Return :		void
-	Parameters :	BOOL show	-	"TRUE" to show margins, "FALSE" 
+	Parameters :	BOOL show	-	"TRUE" to show margins, "FALSE"
 									to hide.
-					
+
 	Usage :			Call to show/hide the margins.
 
    ============================================================*/
@@ -1466,7 +1466,7 @@ void CDiagramEditor::ShowMargin( BOOL show )
 
 	m_margin = show;
 
-	if( m_hWnd )
+	if (m_hWnd)
 		RedrawWindow();
 
 }
@@ -1474,15 +1474,15 @@ void CDiagramEditor::ShowMargin( BOOL show )
 BOOL CDiagramEditor::IsMarginVisible() const
 /* ============================================================
 	Function :		CDiagramEditor::IsMarginVisible
-	Description :	Returns the visibility state of the 
+	Description :	Returns the visibility state of the
 					margins.
 	Access :		Public
 
-	Return :		BOOL	-	"TRUE" if the margins are 
+	Return :		BOOL	-	"TRUE" if the margins are
 								visible.
 	Parameters :	none
 
-	Usage :			Call to se if the margin visibility flag is 
+	Usage :			Call to se if the margin visibility flag is
 					on.
 
    ============================================================*/
@@ -1492,17 +1492,17 @@ BOOL CDiagramEditor::IsMarginVisible() const
 
 }
 
-void CDiagramEditor::SetRestraints( int restraint )
+void CDiagramEditor::SetRestraints(int restraint)
 /* ============================================================
 	Function :		CDiagramEditor::SetRestraints
 	Description :	Sets current restraint mode
 	Access :		Public
 
 	Return :		void
-	Parameters :	BOOL restraint	-	restraint mode, see Usage 
+	Parameters :	BOOL restraint	-	restraint mode, see Usage
 										below
-					
-	Usage :			The restraint mode can be one of the 
+
+	Usage :			The restraint mode can be one of the
 					following ( defined in DialogEditor.h):
 						"RESTRAINT_NONE" No restraints.
 						"RESTRAINT_VIRTUAL" No objects can be moved outside the virtual rectangle.
@@ -1521,12 +1521,12 @@ int CDiagramEditor::GetRestraints() const
 	Description :	Returns the current restraint mode.
 	Access :		Public
 
-	Return :		int	-	The current restraint mode. See 
+	Return :		int	-	The current restraint mode. See
 							Usage below
 
 	Parameters :	none
 
-	Usage :			The restraint mode can be one of the 
+	Usage :			The restraint mode can be one of the
 					following ( defined in DialogEditor.h):
 						"RESTRAINT_NONE" No restraints.
 						"RESTRAINT_VIRTUAL" No objects can be moved outside the virtual rectangle.
@@ -1548,7 +1548,7 @@ BOOL CDiagramEditor::GetMultidraw() const
 	Return :		BOOL	-	"TRUE" if multi draw is set
 	Parameters :	none
 
-	Usage :			Multi draw means that the user can continue 
+	Usage :			Multi draw means that the user can continue
 					to add controls after one is placed.
 
    ============================================================*/
@@ -1556,7 +1556,7 @@ BOOL CDiagramEditor::GetMultidraw() const
 	return m_multiDraw;
 }
 
-void CDiagramEditor::SetMultidraw( BOOL multidraw )
+void CDiagramEditor::SetMultidraw(BOOL multidraw)
 /* ============================================================
 	Function :		CDiagramEditor::SetMultidraw
 	Description :	Sets the multi draw state.
@@ -1564,8 +1564,8 @@ void CDiagramEditor::SetMultidraw( BOOL multidraw )
 
 	Return :		void
 	Parameters :	BOOL multidraw	-	New multi draw state
-					
-	Usage :			Multi draw means that the user can continue 
+
+	Usage :			Multi draw means that the user can continue
 					to add controls after one is placed.
 
    ============================================================*/
@@ -1577,30 +1577,30 @@ void CDiagramEditor::SetMultidraw( BOOL multidraw )
 	m_drawObj = NULL;
 }
 
-void CDiagramEditor::SetZoom( double zoom )
+void CDiagramEditor::SetZoom(double zoom)
 /* ============================================================
 	Function :		CDiagramEditor::SetZoom
 	Description :	Set the current zoom level.
 	Access :		Public
 
 	Return :		void
-	Parameters :	double zoom	-	New zoom level. 1.0 means 
+	Parameters :	double zoom	-	New zoom level. 1.0 means
 					no zoom.
-					
-	Usage :			If the virtual screen should be zoomed in 
-					to double size, the zoom value should be 
+
+	Usage :			If the virtual screen should be zoomed in
+					to double size, the zoom value should be
 					2.0, for example.
 
    ============================================================*/
 {
 
-	m_zoom = max( m_zoomMin, zoom );
+	m_zoom = max(m_zoomMin, zoom);
 
-	if( m_zoom != m_zoomMin )
-		m_zoom = min( m_zoomMax, zoom );
+	if (m_zoom != m_zoomMin)
+		m_zoom = min(m_zoomMax, zoom);
 
 	SetupScrollbars();
-	if( m_hWnd )
+	if (m_hWnd)
 		RedrawWindow();
 
 }
@@ -1608,15 +1608,15 @@ void CDiagramEditor::SetZoom( double zoom )
 double CDiagramEditor::GetZoom() const
 /* ============================================================
 	Function :		CDiagramEditor::GetZoom
-	Description :	Returns the current zoom level of the editor. 
+	Description :	Returns the current zoom level of the editor.
 	Access :		Public
 
-	Return :		double	-	The current zoom level. 1.0 is 
+	Return :		double	-	The current zoom level. 1.0 is
 								no zoom.
 	Parameters :	none
 
-	Usage :			The zoom level is expressed as a double, 
-					.25 means that all zoomed coordinates 
+	Usage :			The zoom level is expressed as a double,
+					.25 means that all zoomed coordinates
 					should be multiplied with .25, for example.
 
    ============================================================*/
@@ -1626,7 +1626,7 @@ double CDiagramEditor::GetZoom() const
 
 }
 
-void CDiagramEditor::SetZoomFactor( double zoomFactor )
+void CDiagramEditor::SetZoomFactor(double zoomFactor)
 /* ============================================================
 	Function :		CDiagramEditor::SetZoomFactor
 	Description :	Sets a new zoom factor
@@ -1634,9 +1634,9 @@ void CDiagramEditor::SetZoomFactor( double zoomFactor )
 
 	Return :		void
 	Parameters :	double zoomFactor	-	The new zoom factor
-					
-	Usage :			The zoom factor is used when the + and - 
-					keys are enabled to zoom. The default value 
+
+	Usage :			The zoom factor is used when the + and -
+					keys are enabled to zoom. The default value
 					is 0.01.
 
    ============================================================*/
@@ -1653,8 +1653,8 @@ double CDiagramEditor::GetZoomFactor() const
 	Return :		double	-	The zoom factor
 	Parameters :	none
 
-	Usage :			The zoom factor is used when the + and - 
-					keys are enabled to zoom. The default value 
+	Usage :			The zoom factor is used when the + and -
+					keys are enabled to zoom. The default value
 					is 0.01.
 
    ============================================================*/
@@ -1671,7 +1671,7 @@ double CDiagramEditor::GetZoomMax() const
 	Return :		double	-	The maximum zoom level
 	Parameters :	none
 
-	Usage :			The zoom level will never go below or above 
+	Usage :			The zoom level will never go below or above
 					the min and max zoom levels
 
    ============================================================*/
@@ -1690,7 +1690,7 @@ double CDiagramEditor::GetZoomMin() const
 	Return :		double	-	The minimum zoom level
 	Parameters :	none
 
-	Usage :			The zoom level will never go below or above 
+	Usage :			The zoom level will never go below or above
 					the min and max zoom levels
 
    ============================================================*/
@@ -1700,7 +1700,7 @@ double CDiagramEditor::GetZoomMin() const
 
 }
 
-void CDiagramEditor::SetZoomMax( double zoommax )
+void CDiagramEditor::SetZoomMax(double zoommax)
 /* ============================================================
 	Function :		CDiagramEditor::SetZoomMax
 	Description :	Sets the maximum zoom level
@@ -1708,18 +1708,18 @@ void CDiagramEditor::SetZoomMax( double zoommax )
 
 	Return :		void
 	Parameters :	double zoommax	-	The new max zoom
-					
-	Usage :			The zoom level will never go below or above 
+
+	Usage :			The zoom level will never go below or above
 					the min and max zoom levels
 
    ============================================================*/
 {
 
-	m_zoomMax = max( 0, zoommax );
+	m_zoomMax = max(0, zoommax);
 
 }
 
-void CDiagramEditor::SetZoomMin( double zoommin )
+void CDiagramEditor::SetZoomMin(double zoommin)
 /* ============================================================
 	Function :		CDiagramEditor::SetZoomMin
 	Description :	Sets the mim zoom level
@@ -1727,42 +1727,42 @@ void CDiagramEditor::SetZoomMin( double zoommin )
 
 	Return :		void
 	Parameters :	double zoommin	-	New minimum zoom level
-					
-	Usage :			The zoom level will never go below or above 
+
+	Usage :			The zoom level will never go below or above
 					the min and max zoom levels
 
    ============================================================*/
 {
 
-	m_zoomMin = max( 0, zoommin );
+	m_zoomMin = max(0, zoommin);
 
 }
 
-void CDiagramEditor::SetModified( BOOL dirty )
+void CDiagramEditor::SetModified(BOOL dirty)
 /* ============================================================
 	Function :		CDiagramEditor::SetModified
-	Description :	Set the modified-state of the data for the 
+	Description :	Set the modified-state of the data for the
 					document.
 	Access :		Public
 
 	Return :		void
-	Parameters :	BOOL dirty	-	"TRUE" if the data should be 
+	Parameters :	BOOL dirty	-	"TRUE" if the data should be
 									set as modified.
-					
+
 	Usage :			Call to mark the data as modified/saved.
 
    ============================================================*/
 {
 
-	if( m_objs )
-		m_objs->SetModified( dirty );
+	if (m_objs)
+		m_objs->SetModified(dirty);
 
 }
 
 BOOL CDiagramEditor::IsModified() const
 /* ============================================================
 	Function :		CDiagramEditor::IsModified
-	Description :	Returns "TRUE" if the data in the editor is 
+	Description :	Returns "TRUE" if the data in the editor is
 					modified.
 	Access :		Public
 
@@ -1775,7 +1775,7 @@ BOOL CDiagramEditor::IsModified() const
 {
 
 	BOOL res = FALSE;
-	if( m_objs )
+	if (m_objs)
 		res = m_objs->IsModified();
 
 	return res;
@@ -1785,7 +1785,7 @@ BOOL CDiagramEditor::IsModified() const
 CSize CDiagramEditor::GetMarkerSize() const
 /* ============================================================
 	Function :		CDiagramEditor::GetMarkerSize
-	Description :	Gets the current selection marker size for 
+	Description :	Gets the current selection marker size for
 					the editor background.
 	Access :		Public
 
@@ -1801,19 +1801,19 @@ CSize CDiagramEditor::GetMarkerSize() const
 
 }
 
-void CDiagramEditor::SetMarkerSize( CSize markerSize )
+void CDiagramEditor::SetMarkerSize(CSize markerSize)
 /* ============================================================
 	Function :		CDiagramEditor::SetMarkerSize
-	Description :	Sets the size of the selection markers for 
+	Description :	Sets the size of the selection markers for
 					the editor background.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CSize markerSize	-	New size of 
+	Parameters :	CSize markerSize	-	New size of
 											markers.
-					
+
 	Usage :			Call to set the selection marker size.
-					Will not set the selection marker size for 
+					Will not set the selection marker size for
 					objects.
 
    ============================================================*/
@@ -1826,15 +1826,15 @@ void CDiagramEditor::SetMarkerSize( CSize markerSize )
 UINT CDiagramEditor::GetKeyboardInterface() const
 /* ============================================================
 	Function :		CDiagramEditor::GetKeyboardInterface
-	Description :	Returns the flags for the keyboard 
+	Description :	Returns the flags for the keyboard
 					interface
 	Access :		Public
 
 	Return :		UINT	-	The current flags
 	Parameters :	none
 
-	Usage :			The keyboard interface decides what keys 
-					should be reacted on. The following flags 
+	Usage :			The keyboard interface decides what keys
+					should be reacted on. The following flags
 					can be used:
 						"KEY_ARROW" Will handle arrow keys. If shift is pressed, the selected objects will be resized, moved otherwise.
 						"KEY_PGUPDOWN" Will handle Pg up & pg down. If Ctrl is pressed, the selected object will move to the top or the bottom of the z-order, one step up or down otherwise.
@@ -1852,7 +1852,7 @@ UINT CDiagramEditor::GetKeyboardInterface() const
 
 }
 
-void CDiagramEditor::SetKeyboardInterface( int keyInterface )
+void CDiagramEditor::SetKeyboardInterface(int keyInterface)
 /* ============================================================
 	Function :		CDiagramEditor::SetKeyboardInterface
 	Description :	Sets the keyboard interface flag.
@@ -1860,7 +1860,7 @@ void CDiagramEditor::SetKeyboardInterface( int keyInterface )
 
 	Return :		void
 	Parameters :	int keyInterface	-	The new flags
-					
+
 	Usage :			Call to set the keys the editor will handle.
 					See "GetKeyboardInterface".
 
@@ -1871,22 +1871,22 @@ void CDiagramEditor::SetKeyboardInterface( int keyInterface )
 
 }
 
-void CDiagramEditor::SetPopupMenu( CDiagramMenu* popupmenu )
+void CDiagramEditor::SetPopupMenu(CDiagramMenu* popupmenu)
 /* ============================================================
 	Function :		CDiagramEditor::SetPopupMenu
 	Description :	Sets the editor popup menu to popupmenu.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDiagramMenu* popupmenu	-	The popup menu 
+	Parameters :	CDiagramMenu* popupmenu	-	The popup menu
 												to use.
-					
+
 	Usage :			Call to set the popup menu for the editor.
 					Note that the editor owns the popup menu.
 
    ============================================================*/
 {
-	if( m_popupMenu )
+	if (m_popupMenu)
 		delete m_popupMenu;
 
 	m_popupMenu = popupmenu;
@@ -1899,11 +1899,11 @@ CDiagramMenu* CDiagramEditor::GetPopupMenu() const
 	Description :	Returns a pointer to the editor popup menu.
 	Access :		Public
 
-	Return :		CDiagramMenu*	-	The popup menu. 
+	Return :		CDiagramMenu*	-	The popup menu.
 										Might be "NULL".
 	Parameters :	none
 
-	Usage :			Call to get a pointer to the editor popup 
+	Usage :			Call to get a pointer to the editor popup
 					menu. Note that the editor owns the menu.
 
    ============================================================*/
@@ -1916,37 +1916,37 @@ CDiagramMenu* CDiagramEditor::GetPopupMenu() const
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor mouse handling
 
-void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point ) 
+void CDiagramEditor::OnLButtonDown(UINT nFlags, CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::OnLButtonDown
-	Description :	Handles the "WM_LBUTTONDOWN" message. We 
-					select/deselect objects and set internal 
+	Description :	Handles the "WM_LBUTTONDOWN" message. We
+					select/deselect objects and set internal
 					modes as appropriate.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	UINT nFlags		-	Key-down flag
 					CPoint point	-	Mouse position
-					
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
 {
 
-	SetPanning( FALSE );
+	SetPanning(FALSE);
 
 	// Declarations
-	int count = 0;
+	INT_PTR count = 0;
 	CDiagramEntity* obj;
-	CPoint virtpoint( point );
-	ScreenToVirtual( virtpoint );
+	CPoint virtpoint(point);
+	ScreenToVirtual(virtpoint);
 
 	// Setting up
 	SetFocus();
 	SetCapture();
 
 	// Resetting modes
-	if( m_interactMode != MODE_DRAWING )
+	if (m_interactMode != MODE_DRAWING)
 	{
 		m_interactMode = MODE_NONE;
 		m_subMode = DEHT_NONE;
@@ -1958,12 +1958,12 @@ void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point )
 	// If we click on an already selected object, 
 	// and have more than one object selected,
 	// we want to move all selected objects
-	if( m_objs && GetSelectCount() > 1 && !( nFlags & MK_CONTROL ) )
+	if (m_objs && GetSelectCount() > 1 && !(nFlags & MK_CONTROL))
 	{
 
-		while( ( obj = m_objs->GetAt( count++ ) ) )
+		while ((obj = m_objs->GetAt(count++)))
 		{
-			if( obj->GetHitCode( virtpoint ) == DEHT_BODY && obj->IsSelected() )
+			if (obj->GetHitCode(virtpoint) == DEHT_BODY && obj->IsSelected())
 			{
 				m_interactMode = MODE_MOVING;
 				CRect rect = obj->GetRect();
@@ -1972,18 +1972,18 @@ void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point )
 				// rect, as lines will not be normalized.
 				BOOL useright = FALSE;
 				BOOL usebottom = FALSE;
-				if( rect.left > rect.right )
+				if (rect.left > rect.right)
 					useright = TRUE;
-				if( rect.top > rect.bottom )
+				if (rect.top > rect.bottom)
 					usebottom = TRUE;
 
-				VirtualToScreen( rect );
+				VirtualToScreen(rect);
 
 				int startx = rect.left;
-				if( useright )
+				if (useright)
 					startx = rect.right;
 				int starty = rect.top;
-				if( usebottom )
+				if (usebottom)
 					starty = rect.bottom;
 
 				// Anchor object
@@ -1991,27 +1991,27 @@ void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point )
 
 				// Offset from top-left corner
 				// in the anchor object.
-				m_deltaPoint = point - CPoint( startx, starty );
+				m_deltaPoint = point - CPoint(startx, starty);
 
 			}
 		}
 
-		if( m_interactMode == MODE_MOVING )
+		if (m_interactMode == MODE_MOVING)
 		{
 			// We have clicked in one of many selected objects.
 			// Set cursor and snapshot for Undo.
-			::SetCursor( m_multiSelObj->GetCursor( DEHT_BODY ) );
+			::SetCursor(m_multiSelObj->GetCursor(DEHT_BODY));
 			m_objs->Snapshot();
 		}
 
 	}
 
-	if( m_objs && m_interactMode == MODE_DRAWING )
+	if (m_objs && m_interactMode == MODE_DRAWING)
 	{
 		// The user wants to draw an object.
 		// We add it to the data container and sets the appropriate mode
 
-		if( OutsideRestraints( virtpoint ) )
+		if (OutsideRestraints(virtpoint))
 		{
 			m_interactMode = MODE_NONE;
 			return;
@@ -2025,19 +2025,19 @@ void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point )
 
 		// If snap-to-grid is on, we must
 		// update the desired position
-		if( m_snap )
+		if (m_snap)
 		{
 
-			virtpoint.x = SnapX( virtpoint.x );
-			virtpoint.y = SnapY( virtpoint.y );
+			virtpoint.x = SnapX(virtpoint.x);
+			virtpoint.y = SnapY(virtpoint.y);
 
 		}
 
-		newobj->SetRect( CRect( virtpoint.x, virtpoint.y, virtpoint.x , virtpoint.y ) );
-		newobj->Select( TRUE );
+		newobj->SetRect(CRect(virtpoint.x, virtpoint.y, virtpoint.x, virtpoint.y));
+		newobj->Select(TRUE);
 
 		// Add the object to the container
-		AddObject( newobj );
+		AddObject(newobj);
 
 		// Set modes
 		m_interactMode = MODE_RESIZING;
@@ -2045,13 +2045,13 @@ void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point )
 
 	}
 
-	if( m_objs && m_interactMode == MODE_NONE )
+	if (m_objs && m_interactMode == MODE_NONE)
 	{
 
 		// Clearing states
 		// If Ctrl is not held down, we
 		// clear all selections
-		if( !( nFlags & MK_CONTROL ) )
+		if (!(nFlags & MK_CONTROL))
 			UnselectAll();
 
 		count = GetObjectCount();
@@ -2060,54 +2060,54 @@ void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point )
 		// We check if we click on any object. If that is 
 		// the case, we return on what part of the object 
 		// we clicked.
-		while( goon && ( obj = m_objs->GetAt( --count ) ) )
+		while (goon && (obj = m_objs->GetAt(--count)))
 		{
 			CRect rect = obj->GetRect();
-			VirtualToScreen( rect );
+			VirtualToScreen(rect);
 
 			// We check for a non-normailized rect, 
 			// as this is allowed for - for example - lines.
-			if( obj->GetTop() > obj->GetBottom() )
+			if (obj->GetTop() > obj->GetBottom())
 			{
 				int temp = rect.top;
 				rect.top = rect.bottom;
 				rect.bottom = temp;
 			}
 
-			if( obj->GetLeft() > obj->GetRight() )
+			if (obj->GetLeft() > obj->GetRight())
 			{
 				int temp = rect.left;
 				rect.left = rect.right;
 				rect.right = temp;
 			}
 
-			int hitCode = obj->GetHitCode( point, rect );
-			if( hitCode != DEHT_NONE )
+			int hitCode = obj->GetHitCode(point, rect);
+			if (hitCode != DEHT_NONE)
 			{
 				goon = FALSE;
-				if( !( nFlags & MK_CONTROL ) )
+				if (!(nFlags & MK_CONTROL))
 				{
 					// We unselect all again, as we might
 					// have overlapping objects
 					UnselectAll();
-					obj->Select( TRUE );
+					obj->Select(TRUE);
 				}
 				else
 				{
 					// We toggle the selection of the 
 					// object if Ctrl is pressed
-					if( obj->IsSelected() )
-						obj->Select( FALSE );
+					if (obj->IsSelected())
+						obj->Select(FALSE);
 					else
-						obj->Select( TRUE );
+						obj->Select(TRUE);
 				}
 
 				// We set the appropriate mode, either
 				// moving or resizing depending on where
 				// the click hit.
-				if( hitCode == DEHT_BODY && !( nFlags & MK_CONTROL ) )
+				if (hitCode == DEHT_BODY && !(nFlags & MK_CONTROL))
 				{
-					::SetCursor( obj->GetCursor( DEHT_BODY ) );
+					::SetCursor(obj->GetCursor(DEHT_BODY));
 					m_interactMode = MODE_MOVING;
 
 					CRect rect = obj->GetRect();
@@ -2116,25 +2116,25 @@ void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point )
 					// rect, as lines will not be normalized.
 					BOOL useright = FALSE;
 					BOOL usebottom = FALSE;
-					if( rect.left > rect.right )
+					if (rect.left > rect.right)
 						useright = TRUE;
-					if( rect.top > rect.bottom )
+					if (rect.top > rect.bottom)
 						usebottom = TRUE;
 
-					VirtualToScreen( rect );
+					VirtualToScreen(rect);
 
 					int startx = rect.left;
-					if( useright )
+					if (useright)
 						startx = rect.right;
 					int starty = rect.top;
-					if( usebottom )
+					if (usebottom)
 						starty = rect.bottom;
-					if( GetSelectCount() > 1 )
+					if (GetSelectCount() > 1)
 						m_multiSelObj = obj;
-					m_deltaPoint = point - CPoint( startx, starty );
+					m_deltaPoint = point - CPoint(startx, starty);
 
 				}
-				else if( !( nFlags & MK_CONTROL ) )
+				else if (!(nFlags & MK_CONTROL))
 				{
 					m_interactMode = MODE_RESIZING;
 					m_subMode = hitCode;
@@ -2145,27 +2145,27 @@ void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point )
 		}
 
 		// Save to undo-stack...
-		if( m_interactMode != MODE_NONE )
+		if (m_interactMode != MODE_NONE)
 			m_objs->Snapshot();
 
 		// If no objects were selected, we assume either 
 		// rubberbanding or background resize
-		if( !IsAnyObjectSelected() )
+		if (!IsAnyObjectSelected())
 		{
-			if( m_bgResize )
+			if (m_bgResize)
 			{
 				// If we allow background resizing, we test if
 				// the click was inside the resize zone.
-				if( ( virtpoint.x >= GetVirtualSize().cx - m_bgResizeZone &&
-					virtpoint.x <= GetVirtualSize().cx )
+				if ((virtpoint.x >= GetVirtualSize().cx - m_bgResizeZone &&
+					virtpoint.x <= GetVirtualSize().cx)
 					||
-					( virtpoint.y >= GetVirtualSize().cy - m_bgResizeZone && 
-					virtpoint.y <= GetVirtualSize().cy )
-					 )
+					(virtpoint.y >= GetVirtualSize().cy - m_bgResizeZone &&
+						virtpoint.y <= GetVirtualSize().cy)
+					)
 				{
 					m_bgResizeSelected = TRUE;
-					int hitCode = GetHitCode( virtpoint );
-					if( hitCode != DEHT_NONE && hitCode != DEHT_BODY )
+					int hitCode = GetHitCode(virtpoint);
+					if (hitCode != DEHT_NONE && hitCode != DEHT_BODY)
 					{
 						// It was - set the appropriate mode
 						m_interactMode = MODE_BGRESIZING;
@@ -2177,7 +2177,7 @@ void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point )
 				}
 			}
 
-			if( m_interactMode == MODE_NONE )
+			if (m_interactMode == MODE_NONE)
 			{
 				// If nothing else is set, we assume
 				// rubberbanding.
@@ -2190,251 +2190,251 @@ void CDiagramEditor::OnLButtonDown( UINT nFlags, CPoint point )
 
 	// Cleaning up and redrawing as necessary.
 	RemoveUnselectedPropertyDialogs();
-	if( m_interactMode != MODE_NONE )
+	if (m_interactMode != MODE_NONE)
 		RedrawWindow();
 
-	CWnd::OnLButtonDown( nFlags, point );
+	CWnd::OnLButtonDown(nFlags, point);
 
 }
 
-void CDiagramEditor::OnMouseMove( UINT nFlags, CPoint point )
+void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::OnMouseMove
-	Description :	Handles the "WM_MOUSEMOVE" message. We handle 
-					moving or resizing of objects, or resizing 
+	Description :	Handles the "WM_MOUSEMOVE" message. We handle
+					moving or resizing of objects, or resizing
 					of the virtual screen.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	UINT nFlags		-	Key-down flags
 					CPoint point	-	Mouse position
-					
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
 {
 
-	if( m_interactMode != MODE_NONE )
+	if (m_interactMode != MODE_NONE)
 	{
 
-		CClientDC	dc( this );
+		CClientDC	dc(this);
 		CRect clientRect;
-		GetClientRect( &clientRect );
-		CPoint virtpoint( point );
-		ScreenToVirtual( virtpoint );
+		GetClientRect(&clientRect);
+		CPoint virtpoint(point);
+		ScreenToVirtual(virtpoint);
 
-		if( m_interactMode == MODE_BGRESIZING )
+		if (m_interactMode == MODE_BGRESIZING)
 		{
 
-			if( m_snap )
+			if (m_snap)
 			{
 
-				virtpoint.x = SnapX( virtpoint.x );
-				virtpoint.y = SnapY( virtpoint.y );
+				virtpoint.x = SnapX(virtpoint.x);
+				virtpoint.y = SnapY(virtpoint.y);
 
 			}
 
-			virtpoint.x = max( virtpoint.x, 1 );
-			virtpoint.y = max( virtpoint.y, 1 );
+			virtpoint.x = max(virtpoint.x, 1);
+			virtpoint.y = max(virtpoint.y, 1);
 			int xsize = GetVirtualSize().cx;
 			int ysize = GetVirtualSize().cy;
 
-			if( m_subMode == DEHT_TOPRIGHT )
+			if (m_subMode == DEHT_TOPRIGHT)
 			{
 				xsize = virtpoint.x;
 			}
-			else if( m_subMode == DEHT_RIGHTMIDDLE )
+			else if (m_subMode == DEHT_RIGHTMIDDLE)
 			{
 				xsize = virtpoint.x;
 			}
-			else if( m_subMode == DEHT_BOTTOMRIGHT )
+			else if (m_subMode == DEHT_BOTTOMRIGHT)
 			{
 				xsize = virtpoint.x;
 				ysize = virtpoint.y;
 			}
-			else if( m_subMode == DEHT_BOTTOMMIDDLE )
+			else if (m_subMode == DEHT_BOTTOMMIDDLE)
 			{
 				ysize = virtpoint.y;
 			}
-			else if( m_subMode == DEHT_BOTTOMLEFT )
+			else if (m_subMode == DEHT_BOTTOMLEFT)
 			{
 				ysize = virtpoint.y;
 			}
 
-			if( m_restraint == RESTRAINT_VIRTUAL )
+			if (m_restraint == RESTRAINT_VIRTUAL)
 			{
 				CSize size = GetContainingSize();
-				xsize = max( size.cx, xsize );
-				ysize = max( size.cy, ysize );
+				xsize = max(size.cx, xsize);
+				ysize = max(size.cy, ysize);
 			}
-			else if( m_restraint == RESTRAINT_MARGIN )
+			else if (m_restraint == RESTRAINT_MARGIN)
 			{
 				CSize size = GetContainingSize();
-				xsize = max( size.cx + m_rightMargin, xsize );
-				ysize = max( size.cy + m_bottomMargin, ysize );
-				xsize = max( m_leftMargin + m_rightMargin, xsize );
-				ysize = max( m_topMargin + m_bottomMargin, ysize );
+				xsize = max(size.cx + m_rightMargin, xsize);
+				ysize = max(size.cy + m_bottomMargin, ysize);
+				xsize = max(m_leftMargin + m_rightMargin, xsize);
+				ysize = max(m_topMargin + m_bottomMargin, ysize);
 			}
 
-			SetVirtualSize( CSize( xsize, ysize ) );
-			ScrollPoint( point );
+			SetVirtualSize(CSize(xsize, ysize));
+			ScrollPoint(point);
 
 		}
-		if( m_interactMode == MODE_RESIZING )
+		if (m_interactMode == MODE_RESIZING)
 		{
 
-			if( m_snap )
+			if (m_snap)
 			{
 
-				virtpoint.x = SnapX( virtpoint.x );
-				virtpoint.y = SnapY( virtpoint.y );
+				virtpoint.x = SnapX(virtpoint.x);
+				virtpoint.y = SnapY(virtpoint.y);
 
 			}
 
 			// If we are moving, we will update one or 
 			// two sides of the object.
-			double ypos = static_cast< double >( virtpoint.y );
-			double xpos = static_cast< double >( virtpoint.x );
+			double ypos = static_cast<double>(virtpoint.y);
+			double xpos = static_cast<double>(virtpoint.x);
 
 			CDiagramEntity* obj = GetSelectedObject();
-			if( obj )
+			if (obj)
 			{
 				CSize minimum = obj->GetMinimumSize();
 				CSize maximum = obj->GetMaximumSize();
-				if( m_subMode == DEHT_BOTTOMMIDDLE )
+				if (m_subMode == DEHT_BOTTOMMIDDLE)
 				{
 
 					// Constraints
-					if( minimum.cy != -1 && ypos - obj->GetTop() < minimum.cy )
+					if (minimum.cy != -1 && ypos - obj->GetTop() < minimum.cy)
 						ypos = obj->GetTop() + minimum.cy;
-					if( maximum.cy != -1 && ypos - obj->GetTop() > maximum.cy )
+					if (maximum.cy != -1 && ypos - obj->GetTop() > maximum.cy)
 						ypos = obj->GetTop() + maximum.cy;
 
-					AdjustForRestraints( xpos, ypos );
-					obj->SetRect( obj->GetLeft(), obj->GetTop(), obj->GetRight(), ypos );
+					AdjustForRestraints(xpos, ypos);
+					obj->SetRect(obj->GetLeft(), obj->GetTop(), obj->GetRight(), ypos);
 
 				}
-				else if( m_subMode == DEHT_TOPMIDDLE )
+				else if (m_subMode == DEHT_TOPMIDDLE)
 				{
 
 					// Constraints
-					if( minimum.cy != -1 && obj->GetBottom() - ypos < minimum.cy )
+					if (minimum.cy != -1 && obj->GetBottom() - ypos < minimum.cy)
 						ypos = obj->GetBottom() - minimum.cy;
-					if( maximum.cy != -1 && obj->GetBottom() - ypos > maximum.cy )
+					if (maximum.cy != -1 && obj->GetBottom() - ypos > maximum.cy)
 						ypos = obj->GetBottom() - maximum.cy;
 
-					AdjustForRestraints( xpos, ypos );
-					obj->SetRect( obj->GetLeft(), ypos, obj->GetRight(), obj->GetBottom() );
+					AdjustForRestraints(xpos, ypos);
+					obj->SetRect(obj->GetLeft(), ypos, obj->GetRight(), obj->GetBottom());
 
 				}
-				else if( m_subMode == DEHT_LEFTMIDDLE )
+				else if (m_subMode == DEHT_LEFTMIDDLE)
 				{
 
 					// Constraints
-					if( minimum.cx != -1 && obj->GetRight() - xpos < minimum.cx )
+					if (minimum.cx != -1 && obj->GetRight() - xpos < minimum.cx)
 						xpos = obj->GetRight() - minimum.cx;
-					if( maximum.cx != -1 && obj->GetRight() - xpos > maximum.cx )
+					if (maximum.cx != -1 && obj->GetRight() - xpos > maximum.cx)
 						xpos = obj->GetRight() - maximum.cx;
 
-					AdjustForRestraints( xpos, ypos );
-					obj->SetRect( xpos, obj->GetTop(), obj->GetRight(), obj->GetBottom() );
+					AdjustForRestraints(xpos, ypos);
+					obj->SetRect(xpos, obj->GetTop(), obj->GetRight(), obj->GetBottom());
 
 				}
-				else if( m_subMode == DEHT_RIGHTMIDDLE )
+				else if (m_subMode == DEHT_RIGHTMIDDLE)
 				{
 
 					// Constraints
-					if( minimum.cx != -1 && xpos - obj->GetLeft() < minimum.cx )
+					if (minimum.cx != -1 && xpos - obj->GetLeft() < minimum.cx)
 						xpos = obj->GetLeft() + minimum.cx;
-					if( maximum.cx != -1 && xpos - obj->GetLeft() > maximum.cx )
+					if (maximum.cx != -1 && xpos - obj->GetLeft() > maximum.cx)
 						xpos = obj->GetLeft() + maximum.cx;
 
-					AdjustForRestraints( xpos, ypos );
-					obj->SetRect( obj->GetLeft(), obj->GetTop(), xpos, obj->GetBottom() );
+					AdjustForRestraints(xpos, ypos);
+					obj->SetRect(obj->GetLeft(), obj->GetTop(), xpos, obj->GetBottom());
 
 				}
-				else if( m_subMode == DEHT_TOPLEFT )
+				else if (m_subMode == DEHT_TOPLEFT)
 				{
 
 					// Constraints
-					if( minimum.cy != -1 && obj->GetBottom() - ypos < minimum.cy )
+					if (minimum.cy != -1 && obj->GetBottom() - ypos < minimum.cy)
 						ypos = obj->GetBottom() - minimum.cy;
-					if( minimum.cx != -1 && obj->GetRight() - xpos < minimum.cx )
+					if (minimum.cx != -1 && obj->GetRight() - xpos < minimum.cx)
 						xpos = obj->GetRight() - minimum.cx;
-					if( maximum.cy != -1 && obj->GetBottom() - ypos > maximum.cy )
+					if (maximum.cy != -1 && obj->GetBottom() - ypos > maximum.cy)
 						ypos = obj->GetBottom() - maximum.cy;
-					if( maximum.cx != -1 && obj->GetRight() - xpos > maximum.cx )
+					if (maximum.cx != -1 && obj->GetRight() - xpos > maximum.cx)
 						xpos = obj->GetRight() - maximum.cx;
 
-					AdjustForRestraints( xpos, ypos );
-					obj->SetRect( xpos, ypos, obj->GetRight(), obj->GetBottom() );
+					AdjustForRestraints(xpos, ypos);
+					obj->SetRect(xpos, ypos, obj->GetRight(), obj->GetBottom());
 
 				}
-				else if( m_subMode == DEHT_TOPRIGHT )
+				else if (m_subMode == DEHT_TOPRIGHT)
 				{
 
 					// Constraints
-					if( minimum.cy != -1 && obj->GetBottom() - ypos < minimum.cy )
+					if (minimum.cy != -1 && obj->GetBottom() - ypos < minimum.cy)
 						ypos = obj->GetBottom() - minimum.cy;
-					if( minimum.cx != -1 && xpos - obj->GetLeft() < minimum.cx )
+					if (minimum.cx != -1 && xpos - obj->GetLeft() < minimum.cx)
 						xpos = obj->GetLeft() + minimum.cx;
-					if( maximum.cy != -1 && obj->GetBottom() - ypos > maximum.cy )
+					if (maximum.cy != -1 && obj->GetBottom() - ypos > maximum.cy)
 						ypos = obj->GetBottom() - maximum.cy;
-					if( maximum.cx != -1 && xpos - obj->GetLeft() > maximum.cx )
+					if (maximum.cx != -1 && xpos - obj->GetLeft() > maximum.cx)
 						xpos = obj->GetLeft() + maximum.cx;
 
-					AdjustForRestraints( xpos, ypos );
-					obj->SetRect( obj->GetLeft(), ypos, xpos, obj->GetBottom() );
+					AdjustForRestraints(xpos, ypos);
+					obj->SetRect(obj->GetLeft(), ypos, xpos, obj->GetBottom());
 
 				}
-				else if( m_subMode == DEHT_BOTTOMLEFT )
+				else if (m_subMode == DEHT_BOTTOMLEFT)
 				{
 
 					// Constraints
-					if( minimum.cy != -1 && ypos - obj->GetTop() < minimum.cy )
+					if (minimum.cy != -1 && ypos - obj->GetTop() < minimum.cy)
 						ypos = obj->GetTop() + minimum.cy;
-					if( minimum.cx != -1 && obj->GetRight() - xpos < minimum.cx )
+					if (minimum.cx != -1 && obj->GetRight() - xpos < minimum.cx)
 						xpos = obj->GetRight() - minimum.cx;
-					if( maximum.cy != -1 && ypos - obj->GetTop() > maximum.cy )
+					if (maximum.cy != -1 && ypos - obj->GetTop() > maximum.cy)
 						ypos = obj->GetTop() + maximum.cy;
-					if( maximum.cx != -1 && obj->GetRight() - xpos > maximum.cx )
+					if (maximum.cx != -1 && obj->GetRight() - xpos > maximum.cx)
 						xpos = obj->GetRight() - maximum.cx;
 
-					AdjustForRestraints( xpos, ypos );
-					obj->SetRect( xpos, obj->GetTop(), obj->GetRight(), ypos );
+					AdjustForRestraints(xpos, ypos);
+					obj->SetRect(xpos, obj->GetTop(), obj->GetRight(), ypos);
 
 				}
-				else if( m_subMode == DEHT_BOTTOMRIGHT )
+				else if (m_subMode == DEHT_BOTTOMRIGHT)
 				{
 
 					// Constraints
-					if( minimum.cy != -1 && ypos - obj->GetTop() < minimum.cy )
+					if (minimum.cy != -1 && ypos - obj->GetTop() < minimum.cy)
 						ypos = obj->GetTop() + minimum.cy;
-					if( minimum.cx != -1 && xpos - obj->GetLeft() < minimum.cx )
+					if (minimum.cx != -1 && xpos - obj->GetLeft() < minimum.cx)
 						xpos = obj->GetLeft() + minimum.cx;
-					if( maximum.cy != -1 && ypos - obj->GetTop() > maximum.cy )
+					if (maximum.cy != -1 && ypos - obj->GetTop() > maximum.cy)
 						ypos = obj->GetTop() + maximum.cy;
-					if( maximum.cx != -1 && xpos - obj->GetLeft() > maximum.cx )
+					if (maximum.cx != -1 && xpos - obj->GetLeft() > maximum.cx)
 						xpos = obj->GetLeft() + maximum.cx;
 
-					AdjustForRestraints( xpos, ypos );
-					obj->SetRect( obj->GetLeft(), obj->GetTop(), xpos, ypos );
+					AdjustForRestraints(xpos, ypos);
+					obj->SetRect(obj->GetLeft(), obj->GetTop(), xpos, ypos);
 
 				}
 
 			}
 
 			// Scroll if we are outside any edge
-			ScrollPoint( point );
+			ScrollPoint(point);
 			RedrawWindow();
 		}
-		else if( m_objs && m_interactMode == MODE_MOVING )
+		else if (m_objs && m_interactMode == MODE_MOVING)
 		{
 
 			// If we move, we just update the positions
 			// of all the objects.
-			double offsetx = round( static_cast< double >( m_deltaPoint.x ) / GetZoom() );
-			double offsety = round( static_cast< double >( m_deltaPoint.y ) / GetZoom() );
+			double offsetx = round(static_cast<double>(m_deltaPoint.x) / GetZoom());
+			double offsety = round(static_cast<double>(m_deltaPoint.y) / GetZoom());
 			int count = 0;
 			CDiagramEntity* obj;
 			double width;
@@ -2443,32 +2443,32 @@ void CDiagramEditor::OnMouseMove( UINT nFlags, CPoint point )
 			double left;
 			double top;
 
-			if( m_multiSelObj )
+			if (m_multiSelObj)
 			{
 				left = virtpoint.x - offsetx;
 				top = virtpoint.y - offsety;
-				if( m_snap )
+				if (m_snap)
 				{
-					left = SnapX(  static_cast< int >( left ) );
-					top = SnapY( static_cast< int >( top ) );
+					left = SnapX(static_cast<int>(left));
+					top = SnapY(static_cast<int>(top));
 				}
 
 				offsetx = left - m_multiSelObj->GetLeft();
 				offsety = top - m_multiSelObj->GetTop();
 
-				InsideRestraints( offsetx, offsety );
+				InsideRestraints(offsetx, offsety);
 
-				m_multiSelObj->SetRect( m_multiSelObj->GetLeft() + offsetx, m_multiSelObj->GetTop() + offsety, m_multiSelObj->GetRight() + offsetx, m_multiSelObj->GetBottom() + offsety );
+				m_multiSelObj->SetRect(m_multiSelObj->GetLeft() + offsetx, m_multiSelObj->GetTop() + offsety, m_multiSelObj->GetRight() + offsetx, m_multiSelObj->GetBottom() + offsety);
 
-				while( ( obj = m_objs->GetAt( count++ ) ) )
-					if( obj->IsSelected() && obj != m_multiSelObj )
-						obj->MoveRect( offsetx, offsety );
+				while ((obj = m_objs->GetAt(count++)))
+					if (obj->IsSelected() && obj != m_multiSelObj)
+						obj->MoveRect(offsetx, offsety);
 			}
 			else
 			{
 
 				obj = GetSelectedObject();
-				if( obj )
+				if (obj)
 				{
 
 					width = obj->GetRight() - obj->GetLeft();
@@ -2477,42 +2477,42 @@ void CDiagramEditor::OnMouseMove( UINT nFlags, CPoint point )
 					left = virtpoint.x - offsetx;
 					top = virtpoint.y - offsety;
 
-					if( m_snap )
+					if (m_snap)
 					{
-						left = SnapX( static_cast< int >( left ) );
-						top = SnapY( static_cast< int >( top ) );
+						left = SnapX(static_cast<int>(left));
+						top = SnapY(static_cast<int>(top));
 					}
 
 					double right = left + width;
 					double bottom = top + height;
 
-					AdjustForRestraints( left, top, right, bottom );
-					obj->SetRect( left, top, right , bottom );
+					AdjustForRestraints(left, top, right, bottom);
+					obj->SetRect(left, top, right, bottom);
 
 				}
 			}
 
 			// Scroll if we are outside any edge
-			CPoint outside = ScrollPoint( point );
+			CPoint outside = ScrollPoint(point);
 			RedrawWindow();
 
 		}
-		else if( m_interactMode == MODE_RUBBERBANDING )
+		else if (m_interactMode == MODE_RUBBERBANDING)
 		{
 
 			// We are selecting objects
-			CRect rect( m_selectionRect );
+			CRect rect(m_selectionRect);
 
 			// Erase old selection rect
-			if( m_selectionRect.left != m_selectionRect.right || m_selectionRect.top != m_selectionRect.bottom )
+			if (m_selectionRect.left != m_selectionRect.right || m_selectionRect.top != m_selectionRect.bottom)
 			{
 				rect.NormalizeRect();
-				dc.DrawFocusRect( rect );
+				dc.DrawFocusRect(rect);
 			}
 
 			// Scroll if we are outside any edge
-			CPoint outside = ScrollPoint( point );
-			m_selectionRect.OffsetRect( -outside.x, -outside.y );
+			CPoint outside = ScrollPoint(point);
+			m_selectionRect.OffsetRect(-outside.x, -outside.y);
 
 			// Update and draw the selection rect
 			m_selectionRect.right = point.x;
@@ -2520,27 +2520,27 @@ void CDiagramEditor::OnMouseMove( UINT nFlags, CPoint point )
 			rect = m_selectionRect;
 			rect.NormalizeRect();
 
-			dc.DrawFocusRect( rect );
+			dc.DrawFocusRect(rect);
 
 		}
 
 	}
 
-	CWnd::OnMouseMove( nFlags, point );
+	CWnd::OnMouseMove(nFlags, point);
 
 }
 
-void CDiagramEditor::OnLButtonUp( UINT nFlags, CPoint point )
+void CDiagramEditor::OnLButtonUp(UINT nFlags, CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::OnLButtonUp
-	Description :	Handles the "WM_LBUTTONUP" message. Mainly, 
+	Description :	Handles the "WM_LBUTTONUP" message. Mainly,
 					we snap to grid if appropriate.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	UINT nFlags		-	not interested.
 					CPoint point	-	The position of the mouse.
-					
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
@@ -2552,19 +2552,19 @@ void CDiagramEditor::OnLButtonUp( UINT nFlags, CPoint point )
 	int count = 0;
 	CDiagramEntity* obj;
 
-	if( m_objs && m_interactMode == MODE_MOVING )
+	if (m_objs && m_interactMode == MODE_MOVING)
 	{
 
 		// We set all the object rectangles to trigger
 		// the virtual MoveObject function, thus 
 		// allowing derived editors to know that 
 		// objects has been moved.
-		while( ( obj = m_objs->GetAt( count++ ) ) )
+		while ((obj = m_objs->GetAt(count++)))
 		{
-			if( obj->IsSelected() )
+			if (obj->IsSelected())
 			{
 				CRect rect = obj->GetRect();
-				if( m_snap )
+				if (m_snap)
 				{
 					// If we move objects, and snap to grid is on
 					// we snap here
@@ -2572,81 +2572,81 @@ void CDiagramEditor::OnLButtonUp( UINT nFlags, CPoint point )
 					int width = rect.Width();
 
 					// Find closest snap-points
-					rect.left = SnapX( rect.left );
-					rect.top = SnapY( rect.top );
+					rect.left = SnapX(rect.left);
+					rect.top = SnapY(rect.top);
 
 					rect.right = rect.left + width;
 					rect.bottom = rect.top + height;
 				}
 
-				MoveObject( obj, rect );
+				MoveObject(obj, rect);
 			}
 		}
 
-		m_objs->SetModified( TRUE );
+		m_objs->SetModified(TRUE);
 
 	}
-	else if( m_objs && m_interactMode == MODE_RESIZING )
+	else if (m_objs && m_interactMode == MODE_RESIZING)
 	{
 		// If we resize objects, and snap to grid is on
 		// we snap here
 
-		if( m_snap )
+		if (m_snap)
 		{
-			while( ( obj = m_objs->GetAt( count++ ) ) )
+			while ((obj = m_objs->GetAt(count++)))
 			{
-				if( obj->IsSelected() )
+				if (obj->IsSelected())
 				{
 					CRect rect = obj->GetRect();
 					CRect newrect = rect;
 
 					// Find closest snap-points
-					rect.left = SnapX( rect.left );
-					rect.top = SnapY( rect.top );
-					rect.right = SnapX( rect.right );
-					rect.bottom = SnapY ( rect.bottom );
+					rect.left = SnapX(rect.left);
+					rect.top = SnapY(rect.top);
+					rect.right = SnapX(rect.right);
+					rect.bottom = SnapY(rect.bottom);
 
 					// Updating rect depending on resize-type.
-					switch( m_subMode )
+					switch (m_subMode)
 					{
-						case DEHT_BOTTOMMIDDLE:
-							newrect.bottom = rect.bottom;
+					case DEHT_BOTTOMMIDDLE:
+						newrect.bottom = rect.bottom;
 						break;
-						case DEHT_TOPMIDDLE:
-							newrect.top = rect.top;
+					case DEHT_TOPMIDDLE:
+						newrect.top = rect.top;
 						break;
-						case DEHT_LEFTMIDDLE:
-							newrect.left = rect.left;
+					case DEHT_LEFTMIDDLE:
+						newrect.left = rect.left;
 						break;
-						case DEHT_RIGHTMIDDLE:
-							newrect.right = rect.right;
+					case DEHT_RIGHTMIDDLE:
+						newrect.right = rect.right;
 						break;
-						case DEHT_TOPLEFT:
-							newrect.top = rect.top;
-							newrect.left = rect.left;
+					case DEHT_TOPLEFT:
+						newrect.top = rect.top;
+						newrect.left = rect.left;
 						break;
-						case DEHT_TOPRIGHT:
-							newrect.top = rect.top;
-							newrect.right = rect.right;
+					case DEHT_TOPRIGHT:
+						newrect.top = rect.top;
+						newrect.right = rect.right;
 						break;
-						case DEHT_BOTTOMLEFT:
-							newrect.bottom = rect.bottom;
-							newrect.left = rect.left;
+					case DEHT_BOTTOMLEFT:
+						newrect.bottom = rect.bottom;
+						newrect.left = rect.left;
 						break;
-						case DEHT_BOTTOMRIGHT:
-							newrect.bottom = rect.bottom;
-							newrect.right = rect.right;
+					case DEHT_BOTTOMRIGHT:
+						newrect.bottom = rect.bottom;
+						newrect.right = rect.right;
 						break;
 					}
 
-					obj->SetRect( newrect );
+					obj->SetRect(newrect);
 				}
 			}
 		}
-		m_objs->SetModified( TRUE );
+		m_objs->SetModified(TRUE);
 
 	}
-	else if( m_objs && m_interactMode == MODE_RUBBERBANDING )
+	else if (m_objs && m_interactMode == MODE_RUBBERBANDING)
 	{
 
 		// Remove all former selections
@@ -2655,24 +2655,24 @@ void CDiagramEditor::OnLButtonUp( UINT nFlags, CPoint point )
 		// We convert the selection rect to virtual coordinates, 
 		// and make sure that the rect contains at least some 
 		// width and height ( IntersectRect will not work otherwise )
-		CRect rect( m_selectionRect );
-		ScreenToVirtual( rect );
-		if( rect.TopLeft() == rect.BottomRight() )
-			rect.InflateRect( 1, 1 );
+		CRect rect(m_selectionRect);
+		ScreenToVirtual(rect);
+		if (rect.TopLeft() == rect.BottomRight())
+			rect.InflateRect(1, 1);
 
 		// We loop all objects, checking if we got any overlap.
 		count = 0;
-		while( ( obj = m_objs->GetAt( count++ ) ) )
+		while ((obj = m_objs->GetAt(count++)))
 		{
-			if( obj->BodyInRect( rect ) )
-				obj->Select( TRUE );
+			if (obj->BodyInRect(rect))
+				obj->Select(TRUE);
 		}
 
 	}
 
 	// Redraw and reset modes
 	RedrawWindow();
-	if( m_multiDraw && m_drawing && m_drawObj )
+	if (m_multiDraw && m_drawing && m_drawObj)
 		m_interactMode = MODE_DRAWING;
 	else
 	{
@@ -2681,65 +2681,65 @@ void CDiagramEditor::OnLButtonUp( UINT nFlags, CPoint point )
 	}
 
 	m_subMode = DEHT_NONE;
-	CWnd::OnLButtonUp( nFlags, point );
+	CWnd::OnLButtonUp(nFlags, point);
 
 }
 
-void CDiagramEditor::OnLButtonDblClk( UINT nFlags, CPoint point ) 
+void CDiagramEditor::OnLButtonDblClk(UINT nFlags, CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::OnLButtonDblClk
-	Description :	Handles the "WM_LBUTTONDBLCLK" message. We 
+	Description :	Handles the "WM_LBUTTONDBLCLK" message. We
 					show a property dialog if appropriate.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	UINT nFlags		-	not interested
 					CPoint point	-	not interested
-					
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
 {
 
 	ShowProperties();
-	CWnd::OnLButtonDblClk( nFlags, point );
+	CWnd::OnLButtonDblClk(nFlags, point);
 
 }
 
-void CDiagramEditor::OnRButtonDown( UINT nFlags, CPoint point ) 
+void CDiagramEditor::OnRButtonDown(UINT nFlags, CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::OnRButtonDown
-	Description :	Handles the "WM_RBUTTONDOWN" message. 
+	Description :	Handles the "WM_RBUTTONDOWN" message.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	UINT nFlags		-	not interested
 					CPoint point	-	not interested
-					
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
 {
 
-	SetPanning( FALSE );
+	SetPanning(FALSE);
 
-	if( m_objs )
+	if (m_objs)
 	{
 		int count = 0;
 		CDiagramEntity* obj;
-		CPoint virtpoint( point );
-		ScreenToVirtual( virtpoint );
+		CPoint virtpoint(point);
+		ScreenToVirtual(virtpoint);
 
 		// We check if we click on any object body. If that is 
 		// the case, we select the object
-		while( ( obj = m_objs->GetAt( count++ ) ) )
+		while ((obj = m_objs->GetAt(count++)))
 		{
-			if( obj->GetHitCode( virtpoint ) == DEHT_BODY )
+			if (obj->GetHitCode(virtpoint) == DEHT_BODY)
 			{
-				if( !obj->IsSelected() )
+				if (!obj->IsSelected())
 				{
 					UnselectAll();
-					obj->Select( TRUE );
+					obj->Select(TRUE);
 				}
 			}
 		}
@@ -2750,55 +2750,55 @@ void CDiagramEditor::OnRButtonDown( UINT nFlags, CPoint point )
 	m_interactMode = MODE_NONE;
 	m_drawing = FALSE;
 
-	CWnd::OnRButtonDown( nFlags, point );
+	CWnd::OnRButtonDown(nFlags, point);
 
 }
 
-void CDiagramEditor::OnRButtonUp( UINT nFlags, CPoint point ) 
+void CDiagramEditor::OnRButtonUp(UINT nFlags, CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::OnRButtonUp
-	Description :	Handles the "WM_RBUTTONUP" message. We show 
+	Description :	Handles the "WM_RBUTTONUP" message. We show
 					popup menues as appropriate.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	UINT nFlags		-	not interested
 					CPoint point	-	not interested
-					
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
 {
 
-	CPoint screen( point );
-	CPoint virtpoint( point );
+	CPoint screen(point);
+	CPoint virtpoint(point);
 
-	ClientToScreen( &screen );
-	ScreenToVirtual( virtpoint );
+	ClientToScreen(&screen);
+	ScreenToVirtual(virtpoint);
 
-	if( GetSelectCount() == 1 )
+	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj->GetHitCode( virtpoint ) == DEHT_BODY )
-			obj->ShowPopup( screen, this );
+		if (obj->GetHitCode(virtpoint) == DEHT_BODY)
+			obj->ShowPopup(screen, this);
 		else
-			ShowPopup( screen );
+			ShowPopup(screen);
 	}
 	else
-		ShowPopup( screen );
+		ShowPopup(screen);
 
-	CWnd::OnRButtonUp( nFlags, point );
+	CWnd::OnRButtonUp(nFlags, point);
 
 }
 
-UINT CDiagramEditor::OnGetDlgCode() 
+UINT CDiagramEditor::OnGetDlgCode()
 /* ============================================================
 	Function :		CDiagramEditor::OnGetDlgCode
-	Description :	Handles the "WM_GETDLGCODE" message. We 
+	Description :	Handles the "WM_GETDLGCODE" message. We
 					return the keys we want.
 	Access :		Protected
 
-	Return :		UINT	-	"DLGC_WANTALLKEYS", we want all 
+	Return :		UINT	-	"DLGC_WANTALLKEYS", we want all
 								keys.
 	Parameters :	none
 
@@ -2811,10 +2811,10 @@ UINT CDiagramEditor::OnGetDlgCode()
 
 }
 
-void CDiagramEditor::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags ) 
+void CDiagramEditor::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 /* ============================================================
 	Function :		CDiagramEditor::OnKeyDown
-	Description :	Handles the "WM_KEYDOWN" message. We provide 
+	Description :	Handles the "WM_KEYDOWN" message. We provide
 					a simple keyboard interface.
 	Access :		Protected
 
@@ -2822,21 +2822,21 @@ void CDiagramEditor::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 	Parameters :	UINT nChar		-	Character pressed
 					UINT nRepCnt	-	not interested
 					UINT nFlags		-	not interested
-					
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
 {
 
-	SetPanning( FALSE );
+	SetPanning(FALSE);
 
-	if( m_keyInterface != KEY_NONE )
+	if (m_keyInterface != KEY_NONE)
 	{
 		// Clearing the flags
-		GetAsyncKeyState( VK_SHIFT );
-		GetAsyncKeyState( VK_CONTROL );
+		GetAsyncKeyState(VK_SHIFT);
+		GetAsyncKeyState(VK_CONTROL);
 
-		if( m_objs )
+		if (m_objs)
 		{
 
 			int count = 0;
@@ -2844,10 +2844,10 @@ void CDiagramEditor::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 
 			double offsetstepx = 1.0 / GetZoom();
 			double offsetstepy = 1.0 / GetZoom();
-			if( m_snap )
+			if (m_snap)
 			{
-				offsetstepx = static_cast< double >( m_gridSize.cx )/ GetZoom();
-				offsetstepy = static_cast< double >( m_gridSize.cy )/ GetZoom();
+				offsetstepx = static_cast<double>(m_gridSize.cx) / GetZoom();
+				offsetstepy = static_cast<double>(m_gridSize.cy) / GetZoom();
 			}
 
 			double offsetx = 0.0;
@@ -2856,81 +2856,81 @@ void CDiagramEditor::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 			BOOL move = FALSE;
 			BOOL resize = FALSE;
 			BOOL redraw = TRUE;
-			
-			if( ( m_keyInterface & KEY_ARROW ) && ( nChar == VK_DOWN ) )
+
+			if ((m_keyInterface & KEY_ARROW) && (nChar == VK_DOWN))
 			{
-				offsety=offsetstepy;
-				if( GetAsyncKeyState( VK_SHIFT ) )
+				offsety = offsetstepy;
+				if (GetAsyncKeyState(VK_SHIFT))
 					resize = TRUE;
 				else
 					move = TRUE;
 			}
-			else if( ( m_keyInterface & KEY_ARROW ) && ( nChar == VK_UP ) )
+			else if ((m_keyInterface & KEY_ARROW) && (nChar == VK_UP))
 			{
-				offsety=-offsetstepy;
-				if( GetAsyncKeyState( VK_SHIFT ) )
+				offsety = -offsetstepy;
+				if (GetAsyncKeyState(VK_SHIFT))
 					resize = TRUE;
 				else
 					move = TRUE;
 			}
-			else if( ( m_keyInterface & KEY_ARROW ) && ( nChar == VK_LEFT ) )
+			else if ((m_keyInterface & KEY_ARROW) && (nChar == VK_LEFT))
 			{
-				offsetx=-offsetstepx;
-				if( GetAsyncKeyState( VK_SHIFT ) )
+				offsetx = -offsetstepx;
+				if (GetAsyncKeyState(VK_SHIFT))
 					resize = TRUE;
 				else
 					move = TRUE;
 			}
-			else if( ( m_keyInterface & KEY_ARROW ) && ( nChar == VK_RIGHT ) )
+			else if ((m_keyInterface & KEY_ARROW) && (nChar == VK_RIGHT))
 			{
-				offsetx=offsetstepx;
-				if( GetAsyncKeyState( VK_SHIFT ) )
+				offsetx = offsetstepx;
+				if (GetAsyncKeyState(VK_SHIFT))
 					resize = TRUE;
 				else
 					move = TRUE;
 			}
-			else if( ( m_keyInterface & KEY_DELETE ) && ( nChar == VK_DELETE ) )
+			else if ((m_keyInterface & KEY_DELETE) && (nChar == VK_DELETE))
 			{
-				if( GetAsyncKeyState( VK_SHIFT ) )
+				if (GetAsyncKeyState(VK_SHIFT))
 					Cut();
 				else
 					DeleteAllSelected();
 			}
-			else if( ( m_keyInterface & KEY_INSERT ) && ( nChar == VK_INSERT ) )
+			else if ((m_keyInterface & KEY_INSERT) && (nChar == VK_INSERT))
 			{
-				if( GetAsyncKeyState( VK_SHIFT ) )
+				if (GetAsyncKeyState(VK_SHIFT))
 					Paste();
 				else
 					Duplicate();
 			}
-			else if( ( m_keyInterface & KEY_CTRL ) && nChar == VK_RETURN && GetAsyncKeyState( VK_CONTROL ) )
+			else if ((m_keyInterface & KEY_CTRL) && nChar == VK_RETURN && GetAsyncKeyState(VK_CONTROL))
 				ShowProperties();
-			else if( ( m_keyInterface & KEY_CTRL ) && nChar == _TCHAR( 'A' ) && GetAsyncKeyState( VK_CONTROL ) )
+			else if ((m_keyInterface & KEY_CTRL) && nChar == _TCHAR('A') && GetAsyncKeyState(VK_CONTROL))
 				SelectAll();
-			else if( ( m_keyInterface & KEY_CTRL ) && nChar == _TCHAR( 'X' ) && GetAsyncKeyState( VK_CONTROL ) )
+			else if ((m_keyInterface & KEY_CTRL) && nChar == _TCHAR('X') && GetAsyncKeyState(VK_CONTROL))
 				Cut();
-			else if( ( m_keyInterface & KEY_CTRL ) && nChar == _TCHAR( 'V' ) && GetAsyncKeyState( VK_CONTROL ) )
+			else if ((m_keyInterface & KEY_CTRL) && nChar == _TCHAR('V') && GetAsyncKeyState(VK_CONTROL))
 				Paste();
-			else if( ( m_keyInterface & KEY_CTRL ) && nChar == _TCHAR( 'C' ) && GetAsyncKeyState( VK_CONTROL ) )
+			else if ((m_keyInterface & KEY_CTRL) && nChar == _TCHAR('C') && GetAsyncKeyState(VK_CONTROL))
 				Copy();
-			else if( ( m_keyInterface & KEY_CTRL ) && nChar == _TCHAR( 'Z' ) && GetAsyncKeyState( VK_CONTROL ) )
+			else if ((m_keyInterface & KEY_CTRL) && nChar == _TCHAR('Z') && GetAsyncKeyState(VK_CONTROL))
 				Undo();
-			else if( ( m_keyInterface & KEY_PGUPDOWN ) && nChar == VK_NEXT && GetAsyncKeyState( VK_CONTROL ) )
+			else if ((m_keyInterface & KEY_PGUPDOWN) && nChar == VK_NEXT && GetAsyncKeyState(VK_CONTROL))
 				Bottom();
-			else if( ( m_keyInterface & KEY_PGUPDOWN ) && nChar == VK_PRIOR && GetAsyncKeyState( VK_CONTROL ) )
+			else if ((m_keyInterface & KEY_PGUPDOWN) && nChar == VK_PRIOR && GetAsyncKeyState(VK_CONTROL))
 				Front();
-			else if( ( m_keyInterface & KEY_PGUPDOWN ) && nChar == VK_NEXT)
+			else if ((m_keyInterface & KEY_PGUPDOWN) && nChar == VK_NEXT)
 				Down();
-			else if( ( m_keyInterface & KEY_PGUPDOWN ) && nChar == VK_PRIOR)
+			else if ((m_keyInterface & KEY_PGUPDOWN) && nChar == VK_PRIOR)
 				Up();
 
-			if( move )
+			if (move)
 			{
-				InsideRestraints( offsetx, offsety );
+				InsideRestraints(offsetx, offsety);
 				m_objs->Snapshot();
-				while( ( obj = m_objs->GetAt( count++ ) ) )
+				while ((obj = m_objs->GetAt(count++)))
 				{
-					if( obj->IsSelected() )
+					if (obj->IsSelected())
 					{
 						double width = obj->GetRight() - obj->GetLeft();
 						double height = obj->GetBottom() - obj->GetTop();
@@ -2938,74 +2938,74 @@ void CDiagramEditor::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 						double left = obj->GetLeft() + offsetx;
 						double top = obj->GetTop() + offsety;
 
-						if( m_snap )
+						if (m_snap)
 						{
-							left = SnapX( static_cast< int >( left ) );
-							top = SnapY( static_cast< int >( top ) );
+							left = SnapX(static_cast<int>(left));
+							top = SnapY(static_cast<int>(top));
 						}
 
 						double right = left + width;
 						double bottom = top + height;
 
-						AdjustForRestraints( left, top, right, bottom );
-						MoveObject( obj, CRect( round( left ), round( top ), round( right ), round( bottom ) ) );
+						AdjustForRestraints(left, top, right, bottom);
+						MoveObject(obj, CRect(round(left), round(top), round(right), round(bottom)));
 						redraw = TRUE;
-						m_objs->SetModified( TRUE );
+						m_objs->SetModified(TRUE);
 					}
 				}
 			}
 
-			if( resize )
+			if (resize)
 			{
 				m_objs->Snapshot();
-				InsideRestraints( offsetx, offsety );
-				while( ( obj = m_objs->GetAt( count++ ) ) )
+				InsideRestraints(offsetx, offsety);
+				while ((obj = m_objs->GetAt(count++)))
 				{
-					if( obj->IsSelected() )
+					if (obj->IsSelected())
 					{
 
 						double right = obj->GetRight() + offsetx;
 						double bottom = obj->GetBottom() + offsety;
-						if( m_snap )
+						if (m_snap)
 						{
-							right = SnapX( static_cast< int >( right ) );
-							bottom = SnapY( static_cast< int >( bottom ) );
+							right = SnapX(static_cast<int>(right));
+							bottom = SnapY(static_cast<int>(bottom));
 						}
 
-						obj->SetRect( obj->GetLeft(), obj->GetTop(), right, bottom );
+						obj->SetRect(obj->GetLeft(), obj->GetTop(), right, bottom);
 
-						m_objs->SetModified( TRUE );
+						m_objs->SetModified(TRUE);
 						redraw = TRUE;
 					}
 				}
 			}
 
-			if( redraw )
+			if (redraw)
 				RedrawWindow();
 		}
 
-		if( ( m_keyInterface & KEY_ESCAPE ) && ( nChar == VK_ESCAPE ) )
+		if ((m_keyInterface & KEY_ESCAPE) && (nChar == VK_ESCAPE))
 		{
 			m_interactMode = MODE_NONE;
 			m_drawing = FALSE;
 		}
 
 		// Keys independent of any data
-		if( ( m_keyInterface & KEY_PLUSMINUS ) && ( nChar == VK_ADD ) )
-			SetZoom( GetZoom() + GetZoomFactor() );
+		if ((m_keyInterface & KEY_PLUSMINUS) && (nChar == VK_ADD))
+			SetZoom(GetZoom() + GetZoomFactor());
 
-		if( ( m_keyInterface & KEY_PLUSMINUS ) && ( nChar == VK_SUBTRACT ) )
-			SetZoom( GetZoom() - GetZoomFactor() );
+		if ((m_keyInterface & KEY_PLUSMINUS) && (nChar == VK_SUBTRACT))
+			SetZoom(GetZoom() - GetZoomFactor());
 	}
 
-	CWnd::OnKeyDown( nChar, nRepCnt, nFlags );
+	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
 
 }
 
-BOOL CDiagramEditor::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message ) 
+BOOL CDiagramEditor::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 /* ============================================================
 	Function :		CDiagramEditor::OnSetCursor
-	Description :	Handles the "WM_SETCURSOR" message. We set 
+	Description :	Handles the "WM_SETCURSOR" message. We set
 					cursors as appropriate.
 	Access :		Protected
 
@@ -3013,7 +3013,7 @@ BOOL CDiagramEditor::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 	Parameters :	CWnd* pWnd		-	not interested
 					UINT nHitTest	-	not interested
 					UINT message	-	not interested
-					
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
@@ -3021,28 +3021,28 @@ BOOL CDiagramEditor::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 
 	BOOL res = TRUE;
 	HCURSOR cursor = GetCursor();
-	if( cursor )
-		::SetCursor( cursor );
+	if (cursor)
+		::SetCursor(cursor);
 	else
-		res = CWnd::OnSetCursor( pWnd, nHitTest, message );
+		res = CWnd::OnSetCursor(pWnd, nHitTest, message);
 
 	return res;
 
 }
 
-HCURSOR CDiagramEditor::GetCursor( int hit ) const
+HCURSOR CDiagramEditor::GetCursor(int hit) const
 /* ============================================================
 	Function :		CDiagramEditor::GetCursor
-	Description :	Returns a "HCURSOR" for the hit-point value 
-					(defined in DiagramEntity.h) 
+	Description :	Returns a "HCURSOR" for the hit-point value
+					(defined in DiagramEntity.h)
 	Access :		Public
 
-	Return :		HCURSOR	-	The cursor to show, "NULL" if 
+	Return :		HCURSOR	-	The cursor to show, "NULL" if
 								default.
 	Parameters :	int hit	-	The hit-point value
-					
+
 	Usage :			Virtual. Can be overridden in a derived
-					class to display other resize cursors. 
+					class to display other resize cursors.
 					"hit" can be one of the following:
 						"DEHT_NONE" No hit-point
 						"DEHT_BODY" Inside object body
@@ -3059,23 +3059,23 @@ HCURSOR CDiagramEditor::GetCursor( int hit ) const
 {
 
 	// We only show cursors for a subset of the hit-point codes.
-	HCURSOR cursor = LoadCursor( NULL, IDC_ARROW );
-	switch( hit )
+	HCURSOR cursor = LoadCursor(NULL, IDC_ARROW);
+	switch (hit)
 	{
-		case DEHT_TOPRIGHT:
-			cursor = LoadCursor( NULL, IDC_SIZENESW );
+	case DEHT_TOPRIGHT:
+		cursor = LoadCursor(NULL, IDC_SIZENESW);
 		break;
-		case DEHT_BOTTOMMIDDLE:
-			cursor = LoadCursor( NULL, IDC_SIZENS );
+	case DEHT_BOTTOMMIDDLE:
+		cursor = LoadCursor(NULL, IDC_SIZENS);
 		break;
-		case DEHT_BOTTOMRIGHT:
-			cursor = LoadCursor( NULL, IDC_SIZENWSE );
+	case DEHT_BOTTOMRIGHT:
+		cursor = LoadCursor(NULL, IDC_SIZENWSE);
 		break;
-		case DEHT_BOTTOMLEFT:
-			cursor = LoadCursor( NULL, IDC_SIZENESW );
+	case DEHT_BOTTOMLEFT:
+		cursor = LoadCursor(NULL, IDC_SIZENESW);
 		break;
-		case DEHT_RIGHTMIDDLE:
-			cursor = LoadCursor( NULL, IDC_SIZEWE );
+	case DEHT_RIGHTMIDDLE:
+		cursor = LoadCursor(NULL, IDC_SIZEWE);
 		break;
 	}
 
@@ -3083,19 +3083,19 @@ HCURSOR CDiagramEditor::GetCursor( int hit ) const
 
 }
 
-int CDiagramEditor::GetHitCode( CPoint point )
+int CDiagramEditor::GetHitCode(CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::GetHitCode
-	Description :	Will return the hit-point value (defined in 
+	Description :	Will return the hit-point value (defined in
 					DiagramEntity.h) of point.
 	Access :		Public
 
-	Return :		int				-	The hit-point define of 
+	Return :		int				-	The hit-point define of
 										point. "DEHT_NONE" if none.
 	Parameters :	CPoint point	-	The point to hit-test.
-					
-	Usage :			Virtual. Can be overridden in a derived 
-					class to return other hit-point values. 
+
+	Usage :			Virtual. Can be overridden in a derived
+					class to return other hit-point values.
 					Should normally not be called from code.
 					The hit point can be one of the following:
 						"DEHT_NONE" No hit-point
@@ -3112,11 +3112,11 @@ int CDiagramEditor::GetHitCode( CPoint point )
    ============================================================*/
 {
 
-	CRect rect( 0, 0, GetVirtualSize().cx, GetVirtualSize().cy );
+	CRect rect(0, 0, GetVirtualSize().cx, GetVirtualSize().cy);
 
 	int result = DEHT_NONE;
 
-	if( rect.PtInRect( point ) )
+	if (rect.PtInRect(point))
 		result = DEHT_BODY;
 
 	CRect rectTest;
@@ -3124,62 +3124,62 @@ int CDiagramEditor::GetHitCode( CPoint point )
 	// We return all selection marker points for aestethical 
 	// reasons, even if we can't resize the background to 
 	// the top and left.
-	VirtualToScreen( point );
-	rectTest = GetSelectionMarkerRect( DEHT_TOPLEFT );
-	if( rectTest.PtInRect( point ) )
+	VirtualToScreen(point);
+	rectTest = GetSelectionMarkerRect(DEHT_TOPLEFT);
+	if (rectTest.PtInRect(point))
 		result = DEHT_TOPLEFT;
 
-	rectTest = GetSelectionMarkerRect( DEHT_TOPMIDDLE );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_TOPMIDDLE);
+	if (rectTest.PtInRect(point))
 		result = DEHT_TOPMIDDLE;
 
-	rectTest = GetSelectionMarkerRect( DEHT_TOPRIGHT );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_TOPRIGHT);
+	if (rectTest.PtInRect(point))
 		result = DEHT_TOPRIGHT;
 
-	rectTest = GetSelectionMarkerRect( DEHT_BOTTOMLEFT );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_BOTTOMLEFT);
+	if (rectTest.PtInRect(point))
 		result = DEHT_BOTTOMLEFT;
 
-	rectTest = GetSelectionMarkerRect( DEHT_BOTTOMMIDDLE );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_BOTTOMMIDDLE);
+	if (rectTest.PtInRect(point))
 		result = DEHT_BOTTOMMIDDLE;
 
-	rectTest = GetSelectionMarkerRect( DEHT_BOTTOMRIGHT );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_BOTTOMRIGHT);
+	if (rectTest.PtInRect(point))
 		result = DEHT_BOTTOMRIGHT;
 
-	rectTest = GetSelectionMarkerRect( DEHT_LEFTMIDDLE );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_LEFTMIDDLE);
+	if (rectTest.PtInRect(point))
 		result = DEHT_LEFTMIDDLE;
 
-	rectTest = GetSelectionMarkerRect( DEHT_RIGHTMIDDLE );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_RIGHTMIDDLE);
+	if (rectTest.PtInRect(point))
 		result = DEHT_RIGHTMIDDLE;
 
 	return result;
 
 }
 
-void CDiagramEditor::InsideRestraints( double& x, double& y )
+void CDiagramEditor::InsideRestraints(double& x, double& y)
 /* ============================================================
 	Function :		CDiagramEditor::InsideRestraints
-	Description :	Returns the max x and y that the selected 
-					objects can move, with the desired x and y 
+	Description :	Returns the max x and y that the selected
+					objects can move, with the desired x and y
 					as in-parameters.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	double& x	-	Desired x-movement
 					double& y	-	Desired y-movement.
-					
-	Usage :			Internal function. Will not actually move 
-					the objects, only calculate the maximum 
+
+	Usage :			Internal function. Will not actually move
+					the objects, only calculate the maximum
 					possible movement.
 
    ============================================================*/
 {
-	if( m_restraint != RESTRAINT_NONE )
+	if (m_restraint != RESTRAINT_NONE)
 	{
 
 		int count = 0;
@@ -3189,9 +3189,9 @@ void CDiagramEditor::InsideRestraints( double& x, double& y )
 		double maxright = 0;
 		double maxbottom = 0;
 
-		while( ( obj = m_objs->GetAt( count++ ) ) )
+		while ((obj = m_objs->GetAt(count++)))
 		{
-			if( obj->IsSelected() )
+			if (obj->IsSelected())
 			{
 
 				// Correcting, depending on restraint mode.
@@ -3204,15 +3204,15 @@ void CDiagramEditor::InsideRestraints( double& x, double& y )
 				double right = obj->GetRight() + x;
 				double bottom = obj->GetBottom() + y;
 
-				minleft = min( minleft, left );
-				minleft = min( minleft, right );
-				mintop = min( mintop, top );
-				mintop = min( mintop, bottom );
+				minleft = min(minleft, left);
+				minleft = min(minleft, right);
+				mintop = min(mintop, top);
+				mintop = min(mintop, bottom);
 
-				maxright = max( maxright, left );
-				maxright = max( maxright, right );
-				maxbottom = max( maxbottom, top );
-				maxbottom = max( maxbottom, bottom );
+				maxright = max(maxright, left);
+				maxright = max(maxright, right);
+				maxbottom = max(maxbottom, top);
+				maxbottom = max(maxbottom, bottom);
 
 			}
 		}
@@ -3222,14 +3222,14 @@ void CDiagramEditor::InsideRestraints( double& x, double& y )
 		double topedge = 0;
 		double bottomedge = 0;
 
-		if( m_restraint == RESTRAINT_VIRTUAL )
+		if (m_restraint == RESTRAINT_VIRTUAL)
 		{
 			leftedge = 0;
 			topedge = 0;
 			rightedge = GetVirtualSize().cx;
 			bottomedge = GetVirtualSize().cy;
 		}
-		else if( m_restraint == RESTRAINT_MARGIN )
+		else if (m_restraint == RESTRAINT_MARGIN)
 		{
 			leftedge = m_leftMargin;
 			topedge = m_topMargin;
@@ -3237,19 +3237,19 @@ void CDiagramEditor::InsideRestraints( double& x, double& y )
 			bottomedge = GetVirtualSize().cy - m_bottomMargin;
 		}
 
-		if( minleft < leftedge )
-			x = x - ( minleft - leftedge );
-		if( mintop < topedge )
-			y = y - ( mintop - topedge );
-		if( maxright > rightedge )
-			x = rightedge - ( maxright - x );
-		if( maxbottom > bottomedge )
-			y = bottomedge - ( maxbottom - y );
+		if (minleft < leftedge)
+			x = x - (minleft - leftedge);
+		if (mintop < topedge)
+			y = y - (mintop - topedge);
+		if (maxright > rightedge)
+			x = rightedge - (maxright - x);
+		if (maxbottom > bottomedge)
+			y = bottomedge - (maxbottom - y);
 
 	}
 }
 
-void CDiagramEditor::AdjustForRestraints( double& left, double& top, double& right, double& bottom )
+void CDiagramEditor::AdjustForRestraints(double& left, double& top, double& right, double& bottom)
 /* ============================================================
 	Function :		CDiagramEditor::AdjustForRestraints
 	Description :	Adjust the rect represented by the in-
@@ -3257,127 +3257,127 @@ void CDiagramEditor::AdjustForRestraints( double& left, double& top, double& rig
 	Access :		Protected
 
 	Return :		void
-	Parameters :	double& left	-	Desired left position. 
-										Contains the corrected 
+	Parameters :	double& left	-	Desired left position.
+										Contains the corrected
 										left position on return.
 					double& top		-	Desired top position.
-										Contains the corrected 
+										Contains the corrected
 										top position on return.
 					double& right	-	Desired right position.
-										Contains the corrected 
+										Contains the corrected
 										right position on return.
 					double& bottom	-	Desired bottom position.
-										Contains the corrected 
+										Contains the corrected
 										bottom position on return.
-					
-	Usage :			Internal function. Will not resize the rect. 
+
+	Usage :			Internal function. Will not resize the rect.
 					The coordinates need not be normalized.
 
    ============================================================*/
 {
 
 	// Saving the size
-	double width = fabs( right - left );
-	double height = fabs( bottom - top );
+	double width = fabs(right - left);
+	double height = fabs(bottom - top);
 
 	// Correcting, depending on restraint mode.
 	// Note that checks will have to be made for all 
 	// coordinates against all sides, as the coordinates 
 	// might not be normalized (as for a line, for example).
-	if( m_restraint == RESTRAINT_VIRTUAL )
+	if (m_restraint == RESTRAINT_VIRTUAL)
 	{
 
-		if( left < 0 )
+		if (left < 0)
 		{
 			left = 0;
 			right = left + width;
 		}
-		if( top < 0 )
+		if (top < 0)
 		{
 			top = 0;
 			bottom = top + height;
 		}
-		if( right < 0 )
+		if (right < 0)
 		{
 			right = 0;
 			left = right + width;
 		}
-		if( bottom < 0 )
+		if (bottom < 0)
 		{
 			bottom = 0;
 			top = bottom + height;
 		}
 
-		if( right > GetVirtualSize().cx )
+		if (right > GetVirtualSize().cx)
 		{
 			right = GetVirtualSize().cx;
 			left = right - width;
 		}
-		if( bottom > GetVirtualSize().cy )
+		if (bottom > GetVirtualSize().cy)
 		{
 			bottom = GetVirtualSize().cy;
 			top = bottom - height;
 		}
 
-		if( left > GetVirtualSize().cx )
+		if (left > GetVirtualSize().cx)
 		{
 			left = GetVirtualSize().cx;
 			right = left - width;
 		}
-		if( top > GetVirtualSize().cy )
+		if (top > GetVirtualSize().cy)
 		{
 			top = GetVirtualSize().cy;
 			bottom = top - height;
 		}
 	}
-	else if( m_restraint == RESTRAINT_MARGIN )
+	else if (m_restraint == RESTRAINT_MARGIN)
 	{
-		if( left < m_leftMargin )
+		if (left < m_leftMargin)
 		{
 			left = m_leftMargin;
 			right = left + width;
 		}
-		if( top < m_topMargin )
+		if (top < m_topMargin)
 		{
 			top = m_topMargin;
 			bottom = top + height;
 		}
-		if( right < m_leftMargin )
+		if (right < m_leftMargin)
 		{
 			right = m_leftMargin;
 			left = right + width;
 		}
-		if( bottom < m_topMargin )
+		if (bottom < m_topMargin)
 		{
 			bottom = m_topMargin;
 			top = bottom + height;
 		}
 
-		if( right > GetVirtualSize().cx - m_rightMargin )
+		if (right > GetVirtualSize().cx - m_rightMargin)
 		{
-			right = ( GetVirtualSize().cx - m_rightMargin );
+			right = (GetVirtualSize().cx - m_rightMargin);
 			left = right - width;
 		}
-		if( bottom > GetVirtualSize().cy - m_bottomMargin )
+		if (bottom > GetVirtualSize().cy - m_bottomMargin)
 		{
-			bottom = ( GetVirtualSize().cy - m_bottomMargin );
+			bottom = (GetVirtualSize().cy - m_bottomMargin);
 			top = bottom - height;
 		}
-		if( left > GetVirtualSize().cx - m_rightMargin )
+		if (left > GetVirtualSize().cx - m_rightMargin)
 		{
-			left = ( GetVirtualSize().cx - m_rightMargin );
+			left = (GetVirtualSize().cx - m_rightMargin);
 			right = left - width;
 		}
-		if( top > GetVirtualSize().cy - m_bottomMargin )
+		if (top > GetVirtualSize().cy - m_bottomMargin)
 		{
-			top = ( GetVirtualSize().cy - m_bottomMargin );
+			top = (GetVirtualSize().cy - m_bottomMargin);
 			bottom = top - height;
 		}
 	}
 
 }
 
-void CDiagramEditor::AdjustForRestraints( double& xpos, double& ypos )
+void CDiagramEditor::AdjustForRestraints(double& xpos, double& ypos)
 /* ============================================================
 	Function :		CDiagramEditor::AdjustForRestraints
 	Description :	Adjust the rect represented by the in-
@@ -3385,32 +3385,32 @@ void CDiagramEditor::AdjustForRestraints( double& xpos, double& ypos )
 	Access :		Protected
 
 	Return :		void
-	Parameters :	double& xpos	-	Desired x position. 
-										Contains the corrected 
+	Parameters :	double& xpos	-	Desired x position.
+										Contains the corrected
 										x position on return.
-					double& ypos	-	Desired y position. 
-										Contains the corrected 
+					double& ypos	-	Desired y position.
+										Contains the corrected
 										y position on return.
-					
-	Usage :			Internal function. Will only correct 
+
+	Usage :			Internal function. Will only correct
 					position parameters, not change any object.
 
    ============================================================*/
 {
 
-	if( m_restraint == RESTRAINT_VIRTUAL )
+	if (m_restraint == RESTRAINT_VIRTUAL)
 	{
-		xpos = max( xpos, 0 );
-		xpos = min( xpos, GetVirtualSize().cx );
-		ypos = max( ypos, 0 );
-		ypos = min( ypos, GetVirtualSize().cy );
+		xpos = max(xpos, 0);
+		xpos = min(xpos, GetVirtualSize().cx);
+		ypos = max(ypos, 0);
+		ypos = min(ypos, GetVirtualSize().cy);
 	}
-	else if( m_restraint == RESTRAINT_MARGIN )
+	else if (m_restraint == RESTRAINT_MARGIN)
 	{
-		xpos = max( xpos, m_leftMargin );
-		xpos = min( xpos, GetVirtualSize().cx - m_rightMargin );
-		ypos = max( ypos, m_topMargin );
-		ypos = min( ypos, GetVirtualSize().cy - m_bottomMargin );
+		xpos = max(xpos, m_leftMargin);
+		xpos = min(xpos, GetVirtualSize().cx - m_rightMargin);
+		ypos = max(ypos, m_topMargin);
+		ypos = min(ypos, GetVirtualSize().cy - m_bottomMargin);
 	}
 
 }
@@ -3418,11 +3418,11 @@ void CDiagramEditor::AdjustForRestraints( double& xpos, double& ypos )
 CSize CDiagramEditor::GetContainingSize() const
 /* ============================================================
 	Function :		CDiagramEditor::GetContainingSize
-	Description :	Return the minimum size enveloping all 
+	Description :	Return the minimum size enveloping all
 					objects.
 	Access :		Protected
 
-	Return :		CSize	-	Minimum size necessary to 
+	Return :		CSize	-	Minimum size necessary to
 								contain all objects.
 	Parameters :	none
 
@@ -3437,148 +3437,148 @@ CSize CDiagramEditor::GetContainingSize() const
 	int maxx = 0;
 	int maxy = 0;
 
-	if( m_objs )
+	if (m_objs)
 	{
-		while( ( obj = m_objs->GetAt( count++ ) ) )
+		while ((obj = m_objs->GetAt(count++)))
 		{
-			maxx = max( round( obj->GetRight() ), maxx );
-			maxy = max( round( obj->GetBottom() ), maxy );
+			maxx = max(round(obj->GetRight()), maxx);
+			maxy = max(round(obj->GetBottom()), maxy);
 		}
 	}
 
-	return CSize( maxx, maxy );
+	return CSize(maxx, maxy);
 
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor scrolling
 
-void CDiagramEditor::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar ) 
+void CDiagramEditor::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 /* ============================================================
 	Function :		CDiagramEditor::OnHScroll
-	Description :	Handles the "WM_VSCROLL" message. Updates the 
+	Description :	Handles the "WM_VSCROLL" message. Updates the
 					screen.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	UINT nSBCode			-	Type of scroll operation
 					UINT nPos				-	New scroll position
-					CScrollBar* pScrollBar	-	
-					
+					CScrollBar* pScrollBar	-
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
 {
 
 	SCROLLINFO si;
-	si.cbSize = sizeof( SCROLLINFO );
+	si.cbSize = sizeof(SCROLLINFO);
 	si.fMask = SIF_POS | SIF_RANGE;
-	GetScrollInfo( SB_HORZ, &si );
-	switch( nSBCode )
+	GetScrollInfo(SB_HORZ, &si);
+	switch (nSBCode)
 	{
-		case SB_LEFT:			// Scroll to far left.
-			si.nPos = si.nMin;
-			break;
-		case SB_LINELEFT:		// Scroll left.
-			si.nPos = max( si.nPos - 1, si.nMin );
-			break;
-		case SB_LINERIGHT:		// Scroll right.
-			si.nPos = min( si.nPos + 1, si.nMax );
-			break;
-		case SB_PAGELEFT:		// Scroll one page left.
-			si.nPos = max( si.nPos - static_cast< int >( si.nPage ), si.nMin );
-			break;
-		case SB_PAGERIGHT:		// Scroll one page right.
-			si.nPos = min( si.nPos + static_cast< int >( si.nPage ), si.nMax );
-			break;
-		case SB_RIGHT:			// Scroll to far right.
-			si.nPos = si.nMax;
-			break;
-		case SB_THUMBPOSITION:	// Scroll to absolute position. The current position is specified by the nPos parameter.
-			si.nPos = nPos;
-			break;
-		case SB_THUMBTRACK:		//
-			si.nPos = nPos;
-			break;
+	case SB_LEFT:			// Scroll to far left.
+		si.nPos = si.nMin;
+		break;
+	case SB_LINELEFT:		// Scroll left.
+		si.nPos = max(si.nPos - 1, si.nMin);
+		break;
+	case SB_LINERIGHT:		// Scroll right.
+		si.nPos = min(si.nPos + 1, si.nMax);
+		break;
+	case SB_PAGELEFT:		// Scroll one page left.
+		si.nPos = max(si.nPos - static_cast<int>(si.nPage), si.nMin);
+		break;
+	case SB_PAGERIGHT:		// Scroll one page right.
+		si.nPos = min(si.nPos + static_cast<int>(si.nPage), si.nMax);
+		break;
+	case SB_RIGHT:			// Scroll to far right.
+		si.nPos = si.nMax;
+		break;
+	case SB_THUMBPOSITION:	// Scroll to absolute position. The current position is specified by the nPos parameter.
+		si.nPos = nPos;
+		break;
+	case SB_THUMBTRACK:		//
+		si.nPos = nPos;
+		break;
 	}
 
-	SetHScroll( si.nPos );
-//	SetScrollInfo( SB_HORZ, &si );
+	SetHScroll(si.nPos);
+	//	SetScrollInfo( SB_HORZ, &si );
 	RedrawWindow();
-	CWnd::OnHScroll( nSBCode, nPos, pScrollBar );
+	CWnd::OnHScroll(nSBCode, nPos, pScrollBar);
 
 }
 
-void CDiagramEditor::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar ) 
+void CDiagramEditor::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 /* ============================================================
 	Function :		CDiagramEditor::OnVScroll
-	Description :	Handles the "WM_VSCROLL" message. Updates the 
+	Description :	Handles the "WM_VSCROLL" message. Updates the
 					screen.
 	Access :		Protected
 
 	Return :		void
-	Parameters :	UINT nSBCode			-	Type of scroll 
+	Parameters :	UINT nSBCode			-	Type of scroll
 												operation.
 					UINT nPos				-	New scroll position.
-					CScrollBar* pScrollBar	-	
-					
+					CScrollBar* pScrollBar	-
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
 {
 
 	SCROLLINFO si;
-	si.cbSize = sizeof( SCROLLINFO );
+	si.cbSize = sizeof(SCROLLINFO);
 	si.fMask = SIF_POS | SIF_RANGE;
-	GetScrollInfo( SB_VERT, &si );
-	switch( nSBCode )
+	GetScrollInfo(SB_VERT, &si);
+	switch (nSBCode)
 	{
-		case SB_TOP:			// Scroll to far left.
-			si.nPos = si.nMin;
-			break;
-		case SB_LINEUP:			// Scroll left.
-			si.nPos = max( si.nPos - 1, si.nMin );
-			break;
-		case SB_LINEDOWN:		// Scroll right.
-			si.nPos = min( si.nPos + 1, si.nMax );
-			break;
-		case SB_PAGEUP:			// Scroll one page left.
-			si.nPos = max( si.nPos - static_cast< int >( si.nPage ), si.nMin );
-			break;
-		case SB_PAGEDOWN:		// Scroll one page right.
-			si.nPos = min( si.nPos + static_cast< int >( si.nPage ), si.nMax );
-			break;
-		case SB_BOTTOM:			// Scroll to far right.
-			si.nPos = si.nMax;
-			break;
-		case SB_THUMBPOSITION:	// Scroll to absolute position. The current position is specified by the nPos parameter.
-			si.nPos = nPos;
-			break;
-		case SB_THUMBTRACK:		//
-			si.nPos = nPos;
-			break;
+	case SB_TOP:			// Scroll to far left.
+		si.nPos = si.nMin;
+		break;
+	case SB_LINEUP:			// Scroll left.
+		si.nPos = max(si.nPos - 1, si.nMin);
+		break;
+	case SB_LINEDOWN:		// Scroll right.
+		si.nPos = min(si.nPos + 1, si.nMax);
+		break;
+	case SB_PAGEUP:			// Scroll one page left.
+		si.nPos = max(si.nPos - static_cast<int>(si.nPage), si.nMin);
+		break;
+	case SB_PAGEDOWN:		// Scroll one page right.
+		si.nPos = min(si.nPos + static_cast<int>(si.nPage), si.nMax);
+		break;
+	case SB_BOTTOM:			// Scroll to far right.
+		si.nPos = si.nMax;
+		break;
+	case SB_THUMBPOSITION:	// Scroll to absolute position. The current position is specified by the nPos parameter.
+		si.nPos = nPos;
+		break;
+	case SB_THUMBTRACK:		//
+		si.nPos = nPos;
+		break;
 	}
 
-	SetVScroll( si.nPos );
+	SetVScroll(si.nPos);
 
-//	SetScrollInfo( SB_VERT, &si );
+	//	SetScrollInfo( SB_VERT, &si );
 	RedrawWindow();
 
-	CWnd::OnVScroll( nSBCode, nPos, pScrollBar );
+	CWnd::OnVScroll(nSBCode, nPos, pScrollBar);
 
 }
 
-int CDiagramEditor::HScroll( int scroll )
+int CDiagramEditor::HScroll(int scroll)
 /* ============================================================
 	Function :		CDiagramEditor::HScroll
 	Description :	Scrolls the editor window scroll steps
 					horisontally.
 	Access :		Protected
 
-	Return :		int			-	The number of steps actually 
+	Return :		int			-	The number of steps actually
 									scrolled.
 	Parameters :	int scroll	-	The number of steps to scroll.
-					
+
 	Usage :			Internal function
 
    ============================================================*/
@@ -3586,26 +3586,26 @@ int CDiagramEditor::HScroll( int scroll )
 
 	int retval = 0;
 
-	if( m_hWnd )
+	if (m_hWnd)
 	{
 		CRect clientRect;
-		GetClientRect( &clientRect );
-		if(clientRect.Size().cx < GetVirtualSize().cx )	
+		GetClientRect(&clientRect);
+		if (clientRect.Size().cx < GetVirtualSize().cx)
 		{
 			int desiredpos = 0;
 
 			SCROLLINFO si;
-			si.cbSize = sizeof( SCROLLINFO );
-			if( GetScrollInfo( SB_HORZ, &si ) )
+			si.cbSize = sizeof(SCROLLINFO);
+			if (GetScrollInfo(SB_HORZ, &si))
 			{
 				desiredpos = si.nPos + scroll;
 				si.nPos = desiredpos;
 
-				SetHScroll( si.nPos );
-//				SetScrollInfo( SB_HORZ, &si );
-				GetScrollInfo( SB_HORZ, &si );
-				retval = scroll - ( desiredpos - si.nPos );
-				if( retval )
+				SetHScroll(si.nPos);
+				//				SetScrollInfo( SB_HORZ, &si );
+				GetScrollInfo(SB_HORZ, &si);
+				retval = scroll - (desiredpos - si.nPos);
+				if (retval)
 					RedrawWindow();
 			}
 		}
@@ -3615,17 +3615,17 @@ int CDiagramEditor::HScroll( int scroll )
 
 }
 
-int CDiagramEditor::VScroll( int scroll )
+int CDiagramEditor::VScroll(int scroll)
 /* ============================================================
 	Function :		CDiagramEditor::VScroll
 	Description :	Scrolls the editor window scroll steps
 					vertically.
 	Access :		Protected
 
-	Return :		int			-	The number of steps actually 
+	Return :		int			-	The number of steps actually
 									scrolled.
 	Parameters :	int scroll	-	The number of steps to scroll.
-					
+
 	Usage :			Internal function.
 
    ============================================================*/
@@ -3633,26 +3633,26 @@ int CDiagramEditor::VScroll( int scroll )
 
 	int retval = 0;
 
-	if( m_hWnd )
+	if (m_hWnd)
 	{
 		CRect clientRect;
-		GetClientRect( &clientRect );
-		if(clientRect.Size().cy < GetVirtualSize().cy )
+		GetClientRect(&clientRect);
+		if (clientRect.Size().cy < GetVirtualSize().cy)
 		{
 			int desiredpos = 0;
 
 			SCROLLINFO si;
-			si.cbSize = sizeof( SCROLLINFO );
-			if( GetScrollInfo( SB_VERT, &si ) )
+			si.cbSize = sizeof(SCROLLINFO);
+			if (GetScrollInfo(SB_VERT, &si))
 			{
 				desiredpos = si.nPos + scroll;
 				si.nPos = desiredpos;
 
-				SetVScroll( si.nPos );
-//				SetScrollInfo( SB_VERT, &si );
-				GetScrollInfo( SB_VERT, &si );
-				retval = scroll - ( desiredpos - si.nPos );
-				if( retval )
+				SetVScroll(si.nPos);
+				//				SetScrollInfo( SB_VERT, &si );
+				GetScrollInfo(SB_VERT, &si);
+				retval = scroll - (desiredpos - si.nPos);
+				if (retval)
 					RedrawWindow();
 			}
 		}
@@ -3662,39 +3662,39 @@ int CDiagramEditor::VScroll( int scroll )
 
 }
 
-CPoint CDiagramEditor::ScrollPoint( CPoint point )
+CPoint CDiagramEditor::ScrollPoint(CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::ScrollPoint
-	Description :	Scrolls the editor if point is outside the 
+	Description :	Scrolls the editor if point is outside the
 					window.
 	Access :		Protected
 
-	Return :		CPoint			-	The pixels scrolled 
-										horisontally and 
+	Return :		CPoint			-	The pixels scrolled
+										horisontally and
 										vertically.
-	Parameters :	CPoint point	-	The position of the mouse 
+	Parameters :	CPoint point	-	The position of the mouse
 										pointer.
-					
+
 	Usage :			Internal function.
 
    ============================================================*/
 {
 
-	CPoint out( 0, 0 );
+	CPoint out(0, 0);
 	CRect clientRect;
-	GetClientRect( &clientRect );
+	GetClientRect(&clientRect);
 
-	if( point.x > clientRect.right )
-		out.x = HScroll( 10 );
+	if (point.x > clientRect.right)
+		out.x = HScroll(10);
 
-	if( point.x < 0 )
-		out.x = HScroll( -10 );
+	if (point.x < 0)
+		out.x = HScroll(-10);
 
-	if( point.y > clientRect.bottom )
-		out.y = VScroll( 10 );
+	if (point.y > clientRect.bottom)
+		out.y = VScroll(10);
 
-	if( point.y < 0 )
-		out.y = VScroll( -10 );
+	if (point.y < 0)
+		out.y = VScroll(-10);
 
 	return out;
 
@@ -3703,8 +3703,8 @@ CPoint CDiagramEditor::ScrollPoint( CPoint point )
 void CDiagramEditor::SetupScrollbars()
 /* ============================================================
 	Function :		CDiagramEditor::SetupScrollbars
-	Description :	Sets up/removes scrollbars depending on the 
-					relation between the client- and virtual 
+	Description :	Sets up/removes scrollbars depending on the
+					relation between the client- and virtual
 					rect.
 	Access :		Protected
 
@@ -3716,41 +3716,41 @@ void CDiagramEditor::SetupScrollbars()
    ============================================================*/
 {
 
-	if( m_hWnd )
+	if (m_hWnd)
 	{
 		CRect rect;
-		GetClientRect( rect );
+		GetClientRect(rect);
 
 		DWORD add = 0;
 		DWORD remove = 0;
 
-		if( round( static_cast< double >( GetVirtualSize().cx ) * GetZoom() ) <= rect.right )
+		if (round(static_cast<double>(GetVirtualSize().cx) * GetZoom()) <= rect.right)
 		{
-			if( GetStyle() & WS_HSCROLL )
+			if (GetStyle() & WS_HSCROLL)
 				remove |= WS_HSCROLL;
 		}
 		else
 		{
-			if( !( GetStyle() & WS_HSCROLL ) )
+			if (!(GetStyle() & WS_HSCROLL))
 				add |= WS_HSCROLL;
 		}
-		if( round( static_cast< double >( GetVirtualSize().cy ) * GetZoom() ) <= rect.bottom )
+		if (round(static_cast<double>(GetVirtualSize().cy) * GetZoom()) <= rect.bottom)
 		{
-			if( GetStyle() & WS_VSCROLL )
+			if (GetStyle() & WS_VSCROLL)
 				remove |= WS_VSCROLL;
 		}
 		else
 		{
-			if( !( GetStyle() & WS_VSCROLL ) )
+			if (!(GetStyle() & WS_VSCROLL))
 				add |= WS_VSCROLL;
 		}
 
 		SCROLLINFO si;
-		si.cbSize = sizeof( SCROLLINFO );
+		si.cbSize = sizeof(SCROLLINFO);
 		si.fMask = SIF_RANGE | SIF_PAGE;
 		si.nMin = 0;
-		int width = round( static_cast< double >( GetVirtualSize().cx ) * GetZoom() );
-		if( width > rect.right )
+		int width = round(static_cast<double>(GetVirtualSize().cx) * GetZoom());
+		if (width > rect.right)
 		{
 			si.nMax = width;
 			si.nPage = rect.right;
@@ -3761,10 +3761,10 @@ void CDiagramEditor::SetupScrollbars()
 			si.nPage = 0;
 		}
 
-		SetScrollInfo( SB_HORZ, &si );
-		
-		int height = round( static_cast< double >( GetVirtualSize().cy ) * GetZoom() );
-		if( height > rect.bottom )
+		SetScrollInfo(SB_HORZ, &si);
+
+		int height = round(static_cast<double>(GetVirtualSize().cy) * GetZoom());
+		if (height > rect.bottom)
 		{
 			si.nMax = height;
 			si.nPage = rect.bottom;
@@ -3775,10 +3775,10 @@ void CDiagramEditor::SetupScrollbars()
 			si.nPage = 0;
 		}
 
-		SetScrollInfo( SB_VERT, &si );
+		SetScrollInfo(SB_VERT, &si);
 
-		if( add || remove )
-			ModifyStyle( remove, add, SWP_FRAMECHANGED );
+		if (add || remove)
+			ModifyStyle(remove, add, SWP_FRAMECHANGED);
 
 	}
 
@@ -3787,24 +3787,24 @@ void CDiagramEditor::SetupScrollbars()
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor sizing
 
-void CDiagramEditor::OnSize( UINT nType, int cx, int cy ) 
+void CDiagramEditor::OnSize(UINT nType, int cx, int cy)
 /* ============================================================
 	Function :		CDiagramEditor::OnSize
-	Description :	Handles the "WM_SIZE" message. Sets up/modifies 
+	Description :	Handles the "WM_SIZE" message. Sets up/modifies
 					scrollbars as necessary.
 	Access :		Protected
 
 	Return :		void
-	Parameters :	UINT nType	-	
+	Parameters :	UINT nType	-
 					int cx		-	The new x size
 					int cy		-	The new y size
-					
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
 {
 
-	CWnd::OnSize( nType, cx, cy );
+	CWnd::OnSize(nType, cx, cy);
 	SetupScrollbars();
 
 }
@@ -3812,16 +3812,16 @@ void CDiagramEditor::OnSize( UINT nType, int cx, int cy )
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor coordinate handling
 
-void CDiagramEditor::ScreenToVirtual( CRect& rect ) const
+void CDiagramEditor::ScreenToVirtual(CRect& rect) const
 /* ============================================================
 	Function :		CDiagramEditor::ScreenToVirtual
-	Description :	Converts rect from screen- to virtual 
+	Description :	Converts rect from screen- to virtual
 					coordinates.
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	CRect& rect	-	The rect to convert
-					
+
 	Usage :			Call to - for example - display coordinates,
 
    ============================================================*/
@@ -3835,33 +3835,33 @@ void CDiagramEditor::ScreenToVirtual( CRect& rect ) const
 	SCROLLINFO sih;
 	SCROLLINFO siv;
 
-	sih.cbSize = sizeof( SCROLLINFO );
+	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
-	siv.cbSize = sizeof( SCROLLINFO );
+	siv.cbSize = sizeof(SCROLLINFO);
 	siv.fMask = SIF_POS;
 
-	if( !::GetScrollInfo( m_hWnd, SB_HORZ, &sih ) )
+	if (!::GetScrollInfo(m_hWnd, SB_HORZ, &sih))
 		sih.nPos = 0;
-	if( !::GetScrollInfo( m_hWnd, SB_VERT, &siv ) )
+	if (!::GetScrollInfo(m_hWnd, SB_VERT, &siv))
 		siv.nPos = 0;
 
-	rect.SetRect( round( static_cast< double >( rect.left	+ sih.nPos ) / GetZoom() ), 
-				  round( static_cast< double >( rect.top	+ siv.nPos ) / GetZoom() ), 
-				  round( static_cast< double >( rect.right	+ sih.nPos ) / GetZoom() ), 
-				  round( static_cast< double >( rect.bottom	+ siv.nPos ) / GetZoom() ) );
+	rect.SetRect(round(static_cast<double>(rect.left + sih.nPos) / GetZoom()),
+		round(static_cast<double>(rect.top + siv.nPos) / GetZoom()),
+		round(static_cast<double>(rect.right + sih.nPos) / GetZoom()),
+		round(static_cast<double>(rect.bottom + siv.nPos) / GetZoom()));
 
 }
 
-void CDiagramEditor::ScreenToVirtual( CPoint& point ) const
+void CDiagramEditor::ScreenToVirtual(CPoint& point) const
 /* ============================================================
 	Function :		CDiagramEditor::ScreenToVirtual
-	Description :	Converts point from screen- to virtual 
+	Description :	Converts point from screen- to virtual
 					coordinates.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CPoint& point	-	The point to convert.	
-					
+	Parameters :	CPoint& point	-	The point to convert.
+
 	Usage :			Call to - for example - display coordinates,
 
    ============================================================*/
@@ -3875,31 +3875,31 @@ void CDiagramEditor::ScreenToVirtual( CPoint& point ) const
 	SCROLLINFO sih;
 	SCROLLINFO siv;
 
-	sih.cbSize = sizeof( SCROLLINFO );
+	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
-	siv.cbSize = sizeof( SCROLLINFO );
+	siv.cbSize = sizeof(SCROLLINFO);
 	siv.fMask = SIF_POS;
 
-	if( !::GetScrollInfo( m_hWnd, SB_HORZ, &sih ) )
+	if (!::GetScrollInfo(m_hWnd, SB_HORZ, &sih))
 		sih.nPos = 0;
-	if( !::GetScrollInfo( m_hWnd, SB_VERT, &siv ) )
+	if (!::GetScrollInfo(m_hWnd, SB_VERT, &siv))
 		siv.nPos = 0;
 
-	point.x = round( static_cast< double >( point.x + sih.nPos ) / GetZoom() );
-	point.y = round( static_cast< double >( point.y + siv.nPos ) / GetZoom() );
+	point.x = round(static_cast<double>(point.x + sih.nPos) / GetZoom());
+	point.y = round(static_cast<double>(point.y + siv.nPos) / GetZoom());
 
 }
 
-void CDiagramEditor::ScreenToVirtual( CSize& size ) const
+void CDiagramEditor::ScreenToVirtual(CSize& size) const
 /* ============================================================
 	Function :		CDiagramEditor::ScreenToVirtual
-	Description :	Converts size from screen- to virtual 
+	Description :	Converts size from screen- to virtual
 					coordinates.
 	Access :		Public
 
 	Return :		void
 	Parameters :	CSize& size	-	The size to convert.
-					
+
 	Usage :			Call to - for example - display coordinates,
 
    ============================================================*/
@@ -3912,32 +3912,32 @@ void CDiagramEditor::ScreenToVirtual( CSize& size ) const
 	SCROLLINFO sih;
 	SCROLLINFO siv;
 
-	sih.cbSize = sizeof( SCROLLINFO );
+	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
-	siv.cbSize = sizeof( SCROLLINFO );
+	siv.cbSize = sizeof(SCROLLINFO);
 	siv.fMask = SIF_POS;
 
-	if( !::GetScrollInfo( m_hWnd, SB_HORZ, &sih ) )
+	if (!::GetScrollInfo(m_hWnd, SB_HORZ, &sih))
 		sih.nPos = 0;
-	if( !::GetScrollInfo( m_hWnd, SB_VERT, &siv ) )
+	if (!::GetScrollInfo(m_hWnd, SB_VERT, &siv))
 		siv.nPos = 0;
 
-	size.cx = round( static_cast< double >( size.cx + sih.nPos ) / GetZoom() );
-	size.cy = round( static_cast< double >( size.cy + siv.nPos ) / GetZoom() );
+	size.cx = round(static_cast<double>(size.cx + sih.nPos) / GetZoom());
+	size.cy = round(static_cast<double>(size.cy + siv.nPos) / GetZoom());
 
 }
 
-void CDiagramEditor::VirtualToScreen( CRect& rect ) const
+void CDiagramEditor::VirtualToScreen(CRect& rect) const
 /* ============================================================
 	Function :		CDiagramEditor::VirtualToScreen
-	Description :	Converts rect from the virtual to the 
-					screen coordinate system. 
+	Description :	Converts rect from the virtual to the
+					screen coordinate system.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CRect& rect	-	The rect to convert. Will be 
+	Parameters :	CRect& rect	-	The rect to convert. Will be
 									normalized on return.
-					
+
 	Usage :			Call to - for example - display coordinates,
 
    ============================================================*/
@@ -3951,85 +3951,85 @@ void CDiagramEditor::VirtualToScreen( CRect& rect ) const
 	SCROLLINFO sih;
 	SCROLLINFO siv;
 
-	sih.cbSize = sizeof( SCROLLINFO );
+	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
-	siv.cbSize = sizeof( SCROLLINFO );
+	siv.cbSize = sizeof(SCROLLINFO);
 	siv.fMask = SIF_POS;
 
-	if( !::GetScrollInfo( m_hWnd, SB_HORZ, &sih ) )
+	if (!::GetScrollInfo(m_hWnd, SB_HORZ, &sih))
 		sih.nPos = 0;
-	if( !::GetScrollInfo( m_hWnd, SB_VERT, &siv ) )
+	if (!::GetScrollInfo(m_hWnd, SB_VERT, &siv))
 		siv.nPos = 0;
 
-	rect.SetRect( round( static_cast< double >( rect.left	) * GetZoom() - static_cast< double >( sih.nPos ) ), 
-				  round( static_cast< double >( rect.top	) * GetZoom() - static_cast< double >( siv.nPos ) ), 
-				  round( static_cast< double >( rect.right	) * GetZoom() - static_cast< double >( sih.nPos ) ), 
-				  round( static_cast< double >( rect.bottom	) * GetZoom() - static_cast< double >( siv.nPos ) ) );
+	rect.SetRect(round(static_cast<double>(rect.left) * GetZoom() - static_cast<double>(sih.nPos)),
+		round(static_cast<double>(rect.top) * GetZoom() - static_cast<double>(siv.nPos)),
+		round(static_cast<double>(rect.right) * GetZoom() - static_cast<double>(sih.nPos)),
+		round(static_cast<double>(rect.bottom) * GetZoom() - static_cast<double>(siv.nPos)));
 
 }
 
-void CDiagramEditor::VirtualToScreen( CPoint& point ) const
+void CDiagramEditor::VirtualToScreen(CPoint& point) const
 /* ============================================================
 	Function :		CDiagramEditor::VirtualToScreen
-	Description :	Converts point from the virtual to the 
-					screen coordinate system. 
+	Description :	Converts point from the virtual to the
+					screen coordinate system.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CPoint& point	-	The point to convert. 
-					
+	Parameters :	CPoint& point	-	The point to convert.
+
 	Usage :			Call to - for example - display coordinates,
 
    ============================================================*/
 {
 
-	point.x = round( static_cast< double >( point.x ) * GetZoom() );
-	point.y = round( static_cast< double >( point.y ) * GetZoom() );
+	point.x = round(static_cast<double>(point.x) * GetZoom());
+	point.y = round(static_cast<double>(point.y) * GetZoom());
 
 
 }
 
-int CDiagramEditor::SnapX( int coord ) const
+int CDiagramEditor::SnapX(int coord) const
 /* ============================================================
 	Function :		CDiagramEditor::SnapX
-	Description :	Snaps coord vertically to the closest 
+	Description :	Snaps coord vertically to the closest
 					grid point.
 	Access :		Protected
 
 	Return :		int			-	The resulting x-coordinate.
 	Parameters :	int coord	-	The coordinate to snap
-					
-	Usage :			Internal function. Will snap even if snap 
+
+	Usage :			Internal function. Will snap even if snap
 					to grid is off.
 
    ============================================================*/
 {
 
-	double x = static_cast< double >( coord );
-	double gridx = static_cast< double >( m_gridSize.cx );
-	return round( x / gridx ) * m_gridSize.cx;
+	double x = static_cast<double>(coord);
+	double gridx = static_cast<double>(m_gridSize.cx);
+	return round(x / gridx) * m_gridSize.cx;
 
 }
 
-int CDiagramEditor::SnapY( int coord ) const
+int CDiagramEditor::SnapY(int coord) const
 /* ============================================================
 	Function :		CDiagramEditor::SnapY
-	Description :	Snaps coord horisontally to the closest 
+	Description :	Snaps coord horisontally to the closest
 					grid point.
 	Access :		Protected
 
 	Return :		int			-	The resulting y-coordinate.
 	Parameters :	int coord	-	The coordinate to snap
-					
-	Usage :			Internal function. Will snap even if snap 
+
+	Usage :			Internal function. Will snap even if snap
 					to grid is off.
 
    ============================================================*/
 {
 
-	double y = static_cast< double >( coord );
-	double gridy = static_cast< double >( m_gridSize.cy );
-	return round( y / gridy ) * m_gridSize.cy;
+	double y = static_cast<double>(coord);
+	double gridy = static_cast<double>(m_gridSize.cy);
+	return round(y / gridy) * m_gridSize.cy;
 
 }
 
@@ -4051,12 +4051,12 @@ BOOL CDiagramEditor::IsAnyObjectSelected() const
 {
 
 	BOOL res = FALSE;
-	if( m_objs )
+	if (m_objs)
 	{
 		int count = 0;
 		CDiagramEntity* obj;
-		while( ( obj = m_objs->GetAt( count++ ) ) )
-			if( obj->IsSelected() )
+		while ((obj = m_objs->GetAt(count++)))
+			if (obj->IsSelected())
 				res = TRUE;
 	}
 
@@ -4064,10 +4064,10 @@ BOOL CDiagramEditor::IsAnyObjectSelected() const
 
 }
 
-int CDiagramEditor::GetSelectCount() const
+INT_PTR CDiagramEditor::GetSelectCount() const
 /* ============================================================
 	Function :		CDiagramEditor::GetSelectCount
-	Description :	Returns the number of selected objects in 
+	Description :	Returns the number of selected objects in
 					the data container.
 	Access :		Public
 
@@ -4079,9 +4079,9 @@ int CDiagramEditor::GetSelectCount() const
    ============================================================*/
 {
 
-	int res = 0;
+	INT_PTR res = 0;
 
-	if( m_objs )
+	if (m_objs)
 		res = m_objs->GetSelectCount();
 
 	return res;
@@ -4091,17 +4091,17 @@ int CDiagramEditor::GetSelectCount() const
 CDiagramEntity* CDiagramEditor::GetSelectedObject() const
 /* ============================================================
 	Function :		CDiagramEditor::GetSelectedObject
-	Description :	Returns the top selected object in the 
+	Description :	Returns the top selected object in the
 					container.
 	Access :		Public
 
-	Return :		CDiagramEntity*	-	The top selected object, 
+	Return :		CDiagramEntity*	-	The top selected object,
 										or "NULL" if none.
 	Parameters :	none
 
-	Usage :			Call to get the currently selected object. 
-					Note that this function will return a single 
-					object (top in the z-order) even if several 
+	Usage :			Call to get the currently selected object.
+					Note that this function will return a single
+					object (top in the z-order) even if several
 					are selected.
 
    ============================================================*/
@@ -4111,16 +4111,16 @@ CDiagramEntity* CDiagramEditor::GetSelectedObject() const
 	CDiagramEntity* retval = NULL;
 	CDiagramEntity* obj;
 
-	if( m_objs )
-		while( ( obj = m_objs->GetAt( count++ ) ) )
-			if( obj->IsSelected() )
+	if (m_objs)
+		while ((obj = m_objs->GetAt(count++)))
+			if (obj->IsSelected())
 				retval = obj;
 
 	return retval;
 
 }
 
-int CDiagramEditor::GetObjectCount() const
+INT_PTR CDiagramEditor::GetObjectCount() const
 /* ============================================================
 	Function :		CDiagramEditor::GetObjectCount
 	Description :	Returns the number of objects in the container.
@@ -4129,21 +4129,21 @@ int CDiagramEditor::GetObjectCount() const
 	Return :		int	-	The number of objects.
 	Parameters :	none
 
-	Usage :			Call to get the number of objects in the 
+	Usage :			Call to get the number of objects in the
 					data container.
 
    ============================================================*/
 {
 
-	int size = 0;
-	if( m_objs )
+	INT_PTR size = 0;
+	if (m_objs)
 		size = m_objs->GetSize();
 
 	return size;
 
 }
 
-void CDiagramEditor::AddObject( CDiagramEntity* obj ) 
+void CDiagramEditor::AddObject(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEditor::AddObject
 	Description :	Adds "obj" to the data container.
@@ -4151,11 +4151,11 @@ void CDiagramEditor::AddObject( CDiagramEntity* obj )
 
 	Return :		void
 	Parameters :	CDiagramEntity* obj	-	The object to add.
-					
-	Usage :			Called to add objects to the container after 
-					- for example - a load operation. Note that 
-					the modified flag must be set manually if 
-					this is desired (if implementing an Append 
+
+	Usage :			Called to add objects to the container after
+					- for example - a load operation. Note that
+					the modified flag must be set manually if
+					this is desired (if implementing an Append
 					command, for example).
 					This function can be overridden to trap
 					object additions.
@@ -4163,52 +4163,52 @@ void CDiagramEditor::AddObject( CDiagramEntity* obj )
    ============================================================*/
 {
 
-	if( m_objs )
-		m_objs->Add( obj );
+	if (m_objs)
+		m_objs->Add(obj);
 
 }
 
-CDiagramEntity* CDiagramEditor::GetObject( int index )  const
+CDiagramEntity* CDiagramEditor::GetObject(int index)  const
 /* ============================================================
 	Function :		CDiagramEditor::GetObject
 	Description :	Gets the object at index "index".
 	Access :		Public
 
-	Return :		CDiagramEntity*	-	The object, "NULL" if not 
+	Return :		CDiagramEntity*	-	The object, "NULL" if not
 										found.
-	Parameters :	int index		-	The index to get the 
+	Parameters :	int index		-	The index to get the
 										object from
-					
-	Usage :			Call to get a specific object from the 
-					container. 
-					The objects are the responsibility of the 
+
+	Usage :			Call to get a specific object from the
+					container.
+					The objects are the responsibility of the
 					container and should not be deleted.
 
    ============================================================*/
 {
 
 	CDiagramEntity* obj = NULL;
-	if( m_objs )
-		obj = m_objs->GetAt( index );
+	if (m_objs)
+		obj = m_objs->GetAt(index);
 
 	return obj;
 
 }
 
-void CDiagramEditor::StartDrawingObject( CDiagramEntity* obj )
+void CDiagramEditor::StartDrawingObject(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEditor::StartDrawingObject
 	Description :	Starts drawing an object of type "obj".
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDiagramEntity* obj	-	Pointer to an object 
+	Parameters :	CDiagramEntity* obj	-	Pointer to an object
 											of the desired type.
-					
-	Usage :			Should be called with a pointer to the 
-					appropriate object type when the user 
-					selects to draw an object. obj becomes 
-					the property of the editor and should not 
+
+	Usage :			Should be called with a pointer to the
+					appropriate object type when the user
+					selects to draw an object. obj becomes
+					the property of the editor and should not
 					be deleted.
 
    ============================================================*/
@@ -4217,17 +4217,17 @@ void CDiagramEditor::StartDrawingObject( CDiagramEntity* obj )
 	delete m_drawObj;
 	m_drawObj = obj;
 
-	if( obj )
+	if (obj)
 	{
 		m_drawing = TRUE;
 		m_interactMode = MODE_DRAWING;
-		::SetCursor( LoadCursor( NULL, IDC_CROSS ) );
+		::SetCursor(LoadCursor(NULL, IDC_CROSS));
 	}
 	else
 	{
 		m_drawing = FALSE;
 		m_interactMode = MODE_NONE;
-		::SetCursor( LoadCursor( NULL, IDC_ARROW ) );
+		::SetCursor(LoadCursor(NULL, IDC_ARROW));
 	}
 
 }
@@ -4238,7 +4238,7 @@ BOOL CDiagramEditor::IsDrawing() const
 	Description :	Returns if the user is drawing or not
 	Access :		Public
 
-	Return :		BOOL	-	"TRUE" if the user is currently 
+	Return :		BOOL	-	"TRUE" if the user is currently
 								drawing
 	Parameters :	none
 
@@ -4259,19 +4259,19 @@ void CDiagramEditor::UnselectAll()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to unselect all objects. 
-					Should not be callable if "GetObjectCount() 
+	Usage :			Call to unselect all objects.
+					Should not be callable if "GetObjectCount()
 					== 0" (there are no objects in the container).
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		int count = 0;
 		CDiagramEntity* obj;
-		while( ( obj = m_objs->GetAt( count++ ) ) )
-			obj->Select( FALSE );
+		while ((obj = m_objs->GetAt(count++)))
+			obj->Select(FALSE);
 	}
 
 }
@@ -4285,19 +4285,19 @@ void CDiagramEditor::SelectAll()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to select all objects. 
-					Should not be callable if "GetObjectCount() 
+	Usage :			Call to select all objects.
+					Should not be callable if "GetObjectCount()
 					== 0" (there are no objects in the container).
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		int count = 0;
 		CDiagramEntity* obj;
-		while( ( obj = m_objs->GetAt( count++ ) ) )
-			obj->Select( TRUE );
+		while ((obj = m_objs->GetAt(count++)))
+			obj->Select(TRUE);
 		RedrawWindow();
 	}
 
@@ -4306,22 +4306,22 @@ void CDiagramEditor::SelectAll()
 void CDiagramEditor::DeleteAllSelected()
 /* ============================================================
 	Function :		CDiagramEditor::DeleteAllSelected
-	Description :	Deletes all selected objects from the 
+	Description :	Deletes all selected objects from the
 					container.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to delete all selected objects from the 
-					editor. Should not be callable if 
-					"GetSelectCount() == 0" ( or "IsAnyObjectSelected() 
+	Usage :			Call to delete all selected objects from the
+					editor. Should not be callable if
+					"GetSelectCount() == 0" ( or "IsAnyObjectSelected()
 					== FALSE" )
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		m_objs->Snapshot();
 		m_objs->RemoveAllSelected();
@@ -4344,7 +4344,7 @@ void CDiagramEditor::DeleteAll()
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		m_objs->Snapshot();
 		m_objs->RemoveAll();
@@ -4360,40 +4360,40 @@ void CDiagramEditor::LeftAlignSelected()
 /* ============================================================
 	Function :		CDiagramEditor::LeftAlignSelected
 	Description :	Aligns all selected objects to the left of
-					the top selected object in the data container. 
+					the top selected object in the data container.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to align the left edge of all selected 
+	Usage :			Call to align the left edge of all selected
 					objects.
-					Should only be callable if "GetSelectCount() > 
+					Should only be callable if "GetSelectCount() >
 					1", that is, more than one object is selected.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() > 1 )
+	if (GetSelectCount() > 1)
 	{
 		m_objs->Snapshot();
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
+		if (obj)
 		{
 			double left = obj->GetLeft();
 			int count = 0;
-			while( ( obj = m_objs->GetAt( count++ ) ) )
+			while ((obj = m_objs->GetAt(count++)))
 			{
-				if( obj->IsSelected() )
+				if (obj->IsSelected())
 				{
 					double width = obj->GetRight() - obj->GetLeft();
 					double right = left + width;
-					obj->SetRect( left, obj->GetTop(), right, obj->GetBottom() );
+					obj->SetRect(left, obj->GetTop(), right, obj->GetBottom());
 				}
 			}
 
 		}
-		SetModified( TRUE );
+		SetModified(TRUE);
 		RedrawWindow();
 	}
 
@@ -4403,40 +4403,40 @@ void CDiagramEditor::RightAlignSelected()
 /* ============================================================
 	Function :		CDiagramEditor::RightAlignSelected
 	Description :	Aligns all selected objects to the right of
-					the top selected object in the data container. 
+					the top selected object in the data container.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to align the right edge of all selected 
+	Usage :			Call to align the right edge of all selected
 					objects.
-					Should only be callable if "GetSelectCount() > 
+					Should only be callable if "GetSelectCount() >
 					1", that is, more than one object is selected.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() > 1 )
+	if (GetSelectCount() > 1)
 	{
 		m_objs->Snapshot();
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
+		if (obj)
 		{
 			double right = obj->GetRight();
 			int count = 0;
-			while( ( obj = m_objs->GetAt( count++ ) ) )
+			while ((obj = m_objs->GetAt(count++)))
 			{
-				if( obj->IsSelected() )
+				if (obj->IsSelected())
 				{
 					double width = obj->GetRight() - obj->GetLeft();
 					double left = right - width;
-					obj->SetRect( left, obj->GetTop(), right, obj->GetBottom() );
+					obj->SetRect(left, obj->GetTop(), right, obj->GetBottom());
 				}
 			}
 
 		}
-		SetModified( TRUE );
+		SetModified(TRUE);
 		RedrawWindow();
 	}
 
@@ -4446,40 +4446,40 @@ void CDiagramEditor::TopAlignSelected()
 /* ============================================================
 	Function :		CDiagramEditor::TopAlignSelected
 	Description :	Aligns all selected objects to the top of
-					the top selected object in the data container. 
+					the top selected object in the data container.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to align the top of all selected 
+	Usage :			Call to align the top of all selected
 					objects.
-					Should only be callable if "GetSelectCount() > 
+					Should only be callable if "GetSelectCount() >
 					1", that is, more than one object is selected.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() > 1 )
+	if (GetSelectCount() > 1)
 	{
 		m_objs->Snapshot();
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
+		if (obj)
 		{
 			double top = obj->GetTop();
 			int count = 0;
-			while( ( obj = m_objs->GetAt( count++ ) ) )
+			while ((obj = m_objs->GetAt(count++)))
 			{
-				if( obj->IsSelected() )
+				if (obj->IsSelected())
 				{
 					double height = obj->GetBottom() - obj->GetTop();
 					double bottom = top + height;
-					obj->SetRect( obj->GetLeft(), top, obj->GetRight(), bottom );
+					obj->SetRect(obj->GetLeft(), top, obj->GetRight(), bottom);
 				}
 			}
 
 		}
-		SetModified( TRUE );
+		SetModified(TRUE);
 		RedrawWindow();
 	}
 
@@ -4489,40 +4489,40 @@ void CDiagramEditor::BottomAlignSelected()
 /* ============================================================
 	Function :		CDiagramEditor::BottomAlignSelected
 	Description :	Aligns all selected objects to the bottom of
-					the top selected object in the data container. 
+					the top selected object in the data container.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to align the bottom of all selected 
+	Usage :			Call to align the bottom of all selected
 					objects.
-					Should only be callable if "GetSelectCount() > 
+					Should only be callable if "GetSelectCount() >
 					1", that is, more than one object is selected.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() > 1 )
+	if (GetSelectCount() > 1)
 	{
 		m_objs->Snapshot();
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
+		if (obj)
 		{
 			double bottom = obj->GetBottom();
 			int count = 0;
-			while( ( obj = m_objs->GetAt( count++ ) ) )
+			while ((obj = m_objs->GetAt(count++)))
 			{
-				if( obj->IsSelected() )
+				if (obj->IsSelected())
 				{
 					double height = obj->GetBottom() - obj->GetTop();
 					double top = bottom - height;
-					obj->SetRect( obj->GetLeft(), top, obj->GetRight(), bottom );
+					obj->SetRect(obj->GetLeft(), top, obj->GetRight(), bottom);
 				}
 			}
 
 		}
-		SetModified( TRUE );
+		SetModified(TRUE);
 		RedrawWindow();
 	}
 
@@ -4531,36 +4531,36 @@ void CDiagramEditor::BottomAlignSelected()
 void CDiagramEditor::MakeSameSizeSelected()
 /* ============================================================
 	Function :		CDiagramEditor::MakeSameSizeSelected
-	Description :	Makes all selected objects the same size as 
+	Description :	Makes all selected objects the same size as
 					the top selected object in the data container.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to make all selected objects the same 
+	Usage :			Call to make all selected objects the same
 					size.
-					Should only be called if "GetSelectCount() > 
+					Should only be called if "GetSelectCount() >
 					1", that is, more than one object is selected.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() > 1 )
+	if (GetSelectCount() > 1)
 	{
 		m_objs->Snapshot();
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
+		if (obj)
 		{
 			double width = obj->GetRight() - obj->GetLeft();
 			double height = obj->GetBottom() - obj->GetTop();
 			int count = 0;
-			while( ( obj = m_objs->GetAt( count++ ) ) )
-				if( obj->IsSelected() )
-					obj->SetRect( obj->GetLeft(), obj->GetTop(), obj->GetLeft() + width, obj->GetTop() + height );
+			while ((obj = m_objs->GetAt(count++)))
+				if (obj->IsSelected())
+					obj->SetRect(obj->GetLeft(), obj->GetTop(), obj->GetLeft() + width, obj->GetTop() + height);
 
 		}
-		SetModified( TRUE );
+		SetModified(TRUE);
 		RedrawWindow();
 	}
 
@@ -4575,19 +4575,19 @@ void CDiagramEditor::Duplicate()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to put a copy of the selected object on 
+	Usage :			Call to put a copy of the selected object on
 					the screen.
 
    ============================================================*/
 {
-	if( GetSelectCount() == 1 )
+	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
+		if (obj)
 		{
 			m_objs->Snapshot();
-			m_objs->Duplicate( obj );
-			obj->Select( FALSE );
+			m_objs->Duplicate(obj);
+			obj->Select(FALSE);
 			RedrawWindow();
 		}
 	}
@@ -4596,28 +4596,28 @@ void CDiagramEditor::Duplicate()
 void CDiagramEditor::Up()
 /* ============================================================
 	Function :		CDiagramEditor::Up
-	Description :	Moves the currently selected object one 
+	Description :	Moves the currently selected object one
 					step up in the object z-order.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to move the selected object one step 
+	Usage :			Call to move the selected object one step
 					up in the z-order.
 					This command should only be callable if
-					"GetSelectCount()" returns 1, that is, if one 
+					"GetSelectCount()" returns 1, that is, if one
 					and only one object is selected.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() == 1 )
+	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
+		if (obj)
 		{
-			m_objs->Up( obj );
+			m_objs->Up(obj);
 			RedrawWindow();
 		}
 	}
@@ -4626,28 +4626,28 @@ void CDiagramEditor::Up()
 void CDiagramEditor::Down()
 /* ============================================================
 	Function :		CDiagramEditor::Down
-	Description :	Moves the currently selected object one 
+	Description :	Moves the currently selected object one
 					step down in the object z-order.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to move the selected object one step 
+	Usage :			Call to move the selected object one step
 					down in the z-order.
 					This command should only be callable if
-					"GetSelectCount()" returns 1, that is, if one 
+					"GetSelectCount()" returns 1, that is, if one
 					and only one object is selected.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() == 1 )
+	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
+		if (obj)
 		{
-			m_objs->Down( obj );
+			m_objs->Down(obj);
 			RedrawWindow();
 		}
 	}
@@ -4656,28 +4656,28 @@ void CDiagramEditor::Down()
 void CDiagramEditor::Front()
 /* ============================================================
 	Function :		CDiagramEditor::Front
-	Description :	Moves the selected object to the front of 
+	Description :	Moves the selected object to the front of
 					all other objects.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to move the selected object to the 
-					top of the z-order. 
+	Usage :			Call to move the selected object to the
+					top of the z-order.
 					This command should only be callable if
-					"GetSelectCount()" returns 1, that is, if one 
+					"GetSelectCount()" returns 1, that is, if one
 					and only one object is selected.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() == 1 )
+	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
+		if (obj)
 		{
-			m_objs->Front( obj );
+			m_objs->Front(obj);
 			RedrawWindow();
 		}
 	}
@@ -4686,28 +4686,28 @@ void CDiagramEditor::Front()
 void CDiagramEditor::Bottom()
 /* ============================================================
 	Function :		CDiagramEditor::Bottom
-	Description :	Moves the selected object to the bottom of 
+	Description :	Moves the selected object to the bottom of
 					all objects.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to move the selected object to the 
-					bottom of the z-order. 
+	Usage :			Call to move the selected object to the
+					bottom of the z-order.
 					This command should only be callable if
-					"GetSelectCount()" returns 1, that is, if one 
+					"GetSelectCount()" returns 1, that is, if one
 					and only one object is selected.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() == 1 )
+	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
+		if (obj)
 		{
-			m_objs->Bottom( obj );
+			m_objs->Bottom(obj);
 			RedrawWindow();
 		}
 	}
@@ -4716,27 +4716,27 @@ void CDiagramEditor::Bottom()
 void CDiagramEditor::ShowProperties()
 /* ============================================================
 	Function :		CDiagramEditor::ShowProperties
-	Description :	Shows the property dialog for the one and 
+	Description :	Shows the property dialog for the one and
 					only selected object in the data container.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to display a property dialog for the 
-					selected object. This command should 
-					normally only be callable if "GetSelectCount()" 
-					returns 1, that is, if one and only one object 
+	Usage :			Call to display a property dialog for the
+					selected object. This command should
+					normally only be callable if "GetSelectCount()"
+					returns 1, that is, if one and only one object
 					is selected.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() == 1 )
+	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
-		if( obj )
-			obj->ShowProperties( this );
+		if (obj)
+			obj->ShowProperties(this);
 	}
 
 }
@@ -4744,32 +4744,32 @@ void CDiagramEditor::ShowProperties()
 void CDiagramEditor::RemoveUnselectedPropertyDialogs()
 /* ============================================================
 	Function :		CDiagramEditor::RemoveUnselectedPropertyDialogs
-	Description :	Removes all property dialogs for unselected 
+	Description :	Removes all property dialogs for unselected
 					objects.
 	Access :		Private
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Internal function. Call to remove all 
-					property dialogs for non-selected objects 
+	Usage :			Internal function. Call to remove all
+					property dialogs for non-selected objects
 					from screen.
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		int count = 0;
 		CDiagramEntity* obj;
-		while( ( obj = m_objs->GetAt( count++ ) ) )
-			if( !obj->IsSelected() )
-				obj->ShowProperties( this, FALSE );
+		while ((obj = m_objs->GetAt(count++)))
+			if (!obj->IsSelected())
+				obj->ShowProperties(this, FALSE);
 	}
 
 }
 
-void CDiagramEditor::ShowPopup( CPoint point ) 
+void CDiagramEditor::ShowPopup(CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::ShowPopup
 	Description :	Shows a popup menu in response to a right-
@@ -4777,23 +4777,23 @@ void CDiagramEditor::ShowPopup( CPoint point )
 	Access :		Public
 
 	Return :		void
-	Parameters :	CPoint point	-	The point to track the 
+	Parameters :	CPoint point	-	The point to track the
 										menu from.
-					
-	Usage :			Internal function. Call to show the editor 
+
+	Usage :			Internal function. Call to show the editor
 					popup menu.
 
    ============================================================*/
 {
 
-	if( !m_popupMenu )
+	if (!m_popupMenu)
 		m_popupMenu = new CDiagramMenu;
 
-	if( m_popupMenu )
+	if (m_popupMenu)
 	{
-		CMenu* menu = m_popupMenu->GetPopupMenu( this );
-		if( menu )
-			menu->TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this );
+		CMenu* menu = m_popupMenu->GetPopupMenu(this);
+		if (menu)
+			menu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
 	}
 
 }
@@ -4804,7 +4804,7 @@ void CDiagramEditor::ShowPopup( CPoint point )
 void CDiagramEditor::OnEditCut()
 /* ============================================================
 	Function :		CDiagramEditor::OnEditCut
-	Description :	Command handler for the MFC standard 
+	Description :	Command handler for the MFC standard
 					"ID_EDIT_CUT" command.
 	Access :		Protected
 
@@ -4823,14 +4823,14 @@ void CDiagramEditor::OnEditCut()
 void CDiagramEditor::OnEditCopy()
 /* ============================================================
 	Function :		CDiagramEditor::OnEditCopy
-	Description :	Command handler for the MFC standard 
+	Description :	Command handler for the MFC standard
 					"ID_EDIT_COPY" command.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Called from MFC. Call "Copy" from code 
+	Usage :			Called from MFC. Call "Copy" from code
 					instead.
 
    ============================================================*/
@@ -4843,14 +4843,14 @@ void CDiagramEditor::OnEditCopy()
 void CDiagramEditor::OnEditPaste()
 /* ============================================================
 	Function :		CDiagramEditor::OnEditPaste
-	Description :	Command handler for the MFC standard 
+	Description :	Command handler for the MFC standard
 					"ID_EDIT_PASTE" command.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Called from MFC. Call "Paste" from code 
+	Usage :			Called from MFC. Call "Paste" from code
 					instead.
 
    ============================================================*/
@@ -4869,10 +4869,10 @@ void CDiagramEditor::OnEditGroup()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Groups the currently selected objects. 
-					Grouped objects can be moved as a 
-					single entity. Technically, when one object 
-					in a group is selected, all other objects 
+	Usage :			Groups the currently selected objects.
+					Grouped objects can be moved as a
+					single entity. Technically, when one object
+					in a group is selected, all other objects
 					are also selected automatically.
 
    ============================================================*/
@@ -4892,9 +4892,9 @@ void CDiagramEditor::OnEditUngroup()
 	Parameters :	none
 
 	Usage :			Ungroups the currently selected objects.
-					Grouped objects can be moved as a 
-					single entity. Technically, when one object 
-					in a group is selected, all other objects 
+					Grouped objects can be moved as a
+					single entity. Technically, when one object
+					in a group is selected, all other objects
 					are also selected automatically.
 
    ============================================================*/
@@ -4907,20 +4907,20 @@ void CDiagramEditor::OnEditUngroup()
 void CDiagramEditor::Cut()
 /* ============================================================
 	Function :		CDiagramEditor::Cut
-	Description :	Cut the currently selected items to the 
+	Description :	Cut the currently selected items to the
 					internal "CDiagramEntityContainer" clipboard.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to delete and place the currently 
+	Usage :			Call to delete and place the currently
 					selected objects to the 'clipboard'.
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		m_objs->Snapshot();
 		m_objs->CopyAllSelected();
@@ -4932,20 +4932,20 @@ void CDiagramEditor::Cut()
 void CDiagramEditor::Copy()
 /* ============================================================
 	Function :		CDiagramEditor::Copy
-	Description :	Copy the currently selected items to the 
+	Description :	Copy the currently selected items to the
 					internal "CDiagramEntityContainer" clipboard.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to copy the selected objects to the 
+	Usage :			Call to copy the selected objects to the
 					'clipboard'.
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		m_objs->Snapshot();
 		m_objs->CopyAllSelected();
@@ -4962,7 +4962,7 @@ void CDiagramEditor::Paste()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to paste the contents of the clipboard 
+	Usage :			Call to paste the contents of the clipboard
 					to the screen.
 
    ============================================================*/
@@ -4970,13 +4970,13 @@ void CDiagramEditor::Paste()
 
 	// Removes the current selection and pastes the contents
 	// of the data paste-array.
-	if( m_objs )
+	if (m_objs)
 	{
-		SetRedraw( FALSE );
+		SetRedraw(FALSE);
 		m_objs->Snapshot();
 		UnselectAll();
 		m_objs->Paste();
-		SetRedraw( TRUE );
+		SetRedraw(TRUE);
 		RedrawWindow();
 	}
 
@@ -4991,13 +4991,13 @@ void CDiagramEditor::Undo()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to restore the objects to the last 
+	Usage :			Call to restore the objects to the last
 					snapshot.
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		m_objs->Undo();
 		RedrawWindow();
@@ -5014,21 +5014,21 @@ void CDiagramEditor::Group()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to group the currently selected 
-					objects. Grouped objects can be moved as a 
-					single entity. Technically, when one object 
-					in a group is selected, all other objects 
+	Usage :			Call to group the currently selected
+					objects. Grouped objects can be moved as a
+					single entity. Technically, when one object
+					in a group is selected, all other objects
 					are also selected automatically.
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
-		SetRedraw( FALSE );
+		SetRedraw(FALSE);
 		m_objs->Snapshot();
 		m_objs->Group();
-		SetRedraw( TRUE );
+		SetRedraw(TRUE);
 		RedrawWindow();
 	}
 
@@ -5043,27 +5043,27 @@ void CDiagramEditor::Ungroup()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to ungroup the currently selected 
-					objects. Grouped objects can be moved as a 
-					single entity. Technically, when one object 
-					in a group is selected, all other objects 
+	Usage :			Call to ungroup the currently selected
+					objects. Grouped objects can be moved as a
+					single entity. Technically, when one object
+					in a group is selected, all other objects
 					are also selected automatically.
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
-		SetRedraw( FALSE );
+		SetRedraw(FALSE);
 		m_objs->Snapshot();
 		m_objs->Ungroup();
-		SetRedraw( TRUE );
+		SetRedraw(TRUE);
 		RedrawWindow();
 	}
 
 }
 
-void CDiagramEditor::UpdateCut( CCmdUI* pCmdUI ) const
+void CDiagramEditor::UpdateCut(CCmdUI* pCmdUI) const
 /* ============================================================
 	Function :		CDiagramEditor::UpdateCut
 	Description :	Command enabling for a Cut command UI-
@@ -5071,21 +5071,21 @@ void CDiagramEditor::UpdateCut( CCmdUI* pCmdUI ) const
 	Access :		Public
 
 	Return :		void
-	Parameters :	CCmdUI* pCmdUI	-	Command element to 
+	Parameters :	CCmdUI* pCmdUI	-	Command element to
 										update
-					
-	Usage :			Can be called from a doc/view command update 
+
+	Usage :			Can be called from a doc/view command update
 					function
 
    ============================================================*/
 {
 
 	// We can only cut if there is something selected
-	pCmdUI->Enable( IsAnyObjectSelected() );
+	pCmdUI->Enable(IsAnyObjectSelected());
 
 }
 
-void CDiagramEditor::UpdateCopy( CCmdUI* pCmdUI ) const
+void CDiagramEditor::UpdateCopy(CCmdUI* pCmdUI) const
 /* ============================================================
 	Function :		CDiagramEditor::UpdateCopy
 	Description :	Command enabling for a Copy command UI-
@@ -5093,20 +5093,20 @@ void CDiagramEditor::UpdateCopy( CCmdUI* pCmdUI ) const
 	Access :		Public
 
 	Return :		void
-	Parameters :	CCmdUI* pCmdUI	-	Command element to 
+	Parameters :	CCmdUI* pCmdUI	-	Command element to
 										update
-					
-	Usage :			Can be called from a doc/view command update 
+
+	Usage :			Can be called from a doc/view command update
 					function
 
    ============================================================*/
 {
 
-	pCmdUI->Enable( IsAnyObjectSelected() );
+	pCmdUI->Enable(IsAnyObjectSelected());
 
 }
 
-void CDiagramEditor::UpdatePaste( CCmdUI* pCmdUI ) const
+void CDiagramEditor::UpdatePaste(CCmdUI* pCmdUI) const
 /* ============================================================
 	Function :		CDiagramEditor::UpdatePaste
 	Description :	Command enabling for a Paste command UI-
@@ -5114,21 +5114,21 @@ void CDiagramEditor::UpdatePaste( CCmdUI* pCmdUI ) const
 	Access :		Public
 
 	Return :		void
-	Parameters :	CCmdUI* pCmdUI	-	Command element to 
+	Parameters :	CCmdUI* pCmdUI	-	Command element to
 										update
-					
-	Usage :			Can be called from a doc/view command update 
+
+	Usage :			Can be called from a doc/view command update
 					function
 
    ============================================================*/
 {
 
-	if( m_objs )
-		pCmdUI->Enable( m_objs->ObjectsInPaste() );
+	if (m_objs)
+		pCmdUI->Enable(m_objs->ObjectsInPaste() > 0);
 
 }
 
-void CDiagramEditor::UpdateUndo( CCmdUI* pCmdUI ) const
+void CDiagramEditor::UpdateUndo(CCmdUI* pCmdUI) const
 /* ============================================================
 	Function :		CDiagramEditor::UpdateUndo
 	Description :	Command enabling for an Undo command UI-
@@ -5136,21 +5136,21 @@ void CDiagramEditor::UpdateUndo( CCmdUI* pCmdUI ) const
 	Access :		Public
 
 	Return :		void
-	Parameters :	CCmdUI* pCmdUI	-	Command element to 
+	Parameters :	CCmdUI* pCmdUI	-	Command element to
 										update
-					
-	Usage :			Can be called from a doc/view command update 
+
+	Usage :			Can be called from a doc/view command update
 					function
 
    ============================================================*/
 {
 
-	if( m_objs )
-		pCmdUI->Enable( m_objs->IsUndoPossible() );
+	if (m_objs)
+		pCmdUI->Enable(m_objs->IsUndoPossible());
 
 }
 
-void CDiagramEditor::UpdateGroup( CCmdUI* pCmdUI ) const
+void CDiagramEditor::UpdateGroup(CCmdUI* pCmdUI) const
 /* ============================================================
 	Function :		CDiagramEditor::UpdateGroup
 	Description :	Command enabling for an Group command UI-
@@ -5158,21 +5158,21 @@ void CDiagramEditor::UpdateGroup( CCmdUI* pCmdUI ) const
 	Access :		Public
 
 	Return :		void
-	Parameters :	CCmdUI* pCmdUI	-	Command element to 
+	Parameters :	CCmdUI* pCmdUI	-	Command element to
 										update
-					
-	Usage :			Can be called from a doc/view command update 
+
+	Usage :			Can be called from a doc/view command update
 					function
 
    ============================================================*/
 {
 
-	if( m_objs )
-		pCmdUI->Enable( GetSelectCount() > 1 );
+	if (m_objs)
+		pCmdUI->Enable(GetSelectCount() > 1);
 
 }
 
-void CDiagramEditor::UpdateUngroup( CCmdUI* pCmdUI ) const
+void CDiagramEditor::UpdateUngroup(CCmdUI* pCmdUI) const
 /* ============================================================
 	Function :		CDiagramEditor::UpdateUngroup
 	Description :	Command enabling for an Ungroup command UI-
@@ -5180,101 +5180,101 @@ void CDiagramEditor::UpdateUngroup( CCmdUI* pCmdUI ) const
 	Access :		Public
 
 	Return :		void
-	Parameters :	CCmdUI* pCmdUI	-	Command element to 
+	Parameters :	CCmdUI* pCmdUI	-	Command element to
 										update
-					
-	Usage :			Can be called from a doc/view command update 
+
+	Usage :			Can be called from a doc/view command update
 					function
 
    ============================================================*/
 {
 
-	if( m_objs )
-		pCmdUI->Enable( GetSelectCount() > 1 );
+	if (m_objs)
+		pCmdUI->Enable(GetSelectCount() > 1);
 
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor saving
 
-void CDiagramEditor::Save( CStringArray& stra )
+void CDiagramEditor::Save(CStringArray& stra)
 /* ============================================================
 	Function :		CDiagramEditor::Save
-	Description :	Saves a string representation of the 
-					container (normally the virtual size) and 
+	Description :	Saves a string representation of the
+					container (normally the virtual size) and
 					all objects to "stra".
 	Access :		Public
 
 	Return :		void
 	Parameters :	CStringArray& stra	-	The array to fill
-					
-	Usage :			Call to save the data of the editor to a 
-					"CStringArray". Virtual. Can be overridden in 
-					a derived class to add non-container data 
+
+	Usage :			Call to save the data of the editor to a
+					"CStringArray". Virtual. Can be overridden in
+					a derived class to add non-container data
 					before and after the objects
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
-		stra.Add( m_objs->GetString() );
-		SaveObjects( stra );
-		SetModified( FALSE );
+		stra.Add(m_objs->GetString());
+		SaveObjects(stra);
+		SetModified(FALSE);
 	}
 
 }
 
-BOOL CDiagramEditor::FromString( const CString& str )
+BOOL CDiagramEditor::FromString(const CString& str)
 /* ============================================================
 	Function :		CDiagramEditor::FromString
-	Description :	Sets the virtual size from a string 
+	Description :	Sets the virtual size from a string
 					representation of the paper.
 	Access :		Public
 
-	Return :		BOOL				-	"TRUE" if "str" is a 
-											representation of a 
+	Return :		BOOL				-	"TRUE" if "str" is a
+											representation of a
 											'paper'.
 	Parameters :	const CString& str	-	String representation.
-					
-	Usage :			Call to set the size of the virtual paper 
+
+	Usage :			Call to set the size of the virtual paper
 					from a string.
 
    ============================================================*/
 {
 	BOOL result = FALSE;
-	if( m_objs )
-		result = m_objs->FromString( str );
+	if (m_objs)
+		result = m_objs->FromString(str);
 
 	return result;
 
 }
 
 
-void CDiagramEditor::SaveObjects( CStringArray& stra )
+void CDiagramEditor::SaveObjects(CStringArray& stra)
 /* ============================================================
 	Function :		CDiagramEditor::SaveObjects
-	Description :	Saves a string representation of the 
-					current objects to "stra", one object in 
+	Description :	Saves a string representation of the
+					current objects to "stra", one object in
 					each string.
 	Access :		Public
 
 	Return :		void
 	Parameters :	CStringArray& stra	-	The array to fill
-					
-	Usage :			Virtual. Can be overridden in a derived 
-					class to add more per-object information to 
+
+	Usage :			Virtual. Can be overridden in a derived
+					class to add more per-object information to
 					the save array.
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		int count = 0;
 		CDiagramEntity* obj;
-		while( ( obj = m_objs->GetAt( count++ ) ) )
-			stra.Add( obj->GetString() );
+		while ((obj = m_objs->GetAt(count++)))
+			stra.Add(obj->GetString());
 	}
 
 }
@@ -5282,28 +5282,28 @@ void CDiagramEditor::SaveObjects( CStringArray& stra )
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor command handling
 
-void CDiagramEditor::OnObjectCommand( UINT nID )
+void CDiagramEditor::OnObjectCommand(UINT nID)
 /* ============================================================
 	Function :		CDiagramEditor::OnObjectCommand
-	Description :	Called from "WM_COMMAND" messages in the 
-					range "CMD_START" to "CMD_END" inclusive 
-					(defined in DiagramEntity.h). Those are 
-					messages that will be passed on to all 
+	Description :	Called from "WM_COMMAND" messages in the
+					range "CMD_START" to "CMD_END" inclusive
+					(defined in DiagramEntity.h). Those are
+					messages that will be passed on to all
 					selected objects.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	UINT nID	-	The command to send.
-					
+
 	Usage :			Called from MFC. Do not call from code.
 
    ============================================================*/
 {
 
-	if( m_objs )
+	if (m_objs)
 	{
 		m_objs->Snapshot();
-		m_objs->SendMessageToObjects( nID, TRUE, NULL, static_cast< CWnd* >( this ) );
+		m_objs->SendMessageToObjects(nID, TRUE, NULL, static_cast<CWnd*>(this));
 		RedrawWindow();
 	}
 
@@ -5318,7 +5318,7 @@ int CDiagramEditor::GetInteractMode() const
 	Return :		int		-	Current interact mode
 	Parameters :	none
 
-	Usage :			The interact mode can be one of the 
+	Usage :			The interact mode can be one of the
 					following:
 						"MODE_NONE" No mode
 						"MODE_RUBBERBANDING" User is selecting
@@ -5334,7 +5334,7 @@ int CDiagramEditor::GetInteractMode() const
 
 }
 
-void CDiagramEditor::SetInteractMode( int interactMode, int subMode )
+void CDiagramEditor::SetInteractMode(int interactMode, int subMode)
 /* ============================================================
 	Function :		CDiagramEditor::SetInteractMode
 	Description :	Sets the current mode of the editor
@@ -5342,12 +5342,12 @@ void CDiagramEditor::SetInteractMode( int interactMode, int subMode )
 
 	Return :		void
 	Parameters :	int interactMode	-	The mode to set
-					int subMode			-	The point of the 
-											selected object, if 
+					int subMode			-	The point of the
+											selected object, if
 											appropriate.
-					
-	Usage :			Call to set the interact mode of the 
-					editor. The interact mode can be one of 
+
+	Usage :			Call to set the interact mode of the
+					editor. The interact mode can be one of
 					the following:
 						"MODE_NONE" No mode
 						"MODE_RUBBERBANDING" User is selecting
@@ -5355,8 +5355,8 @@ void CDiagramEditor::SetInteractMode( int interactMode, int subMode )
 						"MODE_RESIZING" User is resizing object
 						"MODE_DRAWING" User is drawing object
 						"MODE_BGRESIZING" User is resizing the virtual paper
-					The submode, relevant when the mode is 
-					MODE_RESIZING or MODE_BGRESIZING, can be 
+					The submode, relevant when the mode is
+					MODE_RESIZING or MODE_BGRESIZING, can be
 					one of the following:
 						"DEHT_NONE" No hit
 						"DEHT_BODY" Object body
@@ -5368,8 +5368,8 @@ void CDiagramEditor::SetInteractMode( int interactMode, int subMode )
 						"DEHT_BOTTOMRIGHT" Bottom-right corner
 						"DEHT_LEFTMIDDLE" Left side
 						"DEHT_RIGHTMIDDLE" Right side
-					and indicates the point where the mouse is 
-					as regards the currently selected object 
+					and indicates the point where the mouse is
+					as regards the currently selected object
 					(or the background).
 
    ============================================================*/
@@ -5389,7 +5389,7 @@ CDiagramEntity* CDiagramEditor::GetDrawingObject()
 	Return :		CDiagramEntity*	-	Object
 	Parameters :	none
 
-	Usage :			Call to get the object that will be drawn 
+	Usage :			Call to get the object that will be drawn
 					when the user clicks the 'paper'.
 
    ============================================================*/
@@ -5423,7 +5423,7 @@ COLORREF CDiagramEditor::GetBackgroundColor() const
 void CDiagramEditor::ZoomToFitScreen()
 /* ============================================================
 	Function :		CDiagramEditor::ZoomToFitScreen
-	Description :	Zooms and scrolls so that all of the 
+	Description :	Zooms and scrolls so that all of the
 					current diagram is visible on screen.
 	Access :		Public
 
@@ -5435,31 +5435,31 @@ void CDiagramEditor::ZoomToFitScreen()
    ============================================================*/
 {
 
-	SetRedraw( FALSE );
+	SetRedraw(FALSE);
 	CRect rect;
-	GetClientRect( rect );
+	GetClientRect(rect);
 	CPoint start = GetDiagramEntityContainer()->GetStartPoint();
-	ZoomToFit( start, CSize( rect.Width(), rect.Height() ) );
-	SetRedraw( TRUE );
+	ZoomToFit(start, CSize(rect.Width(), rect.Height()));
+	SetRedraw(TRUE);
 	RedrawWindow();
 
 }
 
-BOOL CDiagramEditor::ZoomToFit( CPoint start, CSize size )
+BOOL CDiagramEditor::ZoomToFit(CPoint start, CSize size)
 /* ============================================================
 	Function :		CDiagramEditor::ZoomToFit
-	Description :	Zooms the diagram to the size "size" and 
+	Description :	Zooms the diagram to the size "size" and
 					sets the scrollbar positions at "start".
 	Access :		Public
 
 	Return :		BOOL			-	"TRUE" if any zoom (if
-										that is the case, the 
+										that is the case, the
 										screen should be redrawn.
-	Parameters :	CPoint start	-	Starting position of the 
+	Parameters :	CPoint start	-	Starting position of the
 										diagram, non-zoomed.
-					CSize size		-	Size the diagram should 
+					CSize size		-	Size the diagram should
 										be zoomed to.
-					
+
 	Usage :			Call to zoom the diagram to a specific size.
 
    ============================================================*/
@@ -5467,20 +5467,20 @@ BOOL CDiagramEditor::ZoomToFit( CPoint start, CSize size )
 
 	BOOL result = FALSE;
 
-	if( ZoomToFit( size ) )
+	if (ZoomToFit(size))
 	{
 
 		// Set scrollbar positions
 		SCROLLINFO si;
-		si.cbSize = sizeof( SCROLLINFO );
+		si.cbSize = sizeof(SCROLLINFO);
 		si.fMask = SIF_POS;
-		if( GetScrollInfo( SB_HORZ, &si ) )
+		if (GetScrollInfo(SB_HORZ, &si))
 		{
-			si.nPos = round( ( start.x - GetMarkerSize().cx ) * GetZoom() );
-			SetHScroll( si.nPos );
+			si.nPos = round((start.x - GetMarkerSize().cx) * GetZoom());
+			SetHScroll(si.nPos);
 
-			si.nPos = round( ( start.y - GetMarkerSize().cy ) * GetZoom() );
-			SetVScroll( si.nPos );
+			si.nPos = round((start.y - GetMarkerSize().cy) * GetZoom());
+			SetVScroll(si.nPos);
 
 		}
 		result = TRUE;
@@ -5490,17 +5490,17 @@ BOOL CDiagramEditor::ZoomToFit( CPoint start, CSize size )
 
 }
 
-BOOL CDiagramEditor::ZoomToFit( CSize size )
+BOOL CDiagramEditor::ZoomToFit(CSize size)
 /* ============================================================
 	Function :		CDiagramEditor::ZoomToFit
 	Description :	Zooms the diagram to the size "size".
 	Access :		Public
 
 	Return :		BOOL		-	"TRUE" if zoomed. The screen
-									should be redrawn if that is 
+									should be redrawn if that is
 									the case.
 	Parameters :	CSize size	-	Size to zoom to.
-					
+
 	Usage :			Call to zoom the diagram to a specific size.
 
    ============================================================*/
@@ -5509,21 +5509,21 @@ BOOL CDiagramEditor::ZoomToFit( CSize size )
 	BOOL result = FALSE;
 	CSize objects = GetDiagramEntityContainer()->GetTotalSize();
 
-	if( objects.cx && objects.cy )
+	if (objects.cx && objects.cy)
 	{
 		// We add a little margin
 		objects.cx += GetMarkerSize().cx * 2;
 		objects.cy += GetMarkerSize().cy * 2;
 
 		// Calculate new zoom
-		double zoomx = static_cast< double >( size.cx ) / static_cast< double >( objects.cx );
-		double zoomy = static_cast< double >( size.cy ) / static_cast< double >( objects.cy );
+		double zoomx = static_cast<double>(size.cx) / static_cast<double>(objects.cx);
+		double zoomy = static_cast<double>(size.cy) / static_cast<double>(objects.cy);
 
-		SetZoom( min( zoomx, zoomy ) );
+		SetZoom(min(zoomx, zoomy));
 		result = TRUE;
 
 	}
-	
+
 	return result;
 
 }
@@ -5531,7 +5531,7 @@ BOOL CDiagramEditor::ZoomToFit( CSize size )
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor mouse wheel handling
 
-BOOL CDiagramEditor::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
+BOOL CDiagramEditor::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 /* ============================================================
 	Function :		CDiagramEditor::OnMouseWheel
 	Description :	Handles the "WM_MOUSEWHEEL"-message.
@@ -5541,49 +5541,49 @@ BOOL CDiagramEditor::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 	Parameters :	UINT nFlags		-	Not used
 					short zDelta	-	Delta (notches * "WHEEL_DELTA")
 					CPoint pt		-	Mouse position
-					
+
 	Usage :			Called from MFC. Scrolls the vertically.
 
    ============================================================*/
 {
 
-	if( GetScrollWheelMode() == WHEEL_SCROLL )
+	if (GetScrollWheelMode() == WHEEL_SCROLL)
 	{
 		SCROLLINFO si;
-		si.cbSize = sizeof( SCROLLINFO );
+		si.cbSize = sizeof(SCROLLINFO);
 		si.fMask = SIF_POS | SIF_RANGE;
 		static int mouseDelta;
 
 		mouseDelta += zDelta;
-		int increment = ( mouseDelta / WHEEL_DELTA );
-		if( GetScrollInfo( SB_VERT, &si ) )
+		int increment = (mouseDelta / WHEEL_DELTA);
+		if (GetScrollInfo(SB_VERT, &si))
 		{
-			if( si.nMax )
+			if (si.nMax)
 			{
 				si.nPos -= increment;
 				mouseDelta -= increment * WHEEL_DELTA;
-				SetVScroll( si.nPos );
-//				SetScrollInfo( SB_VERT, &si, TRUE );
+				SetVScroll(si.nPos);
+				//				SetScrollInfo( SB_VERT, &si, TRUE );
 				RedrawWindow();
 			}
 		}
 	}
-	else if( GetScrollWheelMode() == WHEEL_ZOOM )
+	else if (GetScrollWheelMode() == WHEEL_ZOOM)
 	{
-		if( zDelta < 0 )
-			SetZoom( GetZoom() + GetZoomFactor() );
+		if (zDelta < 0)
+			SetZoom(GetZoom() + GetZoomFactor());
 		else
-			SetZoom( GetZoom() - GetZoomFactor() );
+			SetZoom(GetZoom() - GetZoomFactor());
 	}
 
-	return CWnd::OnMouseWheel( nFlags, zDelta, pt );
+	return CWnd::OnMouseWheel(nFlags, zDelta, pt);
 
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor panning
 
-void CDiagramEditor::OnMButtonDown( UINT nFlags, CPoint point ) 
+void CDiagramEditor::OnMButtonDown(UINT nFlags, CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::OnMButtonDown
 	Description :	Handler for the "WM_MBUTTONDOWN"-message
@@ -5592,34 +5592,34 @@ void CDiagramEditor::OnMButtonDown( UINT nFlags, CPoint point )
 	Return :		void
 	Parameters :	UINT nFlags		-	Not used
 					CPoint point	-	Current mouse position
-					
-	Usage :			Called from MFC. Don't call from code. 
+
+	Usage :			Called from MFC. Don't call from code.
 					We start panning.
 
    ============================================================*/
 {
 
-	if( !GetPanning() )
+	if (!GetPanning())
 	{
 		SCROLLINFO si;
-		if( GetScrollInfo( SB_HORZ, &si ) ||
-			GetScrollInfo( SB_VERT, &si ) )
+		if (GetScrollInfo(SB_HORZ, &si) ||
+			GetScrollInfo(SB_VERT, &si))
 		{
-			SetPanningOrigin( point );
-			SetPanning( TRUE );
+			SetPanningOrigin(point);
+			SetPanning(TRUE);
 		}
 	}
 	else
 	{
-		SetPanning( FALSE );
+		SetPanning(FALSE);
 	}
 
-	CWnd::OnMButtonDown( nFlags, point );
+	CWnd::OnMButtonDown(nFlags, point);
 	RedrawWindow();
 
 }
 
-void CDiagramEditor::OnTimer( UINT nIDEvent )
+void CDiagramEditor::OnTimer(UINT_PTR nIDEvent)
 /* ============================================================
 	Function :		CDiagramEditor::OnTimer
 	Description :	Handler for the "WM_TIMER"-message
@@ -5627,54 +5627,54 @@ void CDiagramEditor::OnTimer( UINT nIDEvent )
 
 	Return :		void
 	Parameters :	UINT nIDEvent	-	Current timer
-					
-	Usage :			Called from MFC. We pan if we are in 
+
+	Usage :			Called from MFC. We pan if we are in
 					panning mode.
 
    ============================================================*/
 {
 
-	if( nIDEvent == m_panningTimer )
+	if (nIDEvent == m_panningTimer)
 	{
 
-		KillTimer( m_panningTimer );
+		KillTimer(m_panningTimer);
 
 		const MSG* msg = GetCurrentMessage();
 		CPoint test = GetPanningOrigin();
-		CPoint point( msg->pt );
-		ScreenToClient( &point );
+		CPoint point(msg->pt);
+		ScreenToClient(&point);
 
-		int diffx = ( point.x - test.x ) / 16;
-		int diffy = ( point.y - test.y ) / 16;
+		int diffx = (point.x - test.x) / 16;
+		int diffy = (point.y - test.y) / 16;
 
 		SCROLLINFO sih;
-		sih.cbSize = sizeof( SCROLLINFO );
+		sih.cbSize = sizeof(SCROLLINFO);
 		sih.fMask = SIF_POS;
 		sih.nPos = 0;
 		SCROLLINFO siv;
-		siv.cbSize = sizeof( SCROLLINFO );
+		siv.cbSize = sizeof(SCROLLINFO);
 		siv.fMask = SIF_POS;
 		siv.nPos = 0;
 
-		GetScrollInfo( SB_HORZ, &sih );
-		GetScrollInfo( SB_VERT, &siv );
+		GetScrollInfo(SB_HORZ, &sih);
+		GetScrollInfo(SB_VERT, &siv);
 
 		sih.nPos += diffx;
 		siv.nPos += diffy;
 
-		SetHScroll( sih.nPos );
-		SetVScroll( siv.nPos );
-//		SetScrollInfo( SB_HORZ, &sih );
-//		SetScrollInfo( SB_VERT, &siv );
+		SetHScroll(sih.nPos);
+		SetVScroll(siv.nPos);
+		//		SetScrollInfo( SB_HORZ, &sih );
+		//		SetScrollInfo( SB_VERT, &siv );
 		RedrawWindow();
 
-		m_panningTimer = SetTimer( m_panningTimer, 10, NULL );
+		m_panningTimer = SetTimer(m_panningTimer, 10, NULL);
 
 	}
 
 }
 
-void CDiagramEditor::OnKillFocus( CWnd* pNewWnd )
+void CDiagramEditor::OnKillFocus(CWnd* pNewWnd)
 /* ============================================================
 	Function :		CDiagramEditor::OnKillFocus
 	Description :	Handler for the "WM_KILLFOCUS"-message
@@ -5682,16 +5682,16 @@ void CDiagramEditor::OnKillFocus( CWnd* pNewWnd )
 
 	Return :		void
 	Parameters :	CWnd* pNewWnd	-	Window getting the focus
-					
+
 	Usage :			Called from MFC. We kill the panning
 
    ============================================================*/
 {
 
-	if( GetPanning() )
-		SetPanning( FALSE );
+	if (GetPanning())
+		SetPanning(FALSE);
 
-	CWnd::OnKillFocus( pNewWnd );
+	CWnd::OnKillFocus(pNewWnd);
 
 }
 
@@ -5701,7 +5701,7 @@ BOOL CDiagramEditor::GetPanning() const
 	Description :	Accessor for the panning flag.
 	Access :		Public
 
-	Return :		BOOL	-	"TRUE" if we are currently 
+	Return :		BOOL	-	"TRUE" if we are currently
 								panning.
 	Parameters :	none
 
@@ -5723,8 +5723,8 @@ CPoint CDiagramEditor::GetPanningOrigin() const
 	Return :		CPoint	-	Origin for panning.
 	Parameters :	none
 
-	Usage :			Call to get the panning origin. The panning 
-					origin is the point where the user clicked 
+	Usage :			Call to get the panning origin. The panning
+					origin is the point where the user clicked
 					the middle mouse button.
 
    ============================================================*/
@@ -5734,44 +5734,44 @@ CPoint CDiagramEditor::GetPanningOrigin() const
 
 }
 
-void CDiagramEditor::SetPanning( BOOL panning )
+void CDiagramEditor::SetPanning(BOOL panning)
 /* ============================================================
 	Function :		CDiagramEditor::SetPanning
 	Description :	Accessor for the panning flag
 	Access :		Public
 
 	Return :		void
-	Parameters :	BOOL panning	-	"TRUE" if we should 
+	Parameters :	BOOL panning	-	"TRUE" if we should
 										start panning.
-					
+
 	Usage :			Call to start or stop panning.
 
    ============================================================*/
 {
 
-	if( m_panning && panning == FALSE )
-		KillTimer( m_panningTimer );
+	if (m_panning && panning == FALSE)
+		KillTimer(m_panningTimer);
 
 	m_panning = panning;
 
-	if( m_panning )
-		m_panningTimer = SetTimer( m_panningTimer, 10, NULL );
+	if (m_panning)
+		m_panningTimer = SetTimer(m_panningTimer, 10, NULL);
 
 }
 
-void CDiagramEditor::SetPanningOrigin( CPoint point )
+void CDiagramEditor::SetPanningOrigin(CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::SetPanningOrigin
 	Description :	Sets the panning origin.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CPoint point	-	The origin for the 
+	Parameters :	CPoint point	-	The origin for the
 										panning.
-					
-	Usage :			Call to set the origin when starting to 
+
+	Usage :			Call to set the origin when starting to
 					pan the screen. The panning origin is the
-					point where the user clicked the middle 
+					point where the user clicked the middle
 					mouse button.
 
    ============================================================*/
@@ -5781,7 +5781,7 @@ void CDiagramEditor::SetPanningOrigin( CPoint point )
 
 }
 
-void CDiagramEditor::DrawPanning( CDC* dc ) const
+void CDiagramEditor::DrawPanning(CDC* dc) const
 /* ============================================================
 	Function :		CDiagramEditor::DrawPanning
 	Description :	Draws the panning origin marker.
@@ -5789,45 +5789,45 @@ void CDiagramEditor::DrawPanning( CDC* dc ) const
 
 	Return :		void
 	Parameters :	CDC* dc	-	"CDC" to draw to
-					
+
 	Usage :			Call to draw the panning origin marker. You
-					can override this to draw a different 
+					can override this to draw a different
 					origin marker for the pan.
 
    ============================================================*/
 {
 
-	CDiagramEditor* const local = const_cast< CDiagramEditor* const >( this );
+	CDiagramEditor* const local = const_cast<CDiagramEditor* const>(this);
 
 	SCROLLINFO sih;
-	sih.cbSize = sizeof( SCROLLINFO );
+	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
 	SCROLLINFO siv;
-	siv.cbSize = sizeof( SCROLLINFO );
+	siv.cbSize = sizeof(SCROLLINFO);
 	siv.fMask = SIF_POS;
-	if( !local->GetScrollInfo( SB_HORZ, &sih ) )
+	if (!local->GetScrollInfo(SB_HORZ, &sih))
 		sih.nPos = 0;
-	if( !local->GetScrollInfo( SB_VERT, &siv ) )
+	if (!local->GetScrollInfo(SB_VERT, &siv))
 		siv.nPos = 0;
 
-	dc->SelectStockObject( WHITE_BRUSH );
+	dc->SelectStockObject(WHITE_BRUSH);
 	CPen pen;
-	pen.CreatePen( PS_SOLID, 0, RGB( 128, 128, 128 ) );
+	pen.CreatePen(PS_SOLID, 0, RGB(128, 128, 128));
 
-	dc->SelectObject( &pen );
+	dc->SelectObject(&pen);
 	CPoint	pt = GetPanningOrigin();
-	CRect	rect( pt.x - 16 + sih.nPos, pt.y - 16 + siv.nPos, pt.x + 16 + sih.nPos, pt.y + 16 + siv.nPos);
-	dc->Ellipse( rect );
+	CRect	rect(pt.x - 16 + sih.nPos, pt.y - 16 + siv.nPos, pt.x + 16 + sih.nPos, pt.y + 16 + siv.nPos);
+	dc->Ellipse(rect);
 
-	rect.InflateRect( -12, -12 );
-	dc->SelectStockObject( LTGRAY_BRUSH );
-	dc->Ellipse( rect );
+	rect.InflateRect(-12, -12);
+	dc->SelectStockObject(LTGRAY_BRUSH);
+	dc->Ellipse(rect);
 
-	dc->SelectStockObject( BLACK_PEN );
+	dc->SelectStockObject(BLACK_PEN);
 
 }
 
-void CDiagramEditor::MoveObject( CDiagramEntity* obj, const CRect& rect )
+void CDiagramEditor::MoveObject(CDiagramEntity* obj, const CRect& rect)
 /* ============================================================
 	Function :		CDiagramEditor::MoveObject
 	Description :	Moves an object to "rect"
@@ -5836,28 +5836,28 @@ void CDiagramEditor::MoveObject( CDiagramEntity* obj, const CRect& rect )
 	Return :		void
 	Parameters :	CDiagramEntity* obj	-	Object to move
 					const CRect& rect	-	New position
-					
+
 	Usage :			This function can be overridden to trap
 					object movement.
 
    ============================================================*/
 {
 
-	obj->SetRect( rect );
+	obj->SetRect(rect);
 
 }
 
 HCURSOR CDiagramEditor::GetCursor()
 /* ============================================================
 	Function :		CDiagramEditor::GetCursor
-	Description :	Gets a handle to the cursor appropriate 
+	Description :	Gets a handle to the cursor appropriate
 					depending on mode, position etc.
 	Access :		Protected
 
 	Return :		HCURSOR	-	Appropriate cursor
 	Parameters :	none
 
-	Usage :			Call to get a cursor to display depending on 
+	Usage :			Call to get a cursor to display depending on
 					the current context.
 
    ============================================================*/
@@ -5865,71 +5865,71 @@ HCURSOR CDiagramEditor::GetCursor()
 
 	HCURSOR result = NULL;
 
-	if( m_panning )
+	if (m_panning)
 	{
 		const MSG* msg = GetCurrentMessage();
 		CPoint test = GetPanningOrigin();
-		CPoint point( msg->pt );
-		ScreenToClient( &point );
+		CPoint point(msg->pt);
+		ScreenToClient(&point);
 
-		if( point.x > test.x + 16 )
+		if (point.x > test.x + 16)
 		{
-			if ( point.y > test.y + 16 )
+			if (point.y > test.y + 16)
 				result = m_cursorSouthEast;
-			else if( point.y < test.y - 16 )
+			else if (point.y < test.y - 16)
 				result = m_cursorNorthEast;
 			else
 				result = m_cursorEast;
 		}
-		else if( point.x < test.x - 16 )
+		else if (point.x < test.x - 16)
 		{
-			if ( point.y > test.y + 16 )
+			if (point.y > test.y + 16)
 				result = m_cursorSouthWest;
-			else if( point.y < test.y  - 16 )
+			else if (point.y < test.y - 16)
 				result = m_cursorNorthWest;
 			else
 				result = m_cursorWest;
 		}
-		else if( point.y < test.y )
+		else if (point.y < test.y)
 			result = m_cursorSouth;
 		else
 			result = m_cursorNorth;
 
 
 	}
-	else if( m_interactMode == MODE_DRAWING )
+	else if (m_interactMode == MODE_DRAWING)
 	{
-		result = LoadCursor( NULL, IDC_CROSS );
+		result = LoadCursor(NULL, IDC_CROSS);
 	}
-	else if( m_objs )
+	else if (m_objs)
 	{
 
 		int count = 0;
 		CDiagramEntity* obj = NULL;
 		const MSG* msg = GetCurrentMessage();
-		CPoint point( msg->pt );
-		ScreenToClient( &point );
+		CPoint point(msg->pt);
+		ScreenToClient(&point);
 
-		while( ( obj = m_objs->GetAt( count++ ) ) )
+		while ((obj = m_objs->GetAt(count++)))
 		{
-			if( obj->IsSelected() )
+			if (obj->IsSelected())
 			{
 
 				CRect rect = obj->GetRect();
-				VirtualToScreen( rect );
+				VirtualToScreen(rect);
 
-				int hitCode = obj->GetHitCode( point, rect );
-				if( hitCode != DEHT_NONE && hitCode != DEHT_BODY )
-					result = obj->GetCursor( hitCode );
+				int hitCode = obj->GetHitCode(point, rect);
+				if (hitCode != DEHT_NONE && hitCode != DEHT_BODY)
+					result = obj->GetCursor(hitCode);
 
 			}
 		}
 
-		if( result == NULL )
+		if (result == NULL)
 		{
-			int hitCode = GetHitCode( point );
-			if( hitCode != DEHT_NONE && hitCode != DEHT_BODY && m_bgResizeSelected )
-				result = GetCursor( hitCode );
+			int hitCode = GetHitCode(point);
+			if (hitCode != DEHT_NONE && hitCode != DEHT_BODY && m_bgResizeSelected)
+				result = GetCursor(hitCode);
 		}
 	}
 
@@ -5937,7 +5937,7 @@ HCURSOR CDiagramEditor::GetCursor()
 
 }
 
-void CDiagramEditor::SetScrollWheelMode( int mode )
+void CDiagramEditor::SetScrollWheelMode(int mode)
 /* ============================================================
 	Function :		CDiagramEditor::SetScrollWheelMode
 	Description :	Accessor for the scroll wheel mode flag.
@@ -5945,7 +5945,7 @@ void CDiagramEditor::SetScrollWheelMode( int mode )
 
 	Return :		void
 	Parameters :	int mode	-	New mode
-					
+
 	Usage :			"mode" can be any of
 						"WHEEL_SCROLL" The editor will scroll when the scroll wheel is rolled.
 						"WHEEL_ZOOM" The editor will zoom when the scroll wheel is rolled.
@@ -5975,75 +5975,75 @@ int CDiagramEditor::GetScrollWheelMode() const
 
 }
 
-void CDiagramEditor::SetHScroll( int pos )
+void CDiagramEditor::SetHScroll(int pos)
 /* ============================================================
 	Function :		CDiagramEditor::SetHScroll
-	Description :	Sets the horizontal scrollbar position to 
+	Description :	Sets the horizontal scrollbar position to
 					"pos".
 	Access :		Protected
 
 	Return :		void
 	Parameters :	int pos	-	New position
-					
-	Usage :			Called when the scroll bar position is set. 
-					Can be overrided to trigger scroll bar 
+
+	Usage :			Called when the scroll bar position is set.
+					Can be overrided to trigger scroll bar
 					events.
 
    ============================================================*/
 {
 
-	pos = max( 0, pos );
+	pos = max(0, pos);
 
 	SCROLLINFO si;
-	si.cbSize = sizeof( SCROLLINFO );
+	si.cbSize = sizeof(SCROLLINFO);
 	si.fMask = SIF_POS;
 	si.nPos = pos;
 
-	SetScrollInfo( SB_HORZ, &si );
+	SetScrollInfo(SB_HORZ, &si);
 
 }
 
-void CDiagramEditor::SetVScroll( int pos )
+void CDiagramEditor::SetVScroll(int pos)
 /* ============================================================
 	Function :		CDiagramEditor::SetVScroll
-	Description :	Sets the vertical scrollbar position to 
+	Description :	Sets the vertical scrollbar position to
 					"pos".
 	Access :		Protected
 
 	Return :		void
 	Parameters :	int pos	-	New position
-					
-	Usage :			Called when the scroll bar position is set. 
-					Can be overrided to trigger scroll bar 
+
+	Usage :			Called when the scroll bar position is set.
+					Can be overrided to trigger scroll bar
 					events.
 
    ============================================================*/
 {
 
-	pos = max( 0, pos );
+	pos = max(0, pos);
 
 	SCROLLINFO si;
-	si.cbSize = sizeof( SCROLLINFO );
+	si.cbSize = sizeof(SCROLLINFO);
 	si.fMask = SIF_POS;
 	si.nPos = pos;
 
-	SetScrollInfo( SB_VERT, &si );
+	SetScrollInfo(SB_VERT, &si);
 
 }
 
-BOOL CDiagramEditor::OutsideRestraints( CPoint point )
+BOOL CDiagramEditor::OutsideRestraints(CPoint point)
 /* ============================================================
 	Function :		CDiagramEditor::OutsideRestraints
-	Description :	Checks if "point" lies outside the current 
+	Description :	Checks if "point" lies outside the current
 					restraints.
 	Access :		Protected
 
-	Return :		BOOL			-	"TRUE" if "point" is 
-										outside the current 
+	Return :		BOOL			-	"TRUE" if "point" is
+										outside the current
 										constraints.
 	Parameters :	CPoint point	-	Coordinates to check.
-					
-	Usage :			Call to see if coordinates are outside the 
+
+	Usage :			Call to see if coordinates are outside the
 					current restraints.
 
    ============================================================*/
@@ -6052,31 +6052,31 @@ BOOL CDiagramEditor::OutsideRestraints( CPoint point )
 	BOOL result = FALSE;
 
 
-	if( m_restraint == RESTRAINT_VIRTUAL )
+	if (m_restraint == RESTRAINT_VIRTUAL)
 	{
 
-		if( point.x < 0 )
+		if (point.x < 0)
 			result = TRUE;
-		if( point.y < 0 )
+		if (point.y < 0)
 			result = TRUE;
 
-		if( point.x > GetVirtualSize().cx )
+		if (point.x > GetVirtualSize().cx)
 			result = TRUE;
-		if( point.y > GetVirtualSize().cy )
+		if (point.y > GetVirtualSize().cy)
 			result = TRUE;
 
 	}
-	else if( m_restraint == RESTRAINT_MARGIN )
+	else if (m_restraint == RESTRAINT_MARGIN)
 	{
 
-		if( point.x < m_leftMargin )
+		if (point.x < m_leftMargin)
 			result = TRUE;
-		if( point.y < m_topMargin )
+		if (point.y < m_topMargin)
 			result = TRUE;
 
-		if( point.x > GetVirtualSize().cx - m_rightMargin )
+		if (point.x > GetVirtualSize().cx - m_rightMargin)
 			result = TRUE;
-		if( point.y > GetVirtualSize().cy - m_bottomMargin )
+		if (point.y > GetVirtualSize().cy - m_bottomMargin)
 			result = TRUE;
 
 	}
@@ -6094,20 +6094,20 @@ void CDiagramEditor::ScrollIntoView()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to scroll the selected item(s) into 
+	Usage :			Call to scroll the selected item(s) into
 					view.
 
    ============================================================*/
 {
 
-	if( GetSelectCount() )
+	if (GetSelectCount())
 	{
 		CPoint start = GetDiagramEntityContainer()->GetStartPoint();
 		CSize objects = GetDiagramEntityContainer()->GetTotalSize();
 		CRect rect;
-		GetClientRect( rect );
-		CSize screen( rect.Width(), rect.Height() );
-		if( objects.cx > screen.cx || objects.cy > screen.cy )
+		GetClientRect(rect);
+		CSize screen(rect.Width(), rect.Height());
+		if (objects.cx > screen.cx || objects.cy > screen.cy)
 		{
 
 			ZoomToFitScreen();
@@ -6116,13 +6116,13 @@ void CDiagramEditor::ScrollIntoView()
 		else
 		{
 
-			int leftmargin = ( screen.cx - objects.cx ) / 2;
-			int topmargin = ( screen.cy - objects.cy ) / 2;
+			int leftmargin = (screen.cx - objects.cx) / 2;
+			int topmargin = (screen.cy - objects.cy) / 2;
 			int leftstart = start.x - leftmargin;
 			int topstart = start.y - topmargin;
 
-			SetHScroll( leftstart );
-			SetVScroll( topstart );
+			SetHScroll(leftstart);
+			SetVScroll(topstart);
 			RedrawWindow();
 
 		}
@@ -6130,14 +6130,14 @@ void CDiagramEditor::ScrollIntoView()
 
 }
 
-void CDiagramEditor::ScrollIntoView( CDiagramEntity* obj )
+void CDiagramEditor::ScrollIntoView(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEditor::ScrollIntoView
 	Description :	Scrolls "obj" into view.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDiagramEntity* obj	-	Object to scroll 
+	Parameters :	CDiagramEntity* obj	-	Object to scroll
 											into view
 
 	Usage :			Call to scroll "obj" into view.
@@ -6149,11 +6149,11 @@ void CDiagramEditor::ScrollIntoView( CDiagramEntity* obj )
 	objrect.NormalizeRect();
 
 	CPoint start = objrect.TopLeft();
-	CSize objects( objrect.Width(), objrect.Height() );
+	CSize objects(objrect.Width(), objrect.Height());
 	CRect rect;
-	GetClientRect( rect );
-	CSize screen( rect.Width(), rect.Height() );
-	if( objects.cx > screen.cx || objects.cy > screen.cy )
+	GetClientRect(rect);
+	CSize screen(rect.Width(), rect.Height());
+	if (objects.cx > screen.cx || objects.cy > screen.cy)
 	{
 
 		ZoomToFitScreen();
@@ -6162,13 +6162,13 @@ void CDiagramEditor::ScrollIntoView( CDiagramEntity* obj )
 	else
 	{
 
-		int leftmargin = ( screen.cx - objects.cx ) / 2;
-		int topmargin = ( screen.cy - objects.cy ) / 2;
+		int leftmargin = (screen.cx - objects.cx) / 2;
+		int topmargin = (screen.cy - objects.cy) / 2;
 		int leftstart = start.x - leftmargin;
 		int topstart = start.y - topmargin;
 
-		SetHScroll( leftstart );
-		SetVScroll( topstart );
+		SetHScroll(leftstart);
+		SetVScroll(topstart);
 		RedrawWindow();
 
 	}

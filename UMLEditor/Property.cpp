@@ -169,7 +169,7 @@ CProperty* CProperty::FromString( const CString& str )
 	CProperty* result = NULL;
 
 	CTokenizer tok( str, _T( "=" ) );
-	int max = tok.GetSize();
+	INT_PTR max = tok.GetSize();
 	if( max == 2 )
 	{
 		CString key;

@@ -8,20 +8,20 @@ class CDiagramPropertyDlg : public CDialog
 {
 
 public:
-	CDiagramPropertyDlg( UINT res, CWnd* parent );
-	BOOL Create( UINT nIDTemplate, CWnd* pParentWnd );
+	CDiagramPropertyDlg(UINT res, CWnd* parent);
+	BOOL Create(UINT nIDTemplate, CWnd* pParentWnd);
 
-	void			SetEntity( CDiagramEntity* entity );
+	void			SetEntity(CDiagramEntity* entity);
 	CDiagramEntity*	GetEntity() const;
 
 	virtual CWnd*	GetRedrawWnd();
-	virtual void	SetRedrawWnd( CWnd* redrawWnd );
+	virtual void	SetRedrawWnd(CWnd* redrawWnd);
 	virtual void	Redraw();
 
 	virtual void	SetValues() = 0;
 
 private:
-	CDiagramEntity*	m_entity;
+	CDiagramEntity * m_entity;
 	CWnd*			m_redrawWnd;
 
 };

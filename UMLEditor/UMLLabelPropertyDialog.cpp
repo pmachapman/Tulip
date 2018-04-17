@@ -5,17 +5,17 @@
 
 	Date :			2004-04-29
 
-	Purpose :		"CUMLLabelPropertyDialog" is a dialog box wrapper derived 
+	Purpose :		"CUMLLabelPropertyDialog" is a dialog box wrapper derived
 					from "CDiagramPropertyDlg", used by "CUMLEntity"-
 					derived objects to edit the object title attribute.
 
 	Description :	Class-Wizard created class.
 
-	Usage :			In the "CUMLEntity"-derived class, add a member of 
-					the "CUMLLabelPropertyDialog"-derived class, and call 
+	Usage :			In the "CUMLEntity"-derived class, add a member of
+					the "CUMLLabelPropertyDialog"-derived class, and call
 					"SetPropertyDialog" in the constructor.
 
-					The dialog template with the resource id 
+					The dialog template with the resource id
 					"IDD_UML_DIALOG_PROPERTY_LABEL" must be added to the project.
    ========================================================================*/
 
@@ -34,17 +34,17 @@ static char THIS_FILE[] = __FILE__;
 
 CUMLLabelPropertyDialog::CUMLLabelPropertyDialog(CWnd* pParent /*=NULL*/)
 	: CDiagramPropertyDlg(CUMLLabelPropertyDialog::IDD, pParent)
-/* ============================================================
-	Function :		CUMLLabelPropertyDialog::CUMLLabelPropertyDialog
-	Description :	Constructor
-	Access :		Public
-					
-	Return :		void
-	Parameters :	CWnd* pParent	-	Dialog parent
+	/* ============================================================
+		Function :		CUMLLabelPropertyDialog::CUMLLabelPropertyDialog
+		Description :	Constructor
+		Access :		Public
 
-	Usage :			
+		Return :		void
+		Parameters :	CWnd* pParent	-	Dialog parent
 
-   ============================================================*/
+		Usage :
+
+	   ============================================================*/
 {
 
 	//{{AFX_DATA_INIT(CUMLLabelPropertyDialog)
@@ -63,11 +63,11 @@ CUMLLabelPropertyDialog::~CUMLLabelPropertyDialog()
 	Function :		CUMLLabelPropertyDialog::~CUMLLabelPropertyDialog
 	Description :	Destructor
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -81,8 +81,8 @@ void CUMLLabelPropertyDialog::DoDataExchange(CDataExchange* pDX)
 
 	Return :		void
 	Parameters :	CDataExchange* pDX	-	Pointer to exchange object
-					
-	Usage :			Called from MFC to exchange and validate 
+
+	Usage :			Called from MFC to exchange and validate
 					dialog data.
 
    ============================================================*/
@@ -103,7 +103,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CUMLLabelPropertyDialog message handlers
 
-void CUMLLabelPropertyDialog::OnOK() 
+void CUMLLabelPropertyDialog::OnOK()
 /* ============================================================
 	Function :		CUMLLabelPropertyDialog::OnOK
 	Description :	Called when the Apply-key is pressed.
@@ -112,39 +112,39 @@ void CUMLLabelPropertyDialog::OnOK()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Called from MFC. Updates the attached object 
+	Usage :			Called from MFC. Updates the attached object
 					and hides the modeless dialog.
 
    ============================================================*/
 {
 
-	CUMLEntityLabel* uml = static_cast< CUMLEntityLabel* >( GetEntity() );
+	CUMLEntityLabel* uml = static_cast<CUMLEntityLabel*>(GetEntity());
 
 	UpdateData();
-	uml->SetTitle( m_text );
-	uml->SetFont( m_font );
+	uml->SetTitle(m_text);
+	uml->SetFont(m_font);
 
-	uml->SetBold( m_bold );
-	uml->SetItalic( m_italic );
-	uml->SetUnderline( m_underline );
-	uml->SetPointsize( m_pointsize );
+	uml->SetBold(m_bold);
+	uml->SetItalic(m_italic);
+	uml->SetUnderline(m_underline);
+	uml->SetPointsize(m_pointsize);
 
 	Redraw();
-	ShowWindow( SW_HIDE );
+	ShowWindow(SW_HIDE);
 	GetRedrawWnd()->SetFocus();
 
 }
 
-void CUMLLabelPropertyDialog::OnCancel() 
+void CUMLLabelPropertyDialog::OnCancel()
 /* ============================================================
 	Function :		CUMLLabelPropertyDialog::OnCancel
 	Description :	Called when the ESC-key is pressed.
 	Access :		Protected
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			Called from MFC. Overridden to close the 
+	Usage :			Called from MFC. Overridden to close the
 					dialog.
 
    ============================================================*/
@@ -158,25 +158,25 @@ void CUMLLabelPropertyDialog::OnCancel()
 /////////////////////////////////////////////////////////////////////////////
 // CUMLLabelPropertyDialog overrides
 
-void CUMLLabelPropertyDialog::SetValues() 
+void CUMLLabelPropertyDialog::SetValues()
 /* ============================================================
 	Function :		CUMLLabelPropertyDialog::SetValues
-	Description :	Set the values in the dialog from the 
+	Description :	Set the values in the dialog from the
 					attached object.
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			Will be called by the framework and the 
-					attached object to initialize the dialog. 
-					The editbox is filled with the contents of 
+	Usage :			Will be called by the framework and the
+					attached object to initialize the dialog.
+					The editbox is filled with the contents of
 					the object title attribute.
 
    ============================================================*/
 {
 
-	CUMLEntityLabel* uml = static_cast< CUMLEntityLabel* >( GetEntity() );
+	CUMLEntityLabel* uml = static_cast<CUMLEntityLabel*>(GetEntity());
 
 	m_text = uml->GetTitle();
 	m_font = uml->GetFont();
@@ -187,7 +187,7 @@ void CUMLLabelPropertyDialog::SetValues()
 
 }
 
-void CUMLLabelPropertyDialog::OnButtonFont() 
+void CUMLLabelPropertyDialog::OnButtonFont()
 /* ============================================================
 	Function :		CUMLLabelPropertyDialog::OnButtonFont
 	Description :	Handler for the dialog button Font
@@ -202,18 +202,18 @@ void CUMLLabelPropertyDialog::OnButtonFont()
 {
 
 	CFont font;
-	CUMLEntityLabel* uml = static_cast< CUMLEntityLabel* >( GetEntity() );
-	font.CreatePointFont( m_pointsize * 10, uml->GetFont() );
+	CUMLEntityLabel* uml = static_cast<CUMLEntityLabel*>(GetEntity());
+	font.CreatePointFont(m_pointsize * 10, uml->GetFont());
 	LOGFONT lf;
-	font.GetLogFont( &lf );
+	font.GetLogFont(&lf);
 
-	lf.lfItalic = ( BYTE ) m_italic;
-	lf.lfUnderline = ( BYTE ) m_underline;
-	if( m_bold )
+	lf.lfItalic = (BYTE)m_italic;
+	lf.lfUnderline = (BYTE)m_underline;
+	if (m_bold)
 		lf.lfWeight = FW_BOLD;
 
-	CFontDialog	dlg( &lf );
-	if( dlg.DoModal() == IDOK )
+	CFontDialog	dlg(&lf);
+	if (dlg.DoModal() == IDOK)
 	{
 		m_font = dlg.GetFaceName();
 		m_pointsize = dlg.GetSize() / 10;
@@ -221,6 +221,6 @@ void CUMLLabelPropertyDialog::OnButtonFont()
 		m_italic = dlg.IsItalic();
 		m_underline = dlg.IsUnderline();
 	}
-	
+
 }
 

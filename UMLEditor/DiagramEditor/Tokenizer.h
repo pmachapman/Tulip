@@ -10,20 +10,20 @@
 class CTokenizer
 {
 public:
-// Construction/destruction
-	CTokenizer( CString strInput, const CString & strDelimiter = _T(",") );
+	// Construction/destruction
+	CTokenizer(CString strInput, const CString & strDelimiter = _T(","));
 
-// Operations
-	void Init( const CString & strInput, const CString & strDelimiter = _T(",") );
-	int GetSize(  ) const;
-	void GetAt( int nIndex, CString & str ) const;
-	void GetAt( int nIndex, int & var ) const;
-	void GetAt( int nIndex, WORD & var ) const;
-	void GetAt( int nIndex, double & var ) const;
-	void GetAt( int nIndex, DWORD & var ) const;
+	// Operations
+	void Init(const CString & strInput, const CString & strDelimiter = _T(","));
+	INT_PTR GetSize() const;
+	void GetAt(INT_PTR nIndex, CString & str) const;
+	void GetAt(INT_PTR nIndex, int & var) const;
+	void GetAt(INT_PTR nIndex, WORD & var) const;
+	void GetAt(INT_PTR nIndex, double & var) const;
+	void GetAt(INT_PTR nIndex, DWORD & var) const;
 
 
-// Attributes
+	// Attributes
 
 private:
 	CStringArray m_stra;

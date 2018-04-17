@@ -7,7 +7,7 @@
 
 	Purpose :		"CPropertyContainer" is a container for property objects.
 
-	Description :	The class contains a "CObArray" holding "CProperty" 
+	Description :	The class contains a "CObArray" holding "CProperty"
 					instances, as well as access functions for them.
 
 	Usage :			The class manages memory.
@@ -36,7 +36,7 @@ CPropertyContainer::CPropertyContainer()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -60,17 +60,17 @@ CPropertyContainer::~CPropertyContainer()
 
 }
 
-void CPropertyContainer::Copy( CPropertyContainer& properties )
+void CPropertyContainer::Copy(CPropertyContainer& properties)
 /* ============================================================
 	Function :		CPropertyContainer::Copy
-	Description :	Copies the contents from "properties" to 
+	Description :	Copies the contents from "properties" to
 					this container.
 	Access :		Public
 
 	Return :		void
 	Parameters :	CPropertyContainer& properties	-	Container to copy from.
-					
-	Usage :			Call to copy the properties from another 
+
+	Usage :			Call to copy the properties from another
 					container into thsi one.
 
    ============================================================*/
@@ -78,23 +78,23 @@ void CPropertyContainer::Copy( CPropertyContainer& properties )
 
 	RemoveAll();
 
-	int max = properties.GetSize();
-	for( int t = 0 ; t < max ; t++ )
-		Add( new CProperty( properties.GetAt( t ) ) );
+	INT_PTR max = properties.GetSize();
+	for (INT_PTR t = 0; t < max; t++)
+		Add(new CProperty(properties.GetAt(t)));
 
 }
 
 // Implementation
-int CPropertyContainer::GetSize( ) const
+INT_PTR CPropertyContainer::GetSize() const
 /* ============================================================
 	Function :		CPropertyContainer::GetSize
 	Description :	Gets the number of properties in the container.
 	Access :		Public
-					
+
 	Return :		int	-	Number of properties.
 	Parameters :	none
 
-	Usage :			Call to get the number of properties in the 
+	Usage :			Call to get the number of properties in the
 					container.
 
    ============================================================*/
@@ -104,16 +104,16 @@ int CPropertyContainer::GetSize( ) const
 
 }
 
-CProperty* CPropertyContainer::GetAt( int index ) const
+CProperty* CPropertyContainer::GetAt(INT_PTR index) const
 /* ============================================================
 	Function :		CPropertyContainer::GetAt
 	Description :	Gets the object at "index".
 	Access :		Public
-					
+
 	Return :		CProperty*	-	The object, or "NULL" if out of bounds.
 	Parameters :	int index	-	Index to get object from.
-					
-	Usage :			Call to get a specific property from the 
+
+	Usage :			Call to get a specific property from the
 					container.
 
    ============================================================*/
@@ -121,109 +121,109 @@ CProperty* CPropertyContainer::GetAt( int index ) const
 
 	CProperty* result = NULL;
 
-	if( index < GetSize() )
-		result = static_cast< CProperty* >( m_properties[ index ] );
+	if (index < GetSize())
+		result = static_cast<CProperty*>(m_properties[index]);
 
 	return result;
 
 }
 
-void CPropertyContainer::RemoveAt( int index )
+void CPropertyContainer::RemoveAt(INT_PTR index)
 /* ============================================================
 	Function :		CPropertyContainer::RemoveAt
 	Description :	Removes the property at "index"
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	int index	-	Index to remove property from.
-					
-	Usage :			Call to remove a property at a specific 
+
+	Usage :			Call to remove a property at a specific
 					index. Memory will also be deleted.
 
    ============================================================*/
 {
 
-	if( index > -1 && index < GetSize() )
+	if (index > -1 && index < GetSize())
 	{
 
-		delete GetAt( index );
-		m_properties.RemoveAt( index );
+		delete GetAt(index);
+		m_properties.RemoveAt(index);
 
 	}
 
 }
 
-void CPropertyContainer::RemoveAll( )
+void CPropertyContainer::RemoveAll()
 /* ============================================================
 	Function :		CPropertyContainer::RemoveAll
 	Description :	Removes all objects from the container.
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to clear the container. Memory will 
+	Usage :			Call to clear the container. Memory will
 					also be deleted.
 
    ============================================================*/
 {
 
-	while( GetSize() )
-		RemoveAt( 0 );
+	while (GetSize())
+		RemoveAt(0);
 
 }
 
-void CPropertyContainer::Add( CProperty* property )
+void CPropertyContainer::Add(CProperty* property)
 /* ============================================================
 	Function :		CPropertyContainer::Add
 	Description :	Adds "property" to the container.
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	CProperty* property	-	Property to add.
-					
-	Usage :			Call to add a property to a container. The 
+
+	Usage :			Call to add a property to a container. The
 					container takes ownership of the object.
 
    ============================================================*/
 {
 
-	CProperty* oldproperty = FindProperty( property->key );
-	if( oldproperty )
+	CProperty* oldproperty = FindProperty(property->key);
+	if (oldproperty)
 	{
-		if( property->value != oldproperty->value )
+		if (property->value != oldproperty->value)
 			oldproperty->value = property->value;
 		delete property;
 	}
 	else
-		m_properties.Add( property );
+		m_properties.Add(property);
 
 }
 
-void CPropertyContainer::Add( const CString& tag, const CString& val )
+void CPropertyContainer::Add(const CString& tag, const CString& val)
 /* ============================================================
 	Function :		CPropertyContainer::Add
 	Description :	Create and add a property to the container.
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	const CString& tag	-	Tag of the property
 					const CString& val	-	Value of the tag
-					
+
 	Usage :			Call to a add a property to the container.
 
    ============================================================*/
 {
 
-	CProperty* property = new CProperty( tag, val );
-	Add( property );
+	CProperty* property = new CProperty(tag, val);
+	Add(property);
 
 }
 
-CString CPropertyContainer::GetString( int format ) const
+CString CPropertyContainer::GetString(int format) const
 /* ============================================================
 	Function :		CPropertyContainer::GetString
-	Description :	Gets a string representation of this 
+	Description :	Gets a string representation of this
 					object in the format "format".
 	Access :		Public
 
@@ -242,59 +242,59 @@ CString CPropertyContainer::GetString( int format ) const
 {
 
 	CString output;
-	int max = GetSize();
-	if( max )
+	INT_PTR max = GetSize();
+	if (max)
 	{
-		switch( format )
+		switch (format)
 		{
-			case STRING_FORMAT_SAVE:
-				{
-					for( int t = 0 ; t < max ; t++ )
-					{
-						CProperty* property = GetAt( t );
-						output += property->GetString( format );
-						if( t < max - 1 )
-							output += _T( "#" );
-					}
-				}
-				break;
-			case STRING_FORMAT_CPP:
-				{
-					for( int t = 0 ; t < max ; t++ )
-					{
-						CProperty* property = GetAt( t );
-						output += property->GetString( format );
-						if( t < max - 1 )
-							output += _T( ", " );
-					}
-				}
-				break;
-			case STRING_FORMAT_UML:
-				{
-					output = _T( "{ " );
-					for( int t = 0 ; t < max ; t++ )
-					{
-						CProperty* property = GetAt( t );
-						output += property->GetString( format );
-						if( t < max - 1 )
-							output += _T( ", " );
-					}
-					output += _T( " }" );
-				}
-				break;
-			case STRING_FORMAT_HTML:
-				{
-					output = _T( "{ " );
-					for( int t = 0 ; t < max ; t++ )
-					{
-						CProperty* property = GetAt( t );
-						output += property->GetString( STRING_FORMAT_UML );
-						if( t < max - 1 )
-							output += _T( "<br>" );
-					}
-					output += _T( " }" );
-				}
-				break;
+		case STRING_FORMAT_SAVE:
+		{
+			for (INT_PTR t = 0; t < max; t++)
+			{
+				CProperty* property = GetAt(t);
+				output += property->GetString(format);
+				if (t < max - 1)
+					output += _T("#");
+			}
+		}
+		break;
+		case STRING_FORMAT_CPP:
+		{
+			for (INT_PTR t = 0; t < max; t++)
+			{
+				CProperty* property = GetAt(t);
+				output += property->GetString(format);
+				if (t < max - 1)
+					output += _T(", ");
+			}
+		}
+		break;
+		case STRING_FORMAT_UML:
+		{
+			output = _T("{ ");
+			for (INT_PTR t = 0; t < max; t++)
+			{
+				CProperty* property = GetAt(t);
+				output += property->GetString(format);
+				if (t < max - 1)
+					output += _T(", ");
+			}
+			output += _T(" }");
+		}
+		break;
+		case STRING_FORMAT_HTML:
+		{
+			output = _T("{ ");
+			for (INT_PTR t = 0; t < max; t++)
+			{
+				CProperty* property = GetAt(t);
+				output += property->GetString(STRING_FORMAT_UML);
+				if (t < max - 1)
+					output += _T("<br>");
+			}
+			output += _T(" }");
+		}
+		break;
 		}
 	}
 
@@ -302,11 +302,11 @@ CString CPropertyContainer::GetString( int format ) const
 
 }
 
-void CPropertyContainer::FromString( const CString& str )
+void CPropertyContainer::FromString(const CString& str)
 /* ============================================================
 	Function :		CPropertyContainer::FromString
-	Description :	Creates properties from a string 
-					representation and adds them to the 
+	Description :	Creates properties from a string
+					representation and adds them to the
 					container.
 	Access :		Public
 
@@ -314,28 +314,28 @@ void CPropertyContainer::FromString( const CString& str )
 	Parameters :	const CString& str	-	New operation, or "NULL" if "str"
 											is not a valid representation of
 											properties
-					
+
 	Usage :			Call from load-functions
 
    ============================================================*/
 {
 
-	CTokenizer tok( str, _T( "#" ) );
-	int max = tok.GetSize();
-	for( int t = 0 ; t < max ; t++ )
+	CTokenizer tok(str, _T("#"));
+	INT_PTR max = tok.GetSize();
+	for (INT_PTR t = 0; t < max; t++)
 	{
 
 		CString propval;
-		tok.GetAt( t, propval );
-		CProperty* prop = CProperty::FromString( propval );
-		if( prop )
-			Add( prop );
+		tok.GetAt(t, propval);
+		CProperty* prop = CProperty::FromString(propval);
+		if (prop)
+			Add(prop);
 
 	}
 
 }
 
-CString	CPropertyContainer::GetPropertyValue( const CString& tag ) const
+CString	CPropertyContainer::GetPropertyValue(const CString& tag) const
 /* ============================================================
 	Function :		CString	CPropertyContainer::GetPropertyValue
 	Description :	Gets the value for the property "tag"
@@ -343,8 +343,8 @@ CString	CPropertyContainer::GetPropertyValue( const CString& tag ) const
 
 	Return :		CString				-	Result
 	Parameters :	const CString& tag	-	Tag to get the value for.
-					
-	Usage :			Returns the value of the tag, or "true" if 
+
+	Usage :			Returns the value of the tag, or "true" if
 					the tag has no value. Empty if the tag doesn't
 					exist.
 
@@ -352,15 +352,15 @@ CString	CPropertyContainer::GetPropertyValue( const CString& tag ) const
 {
 
 	CString result;
-	int max = GetSize();
-	for( int t = 0 ; t < max ; t++ )
+	INT_PTR max = GetSize();
+	for (INT_PTR t = 0; t < max; t++)
 	{
-		CProperty* property = GetAt( t );
-		if( property->key == tag )
+		CProperty* property = GetAt(t);
+		if (property->key == tag)
 		{
 			result = property->value;
-			if( result.IsEmpty() )
-				result = _T( "true" );
+			if (result.IsEmpty())
+				result = _T("true");
 		}
 	}
 
@@ -368,18 +368,18 @@ CString	CPropertyContainer::GetPropertyValue( const CString& tag ) const
 
 }
 
-CProperty* CPropertyContainer::FindProperty( const CString& tag )
+CProperty* CPropertyContainer::FindProperty(const CString& tag)
 /* ============================================================
 	Function :		CPropertyContainer::FindProperty
-	Description :	Returns a pointer to the property having 
+	Description :	Returns a pointer to the property having
 					"tag".
 	Access :		Public
 
-	Return :		CProperty*			-	Resulting property, or 
+	Return :		CProperty*			-	Resulting property, or
 											"NULL" if it doesn't exist.
 	Parameters :	const CString& tag	-	Tag to find.
-					
-	Usage :			Call to get a pointer to the property with 
+
+	Usage :			Call to get a pointer to the property with
 					the tag "tag", if it exists.
 
    ============================================================*/
@@ -387,11 +387,11 @@ CProperty* CPropertyContainer::FindProperty( const CString& tag )
 
 	CProperty* result = NULL;
 
-	int max = GetSize();
-	for( int t = 0 ; t < max ; t++ )
+	INT_PTR max = GetSize();
+	for (INT_PTR t = 0; t < max; t++)
 	{
-		CProperty* property = GetAt( t );
-		if( property->key == tag )
+		CProperty* property = GetAt(t);
+		if (property->key == tag)
 			result = property;
 	}
 
@@ -399,56 +399,56 @@ CProperty* CPropertyContainer::FindProperty( const CString& tag )
 
 }
 
-void CPropertyContainer::RemoveProperty( const CString& tag )
+void CPropertyContainer::RemoveProperty(const CString& tag)
 /* ============================================================
 	Function :		CPropertyContainer::RemoveProperty
 	Description :	Removes the property with the tag "tag".
 	Access :		Public
 
 	Return :		void
-	Parameters :	const CString& tag	-	Tag of property to 
+	Parameters :	const CString& tag	-	Tag of property to
 											remove.
-					
+
 	Usage :			Call to remove a specific tag.
 
    ============================================================*/
 {
 
-	int max = GetSize();
-	for( int t = 0 ; t < max ; t++ )
+	INT_PTR max = GetSize();
+	for (INT_PTR t = 0; t < max; t++)
 	{
-		CProperty* property = GetAt( t );
-		if( property->key == tag )
+		CProperty* property = GetAt(t);
+		if (property->key == tag)
 		{
-			RemoveAt( t );
+			RemoveAt(t);
 			t = max;
 		}
 	}
 
 }
 
-void CPropertyContainer::SetPropertyValue( const CString& tag, const CString& value )
+void CPropertyContainer::SetPropertyValue(const CString& tag, const CString& value)
 /* ============================================================
 	Function :		CPropertyContainer::SetPropertyValue
 	Description :	Sets the value of "tag" to "value"
-	Access :		
+	Access :
 
 	Return :		void
 	Parameters :	const CString& tag		-	Tag of property to set.
 					const CString& value	-	New value
-					
-	Usage :			Call to set the value of the property with 
-					the tag "tag". If the property does not 
+
+	Usage :			Call to set the value of the property with
+					the tag "tag". If the property does not
 					exist, it will be created.
 
    ============================================================*/
 {
 
-	CProperty* property = FindProperty( tag );
-	if( property == NULL )
+	CProperty* property = FindProperty(tag);
+	if (property == NULL)
 	{
-		property = new CProperty( tag, value );
-		Add( property );
+		property = new CProperty(tag, value);
+		Add(property);
 	}
 	else
 	{

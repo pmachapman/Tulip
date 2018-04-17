@@ -3,24 +3,24 @@
 
 	Date :			06/18/04
 
-	Purpose :		"CTokenizer" is a very simple class to tokenize a string 
-					into a string array.	
+	Purpose :		"CTokenizer" is a very simple class to tokenize a string
+					into a string array.
 
-	Description :	The string is chopped up and put into an internal 
-					"CStringArray". With "GetAt", different types of data can 
+	Description :	The string is chopped up and put into an internal
+					"CStringArray". With "GetAt", different types of data can
 					be read from the different elements.
 
-	Usage :			Create an instance of "CTokenizer" on the stack. Set 
-					the string to parse in the "ctor", and the delimiter if 
+	Usage :			Create an instance of "CTokenizer" on the stack. Set
+					the string to parse in the "ctor", and the delimiter if
 					not a comma. The "ctor" automatically tokenize the input
 					string.
 
-					Call "GetSize" to get the number of 
+					Call "GetSize" to get the number of
 					tokens, and "GetAt" to get a specific token.
-	
+
 					You can also reuse the tokenizer by calling "Init".
    ========================================================================
-	Changes :		28/8  2004	Changed a char to TCHAR to allow UNICODE 
+	Changes :		28/8  2004	Changed a char to TCHAR to allow UNICODE
 								building (Enrico Detoma)
    ========================================================================*/
 
@@ -28,19 +28,19 @@
 #include "Tokenizer.h"
 
 
-////////////////////////////////////////////////////////////////////
-// Public functions
-//
-CTokenizer::CTokenizer( CString strInput, const CString & strDelimiter )
+   ////////////////////////////////////////////////////////////////////
+   // Public functions
+   //
+CTokenizer::CTokenizer(CString strInput, const CString & strDelimiter)
 /* ============================================================
 	Function :		CTokenizer::CTokenizer
 	Description :	Constructor.
 	Access :		Public
-					
+
 	Return :		void
-	Parameters :	CString strInput				-	String to 
+	Parameters :	CString strInput				-	String to
 														tokenize
-					const CString & strDelimiter	-	Delimiter, 
+					const CString & strDelimiter	-	Delimiter,
 														defaults to
 														comma.
 	Usage :			Should normally be created on the stack.
@@ -52,18 +52,18 @@ CTokenizer::CTokenizer( CString strInput, const CString & strDelimiter )
 
 }
 
-void CTokenizer::Init( const CString & strInput, const CString & strDelimiter )
+void CTokenizer::Init(const CString & strInput, const CString & strDelimiter)
 /* ============================================================
 	Function :		CTokenizer::Init
-	Description :	Reinitializes and tokenizes the tokenizer 
-					with "strInput". "strDelimiter" is the 
+	Description :	Reinitializes and tokenizes the tokenizer
+					with "strInput". "strDelimiter" is the
 					delimiter to use.
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	const CString & strInput		-	New string
 					const CString & strDelimiter	-	Delimiter,
-														defaults to 
+														defaults to
 														comma
 
 	Usage :			Call to reinitialize the tokenizer.
@@ -71,34 +71,34 @@ void CTokenizer::Init( const CString & strInput, const CString & strDelimiter )
    ============================================================*/
 {
 
-	CString copy( strInput );
+	CString copy(strInput);
 	m_stra.RemoveAll();
-	int nFound = copy.Find( strDelimiter );
+	int nFound = copy.Find(strDelimiter);
 
-	while(nFound != -1)
+	while (nFound != -1)
 	{
 		CString strLeft;
-		strLeft = copy.Left( nFound );
-		copy = copy.Right( copy.GetLength() - ( nFound + 1 ) );
+		strLeft = copy.Left(nFound);
+		copy = copy.Right(copy.GetLength() - (nFound + 1));
 
-		m_stra.Add( strLeft );
-		nFound = copy.Find( strDelimiter );
+		m_stra.Add(strLeft);
+		nFound = copy.Find(strDelimiter);
 	}
 
-	m_stra.Add( copy );
+	m_stra.Add(copy);
 
 }
 
-int CTokenizer::GetSize(  ) const
+INT_PTR CTokenizer::GetSize() const
 /* ============================================================
 	Function :		CTokenizer::GetSize
 	Description :	Gets the number of tokens in the tokenizer.
 	Access :		Public
-					
+
 	Return :		int	-	Number of tokens.
 	Parameters :	none
 
-	Usage :			Call to get the number of tokens in the 
+	Usage :			Call to get the number of tokens in the
 					tokenizer.
 
    ============================================================*/
@@ -108,123 +108,123 @@ int CTokenizer::GetSize(  ) const
 
 }
 
-void CTokenizer::GetAt( int nIndex, CString & str ) const
+void CTokenizer::GetAt(INT_PTR nIndex, CString & str) const
 /* ============================================================
 	Function :		CTokenizer::GetAt
-	Description :	Get the token at "nIndex" and put it in 
+	Description :	Get the token at "nIndex" and put it in
 					"str".
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	int nIndex		- Index to get token from
 					CString & str	- Result
 
-	Usage :			Call to get the value of the token at 
+	Usage :			Call to get the value of the token at
 					"index".
 
    ============================================================*/
 {
 
-		if( nIndex < m_stra.GetSize() )
-			str = m_stra.GetAt( nIndex );
-		else
-			str = _T( "" );
+	if (nIndex < m_stra.GetSize())
+		str = m_stra.GetAt(nIndex);
+	else
+		str = _T("");
 
 }
 
-void CTokenizer::GetAt( int nIndex, int & var ) const
+void CTokenizer::GetAt(INT_PTR nIndex, int & var) const
 /* ============================================================
 	Function :		CTokenizer::GetAt
-	Description :	Get the token at "nIndex" and put it in 
+	Description :	Get the token at "nIndex" and put it in
 					"var".
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	int nIndex	- Index to get token from
 					int & var	- Result
 
-	Usage :			Call to get the value of the token at 
+	Usage :			Call to get the value of the token at
 					"index".
 
    ============================================================*/
 {
 
-		if( nIndex < m_stra.GetSize() )
-			var = _ttoi( m_stra.GetAt( nIndex ) );
-		else
-			var = 0;
+	if (nIndex < m_stra.GetSize())
+		var = _ttoi(m_stra.GetAt(nIndex));
+	else
+		var = 0;
 
 }
 
-void CTokenizer::GetAt( int nIndex, WORD & var ) const
+void CTokenizer::GetAt(INT_PTR nIndex, WORD & var) const
 /* ============================================================
 	Function :		CTokenizer::GetAt
-	Description :	Get the token at "nIndex" and put it in 
+	Description :	Get the token at "nIndex" and put it in
 					"var".
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	int nIndex	- Index to get token from
 					WORD & var	- Result
 
-	Usage :			Call to get the value of the token at 
+	Usage :			Call to get the value of the token at
 					"index".
 
    ============================================================*/
 {
 
-		if( nIndex < m_stra.GetSize() )
-			var = static_cast< WORD >( _ttoi( m_stra.GetAt( nIndex ) ) );
-		else
-			var = 0;
+	if (nIndex < m_stra.GetSize())
+		var = static_cast<WORD>(_ttoi(m_stra.GetAt(nIndex)));
+	else
+		var = 0;
 
 }
 
-void CTokenizer::GetAt( int nIndex, double & var ) const
+void CTokenizer::GetAt(INT_PTR nIndex, double & var) const
 /* ============================================================
 	Function :		CTokenizer::GetAt
-	Description :	Get the token at "nIndex" and put it in 
+	Description :	Get the token at "nIndex" and put it in
 					"var".
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	int nIndex		- Index to get token from
 					double & var	- Result
 
-	Usage :			Call to get the value of the token at 
+	Usage :			Call to get the value of the token at
 					"index".
 
    ============================================================*/
 {
 
-		TCHAR   *stop;
-		if( nIndex < m_stra.GetSize() )
-			var = _tcstod( m_stra.GetAt( nIndex ), &stop );
-		else
-			var = 0.0;
+	TCHAR   *stop;
+	if (nIndex < m_stra.GetSize())
+		var = _tcstod(m_stra.GetAt(nIndex), &stop);
+	else
+		var = 0.0;
 
 }
 
-void CTokenizer::GetAt( int nIndex, DWORD & var ) const
+void CTokenizer::GetAt(INT_PTR nIndex, DWORD & var) const
 /* ============================================================
 	Function :		CTokenizer::GetAt
-	Description :	Get the token at "nIndex" and put it in 
+	Description :	Get the token at "nIndex" and put it in
 					"var".
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	int nIndex	- Index to get token from
 					DWORD & var	- Result
 
-	Usage :			Call to get the value of the token at 
+	Usage :			Call to get the value of the token at
 					"index".
 
    ============================================================*/
 {
 
-		if( nIndex < m_stra.GetSize() )
-			var = static_cast< DWORD >( _ttoi( m_stra.GetAt( nIndex ) ) );
-		else
-			var = 0;
+	if (nIndex < m_stra.GetSize())
+		var = static_cast<DWORD>(_ttoi(m_stra.GetAt(nIndex)));
+	else
+		var = 0;
 
 }

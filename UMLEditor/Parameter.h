@@ -13,18 +13,18 @@ class CParameter : public CObject
 public:
 	// Construction/destruction
 	CParameter();
-	CParameter( CParameter* parameter );
+	CParameter(CParameter* parameter);
 	virtual ~CParameter();
 
-	BOOL operator==( const CParameter& parameter );
-	BOOL operator!=( const CParameter& parameter );
+	BOOL operator==(const CParameter& parameter);
+	BOOL operator!=(const CParameter& parameter);
 
-// Operations
-	static	CParameter* FromString( const CString& str );
-	CString	GetString( int format = STRING_FORMAT_SAVE ) const;
-	CString	ToString( BOOL nooperationattributenames ) const;
+	// Operations
+	static	CParameter* FromString(const CString& str);
+	CString	GetString(int format = STRING_FORMAT_SAVE) const;
+	CString	ToString(BOOL nooperationattributenames) const;
 
-// Attributes
+	// Attributes
 	CString name;
 	CString defaultvalue;
 	CString type;

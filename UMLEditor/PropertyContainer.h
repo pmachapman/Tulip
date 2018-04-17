@@ -8,35 +8,35 @@
 
 #include "Property.h"
 
-class CPropertyContainer 
+class CPropertyContainer
 {
 public:
 	// Construction/destruction
 	CPropertyContainer();
 	virtual ~CPropertyContainer();
 
-	void Copy( CPropertyContainer& properties );
+	void Copy(CPropertyContainer& properties);
 
-// Operations
-	int			GetSize( ) const;
-	CProperty*	GetAt( int index ) const;
-	void		RemoveAt( int index );
-	void		RemoveAll( );
-	void		Add( CProperty* property );
-	void		Add( const CString& tag, const CString& val = _T( "" ) );
-	CString		GetString( int format = STRING_FORMAT_SAVE ) const;
-	void		FromString( const CString& str );
+	// Operations
+	INT_PTR			GetSize() const;
+	CProperty*	GetAt(INT_PTR index) const;
+	void		RemoveAt(INT_PTR index);
+	void		RemoveAll();
+	void		Add(CProperty* property);
+	void		Add(const CString& tag, const CString& val = _T(""));
+	CString		GetString(int format = STRING_FORMAT_SAVE) const;
+	void		FromString(const CString& str);
 
-	CString		GetPropertyValue( const CString& tag ) const;
-	void		SetPropertyValue( const CString& tag, const CString& value );
-	void		RemoveProperty( const CString& tag );
+	CString		GetPropertyValue(const CString& tag) const;
+	void		SetPropertyValue(const CString& tag, const CString& value);
+	void		RemoveProperty(const CString& tag);
 
-// Attributes
+	// Attributes
 private:
 	CObArray m_properties;
 
 	// Private helpers
-	CProperty* FindProperty( const CString& tag );
+	CProperty* FindProperty(const CString& tag);
 
 };
 

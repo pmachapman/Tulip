@@ -5,13 +5,13 @@
 
 	Date :			2004-06-21
 
-	Purpose :		"CUMLEditorPropertyDialog" derives from "CDialog" and 
+	Purpose :		"CUMLEditorPropertyDialog" derives from "CDialog" and
 					is a wrapper around the editor property dialog.
 
-	Description :	The class uses the dialog template with the resource ID 
+	Description :	The class uses the dialog template with the resource ID
 					"IDD_UML_DIALOG_PROPERTY_EDITOR" from the resources.
 
-	Usage :			
+	Usage :
 
    ========================================================================*/
 
@@ -29,17 +29,17 @@ static char THIS_FILE[] = __FILE__;
 
 CUMLEditorPropertyDialog::CUMLEditorPropertyDialog(CWnd* pParent /*=NULL*/)
 	: CDialog(CUMLEditorPropertyDialog::IDD, pParent)
-/* ============================================================
-	Function :		CUMLEditorPropertyDialog::CUMLEditorPropertyDialog
-	Description :	Constructor
-	Access :		Public
-					
-	Return :		void
-	Parameters :	CWnd* pParent	-	Dialog parent
+	/* ============================================================
+		Function :		CUMLEditorPropertyDialog::CUMLEditorPropertyDialog
+		Description :	Constructor
+		Access :		Public
 
-	Usage :			
+		Return :		void
+		Parameters :	CWnd* pParent	-	Dialog parent
 
-   ============================================================*/
+		Usage :
+
+	   ============================================================*/
 {
 	//{{AFX_DATA_INIT(CUMLEditorPropertyDialog)
 	m_grid = FALSE;
@@ -52,7 +52,7 @@ CUMLEditorPropertyDialog::CUMLEditorPropertyDialog(CWnd* pParent /*=NULL*/)
 	m_showmargin = FALSE;
 	//}}AFX_DATA_INIT
 
-	m_color = RGB( 0, 0, 0 );
+	m_color = RGB(0, 0, 0);
 
 }
 
@@ -65,8 +65,8 @@ void CUMLEditorPropertyDialog::DoDataExchange(CDataExchange* pDX)
 
 	Return :		void
 	Parameters :	CDataExchange* pDX	-	Pointer to exchange object
-					
-	Usage :			Called from MFC to exchange and validate 
+
+	Usage :			Called from MFC to exchange and validate
 					dialog data.
 
    ============================================================*/
@@ -93,7 +93,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CUMLEditorPropertyDialog message handlers
 
-void CUMLEditorPropertyDialog::OnButtonColor() 
+void CUMLEditorPropertyDialog::OnButtonColor()
 /* ============================================================
 	Function :		CUMLEditorPropertyDialog::OnButtonColor
 	Description :	Handler for the dialog button Color
@@ -107,8 +107,8 @@ void CUMLEditorPropertyDialog::OnButtonColor()
    ============================================================*/
 {
 
-	CColorDialog dlg( m_color );
-	if( dlg.DoModal() == IDOK )
+	CColorDialog dlg(m_color);
+	if (dlg.DoModal() == IDOK)
 		m_color = dlg.GetColor();
-	
+
 }

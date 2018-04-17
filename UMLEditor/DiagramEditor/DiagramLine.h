@@ -25,17 +25,17 @@ public:
 	virtual ~CDiagramLine();
 
 	virtual CDiagramEntity* Clone();
-	static	CDiagramEntity* CreateFromString( const CString& str );
-	virtual void			Draw( CDC* dc, CRect rect );
-	virtual int				GetHitCode( CPoint point ) const;
-	virtual HCURSOR			GetCursor( int hit ) const;
-	virtual void			SetRect( CRect rect );
-	virtual BOOL			BodyInRect( CRect rect ) const;
+	static	CDiagramEntity* CreateFromString(const CString& str);
+	virtual void			Draw(CDC* dc, CRect rect);
+	virtual int				GetHitCode(CPoint point) const;
+	virtual HCURSOR			GetCursor(int hit) const;
+	virtual void			SetRect(CRect rect);
+	virtual BOOL			BodyInRect(CRect rect) const;
 
 protected:
 
-	virtual void	DrawSelectionMarkers( CDC* dc, CRect rect ) const;
-	
+	virtual void	DrawSelectionMarkers(CDC* dc, CRect rect) const;
+
 };
 
 #endif // _DIAGRAMLINE_H_

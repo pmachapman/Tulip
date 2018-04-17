@@ -16,22 +16,22 @@
 class CUMLLabelPropertyDialog : public CDiagramPropertyDlg
 {
 
-// Construction
+	// Construction
 public:
 	CUMLLabelPropertyDialog(CWnd* pParent = NULL);
 	~CUMLLabelPropertyDialog();
 
 	virtual void SetValues();
 
-// Dialog Data
-	//{{AFX_DATA(CUMLLabelPropertyDialog)
+	// Dialog Data
+		//{{AFX_DATA(CUMLLabelPropertyDialog)
 	enum { IDD = IDD_UML_DIALOG_PROPERTY_LABEL };
 	CString	m_text;
 	//}}AFX_DATA
 
 // Overrides
 	//{{AFX_VIRTUAL(CUMLLabelPropertyDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 

@@ -22,14 +22,14 @@
 
 class CUMLLinkPropertyDialog : public CDiagramPropertyDlg
 {
-// Construction
+	// Construction
 public:
 	CUMLLinkPropertyDialog(CWnd* pParent = NULL);
 
 	virtual void SetValues();
 
-// Dialog Data
-	//{{AFX_DATA(CUMLLinkPropertyDialog)
+	// Dialog Data
+		//{{AFX_DATA(CUMLLinkPropertyDialog)
 	enum { IDD = IDD_UML_DIALOG_PROPERTY_LINK };
 	BOOL	m_unidirectional;
 	CString	m_endlabel;
@@ -43,7 +43,7 @@ public:
 
 // Overrides
 	//{{AFX_VIRTUAL(CUMLLinkPropertyDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 

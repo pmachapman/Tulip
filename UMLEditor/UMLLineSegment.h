@@ -19,35 +19,35 @@ class CUMLLineSegment : public CUMLEntity
 
 public:
 
-// Creation/initialization/destruction
+	// Creation/initialization/destruction
 	CUMLLineSegment();
 	virtual ~CUMLLineSegment();
 	virtual	CDiagramEntity* Clone();
 
-	static	CDiagramEntity* CreateFromString( const CString& str );
+	static	CDiagramEntity* CreateFromString(const CString& str);
 
-// Overrides
-	virtual void		Draw( CDC* dc, CRect rect );
-	virtual int			GetHitCode( CPoint point ) const;
-	virtual HCURSOR		GetCursor( int hit ) const;
-	virtual void		SetRect( CRect rect );
-	virtual BOOL		BodyInRect( CRect rect ) const;
-	virtual CPoint		GetLinkPosition( int type ) const;
+	// Overrides
+	virtual void		Draw(CDC* dc, CRect rect);
+	virtual int			GetHitCode(CPoint point) const;
+	virtual HCURSOR		GetCursor(int hit) const;
+	virtual void		SetRect(CRect rect);
+	virtual BOOL		BodyInRect(CRect rect) const;
+	virtual CPoint		GetLinkPosition(int type) const;
 	virtual CString		GetString() const;
-	virtual BOOL		FromString( const CString& str );
-	virtual CString		Export( UINT format = 0 ) const;
-	virtual BOOL		DoMessage( UINT msg, CDiagramEntity* sender, CWnd* from );
-	virtual void		ShowPopup( CPoint point, CWnd* parent );
-	virtual void		SetRect( double left, double top, double right, double bottom );
-	virtual void		Copy( CDiagramEntity* obj );
+	virtual BOOL		FromString(const CString& str);
+	virtual CString		Export(UINT format = 0) const;
+	virtual BOOL		DoMessage(UINT msg, CDiagramEntity* sender, CWnd* from);
+	virtual void		ShowPopup(CPoint point, CWnd* parent);
+	virtual void		SetRect(double left, double top, double right, double bottom);
+	virtual void		Copy(CDiagramEntity* obj);
 
 	// Link style
-	void				SetStyle( int style );
+	void				SetStyle(int style);
 	int					GetStyle() const;
-	void				SetLineStyle( int style );
-	void				AddLineStyle( int style );
+	void				SetLineStyle(int style);
+	void				AddLineStyle(int style);
 	int					GetLineStyle() const;
-	void				RemoveLineStyle( int style );
+	void				RemoveLineStyle(int style);
 
 	// Other line information
 	BOOL				IsHorizontal() const;
@@ -55,30 +55,30 @@ public:
 
 	// Accessors
 	CString				GetStartLabel() const;
-	void				SetStartLabel( const CString& label );
+	void				SetStartLabel(const CString& label);
 	CString				GetEndLabel() const;
-	void				SetEndLabel( const CString& label );
+	void				SetEndLabel(const CString& label);
 	CString				GetSecondaryStartLabel() const;
-	void				SetSecondaryStartLabel( const CString& label );
+	void				SetSecondaryStartLabel(const CString& label);
 	CString				GetSecondaryEndLabel() const;
-	void				SetSecondaryEndLabel( const CString& label );
+	void				SetSecondaryEndLabel(const CString& label);
 
 
 	// Links
-	virtual void		SetLink( int type, const CString& name );
-	virtual void		SetLinkType( int type, int targetType );
-	virtual CString		GetLink( int type ) const;
-	virtual int			GetLinkType( int type ) const;
-	virtual int			GetLinkCode( CPoint point ) const;
+	virtual void		SetLink(int type, const CString& name);
+	virtual void		SetLinkType(int type, int targetType);
+	virtual CString		GetLink(int type) const;
+	virtual int			GetLinkType(int type) const;
+	virtual int			GetLinkCode(CPoint point) const;
 
-	int					GetOffset( int type ) const;
-	void				SetOffset( int type, int linkOffset );
+	int					GetOffset(int type) const;
+	void				SetOffset(int type, int linkOffset);
 
 	// Operations
 	void				Flip();
 
 protected:
-	virtual void		DrawSelectionMarkers( CDC* dc, CRect rect ) const;
+	virtual void		DrawSelectionMarkers(CDC* dc, CRect rect) const;
 
 private:
 
@@ -89,7 +89,7 @@ private:
 	CString		m_startLabel;
 	CString		m_endLabel;
 	CString		m_secondaryStartLabel;
-	CString		m_secondaryEndLabel;	
+	CString		m_secondaryEndLabel;
 
 	CString		m_start;				// Object linked to the start
 	CString		m_end;					// Object linked to the end
@@ -110,10 +110,10 @@ private:
 	CString GetFilledDiamondHTML() const;
 
 	// Drawing
-	void	DrawDiamond( CDC* dc, const CRect& rect );
-	void	DrawInheritanceArrow( CDC* dc );
-	void	DrawDirectionArrow( CDC* dc );
-	CPoint	GetStyleMarkerRect( int node, const CSize& size ) const;
+	void	DrawDiamond(CDC* dc, const CRect& rect);
+	void	DrawInheritanceArrow(CDC* dc);
+	void	DrawDirectionArrow(CDC* dc);
+	CPoint	GetStyleMarkerRect(int node, const CSize& size) const;
 
 };
 

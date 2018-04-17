@@ -46,51 +46,51 @@ class CUMLEntity : public CDiagramEntity
 {
 
 public:
-// Construction/initialization/destruction
+	// Construction/initialization/destruction
 	CUMLEntity();
 	virtual	~CUMLEntity();
 	virtual CDiagramEntity* Clone();
-	static	CDiagramEntity* CreateFromString( const CString& str );
+	static	CDiagramEntity* CreateFromString(const CString& str);
 
 	virtual CString GetString() const;
-	virtual BOOL	FromString( const CString& str );
+	virtual BOOL	FromString(const CString& str);
 
-// Implementation
-	virtual CPoint	GetLinkPosition( int type ) const;
-	virtual int		GetLinkCode( CPoint point ) const;
-	virtual CRect	GetLinkMarkerRect( int type ) const;
+	// Implementation
+	virtual CPoint	GetLinkPosition(int type) const;
+	virtual int		GetLinkCode(CPoint point) const;
+	virtual CRect	GetLinkMarkerRect(int type) const;
 
-	virtual void	SetRect( double left, double top, double right, double bottom );
-	virtual void	Copy( CDiagramEntity* obj );
+	virtual void	SetRect(double left, double top, double right, double bottom);
+	virtual void	Copy(CDiagramEntity* obj);
 
-	void			SetPackage( const CString& package );
+	void			SetPackage(const CString& package);
 	CString			GetPackage() const;
 
 	COLORREF		GetBkColor() const;
-	void			SetBkColor( COLORREF bkColor );
+	void			SetBkColor(COLORREF bkColor);
 	CString			GetFont() const;
-	void			SetFont( const CString& fontName );
+	void			SetFont(const CString& fontName);
 
-	void			SetDefaultSize( CSize sz );
+	void			SetDefaultSize(CSize sz);
 	CSize			GetDefaultSize() const;
 
-	void			SetDisplayOptions( int displayOptions );
+	void			SetDisplayOptions(int displayOptions);
 	int				GetDisplayOptions() const;
 
-	void			SetOldId( const CString& oldid );
+	void			SetOldId(const CString& oldid);
 	CString			GetOldId() const;
 
-	void			SetStereotype( const CString& value );
+	void			SetStereotype(const CString& value);
 	CString			GetStereotype() const;
 
 	virtual void	CalcRestraints();
 
 protected:
 
-	CUMLEntityContainer* GetUMLContainer() const;
+	CUMLEntityContainer * GetUMLContainer() const;
 
 private:
-// Private data
+	// Private data
 	CString			m_package;
 	CString			m_fontName;
 	COLORREF		m_bkColor;

@@ -6,8 +6,8 @@
 class CUMLControlFactory {
 
 public:
-// Implementation
-	static CDiagramEntity* CreateFromString( const CString& str );
+	// Implementation
+	static CDiagramEntity* CreateFromString(const CString& str);
 
 };
 

@@ -5,18 +5,18 @@
 
 	Date :			2004-07-12
 
-	Purpose :		"CUMLTemplatePropertyDialog" derives from "CDiagramPropertyDlg" 
+	Purpose :		"CUMLTemplatePropertyDialog" derives from "CDiagramPropertyDlg"
 					and is a wrapper for the template property dialog.
 
 	Description :	Class-Wizard created class.
 
-	Usage :			In the "CUMLEntityClassTemplate"-class, add a member of 
-					the "CUMLTemplatePropertyDialog"-derived class, and call 
+	Usage :			In the "CUMLEntityClassTemplate"-class, add a member of
+					the "CUMLTemplatePropertyDialog"-derived class, and call
 					"SetPropertyDialog" in the constructor.
 
-					The dialog is displayed as a modeless dialog. The 
+					The dialog is displayed as a modeless dialog. The
 					editor will hide the dialog automatically when another
-					object is selected, no special Close-button is 
+					object is selected, no special Close-button is
 					necessary.
 
 					The dialog template with the res id "IDD_UML_DIALOG_PROPERTY_TEMPLATE"
@@ -87,7 +87,7 @@ END_MESSAGE_MAP()
 // CUMLTemplatePropertyDialog message handlers
 
 
-void CUMLTemplatePropertyDialog::OnOK() 
+void CUMLTemplatePropertyDialog::OnOK()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnOK
 	Description :	Handler for the dialog OK-button.
@@ -101,25 +101,25 @@ void CUMLTemplatePropertyDialog::OnOK()
    ============================================================*/
 {
 
-	CUMLEntityClassTemplate* uml = static_cast< CUMLEntityClassTemplate* >( GetEntity() );
+	CUMLEntityClassTemplate* uml = static_cast<CUMLEntityClassTemplate*>(GetEntity());
 
 	UpdateData();
-	if( m_name.IsEmpty() )
+	if (m_name.IsEmpty())
 	{
-		AfxMessageBox( IDS_UML_CLASS_MUST_HAVE_A_NAME );
+		AfxMessageBox(IDS_UML_CLASS_MUST_HAVE_A_NAME);
 		m_nameCtrl.SetFocus();
 		return;
 	}
 
-	uml->SetTitle( m_name );
-	uml->SetBkColor( m_color );
-	uml->SetFont( m_font );
+	uml->SetTitle(m_name);
+	uml->SetBkColor(m_color);
+	uml->SetFont(m_font);
 
 	m_parameter.TrimLeft();
 	m_parameter.TrimRight();
 
-	uml->SetParameterType( m_parameter );
-	uml->GetProperties()->Copy( m_properties );
+	uml->SetParameterType(m_parameter);
+	uml->GetProperties()->Copy(m_properties);
 
 	CreateAttributes();
 	CreateOperations();
@@ -129,12 +129,12 @@ void CUMLTemplatePropertyDialog::OnOK()
 	uml->CalcRestraints();
 
 	Redraw();
-	ShowWindow( SW_HIDE );
+	ShowWindow(SW_HIDE);
 	GetRedrawWnd()->SetFocus();
 
 }
 
-void CUMLTemplatePropertyDialog::OnCancel() 
+void CUMLTemplatePropertyDialog::OnCancel()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnCancel
 	Description :	Handler for the dialog Cancel-button.
@@ -154,7 +154,7 @@ void CUMLTemplatePropertyDialog::OnCancel()
 
 }
 
-void CUMLTemplatePropertyDialog::SetValues() 
+void CUMLTemplatePropertyDialog::SetValues()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::SetValues
 	Description :	Sets the fields in the dialog box with the
@@ -164,32 +164,32 @@ void CUMLTemplatePropertyDialog::SetValues()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to update the dialog box. Note that 
-					this function will be called before the 
+	Usage :			Call to update the dialog box. Note that
+					this function will be called before the
 					dialog is created.
 
    ============================================================*/
 {
 
-	CUMLEntityClassTemplate* uml = static_cast< CUMLEntityClassTemplate* >( GetEntity() );
+	CUMLEntityClassTemplate* uml = static_cast<CUMLEntityClassTemplate*>(GetEntity());
 
 	m_name = uml->GetTitle();
 	m_color = uml->GetBkColor();
 	m_font = uml->GetFont();
 	m_parameter = uml->GetParameterType();
 
-	m_properties.Copy( *( uml->GetProperties() ) );
+	m_properties.Copy(*(uml->GetProperties()));
 
-	if( m_hWnd && ::IsWindowVisible( m_hWnd ) )
+	if (m_hWnd && ::IsWindowVisible(m_hWnd))
 	{
 		FillListboxes();
-		m_propertylist = m_properties.GetString( STRING_FORMAT_UML );
-		UpdateData( FALSE );
+		m_propertylist = m_properties.GetString(STRING_FORMAT_UML);
+		UpdateData(FALSE);
 	}
 
 }
 
-void CUMLTemplatePropertyDialog::OnButtonAddAttribute() 
+void CUMLTemplatePropertyDialog::OnButtonAddAttribute()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnButtonAddAttribute
 	Description :	Handler for the dialog button Add Attribute
@@ -204,13 +204,13 @@ void CUMLTemplatePropertyDialog::OnButtonAddAttribute()
 {
 
 	CClassAttributePropertyDialog	dlg;
-	if( dlg.DoModal() == IDOK )
+	if (dlg.DoModal() == IDOK)
 	{
 		CAttribute* obj = dlg.GetAttribute();
-		CString output = obj->ToString( FALSE );
-		int index = m_attribute.AddString( output );
-		m_attribute.SetItemData( index, ( DWORD ) obj );
-		m_attribute.SetCurSel( index );
+		CString output = obj->ToString(FALSE);
+		int index = m_attribute.AddString(output);
+		m_attribute.SetItemData(index, (DWORD_PTR)obj);
+		m_attribute.SetCurSel(index);
 		m_attribute.SetFocus();
 	}
 	else
@@ -218,40 +218,40 @@ void CUMLTemplatePropertyDialog::OnButtonAddAttribute()
 
 }
 
-void CUMLTemplatePropertyDialog::EditAttribute() 
+void CUMLTemplatePropertyDialog::EditAttribute()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::EditAttribute
-	Description :	Edits the selected attribute in the 
+	Description :	Edits the selected attribute in the
 					attribute list.
 	Access :		Private
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to edit the current attribute. The Edit 
+	Usage :			Call to edit the current attribute. The Edit
 					attribute dialog will be displayed.
 
    ============================================================*/
 {
 
 	int index = m_attribute.GetCurSel();
-	if( index != LB_ERR )
+	if (index != LB_ERR)
 	{
-		CAttribute* obj = reinterpret_cast< CAttribute* >( m_attribute.GetItemData( index ) );
-		if( obj )
+		CAttribute* obj = reinterpret_cast<CAttribute*>(m_attribute.GetItemData(index));
+		if (obj)
 		{
 			CClassAttributePropertyDialog	dlg;
-			dlg.SetAttribute( obj );
-			if( dlg.DoModal() == IDOK )
+			dlg.SetAttribute(obj);
+			if (dlg.DoModal() == IDOK)
 				RefreshListboxes();
-			m_attribute.SetCurSel( index );
+			m_attribute.SetCurSel(index);
 			m_attribute.SetFocus();
 		}
-	}	
+	}
 
 }
 
-void CUMLTemplatePropertyDialog::DeleteAttribute() 
+void CUMLTemplatePropertyDialog::DeleteAttribute()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::DeleteAttribute
 	Description :	Deletes the current attribute in the attribute list.
@@ -260,28 +260,28 @@ void CUMLTemplatePropertyDialog::DeleteAttribute()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to delete the current attribute in the 
+	Usage :			Call to delete the current attribute in the
 					attribute list.
 
    ============================================================*/
 {
 
 	int index = m_attribute.GetCurSel();
-	if( index != LB_ERR )
+	if (index != LB_ERR)
 	{
-		if( AfxMessageBox( IDS_UML_DELETE_ATTRIBUTE, MB_YESNO ) == IDYES )
+		if (AfxMessageBox(IDS_UML_DELETE_ATTRIBUTE, MB_YESNO) == IDYES)
 		{
-			CAttribute* obj = reinterpret_cast< CAttribute* >( m_attribute.GetItemData( index ) );
-			m_attribute.DeleteString( index );
+			CAttribute* obj = reinterpret_cast<CAttribute*>(m_attribute.GetItemData(index));
+			m_attribute.DeleteString(index);
 			delete obj;
-			m_attribute.SetCurSel( index );
+			m_attribute.SetCurSel(index);
 			m_attribute.SetFocus();
 		}
 	}
 
 }
 
-void CUMLTemplatePropertyDialog::OnButtonAddOperation() 
+void CUMLTemplatePropertyDialog::OnButtonAddOperation()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnButtonAddOperation
 	Description :	Handler for the dialog button Add Operation
@@ -296,13 +296,13 @@ void CUMLTemplatePropertyDialog::OnButtonAddOperation()
 {
 
 	CClassOperationPropertyDialog	dlg;
-	if( dlg.DoModal() == IDOK )
+	if (dlg.DoModal() == IDOK)
 	{
 		COperation* obj = dlg.GetOperation();
-		CString output = obj->ToString( FALSE, FALSE );
-		int index = m_operation.AddString( output );
-		m_operation.SetItemData( index, ( DWORD ) obj );
-		m_operation.SetCurSel( index );
+		CString output = obj->ToString(FALSE, FALSE);
+		int index = m_operation.AddString(output);
+		m_operation.SetItemData(index, (DWORD_PTR)obj);
+		m_operation.SetCurSel(index);
 		m_operation.SetFocus();
 	}
 	else
@@ -310,72 +310,72 @@ void CUMLTemplatePropertyDialog::OnButtonAddOperation()
 
 }
 
-void CUMLTemplatePropertyDialog::EditOperation() 
+void CUMLTemplatePropertyDialog::EditOperation()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::EditOperation
-	Description :	Edits the selected operation in the 
+	Description :	Edits the selected operation in the
 					operation list.
 	Access :		Private
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to edit the selected operation in the 
-					operation list. The Edit operation dialog 
+	Usage :			Call to edit the selected operation in the
+					operation list. The Edit operation dialog
 					will be displayed.
 
    ============================================================*/
 {
 
 	int index = m_operation.GetCurSel();
-	if( index != LB_ERR )
+	if (index != LB_ERR)
 	{
-		COperation* obj = reinterpret_cast< COperation* >( m_operation.GetItemData( index ) );
-		if( obj )
+		COperation* obj = reinterpret_cast<COperation*>(m_operation.GetItemData(index));
+		if (obj)
 		{
 			CClassOperationPropertyDialog	dlg;
-			dlg.SetOperation( obj );
-			if( dlg.DoModal() == IDOK )
+			dlg.SetOperation(obj);
+			if (dlg.DoModal() == IDOK)
 				RefreshListboxes();
-			m_operation.SetCurSel( index );
-			m_operation.SetFocus();
-		}
-	}	
-
-}
-
-void CUMLTemplatePropertyDialog::DeleteOperation() 
-/* ============================================================
-	Function :		CUMLTemplatePropertyDialog::DeleteOperation
-	Description :	Delete the currently selected operation in 
-					the operation list.
-	Access :		
-
-	Return :		void
-	Parameters :	none
-
-	Usage :			Call to delete the currently selected 
-					operation in the operation list.
-
-   ============================================================*/
-{
-
-	int index = m_operation.GetCurSel();
-	if( index != LB_ERR )
-	{
-		if( AfxMessageBox( IDS_UML_DELETE_OPERATION, MB_YESNO ) == IDYES )
-		{
-			COperation* obj = reinterpret_cast< COperation* >( m_operation.GetItemData( index ) );
-			m_operation.DeleteString( index );
-			delete obj;
-			m_operation.SetCurSel( index );
+			m_operation.SetCurSel(index);
 			m_operation.SetFocus();
 		}
 	}
 
 }
 
-void CUMLTemplatePropertyDialog::OnButtonFont() 
+void CUMLTemplatePropertyDialog::DeleteOperation()
+/* ============================================================
+	Function :		CUMLTemplatePropertyDialog::DeleteOperation
+	Description :	Delete the currently selected operation in
+					the operation list.
+	Access :
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Call to delete the currently selected
+					operation in the operation list.
+
+   ============================================================*/
+{
+
+	int index = m_operation.GetCurSel();
+	if (index != LB_ERR)
+	{
+		if (AfxMessageBox(IDS_UML_DELETE_OPERATION, MB_YESNO) == IDYES)
+		{
+			COperation* obj = reinterpret_cast<COperation*>(m_operation.GetItemData(index));
+			m_operation.DeleteString(index);
+			delete obj;
+			m_operation.SetCurSel(index);
+			m_operation.SetFocus();
+		}
+	}
+
+}
+
+void CUMLTemplatePropertyDialog::OnButtonFont()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnButtonFont
 	Description :	Handler for the dialog button Font
@@ -390,20 +390,20 @@ void CUMLTemplatePropertyDialog::OnButtonFont()
 {
 
 	CFont font;
-	CUMLEntityClassTemplate* uml = static_cast< CUMLEntityClassTemplate* >( GetEntity() );
-	font.CreatePointFont( 120, uml->GetFont() );
+	CUMLEntityClassTemplate* uml = static_cast<CUMLEntityClassTemplate*>(GetEntity());
+	font.CreatePointFont(120, uml->GetFont());
 	LOGFONT lf;
-	font.GetLogFont( &lf );
-	CFontDialog	dlg( &lf );
-	if( dlg.DoModal() == IDOK )
+	font.GetLogFont(&lf);
+	CFontDialog	dlg(&lf);
+	if (dlg.DoModal() == IDOK)
 	{
 		m_font = dlg.GetFaceName();
 		Redraw();
 	}
-	
+
 }
 
-void CUMLTemplatePropertyDialog::OnButtonColor() 
+void CUMLTemplatePropertyDialog::OnButtonColor()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnButtonColor
 	Description :	Handler for the dialog button Color
@@ -417,21 +417,21 @@ void CUMLTemplatePropertyDialog::OnButtonColor()
    ============================================================*/
 {
 
-	CUMLEntityClassTemplate* uml = static_cast< CUMLEntityClassTemplate* >( GetEntity() );
+	CUMLEntityClassTemplate* uml = static_cast<CUMLEntityClassTemplate*>(GetEntity());
 	COLORREF color = uml->GetBkColor();
-	CColorDialog	dlg( color );
-	if( dlg.DoModal() == IDOK )
+	CColorDialog	dlg(color);
+	if (dlg.DoModal() == IDOK)
 	{
 		m_color = dlg.GetColor();
 		Redraw();
 	}
-	
+
 }
 
 void CUMLTemplatePropertyDialog::FillListboxes()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::FillListboxes
-	Description :	Fills the attribute and operation listboxes 
+	Description :	Fills the attribute and operation listboxes
 					from the attached "CUMLEntityClassTemplate" object.
 	Access :		Private
 
@@ -444,23 +444,23 @@ void CUMLTemplatePropertyDialog::FillListboxes()
 {
 
 	ClearListboxes();
-	CUMLEntityClassTemplate* uml = static_cast< CUMLEntityClassTemplate* >( GetEntity() );
-	int max = uml->GetAttributes();
-	for( int t = 0 ; t < max ; t++ )
+	CUMLEntityClassTemplate* uml = static_cast<CUMLEntityClassTemplate*>(GetEntity());
+	INT_PTR max = uml->GetAttributes();
+	for (INT_PTR t = 0; t < max; t++)
 	{
-		CAttribute* obj = uml->GetAttribute( t );
-		CString output = obj->ToString( FALSE );
-		int index = m_attribute.AddString( output );
-		m_attribute.SetItemData( index, ( DWORD ) obj->Clone() );
+		CAttribute* obj = uml->GetAttribute(t);
+		CString output = obj->ToString(FALSE);
+		int index = m_attribute.AddString(output);
+		m_attribute.SetItemData(index, (DWORD_PTR)obj->Clone());
 	}
 
 	max = uml->GetOperations();
-	for( int t = 0 ; t < max ; t++ )
+	for (INT_PTR t = 0; t < max; t++)
 	{
-		COperation* obj = uml->GetOperation( t );
-		CString output = obj->ToString( FALSE, FALSE );
-		int index = m_operation.AddString( output );
-		m_operation.SetItemData( index, ( DWORD ) obj->Clone() );
+		COperation* obj = uml->GetOperation(t);
+		CString output = obj->ToString(FALSE, FALSE);
+		int index = m_operation.AddString(output);
+		m_operation.SetItemData(index, (DWORD_PTR)obj->Clone());
 	}
 
 }
@@ -468,7 +468,7 @@ void CUMLTemplatePropertyDialog::FillListboxes()
 void CUMLTemplatePropertyDialog::ClearListboxes()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::ClearListboxes
-	Description :	Clears the attribute and operation 
+	Description :	Clears the attribute and operation
 					listboxes.
 	Access :		Private
 
@@ -481,16 +481,16 @@ void CUMLTemplatePropertyDialog::ClearListboxes()
 {
 
 	int max = m_attribute.GetCount();
-	for( int t = 0 ; t < max ; t++ )
+	for (int t = 0; t < max; t++)
 	{
-		CAttribute* obj = reinterpret_cast< CAttribute* >( m_attribute.GetItemData( t ) );
+		CAttribute* obj = reinterpret_cast<CAttribute*>(m_attribute.GetItemData(t));
 		delete obj;
 	}
 
 	max = m_operation.GetCount();
-	for( int t = 0 ; t < max ; t++ )
+	for (int t = 0; t < max; t++)
 	{
-		COperation* obj = reinterpret_cast< COperation* >( m_operation.GetItemData( t ) );
+		COperation* obj = reinterpret_cast<COperation*>(m_operation.GetItemData(t));
 		delete obj;
 	}
 
@@ -502,97 +502,97 @@ void CUMLTemplatePropertyDialog::ClearListboxes()
 void CUMLTemplatePropertyDialog::RefreshListboxes()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::RefreshListboxes
-	Description :	Refills the attribute and operation 
-					listboxes from the internal attribute- 
+	Description :	Refills the attribute and operation
+					listboxes from the internal attribute-
 					and operation containers.
 	Access :		Private
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to refill the listboxes with internal 
+	Usage :			Call to refill the listboxes with internal
 					data.
 
    ============================================================*/
 {
 
 	int max = m_attribute.GetCount();
-	for( int t = 0 ; t < max ; t++ )
+	for (int t = 0; t < max; t++)
 	{
-		CAttribute* obj = reinterpret_cast< CAttribute* >( m_attribute.GetItemData( t ) );
-		CString output = obj->ToString( FALSE );
-		m_attribute.DeleteString( t );
-		int index = m_attribute.InsertString( t, output );
-		m_attribute.SetItemData( index, ( DWORD ) obj );
+		CAttribute* obj = reinterpret_cast<CAttribute*>(m_attribute.GetItemData(t));
+		CString output = obj->ToString(FALSE);
+		m_attribute.DeleteString(t);
+		int index = m_attribute.InsertString(t, output);
+		m_attribute.SetItemData(index, (DWORD_PTR)obj);
 	}
 
 	max = m_operation.GetCount();
-	for( int t = 0 ; t < max ; t++ )
+	for (int t = 0; t < max; t++)
 	{
-		COperation* obj = reinterpret_cast< COperation* >( m_operation.GetItemData( t ) );
-		CString output = obj->ToString( FALSE, FALSE );
-		m_operation.DeleteString( t );
-		int index = m_operation.InsertString( t, output );
-		m_operation.SetItemData( index, ( DWORD ) obj );
+		COperation* obj = reinterpret_cast<COperation*>(m_operation.GetItemData(t));
+		CString output = obj->ToString(FALSE, FALSE);
+		m_operation.DeleteString(t);
+		int index = m_operation.InsertString(t, output);
+		m_operation.SetItemData(index, (DWORD_PTR)obj);
 	}
 
 }
 
-LRESULT CUMLTemplatePropertyDialog::OnListboxDblClick( WPARAM id, LPARAM )
+LRESULT CUMLTemplatePropertyDialog::OnListboxDblClick(WPARAM id, LPARAM)
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnListboxDblClick
-	Description :	Mapped to the registered message 
+	Description :	Mapped to the registered message
 					"rwm_EXLISTBOX_DBLCLICK".
 	Access :		Protected
 
 	Return :		LRESULT		-	Always 0
 	Parameters :	WPARAM id	-	ID of "CExListBox" sending this.
 					LPARAM		-	Not used
-					
-	Usage :			Sent from "CExListBox" when the user 
-					double-clicks a line. Can come from either 
+
+	Usage :			Sent from "CExListBox" when the user
+					double-clicks a line. Can come from either
 					the attribute- or operation listbox.
 
    ============================================================*/
 {
 
-	if( static_cast< int >( id ) == m_attribute.GetDlgCtrlID() )
+	if (static_cast<int>(id) == m_attribute.GetDlgCtrlID())
 		EditAttribute();
-	if( static_cast< int >( id ) == m_operation.GetDlgCtrlID() )
+	if (static_cast<int>(id) == m_operation.GetDlgCtrlID())
 		EditOperation();
 
 	return 0;
 
 }
 
-LRESULT CUMLTemplatePropertyDialog::OnListboxDelete( WPARAM id, LPARAM )
+LRESULT CUMLTemplatePropertyDialog::OnListboxDelete(WPARAM id, LPARAM)
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnListboxDelete
-	Description :	Mapped to the registered message 
+	Description :	Mapped to the registered message
 					"rwm_EXLISTBOX_DELETE"
 	Access :		Protected
 
 	Return :		LRESULT		-	Always 0
 	Parameters :	WPARAM id	-	ID of "CExListBox" sending this.
 					LPARAM		-	Not used
-					
-	Usage :			Sent from "CExListBox" when the user 
-					presses the DEL-key. Can come from either 
+
+	Usage :			Sent from "CExListBox" when the user
+					presses the DEL-key. Can come from either
 					the attribute- or operation listbox.
 
    ============================================================*/
 {
 
-	if( static_cast< int >( id ) == m_attribute.GetDlgCtrlID() )
+	if (static_cast<int>(id) == m_attribute.GetDlgCtrlID())
 		DeleteAttribute();
-	if( static_cast< int >( id ) == m_operation.GetDlgCtrlID() )
+	if (static_cast<int>(id) == m_operation.GetDlgCtrlID())
 		DeleteOperation();
 
 	return 0;
 
 }
 
-void CUMLTemplatePropertyDialog::OnButtonPropertyList() 
+void CUMLTemplatePropertyDialog::OnButtonPropertyList()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnButtonPropertyList
 	Description :	Handler for the dialog button Property List
@@ -609,20 +609,20 @@ void CUMLTemplatePropertyDialog::OnButtonPropertyList()
 	UpdateData();
 	CPropertyListEditorDialog	dlg;
 
-	dlg.SetProperties( m_properties );
-	if( dlg.DoModal() == IDOK )
+	dlg.SetProperties(m_properties);
+	if (dlg.DoModal() == IDOK)
 	{
-		m_properties.Copy( *( dlg.GetProperties() ) );
-		m_propertylist = m_properties.GetString( STRING_FORMAT_UML );
-		UpdateData( FALSE );
+		m_properties.Copy(*(dlg.GetProperties()));
+		m_propertylist = m_properties.GetString(STRING_FORMAT_UML);
+		UpdateData(FALSE);
 	}
-	
+
 }
 
-void CUMLTemplatePropertyDialog::OnButtonAutoGenerate() 
+void CUMLTemplatePropertyDialog::OnButtonAutoGenerate()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnButtonAutoGenerate
-	Description :	Handler for the dialog button Generate 
+	Description :	Handler for the dialog button Generate
 					getters/setters
 	Access :		Protected
 
@@ -635,20 +635,20 @@ void CUMLTemplatePropertyDialog::OnButtonAutoGenerate()
 {
 
 	int index = m_attribute.GetCurSel();
-	if( index != LB_ERR )
+	if (index != LB_ERR)
 	{
-		CAttribute* attr = reinterpret_cast< CAttribute* >( m_attribute.GetItemData( index ) );
-		if( attr )
+		CAttribute* attr = reinterpret_cast<CAttribute*>(m_attribute.GetItemData(index));
+		if (attr)
 		{
-			if( AfxMessageBox( IDS_UML_CREATEGETTERS_SETTERS, MB_YESNO ) == IDYES )
+			if (AfxMessageBox(IDS_UML_CREATEGETTERS_SETTERS, MB_YESNO) == IDYES)
 			{
 
 				CString name = attr->name;
-				if( name.GetLength() > 2 && name.Left( 2 ) == _T( "m_" ) )
-					name = name.Right( name.GetLength() - 2 );
-				name = _TCHAR( _totupper( name[ 0 ] ) ) + name.Right( name.GetLength() - 1 );
-				CString getName( _T( "Get" ) + name );
-				CString setName( _T( "Set" ) + name );
+				if (name.GetLength() > 2 && name.Left(2) == _T("m_"))
+					name = name.Right(name.GetLength() - 2);
+				name = _TCHAR(_totupper(name[0])) + name.Right(name.GetLength() - 1);
+				CString getName(_T("Get") + name);
+				CString setName(_T("Set") + name);
 
 				BOOL getFound = FALSE;
 				BOOL setFound = FALSE;
@@ -656,74 +656,74 @@ void CUMLTemplatePropertyDialog::OnButtonAutoGenerate()
 				CreateAttributes();
 				CreateOperations();
 
-				CUMLEntityClassTemplate* uml = static_cast< CUMLEntityClassTemplate* >( GetEntity() );
-				int size = uml->GetOperations();
-				for( int i = 0 ; i < size ; i++ )
+				CUMLEntityClassTemplate* uml = static_cast<CUMLEntityClassTemplate*>(GetEntity());
+				INT_PTR size = uml->GetOperations();
+				for (INT_PTR i = 0; i < size; i++)
 				{
-					COperation* op = uml->GetOperation( i );
-					if( op->getter && op->getsetvariable == attr->name )
+					COperation* op = uml->GetOperation(i);
+					if (op->getter && op->getsetvariable == attr->name)
 						getFound = TRUE;
-					if( op->setter && op->getsetvariable == attr->name )
+					if (op->setter && op->getsetvariable == attr->name)
 						setFound = TRUE;
 				}
 
-				if( !getFound || !setFound )
+				if (!getFound || !setFound)
 				{
 					CGetterSetterDialog	dlg;
-					if( !getFound )
+					if (!getFound)
 						dlg.m_getter = getName;
 					else
 						dlg.m_noget = TRUE;
-					if( !setFound )
+					if (!setFound)
 						dlg.m_setter = setName;
 					else
 						dlg.m_noset = TRUE;
 
-					if( dlg.DoModal() == IDOK )
+					if (dlg.DoModal() == IDOK)
 					{
 						BOOL added = FALSE;
-						if( !dlg.m_noget && dlg.m_getter.GetLength() )
+						if (!dlg.m_noget && dlg.m_getter.GetLength())
 						{
 							COperation* op = new COperation;
 							op->name = dlg.m_getter;
 							op->type = attr->type;
 							op->access = ACCESS_TYPE_PUBLIC;
-							op->properties.Add( _T( "query" ) );
+							op->properties.Add(_T("query"));
 							op->getter = TRUE;
 							op->getsetvariable = attr->name;
-							uml->AddOperation( op );
+							uml->AddOperation(op);
 							added = TRUE;
 						}
 
-						if( !dlg.m_noset && dlg.m_setter.GetLength() )
+						if (!dlg.m_noset && dlg.m_setter.GetLength())
 						{
 							COperation* op = new COperation;
 							op->name = dlg.m_setter;
 							op->access = ACCESS_TYPE_PUBLIC;
 							CParameter* parameter = new CParameter;
-							parameter->name = _T( "value" );
+							parameter->name = _T("value");
 							parameter->type = attr->type;
-							op->parameters.Add( parameter );
+							op->parameters.Add(parameter);
 
 							op->setter = TRUE;
 							op->getsetvariable = attr->name;
-							uml->AddOperation( op );
+							uml->AddOperation(op);
 							added = TRUE;
 						}
 
-						if( added )
+						if (added)
 							FillListboxes();
 					}
 				}
 				else
-					AfxMessageBox( IDS_UML_GETSET_DEFINED );
+					AfxMessageBox(IDS_UML_GETSET_DEFINED);
 			}
 		}
 	}
 	else
-		AfxMessageBox( IDS_UML_MUST_SELECT_AN_ATTRIBUTE );
+		AfxMessageBox(IDS_UML_MUST_SELECT_AN_ATTRIBUTE);
 
-	m_attribute.SetCurSel( index );
+	m_attribute.SetCurSel(index);
 	m_attribute.SetFocus();
 
 }
@@ -731,7 +731,7 @@ void CUMLTemplatePropertyDialog::OnButtonAutoGenerate()
 void CUMLTemplatePropertyDialog::CreateAttributes()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::CreateAttributes
-	Description :	Creates the edited attributes in the 
+	Description :	Creates the edited attributes in the
 					attached "CUMLEntityClassTemplate" object.
 	Access :		Private
 
@@ -743,18 +743,18 @@ void CUMLTemplatePropertyDialog::CreateAttributes()
    ============================================================*/
 {
 
-	CUMLEntityClassTemplate* uml = static_cast< CUMLEntityClassTemplate* >( GetEntity() );
+	CUMLEntityClassTemplate* uml = static_cast<CUMLEntityClassTemplate*>(GetEntity());
 
 	// Wipe current attributes from the class.
 	uml->ClearAttributes();
 
 	// Re-add from listbox.
 	int max = m_attribute.GetCount();
-	for( int t = 0 ; t < max ; t++ )
+	for (int t = 0; t < max; t++)
 	{
-		CAttribute* obj = reinterpret_cast< CAttribute* >( m_attribute.GetItemData( t ) );
-		if( obj )
-			uml->AddAttribute( obj->Clone() );
+		CAttribute* obj = reinterpret_cast<CAttribute*>(m_attribute.GetItemData(t));
+		if (obj)
+			uml->AddAttribute(obj->Clone());
 	}
 
 }
@@ -762,7 +762,7 @@ void CUMLTemplatePropertyDialog::CreateAttributes()
 void CUMLTemplatePropertyDialog::CreateOperations()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::CreateOperations
-	Description :	Creates the edited operations in the 
+	Description :	Creates the edited operations in the
 					attached "CUMLEntityClassTemplate" object.
 	Access :		Private
 
@@ -774,22 +774,22 @@ void CUMLTemplatePropertyDialog::CreateOperations()
    ============================================================*/
 {
 
-	CUMLEntityClassTemplate* uml = static_cast< CUMLEntityClassTemplate* >( GetEntity() );
+	CUMLEntityClassTemplate* uml = static_cast<CUMLEntityClassTemplate*>(GetEntity());
 
 	// Wipe current operations from the class.
 	uml->ClearOperations();
 
 	int max = m_operation.GetCount();
-	for( int t = 0 ; t < max ; t++ )
+	for (int t = 0; t < max; t++)
 	{
-		COperation* obj = reinterpret_cast< COperation* >( m_operation.GetItemData( t ) );
-		if( obj )
-			uml->AddOperation( obj->Clone() );
+		COperation* obj = reinterpret_cast<COperation*>(m_operation.GetItemData(t));
+		if (obj)
+			uml->AddOperation(obj->Clone());
 	}
 
 }
 
-void CUMLTemplatePropertyDialog::OnButtonVisibility() 
+void CUMLTemplatePropertyDialog::OnButtonVisibility()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnButtonVisibility
 	Description :	Handler for the dialog button Visibility
@@ -803,41 +803,41 @@ void CUMLTemplatePropertyDialog::OnButtonVisibility()
    ============================================================*/
 {
 
-	CUMLEntityClassTemplate* uml = static_cast< CUMLEntityClassTemplate* >( GetEntity() );
+	CUMLEntityClassTemplate* uml = static_cast<CUMLEntityClassTemplate*>(GetEntity());
 
 	CClassDisplayPropertyDialog	dlg;
 	int displayOptions = uml->GetDisplayOptions();
 
-	dlg.m_noattributenames = ( displayOptions & DISPLAY_NO_OPERATION_ATTRIBUTE_NAMES ) != 0;
-	dlg.m_noattributes = ( displayOptions & DISPLAY_NO_ATTRIBUTES ) != 0;
-	dlg.m_nomarkers = ( displayOptions & DISPLAY_NO_MARKERS ) != 0;
-	dlg.m_nooperations = ( displayOptions & DISPLAY_NO_OPERATIONS ) != 0;
-	dlg.m_onlypublic = ( displayOptions & DISPLAY_ONLY_PUBLIC ) != 0;
-	if( dlg.DoModal() )
+	dlg.m_noattributenames = (displayOptions & DISPLAY_NO_OPERATION_ATTRIBUTE_NAMES) != 0;
+	dlg.m_noattributes = (displayOptions & DISPLAY_NO_ATTRIBUTES) != 0;
+	dlg.m_nomarkers = (displayOptions & DISPLAY_NO_MARKERS) != 0;
+	dlg.m_nooperations = (displayOptions & DISPLAY_NO_OPERATIONS) != 0;
+	dlg.m_onlypublic = (displayOptions & DISPLAY_ONLY_PUBLIC) != 0;
+	if (dlg.DoModal())
 	{
 
 		displayOptions = 0;
-		if( dlg.m_noattributenames )
+		if (dlg.m_noattributenames)
 			displayOptions |= DISPLAY_NO_OPERATION_ATTRIBUTE_NAMES;
-		if( dlg.m_noattributes )
+		if (dlg.m_noattributes)
 			displayOptions |= DISPLAY_NO_ATTRIBUTES;
-		if( dlg.m_nomarkers )
+		if (dlg.m_nomarkers)
 			displayOptions |= DISPLAY_NO_MARKERS;
-		if( dlg.m_nooperations )
+		if (dlg.m_nooperations)
 			displayOptions |= DISPLAY_NO_OPERATIONS;
-		if( dlg.m_onlypublic )
+		if (dlg.m_onlypublic)
 			displayOptions |= DISPLAY_ONLY_PUBLIC;
 
-		uml->SetDisplayOptions( displayOptions );
+		uml->SetDisplayOptions(displayOptions);
 
 	}
 
 }
 
-void CUMLTemplatePropertyDialog::OnButtonAutoGenerate2() 
+void CUMLTemplatePropertyDialog::OnButtonAutoGenerate2()
 /* ============================================================
 	Function :		CUMLTemplatePropertyDialog::OnButtonAutoGenerate2
-	Description :	Handler for the dialog button Generate 
+	Description :	Handler for the dialog button Generate
 					ctor/dtor
 	Access :		Protected
 
@@ -849,24 +849,24 @@ void CUMLTemplatePropertyDialog::OnButtonAutoGenerate2()
    ============================================================*/
 {
 
-	if( AfxMessageBox( IDS_UML_CREATECTOR_DTOR, MB_YESNO ) == IDYES )
+	if (AfxMessageBox(IDS_UML_CREATECTOR_DTOR, MB_YESNO) == IDYES)
 	{
 		UpdateData();
 		CreateAttributes();
 		CreateOperations();
 
-		CUMLEntityClassTemplate* uml = static_cast< CUMLEntityClassTemplate* >( GetEntity() );
+		CUMLEntityClassTemplate* uml = static_cast<CUMLEntityClassTemplate*>(GetEntity());
 		COperation* op = new COperation;
 		op->name = m_name;
 		op->access = ACCESS_TYPE_PUBLIC;
-		uml->AddOperation( op );
+		uml->AddOperation(op);
 
 		op = new COperation;
-		op->name = _T( "~" ) + m_name;
+		op->name = _T("~") + m_name;
 		op->access = ACCESS_TYPE_PUBLIC;
 		op->maintype = ENTITY_TYPE_VIRTUAL;
-		op->properties.Add( _T( "virtual" ) );
-		uml->AddOperation( op );
+		op->properties.Add(_T("virtual"));
+		uml->AddOperation(op);
 
 		FillListboxes();
 

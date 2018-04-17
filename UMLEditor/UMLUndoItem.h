@@ -15,7 +15,7 @@ public:
 	CUMLUndoItem();
 	virtual ~CUMLUndoItem();
 
-// Attributes
+	// Attributes
 	COLORREF col;
 	CString package;
 

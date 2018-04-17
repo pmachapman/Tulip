@@ -16,7 +16,7 @@
 
 class CUMLTemplatePropertyDialog : public CDiagramPropertyDlg
 {
-// Construction
+	// Construction
 public:
 	CUMLTemplatePropertyDialog(CWnd* pParent = NULL);   // standard constructor
 
@@ -35,7 +35,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CUMLTemplatePropertyDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -56,8 +56,8 @@ protected:
 	afx_msg void OnButtonVisibility();
 	afx_msg void OnButtonAutoGenerate2();
 	//}}AFX_MSG
-	LRESULT OnListboxDblClick( WPARAM id, LPARAM );
-	LRESULT OnListboxDelete( WPARAM id, LPARAM );
+	LRESULT OnListboxDblClick(WPARAM id, LPARAM);
+	LRESULT OnListboxDelete(WPARAM id, LPARAM);
 
 	DECLARE_MESSAGE_MAP()
 

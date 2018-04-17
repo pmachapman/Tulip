@@ -11,15 +11,15 @@ public:
 	virtual ~CUMLEntityPackage();
 
 	virtual CDiagramEntity* Clone();
-	static	CDiagramEntity* CreateFromString( const CString& str );
-	virtual void Draw( CDC* dc, CRect rect );
+	static	CDiagramEntity* CreateFromString(const CString& str);
+	virtual void Draw(CDC* dc, CRect rect);
 
-	virtual CPoint	GetLinkPosition( int type ) const;
-	virtual void	ShowPopup( CPoint point, CWnd* parent );
-	virtual void	SetTitle( CString title );
-	virtual CString	Export( UINT format = 0 ) const;
+	virtual CPoint	GetLinkPosition(int type) const;
+	virtual void	ShowPopup(CPoint point, CWnd* parent);
+	virtual void	SetTitle(CString title);
+	virtual CString	Export(UINT format = 0) const;
 
-	BOOL			ModifyTitle( const CString& title );
+	BOOL			ModifyTitle(const CString& title);
 	virtual void	CalcRestraints();
 
 private:

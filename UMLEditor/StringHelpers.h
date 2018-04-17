@@ -23,10 +23,10 @@
 
 */
 
-void	MakeSaveString( CString& str );
-void	UnmakeSaveString( CString& str );
-CString	ColorrefToString( COLORREF col );
-void	AddString( const CString& str, CStringArray& stra );
+void	MakeSaveString(CString& str);
+void	UnmakeSaveString(CString& str);
+CString	ColorrefToString(COLORREF col);
+void	AddString(const CString& str, CStringArray& stra);
 CString	GetApplicationDirectory();
 
 #endif // _STRINGHELPERS_H_

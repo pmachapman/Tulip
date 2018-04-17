@@ -14,18 +14,18 @@ public:
 	COperationContainer();
 	virtual ~COperationContainer();
 
-// Operations
-	void Copy( COperationContainer & operations );
-	int GetSize(  ) const;
-	COperation* GetAt( int index ) const;
-	void RemoveAt( int index );
-	void RemoveAll(  );
-	void Add( COperation * operation );
-	CString GetString( int format = STRING_FORMAT_SAVE ) const;
-	void SetSize( int size );
-	void SetAt( int index, COperation* obj );
+	// Operations
+	void Copy(COperationContainer & operations);
+	INT_PTR GetSize() const;
+	COperation* GetAt(INT_PTR index) const;
+	void RemoveAt(INT_PTR index);
+	void RemoveAll();
+	void Add(COperation * operation);
+	CString GetString(int format = STRING_FORMAT_SAVE) const;
+	void SetSize(INT_PTR size);
+	void SetAt(INT_PTR index, COperation* obj);
 
-// Attributes
+	// Attributes
 
 private:
 	CObArray m_operations;

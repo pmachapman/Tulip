@@ -15,7 +15,7 @@ public:
 	virtual void	Paste( CDiagramEntityContainer* container );
 
 	virtual void	CopyAllSelected( CDiagramEntityContainer* container );
-	virtual int		ObjectsInPaste();
+	virtual INT_PTR	ObjectsInPaste();
 	virtual void	ClearPaste();
 
 	virtual CObArray* GetData();

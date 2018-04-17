@@ -14,12 +14,12 @@ public:
 	CUMLEntityDummy();
 	virtual ~CUMLEntityDummy();
 
-// Operations
-	virtual int GetHitCode( CPoint point ) const;
-	virtual int GetLinkCode( CPoint point ) const;
-	virtual BOOL IsSelected( ) const;
-	virtual void Select( BOOL select );
-	virtual BOOL BodyInRect( CRect rect ) const;
+	// Operations
+	virtual int GetHitCode(CPoint point) const;
+	virtual int GetLinkCode(CPoint point) const;
+	virtual BOOL IsSelected() const;
+	virtual void Select(BOOL select);
+	virtual BOOL BodyInRect(CRect rect) const;
 
 };
 

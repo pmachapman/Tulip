@@ -16,14 +16,14 @@ public:
 	CAttribute();
 	virtual ~CAttribute();
 
-// Operations
-	CString ToString( BOOL nomarkers );
-	CAttribute* Clone( );
-	static CAttribute* FromString( const CString& str );
-	CString GetString( int format = STRING_FORMAT_SAVE ) const;
+	// Operations
+	CString ToString(BOOL nomarkers);
+	CAttribute* Clone();
+	static CAttribute* FromString(const CString& str);
+	CString GetString(int format = STRING_FORMAT_SAVE) const;
 
 
-// Attributes
+	// Attributes
 	int maintype;
 	int access;
 	CString name;

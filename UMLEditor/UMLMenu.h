@@ -7,12 +7,12 @@ class CUMLMenu : public CDiagramMenu
 {
 
 public:
-// Construction/initialization/destruction
+	// Construction/initialization/destruction
 	CUMLMenu();
 	virtual ~CUMLMenu();
 
-// Overrides
-	virtual CMenu* GetPopupMenu( CDiagramEditor* editor );
+	// Overrides
+	virtual CMenu* GetPopupMenu(CDiagramEditor* editor);
 };
 
 #endif // !defined(AFX_UMLMENU_H__8BBDE424_2729_426C_89EC_B3E3E1021F92__INCLUDED_)

@@ -10,25 +10,25 @@ public:
 	CUMLEntityClassTemplate();
 	~CUMLEntityClassTemplate();
 
-// Overrides
+	// Overrides
 	virtual CDiagramEntity* Clone();
-	static	CDiagramEntity* CreateFromString( const CString& str );
+	static	CDiagramEntity* CreateFromString(const CString& str);
 
-	virtual void Draw( CDC* dc, CRect rect );
+	virtual void Draw(CDC* dc, CRect rect);
 
 	virtual CString GetString() const;
-	virtual BOOL	FromString( const CString& str );
-	virtual void	Copy( CDiagramEntity* obj );
-	virtual CString	Export( UINT format = 0 ) const;
-	virtual BOOL	ImportH( const CString& filename );
+	virtual BOOL	FromString(const CString& str);
+	virtual void	Copy(CDiagramEntity* obj);
+	virtual CString	Export(UINT format = 0) const;
+	virtual BOOL	ImportH(const CString& filename);
 
 	// Implementation
-	void SetParameterType( const CString& parameterType );
+	void SetParameterType(const CString& parameterType);
 	CString GetParameterType() const;
 
 protected:
 	virtual CString GetHeaderTemplateFilename() const;
-	virtual CString GetOperationList( int format ) const;
+	virtual CString GetOperationList(int format) const;
 
 private:
 	CUMLTemplatePropertyDialog	m_dlg;

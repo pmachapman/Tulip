@@ -10,22 +10,22 @@
 class CUMLInterfacePropertyDialog : public CDiagramPropertyDlg
 {
 
-// Construction
+	// Construction
 public:
 	CUMLInterfacePropertyDialog(CWnd* pParent = NULL);
 	~CUMLInterfacePropertyDialog();
 
 	virtual void SetValues();
 
-// Dialog Data
-	//{{AFX_DATA(CUMLInterfacePropertyDialog)
+	// Dialog Data
+		//{{AFX_DATA(CUMLInterfacePropertyDialog)
 	enum { IDD = IDD_UML_DIALOG_PROPERTY_INTERFACE };
 	CString	m_text;
 	//}}AFX_DATA
 
 // Overrides
 	//{{AFX_VIRTUAL(CUMLInterfacePropertyDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 

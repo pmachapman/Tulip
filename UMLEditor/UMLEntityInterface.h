@@ -11,13 +11,13 @@ public:
 	virtual ~CUMLEntityInterface();
 
 	virtual CDiagramEntity* Clone();
-	static	CDiagramEntity* CreateFromString( const CString& str );
-	virtual void Draw( CDC* dc, CRect rect );
+	static	CDiagramEntity* CreateFromString(const CString& str);
+	virtual void Draw(CDC* dc, CRect rect);
 
-	virtual int		GetLinkCode( CPoint point ) const;
-	virtual void	DrawSelectionMarkers( CDC* dc, CRect rect ) const;
-	virtual HCURSOR	GetCursor( int hit ) const;
-	virtual CString	Export( UINT format = 0 ) const;
+	virtual int		GetLinkCode(CPoint point) const;
+	virtual void	DrawSelectionMarkers(CDC* dc, CRect rect) const;
+	virtual HCURSOR	GetCursor(int hit) const;
+	virtual CString	Export(UINT format = 0) const;
 
 private:
 

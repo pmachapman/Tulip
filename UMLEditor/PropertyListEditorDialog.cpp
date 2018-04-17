@@ -5,18 +5,18 @@
 
 	Date :			2004-06-21
 
-	Purpose :		"CPropertyListEditorDialog" derives from "CDialog" and 
+	Purpose :		"CPropertyListEditorDialog" derives from "CDialog" and
 					is a wrapper for the property list editor dialog.
 
-	Description :	A standard Wizard-created dialog box class. Uses the 
-					dialog template with the ID "IDD_UML_DIALOG_PROPERTY_LIST_EDITOR" 
+	Description :	A standard Wizard-created dialog box class. Uses the
+					dialog template with the ID "IDD_UML_DIALOG_PROPERTY_LIST_EDITOR"
 					from the resources.
 
 	Usage :			Call to edit the UML-properties of an object.
 
    ========================================================================
-	Changes :		12/7 2004	Added default Save and exit-button that 
-								automatically saves the current item and 
+	Changes :		12/7 2004	Added default Save and exit-button that
+								automatically saves the current item and
 								closes the dialog.
    ========================================================================*/
 
@@ -35,17 +35,17 @@ static char THIS_FILE[] = __FILE__;
 
 CPropertyListEditorDialog::CPropertyListEditorDialog(CWnd* pParent /*=NULL*/)
 	: CDialog(CPropertyListEditorDialog::IDD, pParent)
-/* ============================================================
-	Function :		CPropertyListEditorDialog::CPropertyListEditorDialog
-	Description :	Constructor
-	Access :		Public
-			
-	Return :		void
-	Parameters :	CWnd* pParent	-	Dialog parent
+	/* ============================================================
+		Function :		CPropertyListEditorDialog::CPropertyListEditorDialog
+		Description :	Constructor
+		Access :		Public
 
-	Usage :			
+		Return :		void
+		Parameters :	CWnd* pParent	-	Dialog parent
 
-   ============================================================*/
+		Usage :
+
+	   ============================================================*/
 {
 	//{{AFX_DATA_INIT(CPropertyListEditorDialog)
 	m_tag = _T("");
@@ -62,8 +62,8 @@ void CPropertyListEditorDialog::DoDataExchange(CDataExchange* pDX)
 
 	Return :		void
 	Parameters :	CDataExchange* pDX	-	Pointer to exchange object
-					
-	Usage :			Called from MFC to exchange and validate 
+
+	Usage :			Called from MFC to exchange and validate
 					dialog data.
 
    ============================================================*/
@@ -92,7 +92,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CPropertyListEditorDialog message handlers
 
-void CPropertyListEditorDialog::OnOK() 
+void CPropertyListEditorDialog::OnOK()
 /* ============================================================
 	Function :		CPropertyListEditorDialog::OnOK
 	Description :	Handler for the dialog OK-button.
@@ -108,28 +108,28 @@ void CPropertyListEditorDialog::OnOK()
 
 	m_container.RemoveAll();
 	int max = m_tags.GetCount();
-	for( int t = 0 ; t < max ; t++ )
+	for (int t = 0; t < max; t++)
 	{
 		CString tag;
 		CString value;
 
-		m_tags.GetText( t, tag );
-		int tab = tag.Find( _TCHAR( '\t' ) );
-		if( tab != -1 )
+		m_tags.GetText(t, tag);
+		int tab = tag.Find(_TCHAR('\t'));
+		if (tab != -1)
 		{
-			value = tag.Right( tag.GetLength() - ( tab + 1 ) );
-			tag = tag.Left( tab );
+			value = tag.Right(tag.GetLength() - (tab + 1));
+			tag = tag.Left(tab);
 		}
 
-		CProperty* prop = new CProperty( tag, value );
-		m_container.Add( prop );
+		CProperty* prop = new CProperty(tag, value);
+		m_container.Add(prop);
 
 	}
 
 	CDialog::OnOK();
 }
 
-void CPropertyListEditorDialog::OnButtonAdd() 
+void CPropertyListEditorDialog::OnButtonAdd()
 /* ============================================================
 	Function :		CPropertyListEditorDialog::OnButtonAdd
 	Description :	Handler for the dialog button Add. Adds
@@ -139,36 +139,36 @@ void CPropertyListEditorDialog::OnButtonAdd()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Called from MFC. 
+	Usage :			Called from MFC.
 
    ============================================================*/
 {
 
 	UpdateData();
-	if( m_tag.IsEmpty() )
+	if (m_tag.IsEmpty())
 	{
-		AfxMessageBox( IDS_UML_PROPERTY_LIST_TAG_MUST_HAVE_A_VALUE );
+		AfxMessageBox(IDS_UML_PROPERTY_LIST_TAG_MUST_HAVE_A_VALUE);
 	}
 	else
 	{
 
-		CString tag( m_tag );
-		if( m_value.GetLength() )
-			tag += _T( "\t" ) + m_value;
-		m_tags.AddString( tag );
-		m_tag = _T( "" );
-		m_value = _T( "" );
+		CString tag(m_tag);
+		if (m_value.GetLength())
+			tag += _T("\t") + m_value;
+		m_tags.AddString(tag);
+		m_tag = _T("");
+		m_value = _T("");
 		m_tagCtrl.SetFocus();
-		UpdateData( FALSE );
+		UpdateData(FALSE);
 
 	}
-	
+
 }
 
-void CPropertyListEditorDialog::OnButtonDelete() 
+void CPropertyListEditorDialog::OnButtonDelete()
 /* ============================================================
 	Function :		CPropertyListEditorDialog::OnButtonDelete
-	Description :	Handler for the dialog button Delete. 
+	Description :	Handler for the dialog button Delete.
 					Deletes the currently selected property.
 	Access :		Protected
 
@@ -181,33 +181,33 @@ void CPropertyListEditorDialog::OnButtonDelete()
 {
 
 	int index = m_tags.GetCurSel();
-	if( index != LB_ERR )
+	if (index != LB_ERR)
 	{
 
-		m_tags.DeleteString( index );
+		m_tags.DeleteString(index);
 
-		if( index < m_tags.GetCount() )
+		if (index < m_tags.GetCount())
 		{
-			m_tags.SetCurSel( index );
-			m_tags.GetText( index, m_tag );
-			int tab = m_tag.Find( _TCHAR( '\t' ) );
-			if( tab != -1 )
+			m_tags.SetCurSel(index);
+			m_tags.GetText(index, m_tag);
+			int tab = m_tag.Find(_TCHAR('\t'));
+			if (tab != -1)
 			{
-				m_value = m_tag.Right( m_tag.GetLength() - ( tab + 1 ) );
-				m_tag = m_tag.Left( tab );
+				m_value = m_tag.Right(m_tag.GetLength() - (tab + 1));
+				m_tag = m_tag.Left(tab);
 			}
 
-			UpdateData( FALSE );
+			UpdateData(FALSE);
 		}
 	}
-	
+
 }
 
-void CPropertyListEditorDialog::OnButtonUpdate() 
+void CPropertyListEditorDialog::OnButtonUpdate()
 /* ============================================================
 	Function :		CPropertyListEditorDialog::OnButtonUpdate
-	Description :	Handler for the dialog button Update. 
-					Updates the currently selected property 
+	Description :	Handler for the dialog button Update.
+					Updates the currently selected property
 					from the edit fields.
 	Access :		Protected
 
@@ -220,30 +220,30 @@ void CPropertyListEditorDialog::OnButtonUpdate()
 {
 
 	int index = m_tags.GetCurSel();
-	if( index != LB_ERR )
+	if (index != LB_ERR)
 	{
 		UpdateData();
 
-		m_tags.DeleteString( index );
+		m_tags.DeleteString(index);
 
-		CString tag( m_tag );
-		if( m_value.GetLength() )
-			tag += _T( "\t" ) + m_value;
-		m_tags.InsertString( index, tag );
+		CString tag(m_tag);
+		if (m_value.GetLength())
+			tag += _T("\t") + m_value;
+		m_tags.InsertString(index, tag);
 
-		m_tags.SetCurSel( index );
+		m_tags.SetCurSel(index);
 
-	}	
+	}
 
 }
 
-BOOL CPropertyListEditorDialog::OnInitDialog() 
+BOOL CPropertyListEditorDialog::OnInitDialog()
 /* ============================================================
 	Function :		CPropertyListEditorDialog::OnInitDialog
 	Description :	Handler for the "WM_INITDIALOG" message
 	Access :		Protected
 
-	Return :		BOOL	-	
+	Return :		BOOL	-
 	Parameters :	none
 
 	Usage :			Called from MFC
@@ -253,39 +253,39 @@ BOOL CPropertyListEditorDialog::OnInitDialog()
 
 	CDialog::OnInitDialog();
 
-	int max = m_container.GetSize();
-	for( int t = 0 ; t < max ; t++ )
+	INT_PTR max = m_container.GetSize();
+	for (INT_PTR t = 0; t < max; t++)
 	{
 
-		CProperty* prop = m_container.GetAt( t );
-		CString tag( prop->key );
-		if( prop->value.GetLength() )
-			tag += _T( "\t" ) + prop->value;
+		CProperty* prop = m_container.GetAt(t);
+		CString tag(prop->key);
+		if (prop->value.GetLength())
+			tag += _T("\t") + prop->value;
 
-		m_tags.AddString( tag );
-		
+		m_tags.AddString(tag);
+
 	}
 
 	return TRUE;
 
 }
 
-void CPropertyListEditorDialog::SetProperties( CPropertyContainer& container )
+void CPropertyListEditorDialog::SetProperties(CPropertyContainer& container)
 /* ============================================================
 	Function :		CPropertyListEditorDialog::SetProperties
-	Description :	Copies "container" to the internal 
+	Description :	Copies "container" to the internal
 					property container.
 	Access :		Public
 
 	Return :		void
 	Parameters :	CPropertyContainer& container	-	Container to copy from.
-					
+
 	Usage :			Call to set data to edit in this dialog.
 
    ============================================================*/
 {
 
-	m_container.Copy( container );
+	m_container.Copy(container);
 
 }
 
@@ -296,11 +296,11 @@ CPropertyContainer* CPropertyListEditorDialog::GetProperties()
 					container.
 	Access :		Public
 
-	Return :		CPropertyContainer*	-	Internal property 
+	Return :		CPropertyContainer*	-	Internal property
 											container.
 	Parameters :	none
 
-	Usage :			Call to get a pointer to the internal 
+	Usage :			Call to get a pointer to the internal
 					property container.
 
    ============================================================*/
@@ -310,18 +310,18 @@ CPropertyContainer* CPropertyListEditorDialog::GetProperties()
 
 }
 
-LRESULT CPropertyListEditorDialog::OnListboxDelete( WPARAM, LPARAM )
+LRESULT CPropertyListEditorDialog::OnListboxDelete(WPARAM, LPARAM)
 /* ============================================================
 	Function :		CPropertyListEditorDialog::OnListboxDelete
-	Description :	Handler for the registered message 
+	Description :	Handler for the registered message
 					"rwm_EXLISTBOX_SELCHANGE".
 	Access :		Protected
 
 	Return :		LRESULT		-	Always 0
 	Parameters :	WPARAM id	-	Not used
 					LPARAM		-	Not used
-					
-	Usage :			Sent from the "CExListBox" when the user 
+
+	Usage :			Sent from the "CExListBox" when the user
 					presses DEL and the listbox has the focus.
 					Deletes the currently selected property.
 
@@ -333,38 +333,38 @@ LRESULT CPropertyListEditorDialog::OnListboxDelete( WPARAM, LPARAM )
 
 }
 
-LRESULT CPropertyListEditorDialog::OnListboxSelChange( WPARAM, LPARAM )
+LRESULT CPropertyListEditorDialog::OnListboxSelChange(WPARAM, LPARAM)
 /* ============================================================
 	Function :		CPropertyListEditorDialog::OnListboxSelChange
-	Description :	Handler for the registered message 
+	Description :	Handler for the registered message
 					"rwm_EXLISTBOX_SELCHANGE"
 	Access :		Protected
 
 	Return :		LRESULT		-	Always 0
 	Parameters :	WPARAM id	-	Not used
 					LPARAM		-	Not used
-					
-	Usage :			Sent from the "CExListBox" when the 
-					selection has changed. We update the edit 
+
+	Usage :			Sent from the "CExListBox" when the
+					selection has changed. We update the edit
 					boxes.
 
    ============================================================*/
 {
 
 	int index = m_tags.GetCurSel();
-	if( index != LB_ERR )
+	if (index != LB_ERR)
 	{
-		m_tags.GetText( index, m_tag );
-		int tab = m_tag.Find( _TCHAR( '\t' ) );
-		if( tab != -1 )
+		m_tags.GetText(index, m_tag);
+		int tab = m_tag.Find(_TCHAR('\t'));
+		if (tab != -1)
 		{
-			m_value = m_tag.Right( m_tag.GetLength() - ( tab + 1 ) );
-			m_tag = m_tag.Left( tab );
+			m_value = m_tag.Right(m_tag.GetLength() - (tab + 1));
+			m_tag = m_tag.Left(tab);
 		}
 		else
-			m_value = _T( "" );
+			m_value = _T("");
 
-		UpdateData( FALSE );
+		UpdateData(FALSE);
 
 	}
 
@@ -372,7 +372,7 @@ LRESULT CPropertyListEditorDialog::OnListboxSelChange( WPARAM, LPARAM )
 
 }
 
-void CPropertyListEditorDialog::OnButtonClose() 
+void CPropertyListEditorDialog::OnButtonClose()
 /* ============================================================
 	Function :		CPropertyListEditorDialog::OnButtonClose
 	Description :	Handler for the dialog button Close
@@ -387,7 +387,7 @@ void CPropertyListEditorDialog::OnButtonClose()
 {
 
 	UpdateData();
-	if( !m_tag.IsEmpty() )
+	if (!m_tag.IsEmpty())
 		OnButtonAdd();
 
 	OnOK();

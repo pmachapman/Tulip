@@ -5,11 +5,11 @@
 
 	Date :			06/02/04
 
-	Purpose :		"CUMLUndoItem", derived from "CUndoItem", is a single 
-					application state for use with the "CDiagramEditor"-undo 
+	Purpose :		"CUMLUndoItem", derived from "CUndoItem", is a single
+					application state for use with the "CDiagramEditor"-undo
 					mechanism.
 
-	Description :	Two members are added, one for the background color and 
+	Description :	Two members are added, one for the background color and
 					one for the current package name.
 
 	Usage :			Handled by the editor.
@@ -35,12 +35,12 @@ CUMLUndoItem::CUMLUndoItem()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
 
-	col = RGB( 255, 255, 255 );
+	col = RGB(255, 255, 255);
 
 }
 
@@ -53,7 +53,7 @@ CUMLUndoItem::~CUMLUndoItem()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {

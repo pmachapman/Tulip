@@ -15,12 +15,12 @@
 
 class CClassAttributePropertyDialog : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CClassAttributePropertyDialog(CWnd* pParent = NULL);
 
-// Dialog Data
-	//{{AFX_DATA(CClassAttributePropertyDialog)
+	// Dialog Data
+		//{{AFX_DATA(CClassAttributePropertyDialog)
 	enum { IDD = IDD_UML_DIALOG_PROPERTY_CLASS_ATTRIBUTE };
 	CEdit	m_typeCtrl;
 	CEdit	m_nameCtrl;
@@ -33,12 +33,12 @@ public:
 	CString m_propertylist;
 	//}}AFX_DATA
 
-	void SetAttribute( CAttribute* attribute );
+	void SetAttribute(CAttribute* attribute);
 	CAttribute* GetAttribute() const;
 
-// Overrides
-	//{{AFX_VIRTUAL(CClassAttributePropertyDialog)
-	protected:
+	// Overrides
+		//{{AFX_VIRTUAL(CClassAttributePropertyDialog)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 
@@ -53,7 +53,7 @@ protected:
 
 private:
 	// Private data
-	CAttribute* m_attribute;
+	CAttribute * m_attribute;
 	CPropertyContainer	m_properties;
 
 };

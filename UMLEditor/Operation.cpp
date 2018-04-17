@@ -5,13 +5,13 @@
 
 	Date :			06/02/04
 
-	Purpose :		"COperation", derived from "CObject", represents a single 
-					operation for a "CUMLEntityClass" object. 
+	Purpose :		"COperation", derived from "CObject", represents a single
+					operation for a "CUMLEntityClass" object.
 
-	Description :	The operations are stored in a "COperationContainer" 
+	Description :	The operations are stored in a "COperationContainer"
 					member of "CUMLEntityClass".
 
-	Usage :			Create from "CUMLEntityClass" and add to the 
+	Usage :			Create from "CUMLEntityClass" and add to the
 					"COperationContainer".
 
    ========================================================================
@@ -58,7 +58,7 @@ COperation::~COperation()
 	Function :		COperation::~COperation
 	Description :	Destructor
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
@@ -69,10 +69,10 @@ COperation::~COperation()
 }
 
 // Implementation
-CString COperation::ToString( BOOL nomarkers, BOOL nooperationattributenames )
+CString COperation::ToString(BOOL nomarkers, BOOL nooperationattributenames)
 /* ============================================================
 	Function :		COperation::ToString
-	Description :	Gets a display string representation in 
+	Description :	Gets a display string representation in
 					UML-format of the operation.
 	Access :		Public
 
@@ -82,44 +82,44 @@ CString COperation::ToString( BOOL nomarkers, BOOL nooperationattributenames )
 														should be supressed.
 					BOOL nooperationattributenames	-	"TRUE" if parameter name
 														should be supressed.
-	
+
 	Usage :			Call to get a display string for the operation.
 
    ============================================================*/
 {
 
 	CString output;
-	if( stereotype.GetLength() )
-		output = _T( "« " ) + stereotype +  _T( " » " );
+	if (stereotype.GetLength())
+		output = _T("« ") + stereotype + _T(" » ");
 
-	if( !nomarkers )
+	if (!nomarkers)
 	{
-		if( access == ACCESS_TYPE_PRIVATE )
-			output = _T( "-" );
-		if( access == ACCESS_TYPE_PROTECTED )
-			output = _T( "#" );
-		if( access == ACCESS_TYPE_PUBLIC )
-			output = _T( "+" );
+		if (access == ACCESS_TYPE_PRIVATE)
+			output = _T("-");
+		if (access == ACCESS_TYPE_PROTECTED)
+			output = _T("#");
+		if (access == ACCESS_TYPE_PUBLIC)
+			output = _T("+");
 	}
 
 	output += name;
-	output += _T( "( " );
-	output += parameters.ToString( nooperationattributenames );
+	output += _T("( ");
+	output += parameters.ToString(nooperationattributenames);
 
-	output += _T( " )" );
-	if( type.GetLength() )
+	output += _T(" )");
+	if (type.GetLength())
 	{
-		output += _T( ":" );
+		output += _T(":");
 		output += type;
 	}
 
-	output += properties.GetString( STRING_FORMAT_UML );
+	output += properties.GetString(STRING_FORMAT_UML);
 
 	return output;
 
 }
 
-COperation* COperation::Clone( )
+COperation* COperation::Clone()
 /* ============================================================
 	Function :		COperation::Clone
 	Description :	Returns a copy of this object.
@@ -139,8 +139,8 @@ COperation* COperation::Clone( )
 	obj->access = access;
 	obj->type = type;
 
-	obj->parameters.Copy( parameters );
-	obj->properties.Copy( properties );
+	obj->parameters.Copy(parameters);
+	obj->properties.Copy(properties);
 
 	obj->stereotype = stereotype;
 
@@ -148,19 +148,19 @@ COperation* COperation::Clone( )
 	obj->getter = getter;
 	obj->getsetvariable = getsetvariable;
 
-	obj->parameters.Copy( parameters );
+	obj->parameters.Copy(parameters);
 
 	return obj;
 
 }
 
-COperation* COperation::FromString( const CString& str )
+COperation* COperation::FromString(const CString& str)
 /* ============================================================
 	Function :		COperation::FromString
-	Description :	Returns a new object from a string 
+	Description :	Returns a new object from a string
 					representation.
 	Access :		Public
-					
+
 	Return :		COperation*	-			New operation, or "NULL" if "str"
 											is not a valid "COperation"
 	Parameters :	const CString& str	-	String to use
@@ -171,8 +171,8 @@ COperation* COperation::FromString( const CString& str )
 {
 
 	COperation* op = NULL;
-	CTokenizer tok( str, _T( "|" ) );
-	if( tok.GetSize() == 10 )
+	CTokenizer tok(str, _T("|"));
+	if (tok.GetSize() == 10)
 	{
 		op = new COperation;
 		CString params;
@@ -183,24 +183,24 @@ COperation* COperation::FromString( const CString& str )
 		CString getsetvariable;
 
 		int count = 0;
-		tok.GetAt( count++, op->maintype );
-		tok.GetAt( count++, op->access );
-		tok.GetAt( count++, op->name );
-		tok.GetAt( count++, op->type );
-		tok.GetAt( count++, propertylist );
-		tok.GetAt( count++, stereotype );
-		tok.GetAt( count++, getter );
-		tok.GetAt( count++, setter );
-		tok.GetAt( count++, getsetvariable );
-		tok.GetAt( count++, params );
+		tok.GetAt(count++, op->maintype);
+		tok.GetAt(count++, op->access);
+		tok.GetAt(count++, op->name);
+		tok.GetAt(count++, op->type);
+		tok.GetAt(count++, propertylist);
+		tok.GetAt(count++, stereotype);
+		tok.GetAt(count++, getter);
+		tok.GetAt(count++, setter);
+		tok.GetAt(count++, getsetvariable);
+		tok.GetAt(count++, params);
 
-		UnmakeSaveString( propertylist );
-		UnmakeSaveString( params );
-		UnmakeSaveString( stereotype );
-		UnmakeSaveString( getsetvariable );
+		UnmakeSaveString(propertylist);
+		UnmakeSaveString(params);
+		UnmakeSaveString(stereotype);
+		UnmakeSaveString(getsetvariable);
 
-		op->properties.FromString( propertylist );
-		op->parameters.FromString( params );
+		op->properties.FromString(propertylist);
+		op->parameters.FromString(params);
 
 		op->stereotype = stereotype;
 		op->getter = getter;
@@ -213,13 +213,13 @@ COperation* COperation::FromString( const CString& str )
 
 }
 
-CString COperation::GetString( int format ) const
+CString COperation::GetString(int format) const
 /* ============================================================
 	Function :		COperation::GetString
-	Description :	Returns a string representation in format 
+	Description :	Returns a string representation in format
 					"format" of this object.
 	Access :		Public
-					
+
 	Return :		CString		-	Result
 	Parameters :	int format	-	Format to use
 
@@ -237,157 +237,157 @@ CString COperation::GetString( int format ) const
 {
 
 	CString result;
-	switch( format )
+	switch (format)
 	{
-		case STRING_FORMAT_SAVE:
-			{
-				CString propertylist( properties.GetString() );
-				CString stereo( stereotype );
-				CString getset( getsetvariable );
-				CString params( parameters.GetString() );
+	case STRING_FORMAT_SAVE:
+	{
+		CString propertylist(properties.GetString());
+		CString stereo(stereotype);
+		CString getset(getsetvariable);
+		CString params(parameters.GetString());
 
-				MakeSaveString( propertylist );
-				MakeSaveString( stereo );
-				MakeSaveString( getset );
-				MakeSaveString( params );
+		MakeSaveString(propertylist);
+		MakeSaveString(stereo);
+		MakeSaveString(getset);
+		MakeSaveString(params);
 
-				result.Format( _T( "%i|%i|%s|%s|%s|%s|%i|%i|%s|%s" ),
-					maintype,
-					access,
-					name,
-					type,
-					propertylist,
-					stereo,
-					getter,
-					setter,
-					getset,
-					params );
-			}
-			break;
+		result.Format(_T("%i|%i|%s|%s|%s|%s|%i|%i|%s|%s"),
+			maintype,
+			access,
+			name,
+			type,
+			propertylist,
+			stereo,
+			getter,
+			setter,
+			getset,
+			params);
+	}
+	break;
 
-		case STRING_FORMAT_H:
-			{
+	case STRING_FORMAT_H:
+	{
 
-				// main type
-				if( maintype & ENTITY_TYPE_ABSTRACT || properties.GetPropertyValue( _T( "virtual" ) ) == _T( "true" ) )
-					result += _T( "\tvirtual " );
+		// main type
+		if (maintype & ENTITY_TYPE_ABSTRACT || properties.GetPropertyValue(_T("virtual")) == _T("true"))
+			result += _T("\tvirtual ");
 
-				else if( maintype & ENTITY_TYPE_STATIC )
-					result += _T( "\tstatic " );
-				else
-					result += _T( "\t" );
+		else if (maintype & ENTITY_TYPE_STATIC)
+			result += _T("\tstatic ");
+		else
+			result += _T("\t");
 
-				// return value
-				if( type.GetLength() )
-					result += type + _T( " " );
-				else
-					result += _T( "void " );
+		// return value
+		if (type.GetLength())
+			result += type + _T(" ");
+		else
+			result += _T("void ");
 
-				// function name and parameters
-				result += name + _T( "( " );
-				result += parameters.GetString( STRING_FORMAT_H );
+		// function name and parameters
+		result += name + _T("( ");
+		result += parameters.GetString(STRING_FORMAT_H);
 
-				// const
-				result += _T( " )" );
-				if( properties.GetPropertyValue( _T( "query" ) ) == _T( "true" ) )
-					result += _T( " const" );
+		// const
+		result += _T(" )");
+		if (properties.GetPropertyValue(_T("query")) == _T("true"))
+			result += _T(" const");
 
-				// pure virtual
-				if( maintype & ENTITY_TYPE_ABSTRACT )
-					result += _T( " = 0" );
+		// pure virtual
+		if (maintype & ENTITY_TYPE_ABSTRACT)
+			result += _T(" = 0");
 
-				result += _T( ";" );
-			}
-			break;
+		result += _T(";");
+	}
+	break;
 
-		case STRING_FORMAT_H_TEMPLATE:
-			{
+	case STRING_FORMAT_H_TEMPLATE:
+	{
 
-				// main type
-				if( maintype & ENTITY_TYPE_ABSTRACT || properties.GetPropertyValue( _T( "virtual" ) ) == _T( "true" ) )
-					result += _T( "\tvirtual " );
+		// main type
+		if (maintype & ENTITY_TYPE_ABSTRACT || properties.GetPropertyValue(_T("virtual")) == _T("true"))
+			result += _T("\tvirtual ");
 
-				else if( maintype & ENTITY_TYPE_STATIC )
-					result += _T( "\tstatic " );
-				else
-					result += _T( "\t" );
+		else if (maintype & ENTITY_TYPE_STATIC)
+			result += _T("\tstatic ");
+		else
+			result += _T("\t");
 
-				// return value
-				if( type.GetLength() )
-					result += type + _T( " " );
-				else
-					result += _T( "void " );
+		// return value
+		if (type.GetLength())
+			result += type + _T(" ");
+		else
+			result += _T("void ");
 
-				// function name and parameters
-				result += name + _T( "( " );
-				result += parameters.GetString( STRING_FORMAT_H );
+		// function name and parameters
+		result += name + _T("( ");
+		result += parameters.GetString(STRING_FORMAT_H);
 
-				// const
-				result += _T( " )" );
-				if( properties.GetPropertyValue( _T( "query" ) ) == _T( "true" ) )
-					result += _T( " const" );
+		// const
+		result += _T(" )");
+		if (properties.GetPropertyValue(_T("query")) == _T("true"))
+			result += _T(" const");
 
-				// pure virtual
-				if( maintype & ENTITY_TYPE_ABSTRACT )
-					result += _T( " = 0" );
+		// pure virtual
+		if (maintype & ENTITY_TYPE_ABSTRACT)
+			result += _T(" = 0");
 
-				result += _T( " {\r\n\t\t// TODO: Implement\r\n\t};" );
+		result += _T(" {\r\n\t\t// TODO: Implement\r\n\t};");
 
-			}
-			break;
+	}
+	break;
 
-		case STRING_FORMAT_H_CTOR:
-			{
-				// This is a constructor/destructor, and
-				// we don't want any return value
+	case STRING_FORMAT_H_CTOR:
+	{
+		// This is a constructor/destructor, and
+		// we don't want any return value
 
-				result += _T( "\t" );
+		result += _T("\t");
 
-				if( maintype & ENTITY_TYPE_ABSTRACT || properties.GetPropertyValue( _T( "virtual" ) ) == _T( "true" ) )
-					result += _T( "virtual " );
+		if (maintype & ENTITY_TYPE_ABSTRACT || properties.GetPropertyValue(_T("virtual")) == _T("true"))
+			result += _T("virtual ");
 
-				// function name and parameters
-				result += name + _T( "( " );
-				result += parameters.GetString( STRING_FORMAT_H );
-				result += _T( " );" );
+		// function name and parameters
+		result += name + _T("( ");
+		result += parameters.GetString(STRING_FORMAT_H);
+		result += _T(" );");
 
-			}
-			break;
+	}
+	break;
 
-		case STRING_FORMAT_H_CTOR_TEMPLATE:
-			{
-				// This is a constructor/destructor, and
-				// we don't want any return value
+	case STRING_FORMAT_H_CTOR_TEMPLATE:
+	{
+		// This is a constructor/destructor, and
+		// we don't want any return value
 
-				result += _T( "\t" );
+		result += _T("\t");
 
-				if( maintype & ENTITY_TYPE_ABSTRACT || properties.GetPropertyValue( _T( "virtual" ) ) == _T( "true" ) )
-					result += _T( "virtual " );
+		if (maintype & ENTITY_TYPE_ABSTRACT || properties.GetPropertyValue(_T("virtual")) == _T("true"))
+			result += _T("virtual ");
 
-				// function name and parameters
-				result += name + _T( "( " );
-				result += parameters.GetString( STRING_FORMAT_H );
-				result += _T( " ) {\r\n\t\t//TODO: Implement\r\n\t};" );
+		// function name and parameters
+		result += name + _T("( ");
+		result += parameters.GetString(STRING_FORMAT_H);
+		result += _T(" ) {\r\n\t\t//TODO: Implement\r\n\t};");
 
-			}
-			break;
+	}
+	break;
 	}
 
 	return result;
 
 }
 
-BOOL COperation::operator==( const COperation& operation )
+BOOL COperation::operator==(const COperation& operation)
 /* ============================================================
 	Function :		COperation::operator==
-	Description :	Returns "TRUE" if this object containes the 
+	Description :	Returns "TRUE" if this object containes the
 					same information as "operation".
 	Access :		Public
-					
+
 	Return :		BOOL						-	"TRUE" if the same
 	Parameters :	const COperation& operation	-	Operation to test
-					
-	Usage :			Call to see if two objects are equal 
+
+	Usage :			Call to see if two objects are equal
 					information-wise.
 
    ============================================================*/
@@ -395,9 +395,9 @@ BOOL COperation::operator==( const COperation& operation )
 
 	BOOL result = FALSE;
 
-	if( name == operation.name &&
+	if (name == operation.name &&
 		type == operation.type &&
-		parameters == operation.parameters )
+		parameters == operation.parameters)
 		result = TRUE;
 
 	return result;

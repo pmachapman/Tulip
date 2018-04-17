@@ -10,7 +10,7 @@ public:
 	CDiagramMenu();
 	virtual ~CDiagramMenu();
 
-	virtual CMenu* GetPopupMenu( CDiagramEditor* editor );
+	virtual CMenu* GetPopupMenu(CDiagramEditor* editor);
 
 protected:
 	CMenu	m_menu;

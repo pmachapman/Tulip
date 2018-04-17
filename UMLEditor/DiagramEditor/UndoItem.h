@@ -6,7 +6,7 @@
 // Created :	06/04/04
 //
 
-class CUndoItem : public CObject 
+class CUndoItem : public CObject
 {
 
 public:

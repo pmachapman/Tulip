@@ -5,7 +5,7 @@
 
 	Date :			2004-06-21
 
-	Purpose :		"CGetterSetterdialog" is derived from "CDialog" and 
+	Purpose :		"CGetterSetterdialog" is derived from "CDialog" and
 					wraps the getter/setter-name dialog.
 
 	Description :	This is a Standard Wizard-created dialog box class.
@@ -28,17 +28,17 @@ static char THIS_FILE[] = __FILE__;
 
 CGetterSetterDialog::CGetterSetterDialog(CWnd* pParent /*=NULL*/)
 	: CDialog(CGetterSetterDialog::IDD, pParent)
-/* ============================================================
-	Function :		CGetterSetterDialog::CGetterSetterDialog
-	Description :	Constructor
-	Access :		Public
+	/* ============================================================
+		Function :		CGetterSetterDialog::CGetterSetterDialog
+		Description :	Constructor
+		Access :		Public
 
-	Return :		void
-	Parameters :	CWnd* pParent	-	Dialog parent
+		Return :		void
+		Parameters :	CWnd* pParent	-	Dialog parent
 
-	Usage :			
+		Usage :
 
-   ============================================================*/
+	   ============================================================*/
 {
 
 	//{{AFX_DATA_INIT(CGetterSetterDialog)
@@ -60,8 +60,8 @@ void CGetterSetterDialog::DoDataExchange(CDataExchange* pDX)
 
 	Return :		void
 	Parameters :	CDataExchange* pDX	-	Pointer to exchange object
-					
-	Usage :			Called from MFC to exchange and validate 
+
+	Usage :			Called from MFC to exchange and validate
 					dialog data.
 
    ============================================================*/
@@ -83,7 +83,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CGetterSetterDialog message handlers
 
-BOOL CGetterSetterDialog::OnInitDialog() 
+BOOL CGetterSetterDialog::OnInitDialog()
 /* ============================================================
 	Function :		CGetterSetterDialog::OnInitDialog
 	Description :	Handler for the "WM_INITDIALOG"-message.
@@ -98,18 +98,18 @@ BOOL CGetterSetterDialog::OnInitDialog()
 {
 
 	CDialog::OnInitDialog();
-	
-	if( m_noset )
-		m_setterCtrl.SetReadOnly( TRUE );
-	
-	if( m_noget )
-		m_getterCtrl.SetReadOnly( TRUE );
 
-	return TRUE;  
+	if (m_noset)
+		m_setterCtrl.SetReadOnly(TRUE);
+
+	if (m_noget)
+		m_getterCtrl.SetReadOnly(TRUE);
+
+	return TRUE;
 
 }
 
-void CGetterSetterDialog::OnOK() 
+void CGetterSetterDialog::OnOK()
 /* ============================================================
 	Function :		CGetterSetterDialog::OnOK
 	Description :	Handler for the OK-button.
@@ -118,24 +118,24 @@ void CGetterSetterDialog::OnOK()
 	Return :		void
 	Parameters :	none
 
-	Usage :			Called from MFC. Validates data and closes 
+	Usage :			Called from MFC. Validates data and closes
 					the dialog.
 
    ============================================================*/
 {
 
-	if( !m_noset && m_setter.IsEmpty() )
+	if (!m_noset && m_setter.IsEmpty())
 	{
-		AfxMessageBox( IDS_UML_SETTER_MUST_HAVE_A_NAME );
+		AfxMessageBox(IDS_UML_SETTER_MUST_HAVE_A_NAME);
 		m_setterCtrl.SetFocus();
 	}
-	
-	if( !m_noget && m_getter.IsEmpty() )
+
+	if (!m_noget && m_getter.IsEmpty())
 	{
-		AfxMessageBox( IDS_UML_GETTER_MUST_HAVE_A_NAME );
+		AfxMessageBox(IDS_UML_GETTER_MUST_HAVE_A_NAME);
 		m_getterCtrl.SetFocus();
 	}
-	
+
 	CDialog::OnOK();
 
 }

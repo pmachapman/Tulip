@@ -5,16 +5,16 @@
 
 	Date :			2004-03-30
 
-	Purpose :		Encapsulates a line object. Other line objects can be 
+	Purpose :		Encapsulates a line object. Other line objects can be
 					derived from this class.
 
-	Description :	First of all, we do not want constraints to the line 
-					size (as we can't move the end points freely if that 
+	Description :	First of all, we do not want constraints to the line
+					size (as we can't move the end points freely if that
 					is the case), so one "SetRect" must be modified. Second,
-					we need a non-rectangular body area for hit testing, a 
-					line in this case. Third, we need only a subset of the 
-					selection markers. All this is implemented in this 
-					class, to serve as a model or base class for other line 
+					we need a non-rectangular body area for hit testing, a
+					line in this case. Third, we need only a subset of the
+					selection markers. All this is implemented in this
+					class, to serve as a model or base class for other line
 					objects.
 
 	Usage :			Use as a model for line objects.
@@ -31,8 +31,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-VOID CALLBACK HitTest( int X, int Y, LPARAM data );
-VOID CALLBACK HitTestRect( int X, int Y, LPARAM data );
+VOID CALLBACK HitTest(int X, int Y, LPARAM data);
+VOID CALLBACK HitTestRect(int X, int Y, LPARAM data);
 
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramLine
@@ -47,13 +47,13 @@ CDiagramLine::CDiagramLine()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
 
-	SetMinimumSize( CSize( -1, -1 ) );
-	SetType( _T( "line" ) );
+	SetMinimumSize(CSize(-1, -1));
+	SetType(_T("line"));
 
 }
 
@@ -66,7 +66,7 @@ CDiagramLine::~CDiagramLine()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -87,12 +87,12 @@ CDiagramEntity* CDiagramLine::Clone()
 {
 
 	CDiagramLine* obj = new CDiagramLine;
-	obj->Copy( this );
+	obj->Copy(this);
 	return obj;
 
 }
 
-void CDiagramLine::SetRect( CRect rect )
+void CDiagramLine::SetRect(CRect rect)
 /* ============================================================
 	Function :		CDiagramLine::SetRect
 	Description :	Sets the rectangle of the object.
@@ -100,31 +100,31 @@ void CDiagramLine::SetRect( CRect rect )
 
 	Return :		void
 	Parameters :	CRect rect	-	New rectangle
-					
+
 	Usage :			Overriden to avoid normalization.
 
    ============================================================*/
 {
 
-	SetLeft( rect.left );
-	SetTop( rect.top );
-	SetRight( rect.right );
-	SetBottom( rect.bottom );
+	SetLeft(rect.left);
+	SetTop(rect.top);
+	SetRight(rect.right);
+	SetBottom(rect.bottom);
 
 }
 
-BOOL CDiagramLine::BodyInRect( CRect rect ) const
+BOOL CDiagramLine::BodyInRect(CRect rect) const
 /* ============================================================
 	Function :		CDiagramLine::BodyInRect
-	Description :	Checks if some part of the body of this 
+	Description :	Checks if some part of the body of this
 					object lies inside the rectangle "rect".
 	Access :		Public
 
-	Return :		BOOL		-	"TRUE" if any part of the 
+	Return :		BOOL		-	"TRUE" if any part of the
 									object lies inside rect.
 	Parameters :	CRect rect	-	The rectangle to test.
-					
-	Usage :			Shows one way to test a non-rectangular 
+
+	Usage :			Shows one way to test a non-rectangular
 					object body - in this case a line.
 
    ============================================================*/
@@ -135,34 +135,34 @@ BOOL CDiagramLine::BodyInRect( CRect rect ) const
 	hit.rect = rect;
 	hit.hit = FALSE;
 
-	LineDDA(	static_cast< int >( GetLeft() ), 
-				static_cast< int >( GetTop() ), 
-				static_cast< int >( GetRight() ), 
-				static_cast< int >( GetBottom() ), 
-				HitTestRect, 
-				( LPARAM ) &hit );
+	LineDDA(static_cast<int>(GetLeft()),
+		static_cast<int>(GetTop()),
+		static_cast<int>(GetRight()),
+		static_cast<int>(GetBottom()),
+		HitTestRect,
+		(LPARAM)&hit);
 
-	if( hit.hit )
+	if (hit.hit)
 		result = TRUE;
 
 	return result;
 
 }
 
-int CDiagramLine::GetHitCode( CPoint point ) const
+int CDiagramLine::GetHitCode(CPoint point) const
 /* ============================================================
 	Function :		CDiagramLine::GetHitCode
-	Description :	Returns the hit point constant ("DEHT_", 
-					defined in DiagramEntity.h) for point. 
+	Description :	Returns the hit point constant ("DEHT_",
+					defined in DiagramEntity.h) for point.
 	Access :		Public
 
-	Return :		int				-	The resulting hit point 
-										constant, "DEHT_NONE" if 
+	Return :		int				-	The resulting hit point
+										constant, "DEHT_NONE" if
 										none.
 	Parameters :	CPoint point	-	The point to test.
-					
+
 	Usage :			Shows one way to hit point test a non-
-					rectangular area. The hit point can be one 
+					rectangular area. The hit point can be one
 					of the following:
 						"DEHT_NONE" No hit-point
 						"DEHT_BODY" Inside object body
@@ -187,31 +187,31 @@ int CDiagramLine::GetHitCode( CPoint point ) const
 	hit.x = point.x;
 	hit.y = point.y;
 
-	LineDDA(	static_cast< int >( GetLeft() ), 
-				static_cast< int >( GetTop() ), 
-				static_cast< int >( GetRight() ), 
-				static_cast< int >( GetBottom() ), 
-				HitTest, 
-				( LPARAM ) &hit );
+	LineDDA(static_cast<int>(GetLeft()),
+		static_cast<int>(GetTop()),
+		static_cast<int>(GetRight()),
+		static_cast<int>(GetBottom()),
+		HitTest,
+		(LPARAM)&hit);
 
-	if( hit.hit )
+	if (hit.hit)
 		result = DEHT_BODY;
 
 	CRect rectTest;
 
-	rectTest = GetSelectionMarkerRect( DEHT_TOPLEFT, rect );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_TOPLEFT, rect);
+	if (rectTest.PtInRect(point))
 		result = DEHT_TOPLEFT;
 
-	rectTest = GetSelectionMarkerRect( DEHT_BOTTOMRIGHT, rect );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_BOTTOMRIGHT, rect);
+	if (rectTest.PtInRect(point))
 		result = DEHT_BOTTOMRIGHT;
 
 	return result;
 
 }
 
-void CDiagramLine::Draw( CDC* dc, CRect rect )
+void CDiagramLine::Draw(CDC* dc, CRect rect)
 /* ============================================================
 	Function :		CDiagramLine::Draw
 	Description :	Draws the object.
@@ -219,36 +219,36 @@ void CDiagramLine::Draw( CDC* dc, CRect rect )
 
 	Return :		void
 	Parameters :	CDC* dc		-	"CDC" to draw to
-					CRect rect	-	True (zoomed) rectangle to 
+					CRect rect	-	True (zoomed) rectangle to
 									draw to.
-					
+
 	Usage :			Called from "CDiagramEditor::DrawObjects".
 
    ============================================================*/
 {
 
-	dc->SelectStockObject( BLACK_PEN );
+	dc->SelectStockObject(BLACK_PEN);
 
-	dc->MoveTo( rect.TopLeft() );
-	dc->LineTo( rect.BottomRight() );
+	dc->MoveTo(rect.TopLeft());
+	dc->LineTo(rect.BottomRight());
 
 }
 
-HCURSOR CDiagramLine::GetCursor( int hit ) const
+HCURSOR CDiagramLine::GetCursor(int hit) const
 /* ============================================================
 	Function :		CDiagramLine::GetCursor
-	Description :	Returns the cursor for a specific hit 
+	Description :	Returns the cursor for a specific hit
 					point.
 	Access :		Public
 
-	Return :		HCURSOR	-	The cursor to display, or "NULL" 
+	Return :		HCURSOR	-	The cursor to display, or "NULL"
 								if default.
-	Parameters :	int hit	-	The hit point constant ("DEHT_", 
-								defined in DiagramEntity.h) to 
+	Parameters :	int hit	-	The hit point constant ("DEHT_",
+								defined in DiagramEntity.h) to
 								show a cursor for.
-					
-	Usage :			Shows the cursor for a subset of the hit 
-					points. Will also show cursors different 
+
+	Usage :			Shows the cursor for a subset of the hit
+					points. Will also show cursors different
 					from the standard ones.
 					"hit" can be one of the following:
 						"DEHT_NONE" No hit-point
@@ -266,16 +266,16 @@ HCURSOR CDiagramLine::GetCursor( int hit ) const
 {
 
 	HCURSOR cursor = NULL;
-	switch( hit )
+	switch (hit)
 	{
-		case DEHT_BODY:
-		cursor = LoadCursor( NULL, IDC_SIZEALL );
+	case DEHT_BODY:
+		cursor = LoadCursor(NULL, IDC_SIZEALL);
 		break;
-		case DEHT_TOPLEFT:
-		cursor = LoadCursor( NULL, IDC_SIZEALL );
+	case DEHT_TOPLEFT:
+		cursor = LoadCursor(NULL, IDC_SIZEALL);
 		break;
-		case DEHT_BOTTOMRIGHT:
-		cursor = LoadCursor( NULL, IDC_SIZEALL );
+	case DEHT_BOTTOMRIGHT:
+		cursor = LoadCursor(NULL, IDC_SIZEALL);
 		break;
 	}
 
@@ -283,7 +283,7 @@ HCURSOR CDiagramLine::GetCursor( int hit ) const
 
 }
 
-void CDiagramLine::DrawSelectionMarkers( CDC* dc, CRect rect ) const
+void CDiagramLine::DrawSelectionMarkers(CDC* dc, CRect rect) const
 /* ============================================================
 	Function :		CDiagramLine::DrawSelectionMarkers
 	Description :	Draws selection markers for this object.
@@ -292,8 +292,8 @@ void CDiagramLine::DrawSelectionMarkers( CDC* dc, CRect rect ) const
 	Return :		void
 	Parameters :	CDC* dc		-	"CDC" to draw to.
 					CRect rect	-	True object rectangle.
-					
-	Usage :			Draws a subset of the standard selection 
+
+	Usage :			Draws a subset of the standard selection
 					markers.
 
    ============================================================*/
@@ -301,39 +301,39 @@ void CDiagramLine::DrawSelectionMarkers( CDC* dc, CRect rect ) const
 
 	// Draw selection markers
 	CRect rectSelect;
-	dc->SelectStockObject( BLACK_BRUSH );
+	dc->SelectStockObject(BLACK_BRUSH);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_TOPLEFT, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_TOPLEFT, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_BOTTOMRIGHT, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_BOTTOMRIGHT, rect);
+	dc->Rectangle(rectSelect);
 
 }
 
-CDiagramEntity* CDiagramLine::CreateFromString( const CString& str )
+CDiagramEntity* CDiagramLine::CreateFromString(const CString& str)
 /* ============================================================
 	Function :		CDiagramLine::CreateFromString
-	Description :	Static factory function to create a 
+	Description :	Static factory function to create a
 					"CDiagramLine" object from "str".
 	Access :		Public
 
-	Return :		CDiagramEntity*		-	Resulting object, 
-											"NULL" if "str" is not 
-											a representation of 
+	Return :		CDiagramEntity*		-	Resulting object,
+											"NULL" if "str" is not
+											a representation of
 											a "CDiagramLine".
-	Parameters :	const CString& str	-	String representation 
+	Parameters :	const CString& str	-	String representation
 											to decode.
-					
-	Usage :			One proposed mechanism for loading/creating 
-					"CDiagramEntity"-derived objects from a text 
+
+	Usage :			One proposed mechanism for loading/creating
+					"CDiagramEntity"-derived objects from a text
 					stream.
 
    ============================================================*/
 {
 
 	CDiagramLine* obj = new CDiagramLine;
-	if(!obj->FromString( str ) )
+	if (!obj->FromString(str))
 	{
 		delete obj;
 		obj = NULL;
@@ -343,30 +343,30 @@ CDiagramEntity* CDiagramLine::CreateFromString( const CString& str )
 
 }
 
-VOID CALLBACK HitTest( int X, int Y, LPARAM data )
+VOID CALLBACK HitTest(int X, int Y, LPARAM data)
 {
 
 	// Checks if the coordinate in the hitParams 
 	// struct falls within +/- 1 of the x, y 
 	// coordinates of this point of the line.
 
-	hitParams* obj = ( hitParams* ) data;
+	hitParams* obj = (hitParams*)data;
 
-	if( obj->x >= X - 1 && obj->x <= X + 1 && obj->y >= Y - 1 && obj->y <= Y + 1 )
+	if (obj->x >= X - 1 && obj->x <= X + 1 && obj->y >= Y - 1 && obj->y <= Y + 1)
 		obj->hit = TRUE;
 
 }
 
-VOID CALLBACK HitTestRect( int X, int Y, LPARAM data )
+VOID CALLBACK HitTestRect(int X, int Y, LPARAM data)
 {
 
 	// Checks if the x, y coordinates of the line 
 	// falls withing the hitParamsRect rectangle.
 
-	hitParamsRect* obj = ( hitParamsRect* ) data;
-	CPoint pt( X, Y );
+	hitParamsRect* obj = (hitParamsRect*)data;
+	CPoint pt(X, Y);
 
-	if( obj->rect.PtInRect( pt ) )
+	if (obj->rect.PtInRect(pt))
 		obj->hit = TRUE;
 
 }

@@ -19,14 +19,14 @@
 
 class CClassOperationPropertyDialog : public CDialog
 {
-// Construction
+	// Construction
 public:
-	COperation* GetOperation() const;
-	void SetOperation( COperation* operation );
+	COperation * GetOperation() const;
+	void SetOperation(COperation* operation);
 	CClassOperationPropertyDialog(CWnd* pParent = NULL);
 
-// Dialog Data
-	//{{AFX_DATA(CClassOperationPropertyDialog)
+	// Dialog Data
+		//{{AFX_DATA(CClassOperationPropertyDialog)
 	enum { IDD = IDD_UML_DIALOG_PROPERTY_CLASS_OPERATION };
 	CEdit	m_typeCtrl;
 	CEdit	m_nameCtrl;
@@ -42,7 +42,7 @@ public:
 
 // Overrides
 	//{{AFX_VIRTUAL(CClassOperationPropertyDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	//}}AFX_VIRTUAL
 
@@ -55,13 +55,13 @@ protected:
 	afx_msg void OnButtonPropertyList();
 	afx_msg void OnCheckConst();
 	//}}AFX_MSG
-	LRESULT OnListboxDblClick( WPARAM id, LPARAM );
-	LRESULT OnListboxDelete( WPARAM id, LPARAM );
+	LRESULT OnListboxDblClick(WPARAM id, LPARAM);
+	LRESULT OnListboxDelete(WPARAM id, LPARAM);
 
 	DECLARE_MESSAGE_MAP()
 private:
 	// Private data
-	COperation* m_operation;
+	COperation * m_operation;
 	CPropertyContainer	m_properties;
 	CParameterContainer	m_parameters;
 

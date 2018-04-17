@@ -7,7 +7,7 @@
 
 	Purpose :		Holds an array of attributes for an instance of "CUMLEntityClass".
 
-	Description :	The class has a "CObArray" containing the attribute, as 
+	Description :	The class has a "CObArray" containing the attribute, as
 					well as access functions and automatic memory management.
 
 	Usage :			Used internally by "CUMLEntityClass".
@@ -31,11 +31,11 @@ CAttributeContainer::CAttributeContainer()
 	Function :		CAttributeContainer::CAttributeContainer
 	Description :	Constructor
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -46,7 +46,7 @@ CAttributeContainer::~CAttributeContainer()
 	Function :		CAttributeContainer::~CAttributeContainer
 	Description :	Destructor
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
@@ -59,38 +59,38 @@ CAttributeContainer::~CAttributeContainer()
 
 }
 
-void CAttributeContainer::Copy( CAttributeContainer & attributes )
+void CAttributeContainer::Copy(CAttributeContainer & attributes)
 /* ============================================================
 	Function :		CAttributeContainer::Copy
 	Description :	Copies all elements from attributes to this
 					instance.
 	Access :		Public
-					
+
 	Return :		void
-	Parameters :	CAttributeContainer & attributes -	Container to 
+	Parameters :	CAttributeContainer & attributes -	Container to
 														copy from.
 
-	Usage :			Call - for example - when copying one 
+	Usage :			Call - for example - when copying one
 					"CUMLEntityClass" instance to another.
 
    ============================================================*/
 {
 
 	RemoveAll();
-	int max = attributes.GetSize();
-	m_attributes.SetSize( max );
-	for( int t = 0 ; t < max ; t++ )
-		m_attributes.SetAt( t, ( attributes.GetAt( t ) )->Clone() );
+	INT_PTR max = attributes.GetSize();
+	m_attributes.SetSize(max);
+	for (INT_PTR t = 0; t < max; t++)
+		m_attributes.SetAt(t, (attributes.GetAt(t))->Clone());
 
 }
 
-int CAttributeContainer::GetSize( ) const
+INT_PTR CAttributeContainer::GetSize() const
 /* ============================================================
 	Function :		CAttributeContainer::GetSize
-	Description :	Returns the number of attributes in the 
+	Description :	Returns the number of attributes in the
 					container.
 	Access :		Public
-					
+
 	Return :		int	-	The number of attributes.
 	Parameters :	none
 
@@ -103,15 +103,15 @@ int CAttributeContainer::GetSize( ) const
 
 }
 
-CAttribute* CAttributeContainer::GetAt( int index ) const
+CAttribute* CAttributeContainer::GetAt(INT_PTR index) const
 /* ============================================================
 	Function :		CAttributeContainer::GetAt
 	Description :	Get the attribute at "index".
 	Access :		Public
 
-	Return :		CAttribute*	-	The attribute, or "NULL" if 
+	Return :		CAttribute*	-	The attribute, or "NULL" if
 									out of bounds.
-	Parameters :	int index	-	The index of the attribute 
+	Parameters :	int index	-	The index of the attribute
 									to get
 
 	Usage :			Call to get a specific attribute.
@@ -121,21 +121,21 @@ CAttribute* CAttributeContainer::GetAt( int index ) const
 
 	CAttribute* result = NULL;
 
-	if( index > -1 && index < GetSize() )
-		result = static_cast< CAttribute* >( m_attributes.GetAt( index ) );
+	if (index > -1 && index < GetSize())
+		result = static_cast<CAttribute*>(m_attributes.GetAt(index));
 
 	return result;
 
 }
 
-void CAttributeContainer::RemoveAt( int index )
+void CAttributeContainer::RemoveAt(int index)
 /* ============================================================
 	Function :		CAttributeContainer::RemoveAt
 	Description :	Remove attribute at "index".
 	Access :		Public
 
 	Return :		void
-	Parameters :	int index	-	The index of the attribute 
+	Parameters :	int index	-	The index of the attribute
 									to remove
 
 	Usage :			Deletes memory as well.
@@ -143,15 +143,15 @@ void CAttributeContainer::RemoveAt( int index )
    ============================================================*/
 {
 
-	if( index > -1 && index < GetSize() )
+	if (index > -1 && index < GetSize())
 	{
-		delete GetAt( index );
-		m_attributes.RemoveAt( index );
+		delete GetAt(index);
+		m_attributes.RemoveAt(index);
 	}
 
 }
 
-void CAttributeContainer::RemoveAll( )
+void CAttributeContainer::RemoveAll()
 /* ============================================================
 	Function :		CAttributeContainer::RemoveAll
 	Description :	Removes all attributes in the container.
@@ -165,17 +165,17 @@ void CAttributeContainer::RemoveAll( )
    ============================================================*/
 {
 
-	while( GetSize() )
-		RemoveAt( 0 );
+	while (GetSize())
+		RemoveAt(0);
 
 }
 
-void CAttributeContainer::Add( CAttribute * attribute )
+void CAttributeContainer::Add(CAttribute * attribute)
 /* ============================================================
 	Function :		CAttributeContainer::Add
 	Description :	Adds an attribute to the container.
 	Access :		Public
- 
+
 	Return :		void
 	Parameters :	CAttribute * attribute	-	Attribute to add
 
@@ -184,17 +184,17 @@ void CAttributeContainer::Add( CAttribute * attribute )
    ============================================================*/
 {
 
-	m_attributes.Add( attribute );
+	m_attributes.Add(attribute);
 
 }
 
-CString CAttributeContainer::GetString( int format ) const
+CString CAttributeContainer::GetString(int format) const
 /* ============================================================
 	Function :		CAttributeContainer::GetString
-	Description :	Gets a string representation of all 
+	Description :	Gets a string representation of all
 					attributes in format "format".
 	Access :		Public
-					
+
 	Return :		CString		-	Resulting string
 	Parameters :	int format	-	Format to use.
 
@@ -210,57 +210,57 @@ CString CAttributeContainer::GetString( int format ) const
 {
 
 	CString result;
-	if( format == STRING_FORMAT_SAVE )
-		for( int t = 0 ; t < GetSize() ; t++ )
-			result += _T( "," ) + GetAt( t )->GetString();
+	if (format == STRING_FORMAT_SAVE)
+		for (int t = 0; t < GetSize(); t++)
+			result += _T(",") + GetAt(t)->GetString();
 
 	return result;
 
 }
 
-void CAttributeContainer::SetSize( int size )
+void CAttributeContainer::SetSize(int size)
 /* ============================================================
 	Function :		CAttributeContainer::SetSize
 	Description :	Sets the size of the container
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	int size	-	Size to set
-					
-	Usage :			Can be used to speed up container operations 
+
+	Usage :			Can be used to speed up container operations
 					if the size is already known.
 
    ============================================================*/
 {
 
-	m_attributes.SetSize( size );
+	m_attributes.SetSize(size);
 
 }
 
-void CAttributeContainer::SetAt( int index, CAttribute* obj )
+void CAttributeContainer::SetAt(int index, CAttribute* obj)
 /* ============================================================
 	Function :		CAttributeContainer::SetAt
 	Description :	Sets "obj" at index "index" in the container.
 	Access :		Public
-					
+
 	Return :		void
-	Parameters :	int index		-	Index where "obj" should 
+	Parameters :	int index		-	Index where "obj" should
 										be added
 					CAttribute* obj	-	Object to add.
-					
-	Usage :			Call to directly set an object. Note that the 
-					container should be empty, with just "SetSize" 
-					called. As the function is included for 
-					speedier operations, as little error 
-					checking as possible is done. If an object 
-					is set into a slot with an exisiting object, 
+
+	Usage :			Call to directly set an object. Note that the
+					container should be empty, with just "SetSize"
+					called. As the function is included for
+					speedier operations, as little error
+					checking as possible is done. If an object
+					is set into a slot with an exisiting object,
 					a memory leak will result.
 
    ============================================================*/
 {
 
-	if( index > -1 && index < GetSize() )
-		m_attributes.SetAt( index, obj );
+	if (index > -1 && index < GetSize())
+		m_attributes.SetAt(index, obj);
 
 }
 

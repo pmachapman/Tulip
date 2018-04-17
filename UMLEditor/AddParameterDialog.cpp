@@ -5,17 +5,17 @@
 
 	Date :			2004-06-14
 
-	Purpose :		Dialog box class to edit or create a single parameter	
+	Purpose :		Dialog box class to edit or create a single parameter
 
-	Description :	The class is a standard MFC dialog class, using the 
-					"IDD_UML_DIALOG_PROPERTY_CLASS_OPERATION_PARAMETER" dialog 
+	Description :	The class is a standard MFC dialog class, using the
+					"IDD_UML_DIALOG_PROPERTY_CLASS_OPERATION_PARAMETER" dialog
 					resource.
 
-	Usage :			Call "SetParameter" to set the parameter being edited 
-					(or don't set if creating a new one). "GetParameter" 
+	Usage :			Call "SetParameter" to set the parameter being edited
+					(or don't set if creating a new one). "GetParameter"
 					returns the edited/created parameter.
 
-					See "CParameter" for a description of the parameter 
+					See "CParameter" for a description of the parameter
 					class.
 
    ========================================================================*/
@@ -34,17 +34,17 @@ static char THIS_FILE[] = __FILE__;
 
 CAddParameterDialog::CAddParameterDialog(CWnd* pParent /*=NULL*/)
 	: CDialog(CAddParameterDialog::IDD, pParent)
-/* ============================================================
-	Function :		CAddParameterDialog::CAddParameterDialog
-	Description :	Constructor
-	Access :		Public
+	/* ============================================================
+		Function :		CAddParameterDialog::CAddParameterDialog
+		Description :	Constructor
+		Access :		Public
 
-	Return :		void
-	Parameters :	CWnd* pParent	-	Dialog parent
+		Return :		void
+		Parameters :	CWnd* pParent	-	Dialog parent
 
-	Usage :			Created in the Add/Edit operation dialog.
+		Usage :			Created in the Add/Edit operation dialog.
 
-   ============================================================*/
+	   ============================================================*/
 {
 	//{{AFX_DATA_INIT(CAddParameterDialog)
 	m_name = _T("");
@@ -65,11 +65,11 @@ void CAddParameterDialog::DoDataExchange(CDataExchange* pDX)
 	Function :		CAddParameterDialog::DoDataExchange
 	Description :	Data exchange call for the dialog
 	Access :		Protected
-					
+
 	Return :		void
 	Parameters :	CDataExchange* pDX	-	Pointer to exchange object
-					
-	Usage :			Called from MFC to exchange and validate 
+
+	Usage :			Called from MFC to exchange and validate
 					dialog data.
 
    ============================================================*/
@@ -95,7 +95,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CAddParameterDialog message handlers
 
-void CAddParameterDialog::OnOK() 
+void CAddParameterDialog::OnOK()
 /* ============================================================
 	Function :		CAddParameterDialog::OnOK
 	Description :	Handler for the OK button.
@@ -112,16 +112,16 @@ void CAddParameterDialog::OnOK()
 
 	UpdateData();
 
-	if( m_name.IsEmpty() )
+	if (m_name.IsEmpty())
 	{
-		AfxMessageBox( IDS_UML_PARAMETER_MUST_HAVE_A_NAME );
+		AfxMessageBox(IDS_UML_PARAMETER_MUST_HAVE_A_NAME);
 		m_nameCtrl.SetFocus();
 		return;
 	}
 
-	if( m_type.IsEmpty() )
+	if (m_type.IsEmpty())
 	{
-		AfxMessageBox( IDS_UML_PARAMETER_MUST_HAVE_A_TYPE );
+		AfxMessageBox(IDS_UML_PARAMETER_MUST_HAVE_A_TYPE);
 		m_typeCtrl.SetFocus();
 		return;
 	}
@@ -137,7 +137,7 @@ void CAddParameterDialog::OnOK()
 
 }
 
-BOOL CAddParameterDialog::OnInitDialog() 
+BOOL CAddParameterDialog::OnInitDialog()
 /* ============================================================
 	Function :		CAddParameterDialog::OnInitDialog
 	Description :	Handler for the "WM_INITDIALOG" message
@@ -146,14 +146,14 @@ BOOL CAddParameterDialog::OnInitDialog()
 	Return :		BOOL	-	Always "TRUE".
 	Parameters :	none
 
-	Usage :			Assign data to the fields from the submitted 
-					parameter, or creates a new parameter as 
+	Usage :			Assign data to the fields from the submitted
+					parameter, or creates a new parameter as
 					appropriate.
 
    ============================================================*/
 {
 
-	if( m_parameter )
+	if (m_parameter)
 	{
 		m_name = m_parameter->name;
 		m_type = m_parameter->type;
@@ -167,23 +167,23 @@ BOOL CAddParameterDialog::OnInitDialog()
 		m_parameter = new CParameter;
 
 	CDialog::OnInitDialog();
-	
-	
-	return TRUE; 
+
+
+	return TRUE;
 }
 
-void CAddParameterDialog::SetParameter( CParameter* parameter )
+void CAddParameterDialog::SetParameter(CParameter* parameter)
 /* ============================================================
 	Function :		CAddParameterDialog::SetParameter
 	Description :	Sets the current parameter being edited
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	CParameter* parameter	-	Parameter
-					
-	Usage :			Call to set the parameter to edit. If no 
-					parameter is set, the dialog will create 
-					one. The caller has the responsibility of 
+
+	Usage :			Call to set the parameter to edit. If no
+					parameter is set, the dialog will create
+					one. The caller has the responsibility of
 					deleting it.
 
    ============================================================*/
@@ -198,7 +198,7 @@ CParameter* CAddParameterDialog::GetParameter()
 	Function :		CAddParameterDialog::GetParameter
 	Description :	Gets the parameter being created/edited
 	Access :		Public
-					
+
 	Return :		CParameter*	-	Parameter, "NULL" if none.
 	Parameters :	none
 

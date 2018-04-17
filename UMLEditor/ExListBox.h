@@ -16,21 +16,21 @@ extern UINT rwm_EXLISTBOX_SELCHANGE;
 
 class CExListBox : public CListBox
 {
-// Construction
+	// Construction
 public:
 	CExListBox();
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 
-	int AddString( LPCTSTR str );
+	int AddString(LPCTSTR str);
 
-// Overrides
-	//{{AFX_VIRTUAL(CExListBox)
-	protected:
+	// Overrides
+		//{{AFX_VIRTUAL(CExListBox)
+protected:
 	virtual void PreSubclassWindow();
 	//}}AFX_VIRTUAL
 

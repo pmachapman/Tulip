@@ -33,10 +33,10 @@ public:
 	virtual void	SetTitle( CString title );
 
 // Implementation
-	int	GetAttributes() const;
-	int GetOperations() const;
-	CAttribute* GetAttribute( int index ) const;
-	COperation* GetOperation( int index ) const;
+	INT_PTR	GetAttributes() const;
+	INT_PTR GetOperations() const;
+	CAttribute* GetAttribute(INT_PTR index ) const;
+	COperation* GetOperation(INT_PTR index ) const;
 
 	void ClearAttributes();
 	void ClearOperations();
