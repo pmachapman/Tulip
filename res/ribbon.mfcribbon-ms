@@ -37,18 +37,6 @@
         </ID>
       </IMAGE_LARGE>
       <ELEMENTS>
-[!if APP_TYPE_MTLD]
-        <ELEMENT>
-          <ELEMENT_NAME>Button</ELEMENT_NAME>
-          <ID>
-            <NAME>ID_FILE_NEW_FRAME</NAME>
-            <VALUE>57613</VALUE>
-          </ID>
-          <TEXT>&amp;New Frame</TEXT>
-          <INDEX_SMALL>0</INDEX_SMALL>
-          <INDEX_LARGE>0</INDEX_LARGE>
-        </ELEMENT>
-[!endif]
         <ELEMENT>
           <ELEMENT_NAME>Button</ELEMENT_NAME>
           <ID>
