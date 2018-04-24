@@ -326,19 +326,18 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tulip.rc" />
-    <ResourceCompile Include="UMLEditor\UMLEditor.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\buttons.bmp" />
-    <Image Include="res\filelarge.bmp" />
-    <Image Include="res\filesmall.bmp" />
-    <Image Include="res\main.bmp" />
+    <Image Include="res\filelarge.png" />
+    <Image Include="res\filesmall.png" />
+    <Image Include="res\main.png" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\Tulip.ico" />
     <Image Include="res\TulipDoc.ico" />
-    <Image Include="res\writelarge.bmp" />
-    <Image Include="res\writesmall.bmp" />
+    <Image Include="res\writelarge.png" />
+    <Image Include="res\writesmall.png" />
     <Image Include="UMLEditor\res\up.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

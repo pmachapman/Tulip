@@ -427,27 +427,9 @@
     <ResourceCompile Include="Tulip.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="UMLEditor\UMLEditor.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\buttons.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\filelarge.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\filesmall.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\main.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\writelarge.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\writesmall.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\TulipDoc.ico">
@@ -463,6 +445,21 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="UMLEditor\res\up.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\main.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\filelarge.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\filesmall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writelarge.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writesmall.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
