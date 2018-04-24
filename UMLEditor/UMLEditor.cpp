@@ -1384,7 +1384,7 @@ CString CUMLEditor::BrowseForFolder()
 
 }
 
-void CUMLEditor::ExportEMF()
+void CUMLEditor::ExportEMF(const CString& filename)
 /* ============================================================
 	Function :		CUMLEditor::ExportEMF
 	Description :	Exports the current diagram to an EMF-file.
@@ -1400,7 +1400,7 @@ void CUMLEditor::ExportEMF()
    ============================================================*/
 {
 
-	CFileDialog dlg(FALSE, _T("emf"));
+	CFileDialog dlg(FALSE, _T("emf"), filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Enhanced MetaFile (*.emf)|*.emf|All Files (*.*)|*.*||"));
 	if (dlg.DoModal() == IDOK)
 	{
 
