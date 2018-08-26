@@ -54,12 +54,6 @@
     <ClInclude Include="ChildFrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TulipDoc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TulipView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -225,6 +219,12 @@
     <ClInclude Include="ExportDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UmlDoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UmlView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tulip.cpp">
@@ -237,12 +237,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChildFrm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TulipDoc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TulipView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UMLEditor\AddParameterDialog.cpp">
@@ -402,6 +396,12 @@
       <Filter>Source Files\UMLEditor</Filter>
     </ClCompile>
     <ClCompile Include="ExportDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UmlDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UmlView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

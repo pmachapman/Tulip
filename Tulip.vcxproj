@@ -23,7 +23,7 @@
     <ProjectGuid>{FDDF92DE-0238-4A0B-8ADF-284AD574B36F}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
     <RootNamespace>Tulip</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -194,8 +194,8 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tulip.h" />
-    <ClInclude Include="TulipDoc.h" />
-    <ClInclude Include="TulipView.h" />
+    <ClInclude Include="UmlDoc.h" />
+    <ClInclude Include="UmlView.h" />
     <ClInclude Include="UMLEditor\AddParameterDialog.h" />
     <ClInclude Include="UMLEditor\Attribute.h" />
     <ClInclude Include="UMLEditor\AttributeContainer.h" />
@@ -261,8 +261,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Tulip.cpp" />
-    <ClCompile Include="TulipDoc.cpp" />
-    <ClCompile Include="TulipView.cpp" />
+    <ClCompile Include="UmlDoc.cpp" />
+    <ClCompile Include="UmlView.cpp" />
     <ClCompile Include="UMLEditor\AddParameterDialog.cpp" />
     <ClCompile Include="UMLEditor\Attribute.cpp" />
     <ClCompile Include="UMLEditor\AttributeContainer.cpp" />
