@@ -39,7 +39,7 @@
 #include "UMLEntityContainer.h"
 #include "StringHelpers.h"
 
-#include "TextFile/TextFile.h"
+#include "../TextFile/TextFile.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

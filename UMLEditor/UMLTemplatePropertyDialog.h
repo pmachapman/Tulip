@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // UMLTemplatePropertyDialog.h : header file
 //
-#include "DiagramEditor/DiagramPropertyDlg.h"
+#include "../DiagramEditor/DiagramPropertyDlg.h"
 #include "../resource.h"
 #include "ExListbox.h"
 #include "PropertyContainer.h"

@@ -36,7 +36,7 @@
 #include "UMLMenu.h"
 #include "UMLLineSegment.h"
 #include "UMLEntityPackage.h"
-#include "TextFile/TextFile.h"
+#include "../TextFile/TextFile.h"
 #include "DiskObject/DiskObject.h"
 
 #include <math.h>

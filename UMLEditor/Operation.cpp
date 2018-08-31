@@ -20,7 +20,7 @@
 
 #include "stdafx.h"
 #include "Operation.h"
-#include "DiagramEditor/Tokenizer.h"
+#include "../DiagramEditor/Tokenizer.h"
 #include "StringHelpers.h"
 #include "UMLEntity.h"
 

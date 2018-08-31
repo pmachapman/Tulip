@@ -1,7 +1,7 @@
 #if !defined(AFX_UMLENTITY_H__8BBDE424_2729_426C_89EC_B3E3E1021F92__INCLUDED_)
 #define AFX_UMLENTITY_H__8BBDE424_2729_426C_89EC_B3E3E1021F92__INCLUDED_
 
-#include "DiagramEditor\DiagramEntity.h"
+#include "../DiagramEditor/DiagramEntity.h"
 #include "UMLPackagePropertyDialog.h"
 
 class CUMLEntityContainer;

@@ -1,7 +1,7 @@
 #if !defined(AFX_UMLPACKAGEPROPERTYDIALOG_H__0F34B3BB_CEDC_435F_BC4C_256D4DDD548C__INCLUDED_)
 #define AFX_UMLPACKAGEPROPERTYDIALOG_H__0F34B3BB_CEDC_435F_BC4C_256D4DDD548C__INCLUDED_
 
-#include "DiagramEditor/DiagramPropertyDlg.h"
+#include "../DiagramEditor/DiagramPropertyDlg.h"
 #include "../resource.h"
 
 /////////////////////////////////////////////////////////////////////////////

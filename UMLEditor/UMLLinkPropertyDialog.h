@@ -7,7 +7,7 @@
 // LinkPropertyDialog.h : header file
 //
 #include "../resource.h"
-#include "DiagramEditor/DiagramPropertyDlg.h"
+#include "../DiagramEditor/DiagramPropertyDlg.h"
 
 #define TYPE_ASSOCIATION	0
 #define TYPE_DEPENDANCY		1

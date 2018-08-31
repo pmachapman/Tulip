@@ -21,7 +21,7 @@
 #include "stdafx.h"
 #include "UMLEntity.h"
 #include "LinkFactory.h"
-#include "DiagramEditor/Tokenizer.h"
+#include "../DiagramEditor/Tokenizer.h"
 #include "StringHelpers.h"
 
 #ifdef _DEBUG

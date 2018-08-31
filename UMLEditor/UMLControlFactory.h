@@ -1,7 +1,7 @@
 #ifndef _UMLCONTROLFACTORY_H_
 #define _UMLCONTROLFACTORY_H_
 
-#include "DiagramEditor/DiagramEntity.h"
+#include "../DiagramEditor/DiagramEntity.h"
 
 class CUMLControlFactory {
 

@@ -17,7 +17,7 @@
 
 #include "stdafx.h"
 #include "ParameterContainer.h"
-#include "DiagramEditor/Tokenizer.h"
+#include "../DiagramEditor/Tokenizer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

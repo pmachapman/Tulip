@@ -21,7 +21,7 @@
    ========================================================================*/
 #include "stdafx.h"
 #include "UMLEntityLabel.h"
-#include "DiagramEditor/Tokenizer.h"
+#include "../DiagramEditor/Tokenizer.h"
 #include "UMLEntityContainer.h"
 #include "StringHelpers.h"
 

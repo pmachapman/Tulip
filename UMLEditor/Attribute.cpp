@@ -19,7 +19,7 @@
 
 #include "stdafx.h"
 #include "Attribute.h"
-#include "DiagramEditor/Tokenizer.h"
+#include "../DiagramEditor/Tokenizer.h"
 #include "StringHelpers.h"
 #include "UMLEntity.h"
 

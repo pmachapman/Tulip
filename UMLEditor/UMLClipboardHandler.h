@@ -1,7 +1,7 @@
 #ifndef _UMLCLIPBOARDHANDLER_H_
 #define _UMLCLIPBOARDHANDLER_H_
 
-#include "DiagramEditor/DiagramClipboardHandler.h"
+#include "../DiagramEditor/DiagramClipboardHandler.h"
 
 class CUMLClipboardHandler : public CDiagramClipboardHandler
 {

@@ -6,7 +6,7 @@
 #include "Operation.h"
 
 #include "UMLClassPropertyDialog.h"
-#include "DiagramEditor/Tokenizer.h"
+#include "../DiagramEditor/Tokenizer.h"
 #include "PropertyContainer.h"
 #include "OperationContainer.h"
 #include "AttributeContainer.h"

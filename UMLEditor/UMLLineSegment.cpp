@@ -32,8 +32,8 @@
 #include "stdafx.h"
 #include "UMLLineSegment.h"
 #include "UMLEntityContainer.h"
-#include "DiagramEditor/DiagramLine.h"
-#include "DiagramEditor/Tokenizer.h"
+#include "../DiagramEditor/DiagramLine.h"
+#include "../DiagramEditor/Tokenizer.h"
 #include "StringHelpers.h"
 
 #include <math.h>

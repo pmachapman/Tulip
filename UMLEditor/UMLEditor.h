@@ -1,7 +1,7 @@
 #if !defined(AFX_UMLEDITOR_H__609E7C31_5443_4059_8ED9_DF9A743CFD2F__INCLUDED_)
 #define AFX_UMLEDITOR_H__609E7C31_5443_4059_8ED9_DF9A743CFD2F__INCLUDED_
 
-#include "DiagramEditor\DiagramEditor.h"
+#include "../DiagramEditor/DiagramEditor.h"
 
 #include "UMLEntity.h"
 #include "UMLLineSegment.h"

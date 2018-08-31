@@ -19,7 +19,7 @@
 #include "stdafx.h"
 #include "UMLEntityClassTemplate.h"
 #include "UMLEntityContainer.h"
-#include "TextFile/TextFile.h"
+#include "../TextFile/TextFile.h"
 
 CUMLEntityClassTemplate::CUMLEntityClassTemplate()
 /* ============================================================

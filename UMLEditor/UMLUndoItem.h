@@ -6,7 +6,7 @@
 // CUMLUndoItem.h
 // Created: 06/02/04
 //
-#include "DiagramEditor/UndoItem.h"
+#include "../DiagramEditor/UndoItem.h"
 
 class CUMLUndoItem : public CUndoItem
 {

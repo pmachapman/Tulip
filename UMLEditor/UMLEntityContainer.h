@@ -1,9 +1,9 @@
 #ifndef _UMLENTITYCONTAINER_H_
 #define _UMLENTITYCONTAINER_H_
 
-#include "DiagramEditor/DiagramEntityContainer.h"
-#include "DiagramEditor/DiagramEntity.h"
-#include "DiagramEditor/Tokenizer.h"
+#include "../DiagramEditor/DiagramEntityContainer.h"
+#include "../DiagramEditor/DiagramEntity.h"
+#include "../DiagramEditor/Tokenizer.h"
 #include "UMLEntity.h"
 #include "UMLLineSegment.h"
 #include "UMLEntityClass.h"

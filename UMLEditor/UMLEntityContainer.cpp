@@ -30,8 +30,8 @@
 #include "stdafx.h"
 #include "UMLEntityContainer.h"
 #include "UMLControlFactory.h"
-#include "DiskObject/DiskObject.h"
-#include "TextFile/TextFile.h"
+#include "../DiskObject/DiskObject.h"
+#include "../TextFile/TextFile.h"
 #include "UMLEntityInterface.h"
 
 #include <math.h>

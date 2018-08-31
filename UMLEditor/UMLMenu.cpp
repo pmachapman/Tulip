@@ -25,7 +25,7 @@
 #include "../resource.h"
 
 #include "UMLMenu.h"
-#include "DiagramEditor/DiagramEditor.h"
+#include "../DiagramEditor/DiagramEditor.h"
 #include "UMLEditor.h"
 
 #ifdef _DEBUG

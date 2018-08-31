@@ -22,7 +22,7 @@
    ========================================================================*/
 #include "stdafx.h"
 #include "UMLEntityNote.h"
-#include "DiagramEditor/Tokenizer.h"
+#include "../DiagramEditor/Tokenizer.h"
 #include "UMLEntityContainer.h"
 
 #ifdef _DEBUG

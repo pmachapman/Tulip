@@ -188,11 +188,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="DiagramEditor\DiagramClipboardHandler.h" />
+    <ClInclude Include="DiagramEditor\DiagramEditor.h" />
+    <ClInclude Include="DiagramEditor\DiagramEntity.h" />
+    <ClInclude Include="DiagramEditor\DiagramEntityContainer.h" />
+    <ClInclude Include="DiagramEditor\DiagramLine.h" />
+    <ClInclude Include="DiagramEditor\DiagramMenu.h" />
+    <ClInclude Include="DiagramEditor\DiagramPropertyDlg.h" />
+    <ClInclude Include="DiagramEditor\GroupFactory.h" />
+    <ClInclude Include="DiagramEditor\Tokenizer.h" />
+    <ClInclude Include="DiagramEditor\UndoItem.h" />
+    <ClInclude Include="DiskObject\DiskObject.h" />
     <ClInclude Include="ExportDialog.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextFile\TextFile.h" />
     <ClInclude Include="Tulip.h" />
     <ClInclude Include="UmlDoc.h" />
     <ClInclude Include="UmlView.h" />
@@ -202,17 +214,6 @@
     <ClInclude Include="UMLEditor\ClassAttributePropertyDialog.h" />
     <ClInclude Include="UMLEditor\ClassDisplayPropertyDialog.h" />
     <ClInclude Include="UMLEditor\ClassOperationPropertyDialog.h" />
-    <ClInclude Include="UMLEditor\DiagramEditor\DiagramClipboardHandler.h" />
-    <ClInclude Include="UMLEditor\DiagramEditor\DiagramEditor.h" />
-    <ClInclude Include="UMLEditor\DiagramEditor\DiagramEntity.h" />
-    <ClInclude Include="UMLEditor\DiagramEditor\DiagramEntityContainer.h" />
-    <ClInclude Include="UMLEditor\DiagramEditor\DiagramLine.h" />
-    <ClInclude Include="UMLEditor\DiagramEditor\DiagramMenu.h" />
-    <ClInclude Include="UMLEditor\DiagramEditor\DiagramPropertyDlg.h" />
-    <ClInclude Include="UMLEditor\DiagramEditor\GroupFactory.h" />
-    <ClInclude Include="UMLEditor\DiagramEditor\Tokenizer.h" />
-    <ClInclude Include="UMLEditor\DiagramEditor\UndoItem.h" />
-    <ClInclude Include="UMLEditor\DiskObject\DiskObject.h" />
     <ClInclude Include="UMLEditor\ExListBox.h" />
     <ClInclude Include="UMLEditor\GetterSetterDialog.h" />
     <ClInclude Include="UMLEditor\LinkFactory.h" />
@@ -225,7 +226,6 @@
     <ClInclude Include="UMLEditor\PropertyListEditorDialog.h" />
     <ClInclude Include="UMLEditor\resource.h" />
     <ClInclude Include="UMLEditor\StringHelpers.h" />
-    <ClInclude Include="UMLEditor\TextFile\TextFile.h" />
     <ClInclude Include="UMLEditor\UMLClassPropertyDialog.h" />
     <ClInclude Include="UMLEditor\UMLClipboardHandler.h" />
     <ClInclude Include="UMLEditor\UMLControlFactory.h" />
@@ -252,6 +252,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="DiagramEditor\DiagramClipboardHandler.cpp" />
+    <ClCompile Include="DiagramEditor\DiagramEditor.cpp" />
+    <ClCompile Include="DiagramEditor\DiagramEntity.cpp" />
+    <ClCompile Include="DiagramEditor\DiagramEntityContainer.cpp" />
+    <ClCompile Include="DiagramEditor\DiagramLine.cpp" />
+    <ClCompile Include="DiagramEditor\DiagramMenu.cpp" />
+    <ClCompile Include="DiagramEditor\DiagramPropertyDlg.cpp" />
+    <ClCompile Include="DiagramEditor\GroupFactory.cpp" />
+    <ClCompile Include="DiagramEditor\Tokenizer.cpp" />
+    <ClCompile Include="DiagramEditor\UndoItem.cpp" />
+    <ClCompile Include="DiskObject\DiskObject.cpp" />
     <ClCompile Include="ExportDialog.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -260,6 +271,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TextFile\TextFile.cpp" />
     <ClCompile Include="Tulip.cpp" />
     <ClCompile Include="UmlDoc.cpp" />
     <ClCompile Include="UmlView.cpp" />
@@ -269,17 +281,6 @@
     <ClCompile Include="UMLEditor\ClassAttributePropertyDialog.cpp" />
     <ClCompile Include="UMLEditor\ClassDisplayPropertyDialog.cpp" />
     <ClCompile Include="UMLEditor\ClassOperationPropertyDialog.cpp" />
-    <ClCompile Include="UMLEditor\DiagramEditor\DiagramClipboardHandler.cpp" />
-    <ClCompile Include="UMLEditor\DiagramEditor\DiagramEditor.cpp" />
-    <ClCompile Include="UMLEditor\DiagramEditor\DiagramEntity.cpp" />
-    <ClCompile Include="UMLEditor\DiagramEditor\DiagramEntityContainer.cpp" />
-    <ClCompile Include="UMLEditor\DiagramEditor\DiagramLine.cpp" />
-    <ClCompile Include="UMLEditor\DiagramEditor\DiagramMenu.cpp" />
-    <ClCompile Include="UMLEditor\DiagramEditor\DiagramPropertyDlg.cpp" />
-    <ClCompile Include="UMLEditor\DiagramEditor\GroupFactory.cpp" />
-    <ClCompile Include="UMLEditor\DiagramEditor\Tokenizer.cpp" />
-    <ClCompile Include="UMLEditor\DiagramEditor\UndoItem.cpp" />
-    <ClCompile Include="UMLEditor\DiskObject\DiskObject.cpp" />
     <ClCompile Include="UMLEditor\ExListBox.cpp" />
     <ClCompile Include="UMLEditor\GetterSetterDialog.cpp" />
     <ClCompile Include="UMLEditor\LinkFactory.cpp" />
@@ -291,7 +292,6 @@
     <ClCompile Include="UMLEditor\PropertyContainer.cpp" />
     <ClCompile Include="UMLEditor\PropertyListEditorDialog.cpp" />
     <ClCompile Include="UMLEditor\StringHelpers.cpp" />
-    <ClCompile Include="UMLEditor\TextFile\TextFile.cpp" />
     <ClCompile Include="UMLEditor\UMLClassPropertyDialog.cpp" />
     <ClCompile Include="UMLEditor\UMLClipboardHandler.cpp" />
     <ClCompile Include="UMLEditor\UMLControlFactory.cpp" />

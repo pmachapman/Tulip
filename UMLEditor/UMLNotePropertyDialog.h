@@ -7,7 +7,7 @@
 // UMLNotePropertyDialog.h : header file
 //
 
-#include "DiagramEditor/DiagramPropertyDlg.h"
+#include "../DiagramEditor/DiagramPropertyDlg.h"
 #include "../resource.h"
 
 /////////////////////////////////////////////////////////////////////////////
