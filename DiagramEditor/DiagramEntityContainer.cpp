@@ -81,6 +81,12 @@
 					3/7  2004	Added a GetSelectCount
    ========================================================================
 					4/8  2004	Added SelectAll and UnselectAll
+   ========================================================================
+					11/12 2004	Made UnselectAll virtual (Grisha Vinevich)
+   ========================================================================
+					22/1  2005	Added PopUndo function to pop the latest
+								undo item from the stack
+								Made IsUndoPossible const.
    ========================================================================*/
 
 #include "stdafx.h"
@@ -1066,7 +1072,7 @@ void CDiagramEntityContainer::ClearUndo()
 
 }
 
-BOOL CDiagramEntityContainer::IsUndoPossible()
+BOOL CDiagramEntityContainer::IsUndoPossible() const
 /* ============================================================
 	Function :		CDiagramEntityContainer::IsUndoPossible
 	Description :	Check if it is possible to undo.
@@ -1119,6 +1125,30 @@ int CDiagramEntityContainer::GetUndoStackSize() const
 {
 
 	return m_maxstacksize;
+
+}
+
+void CDiagramEntityContainer::PopUndo()
+/* ============================================================
+	Function :		CUMLEntityContainer::PopUndo
+	Description :	Pops the undo stack (removes the last stack
+					item)
+	Access :		Public
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Call do undo the last Snapshot
+
+   ============================================================*/
+{
+
+	INT_PTR size = m_undo.GetSize();
+	if (size)
+	{
+		delete m_undo.GetAt(size - 1);
+		m_undo.RemoveAt(size - 1);
+	}
 
 }
 

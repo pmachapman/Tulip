@@ -5,73 +5,75 @@
 
 	Date :			2004-03-29
 
-	Purpose :		"CDiagramEntity" is the base class for all objects that can 
+	Purpose :		"CDiagramEntity" is the base class for all objects that can
 					be drawn and managed by "CDiagramEditor".
 
-	Description :	"CDiagramEntity" is derived from "CObject", to allow 
+	Description :	"CDiagramEntity" is derived from "CObject", to allow
 					instances to be stored in "CObArrays".
 
-	Usage :			Classes should be derived from "CDiagramEntity". "Clone" 
-					must be overridden, returning a copy of the this 
+	Usage :			Classes should be derived from "CDiagramEntity". "Clone"
+					must be overridden, returning a copy of the this
 					pointer.
 
-					Normally, "Draw" should also be overridden. 
+					Normally, "Draw" should also be overridden.
 
-					The class supports basic saving to a text file. If this 
-					is desired, "SetType" must be called from the derived 
-					class ctor with a string uniquely identifying the class. 
-					"FromString" and "GetString" must be overridden if other 
-					properties than the default are to be saved. Loading can 
-					be accomplished by creating a static "factory"-function 
-					returning an instance of the class if "FromString" returns 
-					"TRUE" for a given line from a data file. See "CreateFromString" 
+					The class supports basic saving to a text file. If this
+					is desired, "SetType" must be called from the derived
+					class ctor with a string uniquely identifying the class.
+					"FromString" and "GetString" must be overridden if other
+					properties than the default are to be saved. Loading can
+					be accomplished by creating a static "factory"-function
+					returning an instance of the class if "FromString" returns
+					"TRUE" for a given line from a data file. See "CreateFromString"
 					in this class for a model implementation.
 
-					Minimum- and maximum sizes for an instance of the 
+					Minimum- and maximum sizes for an instance of the
 					derived object can be set in the class ctor by calling
-					"SetConstraints". A 0-constraint means that the object 
-					can't be turned "inside out", while -1 means no 
+					"SetConstraints". A 0-constraint means that the object
+					can't be turned "inside out", while -1 means no
 					constraints.
 
-					Popup menus for the derived classes can be created by 
-					overriding "ShowPopup". Command ids for the menu items 
-					must be in the range "CMD_START" to "CMD_END" inclusively, 
-					and if a menu alternative is selected, it will be 
-					returned to the class instance through "DoMessage" - 
+					Popup menus for the derived classes can be created by
+					overriding "ShowPopup". Command ids for the menu items
+					must be in the range "CMD_START" to "CMD_END" inclusively,
+					and if a menu alternative is selected, it will be
+					returned to the class instance through "DoMessage" -
 					which must of course also be overriddden.
 
-					Each derived class can also have a property dialog. The 
-					dialog class must be derived from "CDiagramPropertyDlg". 
-					The derived "CDiagramEntity" class must have a class 
+					Each derived class can also have a property dialog. The
+					dialog class must be derived from "CDiagramPropertyDlg".
+					The derived "CDiagramEntity" class must have a class
 					member instance of the desired "CDiagramPropertyDlg"-
-					derived class, and call "SetPropertyDialog" in the "ctor". 
-					Transport of data to and from the object is made in the 
-					"CDiagramPropertyDlg"-derived class (see 
+					derived class, and call "SetPropertyDialog" in the "ctor".
+					Transport of data to and from the object is made in the
+					"CDiagramPropertyDlg"-derived class (see
 					CDiagramPropertyDlg.cpp)
 
-					The number, position and types of the selection rects 
-					can be modified by overriding "GetHitCode" and 
-					"DrawSelectionMarkers", see CDiagramLine.cpp for an 
+					The number, position and types of the selection rects
+					can be modified by overriding "GetHitCode" and
+					"DrawSelectionMarkers", see CDiagramLine.cpp for an
 					example.
 
-					"BodyInRect" can be overridden to allow non-rect hit 
+					"BodyInRect" can be overridden to allow non-rect hit
 					testing, see CDiagramLine.cpp for an example.
 
-					"GetCursor" can be overridden to display other cursors 
+					"GetCursor" can be overridden to display other cursors
 					than the default ones.
 
    ========================================================================
 	Changes :		10/4 2004	Changed accessors for m_type to public.
-					24/4 2004	Added colon as a replace-character for 
+					24/4 2004	Added colon as a replace-character for
 								saving
 					30/4 2004	Added redraw parent to the property dialog
    ========================================================================
-					23/6 2004	Added \\newline as a replace-character when 
+					23/6 2004	Added \\newline as a replace-character when
 								saving/loading (Unruled Boy).
 					26/6 2004	Added group handling (Unruled Boy).
 					27/6 2004	Added help functions for saving and loading
    ========================================================================
 					19/8 2004	Setting m_parent to NULL in the ctor (Marc G)
+   ========================================================================
+					23/1 2005	Made SetParent/GetParent public.
    ========================================================================*/
 #include "stdafx.h"
 #include "DiagramEntity.h"
@@ -96,16 +98,16 @@ CDiagramEntity::CDiagramEntity()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
-	SetParent( NULL );
-	SetPropertyDialog( NULL, 0 );
+	SetParent(NULL);
+	SetPropertyDialog(NULL, 0);
 	Clear();
-	SetType( _T( "basic" ) );
+	SetType(_T("basic"));
 
-	SetGroup( 0 );
+	SetGroup(0);
 }
 
 CDiagramEntity::~CDiagramEntity()
@@ -117,7 +119,7 @@ CDiagramEntity::~CDiagramEntity()
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -137,12 +139,12 @@ void CDiagramEntity::Clear()
    ============================================================*/
 {
 
-	SetRect( 0.0, 0.0, 0.0, 0.0 );
-	SetMarkerSize( CSize( 8, 8 ) );
-	SetConstraints( CSize( 1, 1 ), CSize( -1, -1 ) );
-	Select( FALSE );
-	SetParent( NULL );
-	SetName( _T( "" ) );
+	SetRect(0.0, 0.0, 0.0, 0.0);
+	SetMarkerSize(CSize(8, 8));
+	SetConstraints(CSize(1, 1), CSize(-1, -1));
+	Select(FALSE);
+	SetParent(NULL);
+	SetName(_T(""));
 
 }
 
@@ -155,79 +157,79 @@ CDiagramEntity* CDiagramEntity::Clone()
 	Return :		CDiagramEntity*	-	The new object.
 	Parameters :	none
 
-	Usage :			Call to create a clone of the object. The 
+	Usage :			Call to create a clone of the object. The
 					caller will have to delete the object.
 
    ============================================================*/
 {
 	CDiagramEntity* obj = new CDiagramEntity;
-	obj->Copy( this );
+	obj->Copy(this);
 	return obj;
 }
 
-void CDiagramEntity::Copy( CDiagramEntity* obj )
+void CDiagramEntity::Copy(CDiagramEntity* obj)
 /* ============================================================
 	Function :		CDiagramEntity::Copy
 	Description :	Copy the information in "obj" to this object.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDiagramEntity* obj	-	The object to copy 
+	Parameters :	CDiagramEntity* obj	-	The object to copy
 											from.
-					
+
 	Usage :			Copies basic information. from "obj" to this.
-					"GetType" can be used to check for the correct 
+					"GetType" can be used to check for the correct
 					object type in overridden versions.
    ============================================================*/
 {
 
 	Clear();
 
-	SetMarkerSize( obj->GetMarkerSize() );
-	SetConstraints( obj->GetMinimumSize(), obj->GetMaximumSize() );
+	SetMarkerSize(obj->GetMarkerSize());
+	SetConstraints(obj->GetMinimumSize(), obj->GetMaximumSize());
 
-	Select( obj->IsSelected() );
-	SetParent( obj->GetParent() );
-	SetType( obj->GetType() );
-	SetTitle( obj->GetTitle() );
-	SetName( obj->GetName() );
-	SetRect( obj->GetLeft(), obj->GetTop(), obj->GetRight(), obj->GetBottom() );
+	Select(obj->IsSelected());
+	SetParent(obj->GetParent());
+	SetType(obj->GetType());
+	SetTitle(obj->GetTitle());
+	SetName(obj->GetName());
+	SetRect(obj->GetLeft(), obj->GetTop(), obj->GetRight(), obj->GetBottom());
 
 }
 
-BOOL CDiagramEntity::FromString( const CString& str )
+BOOL CDiagramEntity::FromString(const CString& str)
 /* ============================================================
 	Function :		CDiagramEntity::FromString
-	Description :	Sets the values for an object from "str". 
+	Description :	Sets the values for an object from "str".
 	Access :		Public
 
-	Return :		BOOL				-	"TRUE" if "str" 
-											represents an 
-											object of this 
+	Return :		BOOL				-	"TRUE" if "str"
+											represents an
+											object of this
 											type.
-	Parameters :	const CString& str	-	Possible text 
-											format 
+	Parameters :	const CString& str	-	Possible text
+											format
 											representation.
-					
-	Usage :			Can be called to fill an existing object 
-					with information from a string created with 
+
+	Usage :			Can be called to fill an existing object
+					with information from a string created with
 					"GetString".
 
    ============================================================*/
 {
 
 	BOOL result = FALSE;
-	CString data( str );
-	CString header = GetHeaderFromString( data );
-	if( header == GetType() )
-		if( GetDefaultFromString( data ) )
+	CString data(str);
+	CString header = GetHeaderFromString(data);
+	if (header == GetType())
+		if (GetDefaultFromString(data))
 			result = TRUE;
 
 	return result;
 
 }
 
-CString CDiagramEntity::GetHeaderFromString( CString& str )
+CString CDiagramEntity::GetHeaderFromString(CString& str)
 /* ============================================================
 	Function :		CDiagramEntity::GetHeaderFromString
 	Description :	Gets the header from "str".
@@ -235,21 +237,21 @@ CString CDiagramEntity::GetHeaderFromString( CString& str )
 
 	Return :		CString			-	The type of "str".
 	Parameters :	CString& str	-	"CString" to get type from.
-					
-	Usage :			Call as a part of loading the object. "str" 
+
+	Usage :			Call as a part of loading the object. "str"
 					will have the type removed after the call.
 
    ============================================================*/
 {
 
-	CTokenizer main( str, _T( ":" ) );
+	CTokenizer main(str, _T(":"));
 	CString header;
 	CString data;
-	if( main.GetSize() == 2 )
+	if (main.GetSize() == 2)
 	{
 
-		main.GetAt( 0, header );
-		main.GetAt( 1, data );
+		main.GetAt(0, header);
+		main.GetAt(1, data);
 		header.TrimLeft();
 		header.TrimRight();
 		data.TrimLeft();
@@ -262,32 +264,32 @@ CString CDiagramEntity::GetHeaderFromString( CString& str )
 
 }
 
-BOOL CDiagramEntity::GetDefaultFromString( CString& str )
+BOOL CDiagramEntity::GetDefaultFromString(CString& str)
 /* ============================================================
 	Function :		CDiagramEntity::GetDefaultFromString
 	Description :	Gets the default properties from "str"
 	Access :		Protected
 
-	Return :		BOOL			-	"TRUE" if the default 
+	Return :		BOOL			-	"TRUE" if the default
 										properties could be loaded ok.
-	Parameters :	CString& str	-	"CString" to get the 
+	Parameters :	CString& str	-	"CString" to get the
 										default properties from.
-					
-	Usage :			Call as a part of loading the object from 
-					disk. The default object properties will 
-					be stripped from "str" and the object 
+
+	Usage :			Call as a part of loading the object from
+					disk. The default object properties will
+					be stripped from "str" and the object
 					properties set from the data.
 
    ============================================================*/
 {
 	BOOL result = FALSE;
-	CString data( str );
-	if( data[ data.GetLength() -1 ] == _TCHAR( ';' ) )
-		data = data.Left( data.GetLength() - 1 ); // Strip the ';'
+	CString data(str);
+	if (data[data.GetLength() - 1] == _TCHAR(';'))
+		data = data.Left(data.GetLength() - 1); // Strip the ';'
 
-	CTokenizer tok( data ); 
+	CTokenizer tok(data);
 	INT_PTR size = tok.GetSize();
-	if( size >= 7 )
+	if (size >= 7)
 	{
 		double left;
 		double top;
@@ -298,39 +300,39 @@ BOOL CDiagramEntity::GetDefaultFromString( CString& str )
 		int group;
 		int count = 0;
 
-		tok.GetAt( count++, left );
-		tok.GetAt( count++, top );
-		tok.GetAt( count++, right );
-		tok.GetAt( count++, bottom );
-		tok.GetAt( count++, title );
-		tok.GetAt( count++, name );
-		tok.GetAt( count++, group );
+		tok.GetAt(count++, left);
+		tok.GetAt(count++, top);
+		tok.GetAt(count++, right);
+		tok.GetAt(count++, bottom);
+		tok.GetAt(count++, title);
+		tok.GetAt(count++, name);
+		tok.GetAt(count++, group);
 
-		SetRect( left, top, right, bottom );
+		SetRect(left, top, right, bottom);
 
-		title.Replace( _T( "\\colon" ), _T( ":" ) );
-		title.Replace( _T( "\\semicolon" ), _T( ";" ) );
-		title.Replace( _T( "\\comma" ), _T( "," ) );
-		title.Replace( _T( "\\newline" ), _T( "\r\n" ) );
+		title.Replace(_T("\\colon"), _T(":"));
+		title.Replace(_T("\\semicolon"), _T(";"));
+		title.Replace(_T("\\comma"), _T(","));
+		title.Replace(_T("\\newline"), _T("\r\n"));
 
-		name.Replace( _T( "\\colon" ), _T( ":" ) );
-		name.Replace( _T( "\\semicolon" ), _T( ";" ) );
-		name.Replace( _T( "\\comma" ), _T( "," ) );
-		name.Replace( _T( "\\newline" ), _T( "\r\n" ) );
+		name.Replace(_T("\\colon"), _T(":"));
+		name.Replace(_T("\\semicolon"), _T(";"));
+		name.Replace(_T("\\comma"), _T(","));
+		name.Replace(_T("\\newline"), _T("\r\n"));
 
-		SetTitle( title );
-		SetName( name );
-		SetGroup( group );
+		SetTitle(title);
+		SetName(name);
+		SetGroup(group);
 
 		// Rebuild rest of string
-		str = _T( "" );
-		for(INT_PTR t = count ; t < size ; t++ )
+		str = _T("");
+		for (INT_PTR t = count; t < size; t++)
 		{
-			tok.GetAt( t, data );
+			tok.GetAt(t, data);
 
 			str += data;
-			if( t < size - 1 )
-				str += _T( "," );
+			if (t < size - 1)
+				str += _T(",");
 		}
 
 		result = TRUE;
@@ -340,57 +342,57 @@ BOOL CDiagramEntity::GetDefaultFromString( CString& str )
 
 }
 
-BOOL CDiagramEntity::LoadFromString( CString& data )
+BOOL CDiagramEntity::LoadFromString(CString& data)
 /* ============================================================
 	Function :		CDiagramEntity::LoadFromString
 	Description :	Loads the object from "data".
 	Access :		Public
 
-	Return :		BOOL			-	"TRUE" if "str" is a 
+	Return :		BOOL			-	"TRUE" if "str" is a
 										well-formed object prefix.
 	Parameters :	CString& data	-	String to load from
-					
-	Usage :			Call to load the first part of an object 
+
+	Usage :			Call to load the first part of an object
 					from string.
 
    ============================================================*/
 {
 
 	BOOL result = FALSE;
-	CString header = GetHeaderFromString( data );
-	if( header == GetType() )
-		if( GetDefaultFromString( data ) )
+	CString header = GetHeaderFromString(data);
+	if (header == GetType())
+		if (GetDefaultFromString(data))
 			result = TRUE;
 
 	return result;
 
 }
 
-CDiagramEntity* CDiagramEntity::CreateFromString( const CString& str )
+CDiagramEntity* CDiagramEntity::CreateFromString(const CString& str)
 /* ============================================================
 	Function :		CDiagramEntity::CreateFromString
-	Description :	Static factory function that creates and 
-					returns an instance of this class if "str" 
+	Description :	Static factory function that creates and
+					returns an instance of this class if "str"
 					is a valid representation.
 	Access :		Public
 
-	Return :		CDiagramEntity*		-	The object, or "NULL" 
-											if "str" is not a 
-											representation of 
+	Return :		CDiagramEntity*		-	The object, or "NULL"
+											if "str" is not a
+											representation of
 											this type.
-	Parameters :	const CString& str	-	The string to create 
+	Parameters :	const CString& str	-	The string to create
 											from.
-					
-	Usage :			Can be used as a factory for text file loads. 
-					Each object type should have its own 
-					version - the default one is a model 
+
+	Usage :			Can be used as a factory for text file loads.
+					Each object type should have its own
+					version - the default one is a model
 					implementation.
 
    ============================================================*/
 {
 
 	CDiagramEntity* obj = new CDiagramEntity;
-	if(!obj->FromString( str ) )
+	if (!obj->FromString(str))
 	{
 		delete obj;
 		obj = NULL;
@@ -416,7 +418,7 @@ CString CDiagramEntity::GetString() const
 
 	CString str = GetDefaultGetString();
 
-	str += _T( ";" );
+	str += _T(";");
 
 	return str;
 
@@ -425,14 +427,14 @@ CString CDiagramEntity::GetString() const
 CString CDiagramEntity::GetDefaultGetString() const
 /* ============================================================
 	Function :		CDiagramEntity::GetDefaultString
-	Description :	Gets the default properties of the object 
+	Description :	Gets the default properties of the object
 					as a string.
 	Access :		Protected
 
 	Return :		CString	-	Resulting string
 	Parameters :	none
 
-	Usage :			Call as a part of the saving of objects 
+	Usage :			Call as a part of the saving of objects
 					to disk.
 
    ============================================================*/
@@ -440,18 +442,18 @@ CString CDiagramEntity::GetDefaultGetString() const
 	CString str;
 
 	CString title = GetTitle();
-	title.Replace( _T( ":" ), _T( "\\colon" ) );
-	title.Replace( _T( ";" ), _T( "\\semicolon" ) );
-	title.Replace( _T( "," ), _T( "\\comma" ) );
-	title.Replace( _T( "\r\n" ), _T( "\\newline" ) );
+	title.Replace(_T(":"), _T("\\colon"));
+	title.Replace(_T(";"), _T("\\semicolon"));
+	title.Replace(_T(","), _T("\\comma"));
+	title.Replace(_T("\r\n"), _T("\\newline"));
 
 	CString name = GetName();
-	name.Replace( _T( ":" ), _T( "\\colon" ) );
-	name.Replace( _T( ";" ), _T( "\\semicolon" ) );
-	name.Replace( _T( "," ), _T( "\\comma" ) );
-	name.Replace( _T( "\r\n" ), _T( "\\newline" ) );
+	name.Replace(_T(":"), _T("\\colon"));
+	name.Replace(_T(";"), _T("\\semicolon"));
+	name.Replace(_T(","), _T("\\comma"));
+	name.Replace(_T("\r\n"), _T("\\newline"));
 
-	str.Format( _T( "%s:%f,%f,%f,%f,%s,%s,%i" ), GetType(), GetLeft(), GetTop(), GetRight(), GetBottom(), title, name, GetGroup() );
+	str.Format(_T("%s:%f,%f,%f,%f,%s,%s,%i"), GetType(), GetLeft(), GetTop(), GetRight(), GetBottom(), title, name, GetGroup());
 
 	return str;
 }
@@ -465,21 +467,21 @@ CRect CDiagramEntity::GetRect() const
 	Return :		CRect	-	The object rectangle.
 	Parameters :	none
 
-	Usage :			Call to get the object position and size. 
+	Usage :			Call to get the object position and size.
 					Will round of fractions.
 
    ============================================================*/
 {
 
-	CRect rect( static_cast< int >( GetLeft() ), 
-				static_cast< int >( GetTop() ), 
-				static_cast< int >( GetRight() ), 
-				static_cast< int >( GetBottom() ) );
+	CRect rect(static_cast<int>(GetLeft()),
+		static_cast<int>(GetTop()),
+		static_cast<int>(GetRight()),
+		static_cast<int>(GetBottom()));
 	return rect;
 
 }
 
-void CDiagramEntity::SetRect( CRect rect )
+void CDiagramEntity::SetRect(CRect rect)
 /* ============================================================
 	Function :		CDiagramEntity::SetRect
 	Description :	Sets the object rectangle, normalized.
@@ -487,21 +489,21 @@ void CDiagramEntity::SetRect( CRect rect )
 
 	Return :		void
 	Parameters :	CRect rect	-	The rectangle to set.
-					
+
 	Usage :			Call to place the object.
 
    ============================================================*/
 {
 
 	rect.NormalizeRect();
-	SetRect( static_cast< double >( rect.left ), 
-				static_cast< double >( rect.top ), 
-				static_cast< double >( rect.right ), 
-				static_cast< double >( rect.bottom ) );
+	SetRect(static_cast<double>(rect.left),
+		static_cast<double>(rect.top),
+		static_cast<double>(rect.right),
+		static_cast<double>(rect.bottom));
 
 }
 
-void CDiagramEntity::SetRect( double left, double top, double right, double bottom )
+void CDiagramEntity::SetRect(double left, double top, double right, double bottom)
 /* ============================================================
 	Function :		CDiagramEntity::SetRect
 	Description :	Sets the object rectangle.
@@ -512,39 +514,39 @@ void CDiagramEntity::SetRect( double left, double top, double right, double bott
 					double top		-	Top edge
 					double right	-	Right edge
 					double bottom	-	Bottom edge
-					
+
 	Usage :			Call to place the object.
 
    ============================================================*/
 {
 
-	SetLeft( left );
-	SetTop( top );
-	SetRight( right );
-	SetBottom( bottom );
+	SetLeft(left);
+	SetTop(top);
+	SetRight(right);
+	SetBottom(bottom);
 
-	if( GetMinimumSize().cx != -1 )
-		if( GetRect().Width() < GetMinimumSize().cx )
-			SetRight( GetLeft() + GetMinimumSize().cx );
+	if (GetMinimumSize().cx != -1)
+		if (GetRect().Width() < GetMinimumSize().cx)
+			SetRight(GetLeft() + GetMinimumSize().cx);
 
-	if( GetMinimumSize().cy != -1 )
-		if( GetRect().Height() < GetMinimumSize().cy )
-			SetBottom( GetTop() + GetMinimumSize().cy );
+	if (GetMinimumSize().cy != -1)
+		if (GetRect().Height() < GetMinimumSize().cy)
+			SetBottom(GetTop() + GetMinimumSize().cy);
 
-	if( GetMaximumSize().cx != -1 )
-		if( GetRect().Width() > GetMaximumSize().cx )
-			SetRight( GetLeft() + GetMaximumSize().cx );
+	if (GetMaximumSize().cx != -1)
+		if (GetRect().Width() > GetMaximumSize().cx)
+			SetRight(GetLeft() + GetMaximumSize().cx);
 
-	if( GetMaximumSize().cy != -1 )
-		if( GetRect().Height() > GetMaximumSize().cy )
-			SetBottom( GetTop() + GetMaximumSize().cy );
+	if (GetMaximumSize().cy != -1)
+		if (GetRect().Height() > GetMaximumSize().cy)
+			SetBottom(GetTop() + GetMaximumSize().cy);
 
-  if( GetPropertyDialog() )
+	if (GetPropertyDialog())
 		GetPropertyDialog()->SetValues();
 
 }
 
-void CDiagramEntity::MoveRect( double x, double y )
+void CDiagramEntity::MoveRect(double x, double y)
 /* ============================================================
 	Function :		CDiagramEntity::MoveRect
 	Description :	Moves the object rectangle.
@@ -553,26 +555,26 @@ void CDiagramEntity::MoveRect( double x, double y )
 	Return :		void
 	Parameters :	double x	-	Move x steps horizontally.
 					double y	-	Move y steps vertically.
-					
+
 	Usage :			Call to move the object on screen.
 
    ============================================================*/
 {
 
-	SetRect( GetLeft() + x, GetTop() + y, GetRight() + x, GetBottom() + y );
+	SetRect(GetLeft() + x, GetTop() + y, GetRight() + x, GetBottom() + y);
 
 }
 
-void CDiagramEntity::Select( BOOL selected )
+void CDiagramEntity::Select(BOOL selected)
 /* ============================================================
 	Function :		CDiagramEntity::Select
 	Description :	Sets the object select state.
 	Access :		Public
 
 	Return :		void
-	Parameters :	BOOL selected	-	"TRUE" to select, "FALSE" 
+	Parameters :	BOOL selected	-	"TRUE" to select, "FALSE"
 										to unselect.
-					
+
 	Usage :			Call to select/deselect the object.
 
    ============================================================*/
@@ -580,11 +582,11 @@ void CDiagramEntity::Select( BOOL selected )
 
 	m_selected = selected;
 
-	if( selected && GetGroup() )
+	if (selected && GetGroup())
 	{
 		CDiagramEntityContainer* parent = GetParent();
-		if( parent )
-			parent->SendMessageToObjects( CMD_SELECT_GROUP, FALSE, this );
+		if (parent)
+			parent->SendMessageToObjects(CMD_SELECT_GROUP, FALSE, this);
 	}
 
 }
@@ -607,18 +609,18 @@ BOOL CDiagramEntity::IsSelected() const
 
 }
 
-BOOL CDiagramEntity::BodyInRect( CRect rect ) const
+BOOL CDiagramEntity::BodyInRect(CRect rect) const
 /* ============================================================
 	Function :		CDiagramEntity::BodyInRect
-	Description :	Used to see if any part of the object lies 
+	Description :	Used to see if any part of the object lies
 					in "rect".
 	Access :		Public
 
-	Return :		BOOL		-	"TRUE" if any part of the 
+	Return :		BOOL		-	"TRUE" if any part of the
 									object lies inside rect.
 	Parameters :	CRect rect	-	The rectangle to check.
-					
-	Usage :			Call to see if the object overlaps - for 
+
+	Usage :			Call to see if the object overlaps - for
 					example - a selection rubberband.
 
    ============================================================*/
@@ -631,25 +633,25 @@ BOOL CDiagramEntity::BodyInRect( CRect rect ) const
 	rect.NormalizeRect();
 	rectEntity.NormalizeRect();
 
-	rectIntersect.IntersectRect( rect, rectEntity );
-	if( !rectIntersect.IsRectEmpty() )
+	rectIntersect.IntersectRect(rect, rectEntity);
+	if (!rectIntersect.IsRectEmpty())
 		result = TRUE;
 
 	return result;
 
 }
 
-int CDiagramEntity::GetHitCode( CPoint point ) const
+int CDiagramEntity::GetHitCode(CPoint point) const
 /* ============================================================
 	Function :		CDiagramEntity::GetHitCode
 	Description :	Returns the hit point constant for "point".
 	Access :		Public
 
-	Return :		int				-	The hit point, 
+	Return :		int				-	The hit point,
 										"DEHT_NONE" if none.
 	Parameters :	CPoint point	-	The point to check
-					
-	Usage :			Call to see in what part of the object point 
+
+	Usage :			Call to see in what part of the object point
 					lies. The hit point can be one of the following:
 						"DEHT_NONE" No hit-point
 						"DEHT_BODY" Inside object body
@@ -666,109 +668,109 @@ int CDiagramEntity::GetHitCode( CPoint point ) const
 {
 
 	CRect rect = GetRect();
-	return GetHitCode( point, rect );
+	return GetHitCode(point, rect);
 
 }
 
-BOOL CDiagramEntity::DoMessage( UINT msg, CDiagramEntity* sender, CWnd* from )
+BOOL CDiagramEntity::DoMessage(UINT msg, CDiagramEntity* sender, CWnd* from)
 /* ============================================================
 	Function :		CDiagramEntity::DoMessage
 	Description :	Message handler for the object.
 	Access :		Public
 
-	Return :		BOOL					-	"TRUE" to stop 
+	Return :		BOOL					-	"TRUE" to stop
 												further processing.
 	Parameters :	UINT msg				-	The message.
-					CDiagramEntity* sender	-	Original sender of 
-												this message, or 
+					CDiagramEntity* sender	-	Original sender of
+												this message, or
 												"NULL" if not an object.
 
-	Usage :			The container can send messages to all 
-					objects. The messages should lie in the 
-					range "CMD_START" to "CMD_STOP" inclusively - 
-					a few are already predefined in 
-					DiagramEntity.h. This function will be 
-					called as response to those messages. This 
-					mechanism is already used for sending back 
-					messages from "CDiagramEditor" to the 
-					relevant object when a object popup menu 
+	Usage :			The container can send messages to all
+					objects. The messages should lie in the
+					range "CMD_START" to "CMD_STOP" inclusively -
+					a few are already predefined in
+					DiagramEntity.h. This function will be
+					called as response to those messages. This
+					mechanism is already used for sending back
+					messages from "CDiagramEditor" to the
+					relevant object when a object popup menu
 					alternative is selected.
 
    ============================================================*/
 {
 
 	BOOL stop = FALSE;
-	switch( msg )
+	switch (msg)
 	{
-		case CMD_CUT:
-			if( m_parent && IsSelected() )
-			{
-				stop = TRUE;
-				m_parent->Cut( this );
-			}
+	case CMD_CUT:
+		if (m_parent && IsSelected())
+		{
+			stop = TRUE;
+			m_parent->Cut(this);
+		}
 		break;
 
-		case CMD_COPY:
-			if( m_parent && IsSelected() )
-			{
-				stop = TRUE;
-				m_parent->Copy( this );
-			}
+	case CMD_COPY:
+		if (m_parent && IsSelected())
+		{
+			stop = TRUE;
+			m_parent->Copy(this);
+		}
 		break;
 
-		case CMD_UP:
-			if( m_parent && IsSelected() )
-			{
-				stop = TRUE;
-				m_parent->Up( this );
-			}
+	case CMD_UP:
+		if (m_parent && IsSelected())
+		{
+			stop = TRUE;
+			m_parent->Up(this);
+		}
 		break;
 
-		case CMD_DOWN:
-			if( m_parent && IsSelected() )
-			{
-				stop = TRUE;
-				m_parent->Down( this );
-			}
+	case CMD_DOWN:
+		if (m_parent && IsSelected())
+		{
+			stop = TRUE;
+			m_parent->Down(this);
+		}
 		break;
 
-		case CMD_FRONT:
-			if( m_parent && IsSelected() )
-			{
-				stop = TRUE;
-				m_parent->Front( this );
-			}
+	case CMD_FRONT:
+		if (m_parent && IsSelected())
+		{
+			stop = TRUE;
+			m_parent->Front(this);
+		}
 		break;
 
-		case CMD_BOTTOM:
-			if( m_parent && IsSelected() )
-			{
-				stop = TRUE;
-				m_parent->Bottom( this );
-			}
+	case CMD_BOTTOM:
+		if (m_parent && IsSelected())
+		{
+			stop = TRUE;
+			m_parent->Bottom(this);
+		}
 		break;
 
-		case CMD_DUPLICATE:
-			if( m_parent && IsSelected() )
-			{
-				stop = TRUE;
-				m_parent->Duplicate( this );
-				Select( FALSE );
-			}
+	case CMD_DUPLICATE:
+		if (m_parent && IsSelected())
+		{
+			stop = TRUE;
+			m_parent->Duplicate(this);
+			Select(FALSE);
+		}
 		break;
 
-		case CMD_PROPERTIES:
-			if( IsSelected() )
-			{
-				ShowProperties( from );
-				stop = TRUE;
-			}
+	case CMD_PROPERTIES:
+		if (IsSelected())
+		{
+			ShowProperties(from);
+			stop = TRUE;
+		}
 		break;
 
-		case CMD_SELECT_GROUP:
-			if( sender != this )
-				if( sender->GetGroup() == GetGroup() )
-					m_selected = TRUE;
+	case CMD_SELECT_GROUP:
+		if (sender != this)
+			if (sender->GetGroup() == GetGroup())
+				m_selected = TRUE;
 		break;
 
 	}
@@ -777,7 +779,7 @@ BOOL CDiagramEntity::DoMessage( UINT msg, CDiagramEntity* sender, CWnd* from )
 
 }
 
-void CDiagramEntity::ShowPopup( CPoint point, CWnd* parent )
+void CDiagramEntity::ShowPopup(CPoint point, CWnd* parent)
 /* ============================================================
 	Function :		CDiagramEntity::ShowPopup
 	Description :	Shows the popup menu for the object.
@@ -785,40 +787,40 @@ void CDiagramEntity::ShowPopup( CPoint point, CWnd* parent )
 
 	Return :		void
 	Parameters :	CPoint point	-	The point to track.
-					CWnd* parent	-	The parent "CWnd" of the 
-										menu (should be the 
+					CWnd* parent	-	The parent "CWnd" of the
+										menu (should be the
 										"CDiagramEditor")
 
-	Usage :			The function uses hardcoded strings to 
-					avoid having to include resource file 
+	Usage :			The function uses hardcoded strings to
+					avoid having to include resource file
 					fragments. Derived classes needing a non-
-					standard or localized menu should load 
+					standard or localized menu should load
 					menues from resources instead.
 
    ============================================================*/
 {
 
 	CMenu menu;
-	if( menu.CreatePopupMenu() )
+	if (menu.CreatePopupMenu())
 	{
 
-		menu.AppendMenu( MF_STRING, CMD_CUT, _T( "Cut" ) );
-		menu.AppendMenu( MF_STRING, CMD_COPY, _T( "Copy" ) );
-		menu.AppendMenu( MF_STRING, CMD_DUPLICATE, _T( "Duplicate" ) );
-		menu.AppendMenu( MF_SEPARATOR );
-		menu.AppendMenu( MF_STRING, CMD_UP, _T( "Up" ) );
-		menu.AppendMenu( MF_STRING, CMD_DOWN, _T( "Down" ) );
-		menu.AppendMenu( MF_STRING, CMD_FRONT, _T( "To front" ) );
-		menu.AppendMenu( MF_STRING, CMD_BOTTOM, _T( "To back" ) );
-		menu.AppendMenu( MF_SEPARATOR );
-		menu.AppendMenu( MF_STRING, CMD_PROPERTIES, _T( "Properties" ) );
-		menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, parent );
+		menu.AppendMenu(MF_STRING, CMD_CUT, _T("Cut"));
+		menu.AppendMenu(MF_STRING, CMD_COPY, _T("Copy"));
+		menu.AppendMenu(MF_STRING, CMD_DUPLICATE, _T("Duplicate"));
+		menu.AppendMenu(MF_SEPARATOR);
+		menu.AppendMenu(MF_STRING, CMD_UP, _T("Up"));
+		menu.AppendMenu(MF_STRING, CMD_DOWN, _T("Down"));
+		menu.AppendMenu(MF_STRING, CMD_FRONT, _T("To front"));
+		menu.AppendMenu(MF_STRING, CMD_BOTTOM, _T("To back"));
+		menu.AppendMenu(MF_SEPARATOR);
+		menu.AppendMenu(MF_STRING, CMD_PROPERTIES, _T("Properties"));
+		menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, parent);
 
 	}
 
 }
 
-void CDiagramEntity::ShowProperties( CWnd* parent, BOOL show )
+void CDiagramEntity::ShowProperties(CWnd* parent, BOOL show)
 /* ============================================================
 	Function :		CDiagramEntity::ShowProperties
 	Description :	Shows the property dialog for the object.
@@ -826,34 +828,34 @@ void CDiagramEntity::ShowProperties( CWnd* parent, BOOL show )
 
 	Return :		void
 	Parameters :	CWnd* parent	-	Parent of the dialog
-					BOOL show		-	"TRUE" to show, "FALSE" 
+					BOOL show		-	"TRUE" to show, "FALSE"
 										to hide.
 
-	Usage :			Call to show the property dialog for this 
+	Usage :			Call to show the property dialog for this
 					object.
 
    ============================================================*/
 {
 
-	if( m_propertydlg )
+	if (m_propertydlg)
 	{
-		if( show )
+		if (show)
 		{
-			if( !m_propertydlg->m_hWnd )
-				m_propertydlg->Create( ( UINT ) m_propertydlgresid, parent );
+			if (!m_propertydlg->m_hWnd)
+				m_propertydlg->Create((UINT)m_propertydlgresid, parent);
 
-			m_propertydlg->ShowWindow( SW_SHOW );
+			m_propertydlg->ShowWindow(SW_SHOW);
 			m_propertydlg->SetValues();
 			m_propertydlg->SetFocus();
 		}
 		else
-			if( m_propertydlg->m_hWnd )
-				m_propertydlg->ShowWindow( SW_HIDE );
+			if (m_propertydlg->m_hWnd)
+				m_propertydlg->ShowWindow(SW_HIDE);
 	}
 
 }
 
-void CDiagramEntity::DrawObject( CDC* dc, double zoom )
+void CDiagramEntity::DrawObject(CDC* dc, double zoom)
 /* ============================================================
 	Function :		CDiagramEntity::DrawObject
 	Description :	Top-level drawing function for the object.
@@ -862,66 +864,66 @@ void CDiagramEntity::DrawObject( CDC* dc, double zoom )
 	Return :		void
 	Parameters :	CDC* dc		-	"CDC" to draw to.
 					double zoom	-	Zoom level to use
-					
-	Usage :			Even though virtual, this function should 
-					normally not be overridden (use "Draw" 
-					instead). The function stores the zoom and 
+
+	Usage :			Even though virtual, this function should
+					normally not be overridden (use "Draw"
+					instead). The function stores the zoom and
 					calculates the true drawing rectangle.
 
    ============================================================*/
 {
 
-	SetZoom( zoom );
-	CRect rect( round( GetLeft() * zoom ), 
-				round( GetTop() * zoom ), 
-				round( GetRight() * zoom ), 
-				round( GetBottom() * zoom ) );
+	SetZoom(zoom);
+	CRect rect(round(GetLeft() * zoom),
+		round(GetTop() * zoom),
+		round(GetRight() * zoom),
+		round(GetBottom() * zoom));
 
-	Draw( dc, rect );
+	Draw(dc, rect);
 
-	if( IsSelected() )
-		DrawSelectionMarkers( dc, rect );
+	if (IsSelected())
+		DrawSelectionMarkers(dc, rect);
 
 }
 
-void CDiagramEntity::Draw( CDC* dc, CRect rect )
+void CDiagramEntity::Draw(CDC* dc, CRect rect)
 /* ============================================================
 	Function :		CDiagramEntity::Draw
 	Description :	Draws the object.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CDC* dc		-	The "CDC" to draw to. 
-					CRect rect	-	The real rectangle of the 
+	Parameters :	CDC* dc		-	The "CDC" to draw to.
+					CRect rect	-	The real rectangle of the
 									object.
 
-	Usage :			The function should clean up all selected 
-					objects. Note that the "CDC" is a memory "CDC", 
-					so creating a memory "CDC" in this function 
+	Usage :			The function should clean up all selected
+					objects. Note that the "CDC" is a memory "CDC",
+					so creating a memory "CDC" in this function
 					will probably not speed up the function.
 
    ============================================================*/
 {
 
-	dc->SelectStockObject( BLACK_PEN );
-	dc->SelectStockObject( WHITE_BRUSH );
+	dc->SelectStockObject(BLACK_PEN);
+	dc->SelectStockObject(WHITE_BRUSH);
 
-	dc->Rectangle( rect );
+	dc->Rectangle(rect);
 
 
 }
 
-HCURSOR CDiagramEntity::GetCursor( int hit ) const
+HCURSOR CDiagramEntity::GetCursor(int hit) const
 /* ============================================================
 	Function :		CDiagramEntity::GetCursor
 	Description :	Returns the cursor for the given hit point.
 	Access :		Public
 
 	Return :		HCURSOR	-	The cursor to show
-	Parameters :	int hit	-	The hit point constant ("DEHT_") 
+	Parameters :	int hit	-	The hit point constant ("DEHT_")
 								to get the cursor for.
 
-	Usage :			Call to get the cursor for a specific hit 
+	Usage :			Call to get the cursor for a specific hit
 					point constant.
 					"hit" can be one of the following:
 						"DEHT_NONE" No hit-point
@@ -938,52 +940,52 @@ HCURSOR CDiagramEntity::GetCursor( int hit ) const
    ============================================================*/
 {
 	HCURSOR cursor = NULL;
-	switch( hit )
+	switch (hit)
 	{
-		case DEHT_BODY:
-			cursor = LoadCursor( NULL, IDC_SIZEALL );
+	case DEHT_BODY:
+		cursor = LoadCursor(NULL, IDC_SIZEALL);
 		break;
-		case DEHT_TOPLEFT:
-			cursor = LoadCursor( NULL, IDC_SIZENWSE );
+	case DEHT_TOPLEFT:
+		cursor = LoadCursor(NULL, IDC_SIZENWSE);
 		break;
-		case DEHT_TOPMIDDLE:
-			cursor = LoadCursor( NULL, IDC_SIZENS );
+	case DEHT_TOPMIDDLE:
+		cursor = LoadCursor(NULL, IDC_SIZENS);
 		break;
-		case DEHT_TOPRIGHT:
-			cursor = LoadCursor( NULL, IDC_SIZENESW );
+	case DEHT_TOPRIGHT:
+		cursor = LoadCursor(NULL, IDC_SIZENESW);
 		break;
-		case DEHT_BOTTOMLEFT:
-			cursor = LoadCursor( NULL, IDC_SIZENESW );
+	case DEHT_BOTTOMLEFT:
+		cursor = LoadCursor(NULL, IDC_SIZENESW);
 		break;
-		case DEHT_BOTTOMMIDDLE:
-			cursor = LoadCursor( NULL, IDC_SIZENS );
+	case DEHT_BOTTOMMIDDLE:
+		cursor = LoadCursor(NULL, IDC_SIZENS);
 		break;
-		case DEHT_BOTTOMRIGHT:
-			cursor = LoadCursor( NULL, IDC_SIZENWSE );
+	case DEHT_BOTTOMRIGHT:
+		cursor = LoadCursor(NULL, IDC_SIZENWSE);
 		break;
-		case DEHT_LEFTMIDDLE:
-			cursor = LoadCursor( NULL, IDC_SIZEWE );
+	case DEHT_LEFTMIDDLE:
+		cursor = LoadCursor(NULL, IDC_SIZEWE);
 		break;
-		case DEHT_RIGHTMIDDLE:
-			cursor = LoadCursor( NULL, IDC_SIZEWE );
+	case DEHT_RIGHTMIDDLE:
+		cursor = LoadCursor(NULL, IDC_SIZEWE);
 		break;
 	}
 	return cursor;
 }
 
-void CDiagramEntity::DrawSelectionMarkers( CDC* dc, CRect rect ) const
+void CDiagramEntity::DrawSelectionMarkers(CDC* dc, CRect rect) const
 /* ============================================================
 	Function :		CDiagramEntity::DrawSelectionMarkers
-	Description :	Draws the selection markers for the 
+	Description :	Draws the selection markers for the
 					object.
 	Access :		Protected
 
-					
+
 	Return :		void
 	Parameters :	CDC* dc		-	The "CDC" to draw to
 					CRect rect	-	The real object rectangle.
-					
-	Usage :			"rect" is the true rectangle (zoomed) of the 
+
+	Usage :			"rect" is the true rectangle (zoomed) of the
 					object.
 
    ============================================================*/
@@ -992,48 +994,48 @@ void CDiagramEntity::DrawSelectionMarkers( CDC* dc, CRect rect ) const
 	// Draw selection markers
 	CRect rectSelect;
 
-	dc->SelectStockObject( BLACK_BRUSH );
-	rectSelect = GetSelectionMarkerRect( DEHT_TOPLEFT, rect );
-	dc->Rectangle( rectSelect );
+	dc->SelectStockObject(BLACK_BRUSH);
+	rectSelect = GetSelectionMarkerRect(DEHT_TOPLEFT, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_TOPMIDDLE, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_TOPMIDDLE, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_TOPRIGHT, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_TOPRIGHT, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_BOTTOMLEFT, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_BOTTOMLEFT, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_BOTTOMMIDDLE, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_BOTTOMMIDDLE, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_BOTTOMRIGHT, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_BOTTOMRIGHT, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_RIGHTMIDDLE, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_RIGHTMIDDLE, rect);
+	dc->Rectangle(rectSelect);
 
-	rectSelect = GetSelectionMarkerRect( DEHT_LEFTMIDDLE, rect );
-	dc->Rectangle( rectSelect );
+	rectSelect = GetSelectionMarkerRect(DEHT_LEFTMIDDLE, rect);
+	dc->Rectangle(rectSelect);
 
 }
 
-CRect CDiagramEntity::GetSelectionMarkerRect( UINT marker, CRect rect ) const
+CRect CDiagramEntity::GetSelectionMarkerRect(UINT marker, CRect rect) const
 /* ============================================================
 	Function :		CDiagramEntity::GetSelectionMarkerRect
-	Description :	Gets the selection marker rectangle for 
-					marker, given the true object rectangle 
+	Description :	Gets the selection marker rectangle for
+					marker, given the true object rectangle
 					"rect".
 	Access :		Protected
 
-					
+
 	Return :		CRect		-	The marker rectangle
 	Parameters :	UINT marker	-	The marker type ("DEHT_"-
-									constants defined in 
+									constants defined in
 									DiargramEntity.h)
 					CRect rect	-	The object rectangle
-					
+
 	Usage :			"marker" can be one of the following:
 						"DEHT_NONE" No hit-point
 						"DEHT_BODY" Inside object body
@@ -1053,62 +1055,62 @@ CRect CDiagramEntity::GetSelectionMarkerRect( UINT marker, CRect rect ) const
 	int horz = m_markerSize.cx / 2;
 	int vert = m_markerSize.cy / 2;
 
-	switch( marker )
+	switch (marker)
 	{
-		case DEHT_TOPLEFT:
-			rectMarker.SetRect( rect.left - horz,
-								rect.top - vert,
-								rect.left + horz,
-								rect.top + vert );
+	case DEHT_TOPLEFT:
+		rectMarker.SetRect(rect.left - horz,
+			rect.top - vert,
+			rect.left + horz,
+			rect.top + vert);
 		break;
 
-		case DEHT_TOPMIDDLE:
-			rectMarker.SetRect( rect.left + ( rect.Width() / 2 ) - horz,
-								rect.top - vert,
-								rect.left + ( rect.Width() / 2 ) + horz,
-								rect.top + vert );
+	case DEHT_TOPMIDDLE:
+		rectMarker.SetRect(rect.left + (rect.Width() / 2) - horz,
+			rect.top - vert,
+			rect.left + (rect.Width() / 2) + horz,
+			rect.top + vert);
 		break;
 
-		case DEHT_TOPRIGHT:
-			rectMarker.SetRect( rect.right - horz,
-								rect.top - vert,
-								rect.right + horz,
-								rect.top + vert );
+	case DEHT_TOPRIGHT:
+		rectMarker.SetRect(rect.right - horz,
+			rect.top - vert,
+			rect.right + horz,
+			rect.top + vert);
 		break;
 
-		case DEHT_BOTTOMLEFT:
-			rectMarker.SetRect( rect.left - horz,
-								rect.bottom - vert,
-								rect.left + horz,
-								rect.bottom + vert );
+	case DEHT_BOTTOMLEFT:
+		rectMarker.SetRect(rect.left - horz,
+			rect.bottom - vert,
+			rect.left + horz,
+			rect.bottom + vert);
 		break;
 
-		case DEHT_BOTTOMMIDDLE:
-			rectMarker.SetRect( rect.left + ( rect.Width() / 2 ) - horz,
-								rect.bottom - vert,
-								rect.left + ( rect.Width() / 2 ) + horz,
-								rect.bottom + vert );
+	case DEHT_BOTTOMMIDDLE:
+		rectMarker.SetRect(rect.left + (rect.Width() / 2) - horz,
+			rect.bottom - vert,
+			rect.left + (rect.Width() / 2) + horz,
+			rect.bottom + vert);
 		break;
 
-		case DEHT_BOTTOMRIGHT:
-			rectMarker.SetRect( rect.right - horz,
-								rect.bottom - vert,
-								rect.right + horz,
-								rect.bottom + vert );
+	case DEHT_BOTTOMRIGHT:
+		rectMarker.SetRect(rect.right - horz,
+			rect.bottom - vert,
+			rect.right + horz,
+			rect.bottom + vert);
 		break;
 
-		case DEHT_LEFTMIDDLE:
-			rectMarker.SetRect( rect.left - horz,
-								rect.top + ( rect.Height() / 2 ) - vert,
-								rect.left + horz,
-								rect.top + ( rect.Height() / 2 ) + vert );
+	case DEHT_LEFTMIDDLE:
+		rectMarker.SetRect(rect.left - horz,
+			rect.top + (rect.Height() / 2) - vert,
+			rect.left + horz,
+			rect.top + (rect.Height() / 2) + vert);
 		break;
 
-		case DEHT_RIGHTMIDDLE:
-			rectMarker.SetRect( rect.right - horz,
-								rect.top + ( rect.Height() / 2 ) - vert,
-								rect.right + horz,
-								rect.top + ( rect.Height() / 2 ) + vert );
+	case DEHT_RIGHTMIDDLE:
+		rectMarker.SetRect(rect.right - horz,
+			rect.top + (rect.Height() / 2) - vert,
+			rect.right + horz,
+			rect.top + (rect.Height() / 2) + vert);
 		break;
 	}
 
@@ -1116,19 +1118,19 @@ CRect CDiagramEntity::GetSelectionMarkerRect( UINT marker, CRect rect ) const
 
 }
 
-void CDiagramEntity::SetParent( CDiagramEntityContainer * parent )
+void CDiagramEntity::SetParent(CDiagramEntityContainer * parent)
 /* ============================================================
 	Function :		CDiagramEntity::SetParent
 	Description :	Set the container owning the object.
 	Access :		Protected
 
 	Return :		void
-	Parameters :	CDiagramEntityContainer * parent	-	the 
+	Parameters :	CDiagramEntityContainer * parent	-	the
 															parent.
-					
-	Usage :			Call to set the parent of the object. 
-					Objects must know their parent, to allow 
-					copying etc. 
+
+	Usage :			Call to set the parent of the object.
+					Objects must know their parent, to allow
+					copying etc.
 
    ============================================================*/
 {
@@ -1137,28 +1139,28 @@ void CDiagramEntity::SetParent( CDiagramEntityContainer * parent )
 
 }
 
-void CDiagramEntity::GetFont( LOGFONT& lf ) const
+void CDiagramEntity::GetFont(LOGFONT& lf) const
 /* ============================================================
 	Function :		CDiagramEntity::GetFont
-	Description :	Returns the system GUI font in a "LOGFONT" 
+	Description :	Returns the system GUI font in a "LOGFONT"
 					scaled to the zoom level of the object.
 	Access :		Protected
 
-					
+
 	Return :		void
 	Parameters :	LOGFONT& lf	-	The "LOGFONT" for the system
 									GUI font.
-					
-	Usage :			Call to get the system font. Note that MS 
+
+	Usage :			Call to get the system font. Note that MS
 					Sans Serif will not scale below 8 points.
 
    ============================================================*/
 {
 
-	HFONT hfont = ( HFONT ) ::GetStockObject( DEFAULT_GUI_FONT );
-	CFont* font = CFont::FromHandle( hfont );
-	font->GetLogFont( &lf );
-	lf.lfHeight = round( static_cast< double >( lf.lfHeight ) * m_zoom );
+	HFONT hfont = (HFONT) ::GetStockObject(DEFAULT_GUI_FONT);
+	CFont* font = CFont::FromHandle(hfont);
+	font->GetLogFont(&lf);
+	lf.lfHeight = round(static_cast<double>(lf.lfHeight) * m_zoom);
 
 }
 
@@ -1171,8 +1173,8 @@ CString CDiagramEntity::GetType() const
 	Return :		CString	-	The type of the object.
 	Parameters :	none
 
-	Usage :			Call to get the type of the object. The type 
-					is used when saving and loading objects 
+	Usage :			Call to get the type of the object. The type
+					is used when saving and loading objects
 					to/from a text file.
 
    ============================================================*/
@@ -1180,7 +1182,7 @@ CString CDiagramEntity::GetType() const
 	return m_type;
 }
 
-void CDiagramEntity::SetType( CString type )
+void CDiagramEntity::SetType(CString type)
 /* ============================================================
 	Function :		CDiagramEntity::SetType
 	Description :	Set the object type.
@@ -1188,10 +1190,10 @@ void CDiagramEntity::SetType( CString type )
 
 	Return :		void
 	Parameters :	CString type	-	The type to set
-					
-	Usage :			Call to set the object type - normally in 
-					the "ctor" of this object. The type is used 
-					when saving and loading objects to/from a 
+
+	Usage :			Call to set the object type - normally in
+					the "ctor" of this object. The type is used
+					when saving and loading objects to/from a
 					text file.
 
    ============================================================*/
@@ -1208,7 +1210,7 @@ CString CDiagramEntity::GetTitle() const
 	Return :		CString	-	The current title
 	Parameters :	none
 
-	Usage :			Call to get the title of the object. Title 
+	Usage :			Call to get the title of the object. Title
 					is a property that the object can use in
 					whatever way it wants.
 
@@ -1219,7 +1221,7 @@ CString CDiagramEntity::GetTitle() const
 
 }
 
-void CDiagramEntity::SetTitle( CString title )
+void CDiagramEntity::SetTitle(CString title)
 /* ============================================================
 	Function :		CDiagramEntity::SetTitle
 	Description :	Sets the Title property
@@ -1227,8 +1229,8 @@ void CDiagramEntity::SetTitle( CString title )
 
 	Return :		void
 	Parameters :	CString title	-	The new title
-					
-	Usage :			Call to set the title of the object. Title 
+
+	Usage :			Call to set the title of the object. Title
 					is a property that the object can use in
 					whatever way it wants.
 
@@ -1248,7 +1250,7 @@ CString CDiagramEntity::GetName() const
 	Return :		CString	-	The current name
 	Parameters :	none
 
-	Usage :			Call to get the name of the object. Name is 
+	Usage :			Call to get the name of the object. Name is
 					a property that the object can use in
 					whatever way it wants.
 
@@ -1260,7 +1262,7 @@ CString CDiagramEntity::GetName() const
 
 }
 
-void CDiagramEntity::SetName( CString name )
+void CDiagramEntity::SetName(CString name)
 /* ============================================================
 	Function :		CDiagramEntity::SetName
 	Description :	Sets the Name property
@@ -1268,8 +1270,8 @@ void CDiagramEntity::SetName( CString name )
 
 	Return :		void
 	Parameters :	CString name	-	The new name
-					
-	Usage :			Call to set the name of the object. Name is 
+
+	Usage :			Call to set the name of the object. Name is
 					a property that the object can use in
 					whatever way it wants.
 
@@ -1289,11 +1291,11 @@ double CDiagramEntity::GetLeft() const
 	Return :		double	-	Left position
 	Parameters :	none
 
-	Usage :			Call to get the left edge of the object. 
-					Note that if minimum sizes are not set for 
-					the object, the left edge might be bigger 
+	Usage :			Call to get the left edge of the object.
+					Note that if minimum sizes are not set for
+					the object, the left edge might be bigger
 					than the right.
-					The object coordinates are expressed as 
+					The object coordinates are expressed as
 					double values to allow unlimited zoom.
 
    ============================================================*/
@@ -1306,7 +1308,7 @@ double CDiagramEntity::GetLeft() const
 double CDiagramEntity::GetRight() const
 /* ============================================================
 	Function :		CDiagramEntity::GetRight
-	Description :	Gets the right edge of the object 
+	Description :	Gets the right edge of the object
 					rectangle
 	Access :		Public
 
@@ -1314,10 +1316,10 @@ double CDiagramEntity::GetRight() const
 	Parameters :	none
 
 	Usage :			Call to get the right edge of the object.
-					Note that if minimum sizes are not set for 
-					the object, the left edge might be bigger 
+					Note that if minimum sizes are not set for
+					the object, the left edge might be bigger
 					than the right.
-					The object coordinates are expressed as 
+					The object coordinates are expressed as
 					double values to allow unlimited zoom.
 
    ============================================================*/
@@ -1337,10 +1339,10 @@ double CDiagramEntity::GetTop() const
 	Parameters :	none
 
 	Usage :			Call to get the top edge of the object.
-					Note that if minimum sizes are not set for 
-					the object, the top edge might be bigger 
+					Note that if minimum sizes are not set for
+					the object, the top edge might be bigger
 					than the bottom.
-					The object coordinates are expressed as 
+					The object coordinates are expressed as
 					double values to allow unlimited zoom.
 
    ============================================================*/
@@ -1353,7 +1355,7 @@ double CDiagramEntity::GetTop() const
 double CDiagramEntity::GetBottom() const
 /* ============================================================
 	Function :		CDiagramEntity::GetBottom
-	Description :	Gets the bottom edge of the object 
+	Description :	Gets the bottom edge of the object
 					rectangle
 	Access :		Public
 
@@ -1361,10 +1363,10 @@ double CDiagramEntity::GetBottom() const
 	Parameters :	none
 
 	Usage :			Call to get the bottom edge of the object.
-					Note that if minimum sizes are not set for 
-					the object, the top edge might be bigger 
+					Note that if minimum sizes are not set for
+					the object, the top edge might be bigger
 					than the bottom.
-					The object coordinates are expressed as 
+					The object coordinates are expressed as
 					double values to allow unlimited zoom.
 
    ============================================================*/
@@ -1374,7 +1376,7 @@ double CDiagramEntity::GetBottom() const
 
 }
 
-void CDiagramEntity::SetLeft( double left )
+void CDiagramEntity::SetLeft(double left)
 /* ============================================================
 	Function :		CDiagramEntity::SetLeft
 	Description :	Sets the left edge of the object rectangle
@@ -1382,9 +1384,9 @@ void CDiagramEntity::SetLeft( double left )
 
 	Return :		void
 	Parameters :	double left	-	New left position
-					
+
 	Usage :			Call to set the left edge of the object.
-					The object coordinates are expressed as 
+					The object coordinates are expressed as
 					double values to allow unlimited zoom.
 
    ============================================================*/
@@ -1394,18 +1396,18 @@ void CDiagramEntity::SetLeft( double left )
 
 }
 
-void CDiagramEntity::SetRight( double right )
+void CDiagramEntity::SetRight(double right)
 /* ============================================================
 	Function :		CDiagramEntity::SetRight
-	Description :	Sets the right edge of the object 
+	Description :	Sets the right edge of the object
 					rectangle
 	Access :		Public
 
 	Return :		void
 	Parameters :	double right	-	New right position
-					
+
 	Usage :			Call to set the right edge of the object.
-					The object coordinates are expressed as 
+					The object coordinates are expressed as
 					double values to allow unlimited zoom.
 
    ============================================================*/
@@ -1415,7 +1417,7 @@ void CDiagramEntity::SetRight( double right )
 
 }
 
-void CDiagramEntity::SetTop( double top )
+void CDiagramEntity::SetTop(double top)
 /* ============================================================
 	Function :		CDiagramEntity::SetTop
 	Description :	Sets the top edge of the object rectangle
@@ -1423,31 +1425,31 @@ void CDiagramEntity::SetTop( double top )
 
 	Return :		void
 	Parameters :	double top	-	New top position
-					
+
 	Usage :			Call to set the top edge of the object.
-					The object coordinates are expressed as 
+					The object coordinates are expressed as
 					double values to allow unlimited zoom.
 
    ============================================================*/
 {
-if( top == m_bottom )
-	top = top;
+	if (top == m_bottom)
+		top = top;
 	m_top = top;
 
 }
 
-void CDiagramEntity::SetBottom( double bottom )
+void CDiagramEntity::SetBottom(double bottom)
 /* ============================================================
 	Function :		CDiagramEntity::SetBottom
-	Description :	Sets the bottom edge of the object 
+	Description :	Sets the bottom edge of the object
 					rectangle
 	Access :		Public
 
 	Return :		void
 	Parameters :	double bottom	-	New bottom position
-					
+
 	Usage :			Call to set the bottom edge of the object.
-					The object coordinates are expressed as 
+					The object coordinates are expressed as
 					double values to allow unlimited zoom.
 
    ============================================================*/
@@ -1457,7 +1459,7 @@ void CDiagramEntity::SetBottom( double bottom )
 
 }
 
-void CDiagramEntity::SetMarkerSize( CSize markerSize )
+void CDiagramEntity::SetMarkerSize(CSize markerSize)
 /* ============================================================
 	Function :		CDiagramEntity::SetMarkerSize
 	Description :	Gets the size of selection markers
@@ -1465,10 +1467,10 @@ void CDiagramEntity::SetMarkerSize( CSize markerSize )
 	Access :		Public
 
 	Return :		void
-	Parameters :	CSize markerSize	-	The new size of a 
+	Parameters :	CSize markerSize	-	The new size of a
 											selection marker
-					
-	Usage :			Call to set a new selection marker size for 
+
+	Usage :			Call to set a new selection marker size for
 					the object.
 
    ============================================================*/
@@ -1485,7 +1487,7 @@ CSize CDiagramEntity::GetMarkerSize() const
 	Access :		Protected
 	Access :		Public
 
-	Return :		CSize	-	The current size of a 
+	Return :		CSize	-	The current size of a
 								selection marker
 	Parameters :	none
 
@@ -1499,19 +1501,19 @@ CSize CDiagramEntity::GetMarkerSize() const
 
 }
 
-void CDiagramEntity::SetMinimumSize( CSize minimumSize )
+void CDiagramEntity::SetMinimumSize(CSize minimumSize)
 /* ============================================================
 	Function :		CDiagramEntity::SetMinimumSize
-	Description :	Sets the minimum size for instances of 
+	Description :	Sets the minimum size for instances of
 					this object.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CSize minimumSize	-	The minimum allowed 
+	Parameters :	CSize minimumSize	-	The minimum allowed
 											size
-					
+
 	Usage :			Call to set the minimum size of the object.
-					It is not possible to resize an object to a 
+					It is not possible to resize an object to a
 					size smaller than the minimum allowed size.
 
    ============================================================*/
@@ -1524,7 +1526,7 @@ void CDiagramEntity::SetMinimumSize( CSize minimumSize )
 CSize CDiagramEntity::GetMinimumSize() const
 /* ============================================================
 	Function :		CDiagramEntity::GetMinimumSize
-	Description :	Gets the minimum size for instances of 
+	Description :	Gets the minimum size for instances of
 					this object.
 	Access :		Public
 
@@ -1532,7 +1534,7 @@ CSize CDiagramEntity::GetMinimumSize() const
 	Parameters :	none
 
 	Usage :			Call to get the minimum size of the object.
-					It is not possible to resize an object to a 
+					It is not possible to resize an object to a
 					size smaller than the minimum allowed size.
 
    ============================================================*/
@@ -1542,19 +1544,19 @@ CSize CDiagramEntity::GetMinimumSize() const
 
 }
 
-void CDiagramEntity::SetMaximumSize( CSize maximumSize )
+void CDiagramEntity::SetMaximumSize(CSize maximumSize)
 /* ============================================================
 	Function :		CDiagramEntity::SetMaximumSize
-	Description :	Sets the maximum size for instances of 
+	Description :	Sets the maximum size for instances of
 					this object.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CSize maximumSize	-	The maximum allowed 
+	Parameters :	CSize maximumSize	-	The maximum allowed
 											size.
-					
+
 	Usage :			Call to set the maximum size of the object.
-					It is not possible to resize an object to a 
+					It is not possible to resize an object to a
 					size larger than the maximum allowed size.
 
    ============================================================*/
@@ -1567,7 +1569,7 @@ void CDiagramEntity::SetMaximumSize( CSize maximumSize )
 CSize CDiagramEntity::GetMaximumSize() const
 /* ============================================================
 	Function :		CDiagramEntity::GetMaximumSize
-	Description :	Returns the maximum size for instances of 
+	Description :	Returns the maximum size for instances of
 					this object.
 	Access :		Public
 
@@ -1575,7 +1577,7 @@ CSize CDiagramEntity::GetMaximumSize() const
 	Parameters :	none
 
 	Usage :			Call to get the maximum size of the object.
-					It is not possible to resize an object to a 
+					It is not possible to resize an object to a
 					size larger than the maximum allowed size.
 
    ============================================================*/
@@ -1585,22 +1587,22 @@ CSize CDiagramEntity::GetMaximumSize() const
 
 }
 
-void CDiagramEntity::SetConstraints( CSize min, CSize max )
+void CDiagramEntity::SetConstraints(CSize min, CSize max)
 /* ============================================================
 	Function :		CDiagramEntity::SetConstraints
-	Description :	Sets the minimum and maximum sizes for 
-					instances of this object. -1 means no 
+	Description :	Sets the minimum and maximum sizes for
+					instances of this object. -1 means no
 					constraints.
 	Access :		Public
 
 	Return :		void
 	Parameters :	CSize min	-	Minimum size
 					CSize max	-	Maximum size
-					
-	Usage :			Call to set the minimum and maximum sizes 
+
+	Usage :			Call to set the minimum and maximum sizes
 					of the object.
-					It is not possible to resize an object to 
-					smaller or bigger than the min- and max 
+					It is not possible to resize an object to
+					smaller or bigger than the min- and max
 					size.
 
    ============================================================*/
@@ -1630,22 +1632,22 @@ CDiagramEntityContainer* CDiagramEntity::GetParent() const
 
 }
 
-void CDiagramEntity::SetPropertyDialog( CDiagramPropertyDlg* dlg, UINT dlgresid )
+void CDiagramEntity::SetPropertyDialog(CDiagramPropertyDlg* dlg, UINT dlgresid)
 /* ============================================================
 	Function :		CDiagramEntity::SetPropertyDialog
 	Description :	Sets the property dialog pointer.
 	Access :		Protected
 
 	Return :		void
-	Parameters :	CDiagramPropertyDlg* dlg	-	a pointer 
-													to a dialog 
-													instance. 
-					UINT dlgresid				-	The resource 
-													id of the 
+	Parameters :	CDiagramPropertyDlg* dlg	-	a pointer
+													to a dialog
+													instance.
+					UINT dlgresid				-	The resource
+													id of the
 													dialog template.
-					
-	Usage :			Call to set a property dialog for the object 
-					(normally in the "ctor"). 
+
+	Usage :			Call to set a property dialog for the object
+					(normally in the "ctor").
 
    ============================================================*/
 {
@@ -1653,24 +1655,24 @@ void CDiagramEntity::SetPropertyDialog( CDiagramPropertyDlg* dlg, UINT dlgresid 
 	m_propertydlg = dlg;
 	m_propertydlgresid = dlgresid;
 
-	if( dlg )
-		m_propertydlg->SetEntity( this );
+	if (dlg)
+		m_propertydlg->SetEntity(this);
 
 }
 
 CDiagramPropertyDlg* CDiagramEntity::GetPropertyDialog() const
 /* ============================================================
 	Function :		CDiagramEntity::GetPropertyDialog
-	Description :	Returns a pointer to the class property 
+	Description :	Returns a pointer to the class property
 					dialog.
 	Access :		Protected
 
-	Return :		CDiagramPropertyDlg*	-	The dialog 
-												pointer. "NULL" 
+	Return :		CDiagramPropertyDlg*	-	The dialog
+												pointer. "NULL"
 												if none.
 	Parameters :	none
 
-	Usage :			Call to get a pointer to the object property 
+	Usage :			Call to get a pointer to the object property
 					dialog.
 
    ============================================================*/
@@ -1686,13 +1688,13 @@ double CDiagramEntity::GetZoom() const
 	Description :	Returns the zoom level for the object.
 	Access :		Public
 
-	Return :		double	-	
+	Return :		double	-
 	Parameters :	none
 
-	Usage :			Internal function. Can be called by derived 
-					classes to get the zoom level. The zoom 
-					level is set by the owning editor when 
-					drawing the object, is read-only and this 
+	Usage :			Internal function. Can be called by derived
+					classes to get the zoom level. The zoom
+					level is set by the owning editor when
+					drawing the object, is read-only and this
 					function should only be called from "Draw".
 
    ============================================================*/
@@ -1702,7 +1704,7 @@ double CDiagramEntity::GetZoom() const
 
 }
 
-void CDiagramEntity::SetZoom( double zoom )
+void CDiagramEntity::SetZoom(double zoom)
 /* ============================================================
 	Function :		CDiagramEntity::SetZoom
 	Description :	Sets the zoom level
@@ -1710,7 +1712,7 @@ void CDiagramEntity::SetZoom( double zoom )
 
 	Return :		nothing
 	Parameters :	double zoom	-	The new zoom level
-					
+
 	Usage :			Internal call.
 
    ============================================================*/
@@ -1727,7 +1729,7 @@ int CDiagramEntity::GetGroup() const
 	Return :		int	-	Group of object
 	Parameters :	none
 
-	Usage :			Call to get the group for the object. All 
+	Usage :			Call to get the group for the object. All
 					objects in a group are selected together.
 
    ============================================================*/
@@ -1737,7 +1739,7 @@ int CDiagramEntity::GetGroup() const
 
 }
 
-void CDiagramEntity::SetGroup( int group )
+void CDiagramEntity::SetGroup(int group)
 /* ============================================================
 	Function :		CDiagramEntity::SetGroup
 	Description :	Sets the object group to "group".
@@ -1745,8 +1747,8 @@ void CDiagramEntity::SetGroup( int group )
 
 	Return :		void
 	Parameters :	int group	-	New group to set
-					
-	Usage :			Call to set a group for the object. All 
+
+	Usage :			Call to set a group for the object. All
 					objects in a group are selected together.
 
    ============================================================*/
@@ -1756,38 +1758,39 @@ void CDiagramEntity::SetGroup( int group )
 
 }
 
-CString CDiagramEntity::Export( UINT /*format*/ ) const
+CString CDiagramEntity::Export(UINT /*format*/) const
 /* ============================================================
 	Function :		CDiagramEntity::Export
 	Description :	Exports the object to format
 	Access :		Public
 
-	Return :		CString		-	The object representation 
+	Return :		CString		-	The object representation
 									in format.
 	Parameters :	UINT format	-	The format to export to.
-					
-	Usage :			Virtual function to allow easy exporting of 
+
+	Usage :			Virtual function to allow easy exporting of
 					the objects to different text based formats.
 
    ============================================================*/
 {
 
-	return _T( "" );
+	return _T("");
 
 }
 
-int CDiagramEntity::GetHitCode( const CPoint& point, const CRect& rect ) const
+int CDiagramEntity::GetHitCode(const CPoint& point, const CRect& rect) const
 /* ============================================================
 	Function :		CDiagramEntity::GetHitCode
-	Description :	Returns the hit point constant for "point" 
+	Description :	Returns the hit point constant for "point"
 					assuming the object rectangle "rect".
 	Access :		Public
 
-	Return :		int				-	The hit point, 
+	Return :		int				-	The hit point,
 										"DEHT_NONE" if none.
 	Parameters :	CPoint point	-	The point to check
-					
-	Usage :			Call to see in what part of the object point 
+					CRect rect		-	The rect to check
+
+	Usage :			Call to see in what part of the object point
 					lies. The hit point can be one of the following:
 						"DEHT_NONE" No hit-point
 						"DEHT_BODY" Inside object body
@@ -1805,41 +1808,41 @@ int CDiagramEntity::GetHitCode( const CPoint& point, const CRect& rect ) const
 
 	int result = DEHT_NONE;
 
-	if( rect.PtInRect( point ) )
+	if (rect.PtInRect(point))
 		result = DEHT_BODY;
 
 	CRect rectTest;
 
-	rectTest = GetSelectionMarkerRect( DEHT_TOPLEFT, rect );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_TOPLEFT, rect);
+	if (rectTest.PtInRect(point))
 		result = DEHT_TOPLEFT;
 
-	rectTest = GetSelectionMarkerRect( DEHT_TOPMIDDLE, rect );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_TOPMIDDLE, rect);
+	if (rectTest.PtInRect(point))
 		result = DEHT_TOPMIDDLE;
 
-	rectTest = GetSelectionMarkerRect( DEHT_TOPRIGHT, rect );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_TOPRIGHT, rect);
+	if (rectTest.PtInRect(point))
 		result = DEHT_TOPRIGHT;
 
-	rectTest = GetSelectionMarkerRect( DEHT_BOTTOMLEFT, rect );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_BOTTOMLEFT, rect);
+	if (rectTest.PtInRect(point))
 		result = DEHT_BOTTOMLEFT;
 
-	rectTest = GetSelectionMarkerRect( DEHT_BOTTOMMIDDLE, rect );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_BOTTOMMIDDLE, rect);
+	if (rectTest.PtInRect(point))
 		result = DEHT_BOTTOMMIDDLE;
 
-	rectTest = GetSelectionMarkerRect( DEHT_BOTTOMRIGHT, rect );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_BOTTOMRIGHT, rect);
+	if (rectTest.PtInRect(point))
 		result = DEHT_BOTTOMRIGHT;
 
-	rectTest = GetSelectionMarkerRect( DEHT_LEFTMIDDLE, rect );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_LEFTMIDDLE, rect);
+	if (rectTest.PtInRect(point))
 		result = DEHT_LEFTMIDDLE;
 
-	rectTest = GetSelectionMarkerRect( DEHT_RIGHTMIDDLE, rect );
-	if( rectTest.PtInRect( point ) )
+	rectTest = GetSelectionMarkerRect(DEHT_RIGHTMIDDLE, rect);
+	if (rectTest.PtInRect(point))
 		result = DEHT_RIGHTMIDDLE;
 
 	return result;

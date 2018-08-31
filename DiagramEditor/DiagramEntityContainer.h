@@ -41,10 +41,11 @@ public:
 	// Undo handling
 	virtual void	Undo();
 	virtual void	Snapshot();
-	BOOL			IsUndoPossible();
+	BOOL			IsUndoPossible() const;
 	virtual void	ClearUndo();
 	void			SetUndoStackSize(int maxstacksize);
 	int				GetUndoStackSize() const;
+	void			PopUndo();
 
 	// Group handling
 	virtual void	Group();

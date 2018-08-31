@@ -99,7 +99,7 @@ public:
 
 	void		SetResize(BOOL bgresize);
 	BOOL		GetResize() const;
-	void		SetResizeZone(BOOL bgresize);
+	void		SetResizeZone(int bgresize);
 	int			GetResizeZone() const;
 
 	void		SetMargins(int left, int top, int right, int bottom);
@@ -158,7 +158,7 @@ public:
 	// Group object operations
 	virtual void	New();
 	virtual void	SelectAll();
-	void			UnselectAll();
+	virtual void	UnselectAll();
 	void			DeleteAll();
 	virtual void	DeleteAllSelected();
 

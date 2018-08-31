@@ -115,6 +115,8 @@ public:
 
 	BOOL			LoadFromString(CString& data);
 
+	void						SetParent(CDiagramEntityContainer* parent);
+	CDiagramEntityContainer*	GetParent() const;
 
 protected:
 
@@ -130,9 +132,6 @@ protected:
 	CSize			GetMarkerSize() const;
 
 	void			SetZoom(double zoom);
-
-	void						SetParent(CDiagramEntityContainer* parent);
-	CDiagramEntityContainer*	GetParent() const;
 
 	void						SetPropertyDialog(CDiagramPropertyDlg* dlg, UINT resid);
 	CDiagramPropertyDlg*		GetPropertyDialog() const;

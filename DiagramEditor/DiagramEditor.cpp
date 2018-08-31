@@ -102,6 +102,11 @@
 					28/8 2004	Added check for non-normalized rect when
 								hit-testing in OnLButtonDown, as lines
 								have them.
+   ========================================================================
+					11/12 2004	Added minimum step size one pixel in
+								OnKeyDown to avoid 0-pixel movement for
+								arrow keys (Graham G Pearson)
+					11/12 2004	Made UnselectAll virtual (Grisha Vinevich)
   ========================================================================*/
 
 #include "stdafx.h"
@@ -2849,6 +2854,9 @@ void CDiagramEditor::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				offsetstepx = static_cast<double>(m_gridSize.cx) / GetZoom();
 				offsetstepy = static_cast<double>(m_gridSize.cy) / GetZoom();
 			}
+
+			offsetstepx = max(offsetstepx, 1);
+			offsetstepy = max(offsetstepy, 1);
 
 			double offsetx = 0.0;
 			double offsety = 0.0;

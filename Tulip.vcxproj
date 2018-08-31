@@ -196,6 +196,8 @@
     <ClInclude Include="DiagramEditor\DiagramMenu.h" />
     <ClInclude Include="DiagramEditor\DiagramPropertyDlg.h" />
     <ClInclude Include="DiagramEditor\GroupFactory.h" />
+    <ClInclude Include="DiagramEditor\HitParams.h" />
+    <ClInclude Include="DiagramEditor\HitParamsRect.h" />
     <ClInclude Include="DiagramEditor\Tokenizer.h" />
     <ClInclude Include="DiagramEditor\UndoItem.h" />
     <ClInclude Include="DiskObject\DiskObject.h" />

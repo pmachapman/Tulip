@@ -343,6 +343,77 @@ CDiagramEntity* CDiagramLine::CreateFromString(const CString& str)
 
 }
 
+int CDiagramLine::GetHitCode(const CPoint& point, const CRect& rect) const
+/* ============================================================
+	Function :		CDiagramEntity::GetHitCode
+	Description :	Returns the hit point constant for "point"
+					assuming the object rectangle "rect".
+	Access :		Public
+
+	Return :		int				-	The hit point,
+										"DEHT_NONE" if none.
+	Parameters :	CPoint point	-	The point to check
+					CRect rect		-	The rect to check
+
+	Usage :			Call to see in what part of the object point
+					lies. The hit point can be one of the following:
+						"DEHT_NONE" No hit-point
+						"DEHT_BODY" Inside object body
+						"DEHT_TOPLEFT" Top-left corner
+						"DEHT_BOTTOMRIGHT" Bottom-right corner
+
+   ============================================================*/
+{
+	// The rectangle comes in normalized, 
+	// which might no be appropriate for 
+	// this line. Check and de-normalize!
+	CRect r(rect);
+
+	if (GetTop() > GetBottom())
+	{
+		int temp = r.bottom;
+		r.bottom = r.top;
+		r.top = temp;
+	}
+
+	if (GetLeft() > GetRight())
+	{
+		int temp = r.right;
+		r.right = r.left;
+		r.left = temp;
+	}
+
+	int result = DEHT_NONE;
+
+	hitParams hit;
+	hit.hit = FALSE;
+	hit.x = point.x;
+	hit.y = point.y;
+
+	LineDDA(static_cast<int>(r.left),
+		static_cast<int>(r.top),
+		static_cast<int>(r.right),
+		static_cast<int>(r.bottom),
+		HitTest,
+		(LPARAM)&hit);
+
+	if (hit.hit)
+		result = DEHT_BODY;
+
+	CRect rectTest;
+
+	rectTest = GetSelectionMarkerRect(DEHT_TOPLEFT, r);
+	if (rectTest.PtInRect(point))
+		result = DEHT_TOPLEFT;
+
+	rectTest = GetSelectionMarkerRect(DEHT_BOTTOMRIGHT, r);
+	if (rectTest.PtInRect(point))
+		result = DEHT_BOTTOMRIGHT;
+
+	return result;
+
+}
+
 VOID CALLBACK HitTest(int X, int Y, LPARAM data)
 {
 

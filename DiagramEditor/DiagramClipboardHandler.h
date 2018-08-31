@@ -6,22 +6,22 @@
 class CDiagramClipboardHandler {
 
 public:
-// Construction/initialization/destruction
+	// Construction/initialization/destruction
 	CDiagramClipboardHandler();
 	virtual ~CDiagramClipboardHandler();
 
-// Implementation
-	virtual void	Copy( CDiagramEntity* obj );
-	virtual void	Paste( CDiagramEntityContainer* container );
+	// Implementation
+	virtual void	Copy(CDiagramEntity* obj);
+	virtual void	Paste(CDiagramEntityContainer* container);
 
-	virtual void	CopyAllSelected( CDiagramEntityContainer* container );
+	virtual void	CopyAllSelected(CDiagramEntityContainer* container);
 	virtual INT_PTR	ObjectsInPaste();
 	virtual void	ClearPaste();
 
 	virtual CObArray* GetData();
 
 private:
-// Private data
+	// Private data
 	CObArray		m_paste;
 
 };
