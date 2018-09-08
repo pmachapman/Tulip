@@ -43,6 +43,12 @@
     <Filter Include="Header Files\NetworkEditor">
       <UniqueIdentifier>{de1cdd2d-49ec-400d-a626-4d7d27dcaafd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\FlowchartEditor">
+      <UniqueIdentifier>{019da491-3391-4aec-bf85-57c63aa08823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FlowchartEditor">
+      <UniqueIdentifier>{7f99373a-7de3-4b8a-a3d9-9bd15a5bac1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tulip.h">
@@ -109,9 +115,6 @@
       <Filter>Header Files\UMLEditor</Filter>
     </ClInclude>
     <ClInclude Include="UMLEditor\PropertyListEditorDialog.h">
-      <Filter>Header Files\UMLEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="UMLEditor\resource.h">
       <Filter>Header Files\UMLEditor</Filter>
     </ClInclude>
     <ClInclude Include="UMLEditor\StringHelpers.h">
@@ -265,6 +268,63 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NetView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartClipboardHandler.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartControlFactory.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartEditor.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartEntity.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartEntityBox.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartEntityCondition.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartEntityConnector.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartEntityContainer.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartEntityIO.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartEntityTerminator.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartLabel.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartLineSegment.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartLink.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartLinkableLineSegment.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartLinkPropertiesDialog.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\FlowchartMenu.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartEditor\LabelPropertyDialog.h">
+      <Filter>Header Files\FlowchartEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartDoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowchartView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -474,6 +534,63 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NetView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartClipboardHandler.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartControlFactory.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartEditor.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartEntity.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartEntityBox.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartEntityCondition.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartEntityConnector.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartEntityContainer.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartEntityIO.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartEntityTerminator.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartLabel.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartLineSegment.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartLink.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartLinkableLineSegment.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartLinkPropertiesDialog.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\FlowchartMenu.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartEditor\LabelPropertyDialog.cpp">
+      <Filter>Source Files\FlowchartEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FlowchartView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

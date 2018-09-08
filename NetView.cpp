@@ -407,7 +407,6 @@ void CNetView::OnExport()
 	}
 	m_editor.ExportEMF(title);
 	m_editor.SetModified(modified);
-
 }
 
 // CNetEditorDemoView update handlers
