@@ -107,6 +107,8 @@
 								OnKeyDown to avoid 0-pixel movement for
 								arrow keys (Graham G Pearson)
 					11/12 2004	Made UnselectAll virtual (Grisha Vinevich)
+   ========================================================================
+					09/09 2018	Added Shift support for selecting objects
   ========================================================================*/
 
 #include "stdafx.h"
@@ -1963,7 +1965,7 @@ void CDiagramEditor::OnLButtonDown(UINT nFlags, CPoint point)
 	// If we click on an already selected object, 
 	// and have more than one object selected,
 	// we want to move all selected objects
-	if (m_objs && GetSelectCount() > 1 && !(nFlags & MK_CONTROL))
+	if (m_objs && GetSelectCount() > 1 && !(nFlags & MK_CONTROL || nFlags & MK_SHIFT))
 	{
 
 		while ((obj = m_objs->GetAt(count++)))
@@ -2054,9 +2056,9 @@ void CDiagramEditor::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 
 		// Clearing states
-		// If Ctrl is not held down, we
+		// If Ctrl or Shift is not held down, we
 		// clear all selections
-		if (!(nFlags & MK_CONTROL))
+		if (!(nFlags & MK_CONTROL || nFlags & MK_SHIFT))
 			UnselectAll();
 
 		count = GetObjectCount();
@@ -2090,7 +2092,7 @@ void CDiagramEditor::OnLButtonDown(UINT nFlags, CPoint point)
 			if (hitCode != DEHT_NONE)
 			{
 				goon = FALSE;
-				if (!(nFlags & MK_CONTROL))
+				if (!(nFlags & MK_CONTROL || nFlags & MK_SHIFT))
 				{
 					// We unselect all again, as we might
 					// have overlapping objects
@@ -2110,7 +2112,7 @@ void CDiagramEditor::OnLButtonDown(UINT nFlags, CPoint point)
 				// We set the appropriate mode, either
 				// moving or resizing depending on where
 				// the click hit.
-				if (hitCode == DEHT_BODY && !(nFlags & MK_CONTROL))
+				if (hitCode == DEHT_BODY && !(nFlags & MK_CONTROL || nFlags & MK_SHIFT))
 				{
 					::SetCursor(obj->GetCursor(DEHT_BODY));
 					m_interactMode = MODE_MOVING;
@@ -2139,7 +2141,7 @@ void CDiagramEditor::OnLButtonDown(UINT nFlags, CPoint point)
 					m_deltaPoint = point - CPoint(startx, starty);
 
 				}
-				else if (!(nFlags & MK_CONTROL))
+				else if (!(nFlags & MK_CONTROL || nFlags & MK_SHIFT))
 				{
 					m_interactMode = MODE_RESIZING;
 					m_subMode = hitCode;

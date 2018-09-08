@@ -41,7 +41,7 @@ CNetworkEditor::CNetworkEditor()
 {
 
 	ShowGrid(FALSE);
-	SetSnapToGrid(FALSE);
+	SetSnapToGrid(TRUE);
 	SetBackgroundColor(RGB(230, 230, 230));
 
 	SetRestraints(RESTRAINT_VIRTUAL);

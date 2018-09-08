@@ -95,6 +95,7 @@ CFlowchartEditor::CFlowchartEditor()
 {
 
 	SetBackgroundColor(RGB(250, 250, 230));
+	ShowGrid(FALSE);
 	SetSnapToGrid(TRUE);
 	SetRestraints(RESTRAINT_VIRTUAL);
 	SetPopupMenu(new CFlowchartMenu);
