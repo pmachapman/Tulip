@@ -203,6 +203,16 @@
     <ClInclude Include="DiskObject\DiskObject.h" />
     <ClInclude Include="ExportDialog.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="NetDoc.h" />
+    <ClInclude Include="NetView.h" />
+    <ClInclude Include="NetworkEditor\NetworkControlFactory.h" />
+    <ClInclude Include="NetworkEditor\NetworkEditor.h" />
+    <ClInclude Include="NetworkEditor\NetworkEditorClipboardHandler.h" />
+    <ClInclude Include="NetworkEditor\NetworkEditorMenu.h" />
+    <ClInclude Include="NetworkEditor\NetworkEntityContainer.h" />
+    <ClInclude Include="NetworkEditor\NetworkLink.h" />
+    <ClInclude Include="NetworkEditor\NetworkSymbol.h" />
+    <ClInclude Include="NetworkEditor\PropertyDialog.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -267,6 +277,16 @@
     <ClCompile Include="DiskObject\DiskObject.cpp" />
     <ClCompile Include="ExportDialog.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="NetDoc.cpp" />
+    <ClCompile Include="NetView.cpp" />
+    <ClCompile Include="NetworkEditor\NetworkControlFactory.cpp" />
+    <ClCompile Include="NetworkEditor\NetworkEditor.cpp" />
+    <ClCompile Include="NetworkEditor\NetworkEditorClipboardHandler.cpp" />
+    <ClCompile Include="NetworkEditor\NetworkEditorMenu.cpp" />
+    <ClCompile Include="NetworkEditor\NetworkEntityContainer.cpp" />
+    <ClCompile Include="NetworkEditor\NetworkLink.cpp" />
+    <ClCompile Include="NetworkEditor\NetworkSymbol.cpp" />
+    <ClCompile Include="NetworkEditor\PropertyDialog.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -321,7 +341,6 @@
   <ItemGroup>
     <None Include="res\ribbon.mfcribbon-ms" />
     <None Include="res\Tulip.rc2" />
-    <None Include="Tulip.reg" />
     <None Include="UMLEditor\res\attach.cur" />
     <None Include="UMLEditor\res\draw.cur" />
     <None Include="UMLEditor\res\up.cur" />
@@ -330,6 +349,13 @@
     <ResourceCompile Include="Tulip.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="NetworkEditor\res\bitmap_adsl.bmp" />
+    <Image Include="NetworkEditor\res\bitmap_client.bmp" />
+    <Image Include="NetworkEditor\res\bitmap_hub.bmp" />
+    <Image Include="NetworkEditor\res\bitmap_internet.bmp" />
+    <Image Include="NetworkEditor\res\bitmap_printer.bmp" />
+    <Image Include="NetworkEditor\res\bitmap_server.bmp" />
+    <Image Include="res\bitmap1.bmp" />
     <Image Include="res\buttons.bmp" />
     <Image Include="res\filelarge.png" />
     <Image Include="res\filesmall.png" />

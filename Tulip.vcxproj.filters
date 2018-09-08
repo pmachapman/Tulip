@@ -37,6 +37,12 @@
     <Filter Include="Source Files\DiskObject">
       <UniqueIdentifier>{6914eeb8-94ee-40de-a307-1e55b3409def}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\NetworkEditor">
+      <UniqueIdentifier>{6e99f345-f375-49e1-b96e-d9b41021fddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\NetworkEditor">
+      <UniqueIdentifier>{de1cdd2d-49ec-400d-a626-4d7d27dcaafd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tulip.h">
@@ -225,6 +231,42 @@
     <ClInclude Include="TextFile\TextFile.h">
       <Filter>Header Files\TextFile</Filter>
     </ClInclude>
+    <ClInclude Include="NetworkEditor\NetworkControlFactory.h">
+      <Filter>Header Files\NetworkEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkEditor\NetworkEditor.h">
+      <Filter>Header Files\NetworkEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkEditor\NetworkEditorClipboardHandler.h">
+      <Filter>Header Files\NetworkEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkEditor\NetworkEditorMenu.h">
+      <Filter>Header Files\NetworkEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkEditor\NetworkEntityContainer.h">
+      <Filter>Header Files\NetworkEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkEditor\NetworkLink.h">
+      <Filter>Header Files\NetworkEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkEditor\NetworkSymbol.h">
+      <Filter>Header Files\NetworkEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkEditor\PropertyDialog.h">
+      <Filter>Header Files\NetworkEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DiagramEditor\HitParams.h">
+      <Filter>Header Files\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DiagramEditor\HitParamsRect.h">
+      <Filter>Header Files\DiagramEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NetDoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tulip.cpp">
@@ -404,9 +446,38 @@
     <ClCompile Include="TextFile\TextFile.cpp">
       <Filter>Source Files\TextFile</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkEditor\NetworkControlFactory.cpp">
+      <Filter>Source Files\NetworkEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkEditor\NetworkEditor.cpp">
+      <Filter>Source Files\NetworkEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkEditor\NetworkEditorClipboardHandler.cpp">
+      <Filter>Source Files\NetworkEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkEditor\NetworkEditorMenu.cpp">
+      <Filter>Source Files\NetworkEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkEditor\NetworkEntityContainer.cpp">
+      <Filter>Source Files\NetworkEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkEditor\NetworkLink.cpp">
+      <Filter>Source Files\NetworkEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkEditor\NetworkSymbol.cpp">
+      <Filter>Source Files\NetworkEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkEditor\PropertyDialog.cpp">
+      <Filter>Source Files\NetworkEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NetDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NetView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tulip.reg" />
     <None Include="res\ribbon.mfcribbon-ms">
       <Filter>Resource Files</Filter>
     </None>
@@ -460,6 +531,27 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\writesmall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="NetworkEditor\res\bitmap_adsl.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="NetworkEditor\res\bitmap_client.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="NetworkEditor\res\bitmap_hub.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="NetworkEditor\res\bitmap_internet.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="NetworkEditor\res\bitmap_printer.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="NetworkEditor\res\bitmap_server.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
