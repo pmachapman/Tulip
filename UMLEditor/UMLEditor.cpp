@@ -77,7 +77,7 @@ CUMLEditor::CUMLEditor()
 	SetBackgroundColor(RGB(250, 250, 230));
 	SetSnapToGrid(TRUE);
 	ShowGrid(FALSE);
-	SetRestraints(RESTRAINT_MARGIN);
+	SetRestraints(RESTRAINT_VIRTUAL);
 	SetMarginColor(RGB(128, 128, 128));
 
 	SetPopupMenu(new CUMLMenu);

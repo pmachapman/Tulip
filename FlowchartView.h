@@ -60,8 +60,11 @@ protected:
 	afx_msg void OnUpdateEditCut(CCmdUI* pCmdUI);
 	afx_msg void OnEditPaste();
 	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
+	afx_msg void OnSelectAll();
+	afx_msg void OnUpdateSelectAll(CCmdUI* pCmdUI);
 	afx_msg void OnEditUndo();
 	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI);
+	afx_msg void OnSettings();
 	afx_msg void OnExport();
 	afx_msg void OnButtonArrow();
 	afx_msg void OnZoom();
@@ -74,6 +77,10 @@ protected:
 	afx_msg void OnUpdateSnap(CCmdUI* pCmdUI);
 	afx_msg void OnShowGrid();
 	afx_msg void OnUpdateShowGrid(CCmdUI* pCmdUI);
+	afx_msg void OnMargins();
+	afx_msg void OnUpdateMargins(CCmdUI* pCmdUI);
+	afx_msg void OnRestraints();
+	afx_msg void OnUpdateRestraints(CCmdUI* pCmdUI);
 	afx_msg void OnButtonLabel();
 	afx_msg void OnButtonLink();
 	afx_msg void OnUpdateButtonLink(CCmdUI* pCmdUI);

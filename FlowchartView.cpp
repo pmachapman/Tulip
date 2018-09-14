@@ -8,6 +8,8 @@
 #include "FlowchartDoc.h"
 #include "FlowchartView.h"
 
+#include "DialogEditor/DialogSettings.h"
+
 #include "FlowchartEditor/FlowchartEntityTerminator.h"
 #include "FlowchartEditor/FlowchartEntityBox.h"
 #include "FlowchartEditor/FlowchartEntityCondition.h"
@@ -45,10 +47,13 @@ BEGIN_MESSAGE_MAP(CFlowchartView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
 	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
+	ON_COMMAND(ID_EDIT_SELECT_ALL, OnSelectAll)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_SELECT_ALL, OnUpdateSelectAll)
 	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
 	ON_COMMAND(ID_EXPORT, OnExport)
 	ON_COMMAND(ID_FLOWCHART_BUTTON_ARROW, OnButtonArrow)
+	ON_COMMAND(IDC_SETTINGS, OnSettings)
 	ON_COMMAND(ID_ZOOM, OnZoom)
 	ON_COMMAND(ID_ZOOM_100, OnZoom100)
 	ON_COMMAND(ID_ZOOM_150, OnZoom150)
@@ -68,6 +73,10 @@ BEGIN_MESSAGE_MAP(CFlowchartView, CView)
 	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_FLIP_LINK, OnUpdateFlipLink)
 	ON_COMMAND(ID_PROPERTY, OnProperty)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
+	ON_COMMAND(ID_MARGINS, OnMargins)
+	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
+	ON_COMMAND(ID_RESTRAIN, OnRestraints)
+	ON_UPDATE_COMMAND_UI(ID_RESTRAIN, OnUpdateRestraints)
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -300,6 +309,38 @@ void CFlowchartView::OnShowGrid()
 	m_editor.ShowGrid(!m_editor.IsGridVisible());
 }
 
+void CFlowchartView::OnMargins()
+{
+	m_editor.ShowMargin(!m_editor.IsMarginVisible());
+}
+
+void CFlowchartView::OnRestraints()
+{
+	if (m_editor.GetRestraints() == RESTRAINT_MARGIN)
+		m_editor.SetRestraints(RESTRAINT_NONE);
+	else
+		m_editor.SetRestraints(RESTRAINT_MARGIN);
+}
+
+void CFlowchartView::OnSettings()
+{
+	CDialogSettings	dlg;
+
+	dlg.m_width = m_editor.GetVirtualSize().cx;
+	dlg.m_height = m_editor.GetVirtualSize().cy;
+	dlg.m_gridWidth = m_editor.GetGridSize().cx;
+	dlg.m_gridHeight = m_editor.GetGridSize().cy;
+	m_editor.GetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
+
+	if (dlg.DoModal() == IDOK)
+	{
+		m_editor.SetGridSize(CSize(dlg.m_gridWidth, dlg.m_gridHeight));
+		m_editor.SetVirtualSize(CSize(dlg.m_width, dlg.m_height));
+		m_editor.SetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
+		m_editor.RedrawWindow();
+	}
+}
+
 // Edit menu
 void CFlowchartView::OnEditCopy()
 {
@@ -380,6 +421,11 @@ void CFlowchartView::OnFlipLink()
 	m_editor.OnLinkDirection();
 }
 
+void CFlowchartView::OnSelectAll()
+{
+	m_editor.SelectAll();
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CFlowchartView cammand enablers
 
@@ -441,4 +487,19 @@ void CFlowchartView::OnUpdateSnap(CCmdUI* pCmdUI)
 void CFlowchartView::OnUpdateShowGrid(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_editor.IsGridVisible());
+}
+
+void CFlowchartView::OnUpdateMargins(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsMarginVisible());
+}
+
+void CFlowchartView::OnUpdateRestraints(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.GetRestraints() == RESTRAINT_MARGIN);
+}
+
+void CFlowchartView::OnUpdateSelectAll(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
 }

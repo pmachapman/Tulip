@@ -15,7 +15,7 @@
 					3.	Exporting the diagram to an enhanced metafile that
 						can be pasted into - for example - Word.
 
-	Description :	CFlowcharEditor handles several messages and overrides
+	Description :	CFlowchartEditor handles several messages and overrides
 					drawing to manage links. Links are implemented as a
 					special class, stored in a separate array in
 					CFlowchartEntityContainer. Object drawing in

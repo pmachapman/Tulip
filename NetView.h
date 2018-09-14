@@ -72,8 +72,11 @@ protected:
 	afx_msg void OnUpdateEditCut(CCmdUI* pCmdUI);
 	afx_msg void OnEditPaste();
 	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
+	afx_msg void OnSelectAll();
+	afx_msg void OnUpdateSelectAll(CCmdUI* pCmdUI);
 	afx_msg void OnProperty();
 	afx_msg void OnUpdateProperty(CCmdUI* pCmdUI);
+	afx_msg void OnSettings();
 	afx_msg void OnZoom();
 	afx_msg void OnZoom100();
 	afx_msg void OnZoom150();
@@ -84,6 +87,10 @@ protected:
 	afx_msg void OnUpdateSnap(CCmdUI* pCmdUI);
 	afx_msg void OnShowGrid();
 	afx_msg void OnUpdateShowGrid(CCmdUI* pCmdUI);
+	afx_msg void OnMargins();
+	afx_msg void OnUpdateMargins(CCmdUI* pCmdUI);
+	afx_msg void OnRestraints();
+	afx_msg void OnUpdateRestraints(CCmdUI* pCmdUI);
 	afx_msg void OnEditDelete();
 	afx_msg void OnUpdateEditDelete(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()

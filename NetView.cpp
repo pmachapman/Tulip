@@ -23,6 +23,8 @@
 #include "NetDoc.h"
 #include "NetView.h"
 
+#include "DialogEditor/DialogSettings.h"
+
 #include "NetworkEditor/NetworkSymbol.h"
 
 #ifdef _DEBUG
@@ -45,11 +47,18 @@ BEGIN_MESSAGE_MAP(CNetView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
 	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
+	ON_COMMAND(ID_EDIT_SELECT_ALL, OnSelectAll)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_SELECT_ALL, OnUpdateSelectAll)
 	ON_COMMAND(ID_EXPORT, OnExport)
     ON_COMMAND(ID_BUTTON_LINK, OnButtonLink)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_LINK, OnUpdateLink)
 	ON_COMMAND(ID_PROPERTY, OnProperty)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
+	ON_COMMAND(ID_MARGINS, OnMargins)
+	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
+	ON_COMMAND(ID_RESTRAIN, OnRestraints)
+	ON_UPDATE_COMMAND_UI(ID_RESTRAIN, OnUpdateRestraints)
+	ON_COMMAND(IDC_SETTINGS, OnSettings)
 	ON_COMMAND(ID_ZOOM, OnZoom)
 	ON_COMMAND(ID_ZOOM_100, OnZoom100)
 	ON_COMMAND(ID_ZOOM_150, OnZoom150)
@@ -337,6 +346,19 @@ void CNetView::OnShowGrid()
 	m_editor.ShowGrid(!m_editor.IsGridVisible());
 }
 
+void CNetView::OnMargins()
+{
+	m_editor.ShowMargin(!m_editor.IsMarginVisible());
+}
+
+void CNetView::OnRestraints()
+{
+	if (m_editor.GetRestraints() == RESTRAINT_MARGIN)
+		m_editor.SetRestraints(RESTRAINT_NONE);
+	else
+		m_editor.SetRestraints(RESTRAINT_MARGIN);
+}
+
 void CNetView::OnButtonLink()
 {
 	if (m_editor.IsLinked())
@@ -409,6 +431,30 @@ void CNetView::OnExport()
 	m_editor.SetModified(modified);
 }
 
+void CNetView::OnSettings()
+{
+	CDialogSettings	dlg;
+
+	dlg.m_width = m_editor.GetVirtualSize().cx;
+	dlg.m_height = m_editor.GetVirtualSize().cy;
+	dlg.m_gridWidth = m_editor.GetGridSize().cx;
+	dlg.m_gridHeight = m_editor.GetGridSize().cy;
+	m_editor.GetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
+
+	if (dlg.DoModal() == IDOK)
+	{
+		m_editor.SetGridSize(CSize(dlg.m_gridWidth, dlg.m_gridHeight));
+		m_editor.SetVirtualSize(CSize(dlg.m_width, dlg.m_height));
+		m_editor.SetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
+		m_editor.RedrawWindow();
+	}
+}
+
+void CNetView::OnSelectAll()
+{
+	m_editor.SelectAll();
+}
+
 // CNetEditorDemoView update handlers
 
 void CNetView::OnUpdateEditUndo(CCmdUI* pCmdUI)
@@ -441,6 +487,16 @@ void CNetView::OnUpdateShowGrid(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(m_editor.IsGridVisible());
 }
 
+void CNetView::OnUpdateMargins(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsMarginVisible());
+}
+
+void CNetView::OnUpdateRestraints(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.GetRestraints() == RESTRAINT_MARGIN);
+}
+
 void CNetView::OnUpdateEditDelete(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
@@ -462,4 +518,9 @@ void CNetView::OnUpdateLink(CCmdUI* pCmdUI)
 void CNetView::OnUpdateProperty(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+}
+
+void CNetView::OnUpdateSelectAll(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
 }

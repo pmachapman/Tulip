@@ -49,6 +49,12 @@
     <Filter Include="Header Files\FlowchartEditor">
       <UniqueIdentifier>{7f99373a-7de3-4b8a-a3d9-9bd15a5bac1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DialogEditor">
+      <UniqueIdentifier>{c6b008ab-3621-4609-bf3c-bd172922847b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DialogEditor">
+      <UniqueIdentifier>{e3da9ea2-9abc-481f-b203-b7d16fd56499}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tulip.h">
@@ -327,6 +333,54 @@
     <ClInclude Include="FlowchartView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DialogEditor\ButtonPropertyDlg.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DiagramButton.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DiagramCheckbox.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DiagramCombobox.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DiagramControlFactory.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DiagramEdit.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DiagramGroupbox.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DiagramListbox.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DiagramRadiobutton.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DiagramStatic.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DialogSettings.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\EditPropertyDlg.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\StdGrfx.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditorDoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditorView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogEditor\DialogEditor.h">
+      <Filter>Header Files\DialogEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tulip.cpp">
@@ -592,6 +646,54 @@
     </ClCompile>
     <ClCompile Include="FlowchartView.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\ButtonPropertyDlg.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DiagramButton.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DiagramCheckbox.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DiagramCombobox.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DiagramControlFactory.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DiagramEdit.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DiagramGroupbox.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DiagramListbox.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DiagramRadiobutton.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DiagramStatic.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DialogSettings.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\EditPropertyDlg.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\StdGrfx.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditorDoc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditorView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogEditor\DialogEditor.cpp">
+      <Filter>Source Files\DialogEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
