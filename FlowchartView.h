@@ -81,8 +81,8 @@ protected:
 	afx_msg void OnUpdateLinkLabel(CCmdUI* pCmdUI);
 	afx_msg void OnFlipLink();
 	afx_msg void OnUpdateFlipLink(CCmdUI* pCmdUI);
-	afx_msg void OnShowProperties();
-	afx_msg void OnUpdateShowProperties(CCmdUI* pCmdUI);
+	afx_msg void OnProperty();
+	afx_msg void OnUpdateProperty(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

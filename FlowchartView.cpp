@@ -66,8 +66,8 @@ BEGIN_MESSAGE_MAP(CFlowchartView, CView)
 	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_LINK_LABEL, OnUpdateLinkLabel)
 	ON_COMMAND(ID_FLOWCHART_FLIP_LINK, OnFlipLink)
 	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_FLIP_LINK, OnUpdateFlipLink)
-	ON_COMMAND(ID_PROPERTY, OnShowProperties)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateShowProperties)
+	ON_COMMAND(ID_PROPERTY, OnProperty)
+	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -321,7 +321,7 @@ void CFlowchartView::OnEditUndo()
 	m_editor.Undo();
 }
 
-void CFlowchartView::OnShowProperties()
+void CFlowchartView::OnProperty()
 {
 	if (m_editor.IsLinked())
 	{
@@ -404,7 +404,7 @@ void CFlowchartView::OnUpdateEditPaste(CCmdUI* pCmdUI)
 	m_editor.UpdatePaste(pCmdUI);
 }
 
-void CFlowchartView::OnUpdateShowProperties(CCmdUI* pCmdUI)
+void CFlowchartView::OnUpdateProperty(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.GetSelectCount() == 1 || m_editor.IsLinked());
 }
