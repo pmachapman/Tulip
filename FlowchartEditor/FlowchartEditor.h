@@ -19,7 +19,6 @@ public:
 
 protected:
 	// Overrides:
-	virtual void DrawGrid(CDC* dc, CRect rect, double zoom) const;
 	virtual void DrawObjects(CDC* dc, double zoom) const;
 	virtual void SaveObjects(CStringArray& stra);
 

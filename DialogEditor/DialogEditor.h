@@ -14,7 +14,6 @@ public:
 	virtual ~CDialogEditor();
 
 	virtual void DrawBackground(CDC* dc, CRect rect, double zoom) const;
-	virtual void DrawGrid(CDC* dc, CRect rect, double zoom) const;
 
 };
 

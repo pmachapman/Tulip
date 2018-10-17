@@ -49,17 +49,3 @@ void CDialogEditor::DrawBackground(CDC* dc, CRect rect, double /*zoom*/) const
 {
 	CStdGrfx::drawframed3dBox(dc, rect);
 }
-
-void CDialogEditor::DrawGrid(CDC* dc, CRect /*rect*/, double zoom) const
-{
-	COLORREF gridcol = GetGridColor();
-
-	dc->SelectStockObject(BLACK_PEN);
-
-	int stepx = GetVirtualSize().cx / GetGridSize().cx;
-	int stepy = GetVirtualSize().cy / GetGridSize().cy;
-
-	for (int x = 0; x <= stepx; x++)
-		for (int y = 0; y <= stepy; y++)
-			dc->SetPixel(round((double)(GetGridSize().cx * x) * zoom), round((double)(GetGridSize().cy * y) * zoom), gridcol);
-}

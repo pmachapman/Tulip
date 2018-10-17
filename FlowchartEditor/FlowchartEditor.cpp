@@ -126,35 +126,6 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CFlowchartEditor overrides
 
-void CFlowchartEditor::DrawGrid(CDC* dc, CRect /*rect*/, double zoom) const
-/* ============================================================
-	Function :		CFlowchartEditor::DrawGrid
-	Description :	Draws the editor grid. We override this to
-					draw the grid as a series of dots.
-
-	Return :		void
-	Parameters :	CDC* dc		-	CDC to draw to
-					CRect		-	Complete rect
-					double zoom	-	Current zoom level
-
-	Usage :			Do not call directly.
-
-   ============================================================*/
-{
-
-	COLORREF gridcol = GetGridColor();
-
-	dc->SelectStockObject(BLACK_PEN);
-
-	int stepx = GetVirtualSize().cx / GetGridSize().cx;
-	int stepy = GetVirtualSize().cy / GetGridSize().cy;
-
-	for (int x = 0; x <= stepx; x++)
-		for (int y = 0; y <= stepy; y++)
-			dc->SetPixel(round((double)(GetGridSize().cx * x) * zoom), round((double)(GetGridSize().cy * y) * zoom), gridcol);
-
-}
-
 void CFlowchartEditor::DrawObjects(CDC* dc, double zoom) const
 /* ============================================================
 	Function :		CFlowchartEditor::DrawObjects

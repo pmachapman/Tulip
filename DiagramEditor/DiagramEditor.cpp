@@ -625,7 +625,7 @@ void CDiagramEditor::DrawBackground(CDC* dc, CRect rect, double /*zoom*/) const
 
 }
 
-void CDiagramEditor::DrawGrid(CDC* dc, CRect rect, double zoom) const
+void CDiagramEditor::DrawGrid(CDC* dc, CRect /*rect*/, double zoom) const
 /* ============================================================
 	Function :		CDiagramEditor::DrawGrid
 	Description :	Draws the grid
@@ -647,37 +647,15 @@ void CDiagramEditor::DrawGrid(CDC* dc, CRect rect, double zoom) const
 {
 
 	COLORREF gridcol = GetGridColor();
-	int gridstyle = GetGridPenStyle();
 
-	CPen pen;
-	pen.CreatePen(gridstyle, 1, gridcol);
-
-	dc->SelectObject(&pen);
-
-	// To avoid accumulating rounding errors, we don't
-	// precalculate the grid size for the given zoom...
-
-	int width = rect.Width();
-	int height = rect.Height();
+	dc->SelectStockObject(BLACK_PEN);
 
 	int stepx = GetVirtualSize().cx / GetGridSize().cx;
 	int stepy = GetVirtualSize().cy / GetGridSize().cy;
 
-	// ...instead we calculate the position of each line.
 	for (int x = 0; x <= stepx; x++)
-	{
-		dc->MoveTo(round(static_cast<double>(GetGridSize().cx * x) * zoom), 0);
-		dc->LineTo(round(static_cast<double>(GetGridSize().cx * x) * zoom), height);
-	}
-
-	for (int y = 0; y <= stepy; y++)
-	{
-		dc->MoveTo(0, round(static_cast<double>(GetGridSize().cy * y) * zoom));
-		dc->LineTo(width, round(static_cast<double>(GetGridSize().cy * y) * zoom));
-	}
-
-	dc->SelectStockObject(BLACK_PEN);
-
+		for (int y = 0; y <= stepy; y++)
+			dc->SetPixel(round((double)(GetGridSize().cx * x) * zoom), round((double)(GetGridSize().cy * y) * zoom), gridcol);
 }
 
 void CDiagramEditor::DrawMargins(CDC* dc, CRect rect, double zoom) const
