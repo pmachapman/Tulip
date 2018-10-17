@@ -426,13 +426,16 @@
     <Image Include="NetworkEditor\res\bitmap_server.bmp" />
     <Image Include="res\bitmap1.bmp" />
     <Image Include="res\buttons.bmp" />
+    <Image Include="res\DialogDoc.ico" />
     <Image Include="res\filelarge.png" />
     <Image Include="res\filesmall.png" />
+    <Image Include="res\FlowchartDoc.ico" />
     <Image Include="res\main.png" />
+    <Image Include="res\NetworkDoc.ico" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\Tulip.ico" />
-    <Image Include="res\TulipDoc.ico" />
+    <Image Include="res\UmlDoc.ico" />
     <Image Include="res\writelarge.png" />
     <Image Include="res\writesmall.png" />
     <Image Include="UMLEditor\res\up.ico" />

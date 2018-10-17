@@ -722,9 +722,6 @@
     <Image Include="res\buttons.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\TulipDoc.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\Tulip.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -771,6 +768,18 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="NetworkEditor\res\bitmap_server.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\UmlDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\DialogDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\FlowchartDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\NetworkDoc.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
