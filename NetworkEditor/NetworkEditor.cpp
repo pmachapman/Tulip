@@ -97,7 +97,6 @@ void CNetworkEditor::DrawObjects(CDC* dc, double zoom) const
 			CNetworkSymbol* to = GetNamedObject(link->to);
 			if (from && to)
 			{
-
 				CPoint start = from->GetLinkPosition();
 				CPoint end = to->GetLinkPosition();
 				start.x = round((double)start.x * zoom);
@@ -106,9 +105,11 @@ void CNetworkEditor::DrawObjects(CDC* dc, double zoom) const
 				end.y = round((double)end.y * zoom);
 				dc->MoveTo(start);
 				dc->LineTo(end);
-
 			}
-
+			else
+			{
+				objs->DeleteLink(link);
+			}
 		}
 
 	}

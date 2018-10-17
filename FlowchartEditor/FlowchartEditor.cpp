@@ -163,132 +163,141 @@ void CFlowchartEditor::DrawObjects(CDC* dc, double zoom) const
 				for (int t = 0; t < max; t++)
 				{
 					CFlowchartLink* link = objs->GetLinkAt(t);
-					if (link && link->from == obj->GetName())
+					if (link)
 					{
-
-						dc->SelectStockObject(BLACK_PEN);
-						dc->SelectStockObject(BLACK_BRUSH);
-
+						// Get the to/from objects
 						CFlowchartEntity* to = GetNamedObject(link->to);
+						CFlowchartEntity* from = GetNamedObject(link->from);
 
-						BOOL drawArrow = TRUE;
-						CPoint start;
-						CPoint end;
-						start = obj->GetLinkPosition(link->fromtype);
-						end = to->GetLinkPosition(link->totype);
-
-						start.x = round((double)start.x * zoom);
-						start.y = round((double)start.y * zoom);
-						end.x = round((double)end.x * zoom);
-						end.y = round((double)end.y * zoom);
-
-						switch (link->fromtype)
+						// See if this link needs to be deleted
+						if (!to || !from)
 						{
-						case LINK_RIGHT:
-							pts[1].x = end.x - seg * 2;
-							pts[1].y = end.y - seg;
-							pts[2].x = end.x - seg * 2;
-							pts[2].y = end.y + seg;
-							break;
-
-						case LINK_LEFT:
-							pts[1].x = end.x + seg * 2;
-							pts[1].y = end.y - seg;
-							pts[2].x = end.x + seg * 2;
-							pts[2].y = end.y + seg;
-							break;
-
-						case LINK_TOP:
-							pts[1].x = end.x - seg;
-							pts[1].y = end.y + seg * 2;
-							pts[2].x = end.x + seg;
-							pts[2].y = end.y + seg * 2;
-							break;
-
-						case LINK_BOTTOM:
-							pts[1].x = end.x - seg;
-							pts[1].y = end.y - seg * 2;
-							pts[2].x = end.x + seg;
-							pts[2].y = end.y - seg * 2;
-
-							break;
-
-						default:
+							objs->DeleteLink(link);
+						}
+						else if (link->from == obj->GetName())
 						{
-							switch (link->totype)
+							// Otherwise, if this is the link we are looking for
+							dc->SelectStockObject(BLACK_PEN);
+							dc->SelectStockObject(BLACK_BRUSH);
+
+							BOOL drawArrow = TRUE;
+							CPoint start;
+							CPoint end;
+							start = obj->GetLinkPosition(link->fromtype);
+							end = to->GetLinkPosition(link->totype);
+
+							start.x = round((double)start.x * zoom);
+							start.y = round((double)start.y * zoom);
+							end.x = round((double)end.x * zoom);
+							end.y = round((double)end.y * zoom);
+
+							switch (link->fromtype)
 							{
 							case LINK_RIGHT:
-								pts[1].x = end.x + seg * 2;
-								pts[1].y = end.y - seg;
-								pts[2].x = end.x + seg * 2;
-								pts[2].y = end.y + seg;
-								break;
-
-							case LINK_LEFT:
 								pts[1].x = end.x - seg * 2;
 								pts[1].y = end.y - seg;
 								pts[2].x = end.x - seg * 2;
 								pts[2].y = end.y + seg;
 								break;
 
-							case LINK_TOP:
-								pts[1].x = end.x - seg;
-								pts[1].y = end.y - seg * 2;
-								pts[2].x = end.x + seg;
-								pts[2].y = end.y - seg * 2;
+							case LINK_LEFT:
+								pts[1].x = end.x + seg * 2;
+								pts[1].y = end.y - seg;
+								pts[2].x = end.x + seg * 2;
+								pts[2].y = end.y + seg;
 								break;
 
-							case LINK_BOTTOM:
+							case LINK_TOP:
 								pts[1].x = end.x - seg;
 								pts[1].y = end.y + seg * 2;
 								pts[2].x = end.x + seg;
 								pts[2].y = end.y + seg * 2;
 								break;
 
-							default:
-								drawArrow = FALSE;
+							case LINK_BOTTOM:
+								pts[1].x = end.x - seg;
+								pts[1].y = end.y - seg * 2;
+								pts[2].x = end.x + seg;
+								pts[2].y = end.y - seg * 2;
+
 								break;
-							}
-						}
-						break;
-						}
 
-						dc->MoveTo(start);
-						dc->LineTo(end);
-
-						pts[0].x = end.x;
-						pts[0].y = end.y;
-
-						if (drawArrow)
-							dc->Polygon(pts, 3);
-
-						CString str = link->title;
-						if (str.GetLength())
-						{
-							dc->SelectObject(&font);
-							int mode = dc->SetBkMode(TRANSPARENT);
-
-							CRect rect(start, end);
-							rect.NormalizeRect();
-							int cy = round(14.0 * zoom);
-							int cut = round((double)GetMarkerSize().cx * zoom / 2);
-							CRect r(rect.right - cut, rect.top, rect.right - (rect.Width() + cut), rect.bottom);
-							if (rect.top == rect.bottom)
+							default:
 							{
-								CRect r(rect.left, rect.top - (cy + cut), rect.right, rect.bottom);
-								r.NormalizeRect();
-								dc->DrawText(str, r, DT_NOPREFIX | DT_SINGLELINE | DT_VCENTER | DT_CENTER);
+								switch (link->totype)
+								{
+								case LINK_RIGHT:
+									pts[1].x = end.x + seg * 2;
+									pts[1].y = end.y - seg;
+									pts[2].x = end.x + seg * 2;
+									pts[2].y = end.y + seg;
+									break;
+
+								case LINK_LEFT:
+									pts[1].x = end.x - seg * 2;
+									pts[1].y = end.y - seg;
+									pts[2].x = end.x - seg * 2;
+									pts[2].y = end.y + seg;
+									break;
+
+								case LINK_TOP:
+									pts[1].x = end.x - seg;
+									pts[1].y = end.y - seg * 2;
+									pts[2].x = end.x + seg;
+									pts[2].y = end.y - seg * 2;
+									break;
+
+								case LINK_BOTTOM:
+									pts[1].x = end.x - seg;
+									pts[1].y = end.y + seg * 2;
+									pts[2].x = end.x + seg;
+									pts[2].y = end.y + seg * 2;
+									break;
+
+								default:
+									drawArrow = FALSE;
+									break;
+								}
 							}
-							else
+							break;
+							}
+
+							dc->MoveTo(start);
+							dc->LineTo(end);
+
+							pts[0].x = end.x;
+							pts[0].y = end.y;
+
+							if (drawArrow)
+								dc->Polygon(pts, 3);
+
+							CString str = link->title;
+							if (str.GetLength())
 							{
-								CRect r(rect.right - cut, rect.top, rect.right - (cy * str.GetLength() + cut), rect.bottom);
-								r.NormalizeRect();
-								dc->DrawText(str, r, DT_NOPREFIX | DT_SINGLELINE | DT_VCENTER | DT_RIGHT);
+								dc->SelectObject(&font);
+								int mode = dc->SetBkMode(TRANSPARENT);
+
+								CRect rect(start, end);
+								rect.NormalizeRect();
+								int cy = round(14.0 * zoom);
+								int cut = round((double)GetMarkerSize().cx * zoom / 2);
+								CRect r(rect.right - cut, rect.top, rect.right - (rect.Width() + cut), rect.bottom);
+								if (rect.top == rect.bottom)
+								{
+									CRect r(rect.left, rect.top - (cy + cut), rect.right, rect.bottom);
+									r.NormalizeRect();
+									dc->DrawText(str, r, DT_NOPREFIX | DT_SINGLELINE | DT_VCENTER | DT_CENTER);
+								}
+								else
+								{
+									CRect r(rect.right - cut, rect.top, rect.right - (cy * str.GetLength() + cut), rect.bottom);
+									r.NormalizeRect();
+									dc->DrawText(str, r, DT_NOPREFIX | DT_SINGLELINE | DT_VCENTER | DT_RIGHT);
+								}
+
+								dc->SetBkMode(mode);
+								dc->SelectStockObject(DEFAULT_GUI_FONT);
 							}
-
-							dc->SetBkMode(mode);
-							dc->SelectStockObject(DEFAULT_GUI_FONT);
-
 						}
 					}
 				}
