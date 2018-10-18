@@ -366,7 +366,7 @@ private:
 	HCURSOR		m_cursorWest;
 	HCURSOR		m_cursorNorthWest;
 
-	int			m_scrollwheel;		// Scroll wheel mode, scoll or zoom
+	int			m_scrollwheel;		// Scroll wheel mode, scroll or zoom
 
 };
 

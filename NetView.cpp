@@ -237,7 +237,8 @@ void CNetView::OnInitialUpdate()
 			m_editor.SetVirtualSize(CSize(8 * m_screenResolutionX, 11 * m_screenResolutionX));
 		}
 
-		m_editor.SetScrollWheelMode(WHEEL_ZOOM);
+		m_editor.SetScrollWheelMode(WHEEL_SCROLL);
+		m_editor.SetResize(TRUE);
 		m_editor.SetModified(FALSE);
 
 	}

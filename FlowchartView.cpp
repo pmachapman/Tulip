@@ -192,11 +192,45 @@ void CFlowchartView::OnInitialUpdate()
 		// for scaling to printer. See also OnDraw.
 		CClientDC dc(this);
 		m_screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
-		int horzSize = round((double)dc.GetDeviceCaps(HORZSIZE) / (double)m_screenResolutionX);
-		int vertSize = round((double)dc.GetDeviceCaps(VERTSIZE) / (double)m_screenResolutionX);
 
-		m_editor.SetVirtualSize(CSize(8 * m_screenResolutionX, 11 * m_screenResolutionX));
+		// Setting up the virtual screen size
+		// We want this to represent a single paper 
+		// from the default printer.
 
+		CPrintDialog	printer(TRUE, PD_RETURNDC);
+		printer.GetDefaults();
+		HDC	hdc = printer.GetPrinterDC();
+		if (hdc)
+		{
+
+			double zoom = GetDeviceCaps(hdc, LOGPIXELSX) / m_screenResolutionX;
+			int horzSize = ::GetDeviceCaps(hdc, PHYSICALWIDTH);
+			int vertSize = ::GetDeviceCaps(hdc, PHYSICALHEIGHT);
+
+			m_editor.SetVirtualSize(CSize(round(static_cast<double>(horzSize) / zoom), round(static_cast<double>(vertSize) / zoom)));
+
+			int leftMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETX);
+			int topMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETY);
+
+			int horzPrintable = ::GetDeviceCaps(hdc, HORZRES);
+			int vertPrintable = ::GetDeviceCaps(hdc, VERTRES);
+
+			int rightMarg = horzSize - (horzPrintable + leftMarg);
+			int bottomMarg = vertSize - (vertPrintable + topMarg);
+
+			m_editor.SetMargins(round(static_cast<double>(leftMarg) / zoom), round(static_cast<double>(topMarg) / zoom), round(static_cast<double>(rightMarg) / zoom), round(static_cast<double>(bottomMarg) / zoom));
+
+			::DeleteDC(hdc);
+
+		}
+		else
+		{
+			// No default printer installed
+			m_editor.SetVirtualSize(CSize(8 * m_screenResolutionX, 11 * m_screenResolutionX));
+		}
+
+		m_editor.SetScrollWheelMode(WHEEL_SCROLL);
+		m_editor.SetResize(TRUE);
 		m_editor.SetModified(FALSE);
 
 	}
