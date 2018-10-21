@@ -77,6 +77,24 @@ BEGIN_MESSAGE_MAP(CFlowchartView, CView)
 	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
 	ON_COMMAND(ID_RESTRAIN, OnRestraints)
 	ON_UPDATE_COMMAND_UI(ID_RESTRAIN, OnUpdateRestraints)
+	ON_COMMAND(ID_BOTTOM, OnBottom)
+	ON_UPDATE_COMMAND_UI(ID_BOTTOM, OnUpdateBottom)
+	ON_COMMAND(ID_BOTTOM_ALIGN, OnBottomAlign)
+	ON_UPDATE_COMMAND_UI(ID_BOTTOM_ALIGN, OnUpdateBottomAlign)
+	ON_COMMAND(ID_DOWN, OnDown)
+	ON_UPDATE_COMMAND_UI(ID_DOWN, OnUpdateDown)
+	ON_COMMAND(ID_FRONT, OnFront)
+	ON_UPDATE_COMMAND_UI(ID_FRONT, OnUpdateFront)
+	ON_COMMAND(ID_LEFT_ALIGN, OnLeftAlign)
+	ON_UPDATE_COMMAND_UI(ID_LEFT_ALIGN, OnUpdateLeftAlign)
+	ON_COMMAND(ID_MAKE_SAME_SIZE, OnMakeSameSize)
+	ON_UPDATE_COMMAND_UI(ID_MAKE_SAME_SIZE, OnUpdateMakeSameSize)
+	ON_COMMAND(ID_RIGHT_ALIGN, OnRightAlign)
+	ON_UPDATE_COMMAND_UI(ID_RIGHT_ALIGN, OnUpdateRightAlign)
+	ON_COMMAND(ID_TOP_ALIGN, OnTopAlign)
+	ON_UPDATE_COMMAND_UI(ID_TOP_ALIGN, OnUpdateTopAlign)
+	ON_COMMAND(ID_UP, OnUp)
+	ON_UPDATE_COMMAND_UI(ID_UP, OnUpdateUp)
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -536,4 +554,85 @@ void CFlowchartView::OnUpdateRestraints(CCmdUI* pCmdUI)
 void CFlowchartView::OnUpdateSelectAll(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
+}
+
+///////////////////////////////////////////////////////////
+// Align menu
+//
+
+void CFlowchartView::OnLeftAlign()
+{
+	m_editor.LeftAlignSelected();
+}
+void CFlowchartView::OnTopAlign()
+{
+	m_editor.TopAlignSelected();
+}
+void CFlowchartView::OnRightAlign()
+{
+	m_editor.RightAlignSelected();
+}
+void CFlowchartView::OnBottomAlign()
+{
+	m_editor.BottomAlignSelected();
+}
+
+void CFlowchartView::OnUpdateLeftAlign(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
+}
+void CFlowchartView::OnUpdateTopAlign(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
+}
+void CFlowchartView::OnUpdateRightAlign(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
+}
+void CFlowchartView::OnUpdateBottomAlign(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
+}
+
+void CFlowchartView::OnMakeSameSize()
+{
+	m_editor.MakeSameSizeSelected();
+}
+void CFlowchartView::OnUpdateMakeSameSize(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
+}
+
+void CFlowchartView::OnUp()
+{
+	m_editor.Up();
+}
+void CFlowchartView::OnDown()
+{
+	m_editor.Down();
+}
+void CFlowchartView::OnFront()
+{
+	m_editor.Front();
+}
+void CFlowchartView::OnBottom()
+{
+	m_editor.Bottom();
+}
+
+void CFlowchartView::OnUpdateUp(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+}
+void CFlowchartView::OnUpdateDown(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+}
+void CFlowchartView::OnUpdateFront(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+}
+void CFlowchartView::OnUpdateBottom(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
 }

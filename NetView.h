@@ -91,6 +91,24 @@ protected:
 	afx_msg void OnUpdateMargins(CCmdUI* pCmdUI);
 	afx_msg void OnRestraints();
 	afx_msg void OnUpdateRestraints(CCmdUI* pCmdUI);
+	afx_msg void OnBottom();
+	afx_msg void OnUpdateBottom(CCmdUI* pCmdUI);
+	afx_msg void OnBottomAlign();
+	afx_msg void OnUpdateBottomAlign(CCmdUI* pCmdUI);
+	afx_msg void OnDown();
+	afx_msg void OnUpdateDown(CCmdUI* pCmdUI);
+	afx_msg void OnFront();
+	afx_msg void OnUpdateFront(CCmdUI* pCmdUI);
+	afx_msg void OnLeftAlign();
+	afx_msg void OnUpdateLeftAlign(CCmdUI* pCmdUI);
+	afx_msg void OnMakeSameSize();
+	afx_msg void OnUpdateMakeSameSize(CCmdUI* pCmdUI);
+	afx_msg void OnRightAlign();
+	afx_msg void OnUpdateRightAlign(CCmdUI* pCmdUI);
+	afx_msg void OnTopAlign();
+	afx_msg void OnUpdateTopAlign(CCmdUI* pCmdUI);
+	afx_msg void OnUp();
+	afx_msg void OnUpdateUp(CCmdUI* pCmdUI);
 	afx_msg void OnEditDelete();
 	afx_msg void OnUpdateEditDelete(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()

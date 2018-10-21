@@ -58,6 +58,24 @@ BEGIN_MESSAGE_MAP(CNetView, CView)
 	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
 	ON_COMMAND(ID_RESTRAIN, OnRestraints)
 	ON_UPDATE_COMMAND_UI(ID_RESTRAIN, OnUpdateRestraints)
+	ON_COMMAND(ID_BOTTOM, OnBottom)
+	ON_UPDATE_COMMAND_UI(ID_BOTTOM, OnUpdateBottom)
+	ON_COMMAND(ID_BOTTOM_ALIGN, OnBottomAlign)
+	ON_UPDATE_COMMAND_UI(ID_BOTTOM_ALIGN, OnUpdateBottomAlign)
+	ON_COMMAND(ID_DOWN, OnDown)
+	ON_UPDATE_COMMAND_UI(ID_DOWN, OnUpdateDown)
+	ON_COMMAND(ID_FRONT, OnFront)
+	ON_UPDATE_COMMAND_UI(ID_FRONT, OnUpdateFront)
+	ON_COMMAND(ID_LEFT_ALIGN, OnLeftAlign)
+	ON_UPDATE_COMMAND_UI(ID_LEFT_ALIGN, OnUpdateLeftAlign)
+	ON_COMMAND(ID_MAKE_SAME_SIZE, OnMakeSameSize)
+	ON_UPDATE_COMMAND_UI(ID_MAKE_SAME_SIZE, OnUpdateMakeSameSize)
+	ON_COMMAND(ID_RIGHT_ALIGN, OnRightAlign)
+	ON_UPDATE_COMMAND_UI(ID_RIGHT_ALIGN, OnUpdateRightAlign)
+	ON_COMMAND(ID_TOP_ALIGN, OnTopAlign)
+	ON_UPDATE_COMMAND_UI(ID_TOP_ALIGN, OnUpdateTopAlign)
+	ON_COMMAND(ID_UP, OnUp)
+	ON_UPDATE_COMMAND_UI(ID_UP, OnUpdateUp)
 	ON_COMMAND(IDC_SETTINGS, OnSettings)
 	ON_COMMAND(ID_ZOOM, OnZoom)
 	ON_COMMAND(ID_ZOOM_100, OnZoom100)
@@ -524,4 +542,85 @@ void CNetView::OnUpdateProperty(CCmdUI* pCmdUI)
 void CNetView::OnUpdateSelectAll(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
+}
+
+///////////////////////////////////////////////////////////
+// Align menu
+//
+
+void CNetView::OnLeftAlign()
+{
+	m_editor.LeftAlignSelected();
+}
+void CNetView::OnTopAlign()
+{
+	m_editor.TopAlignSelected();
+}
+void CNetView::OnRightAlign()
+{
+	m_editor.RightAlignSelected();
+}
+void CNetView::OnBottomAlign()
+{
+	m_editor.BottomAlignSelected();
+}
+
+void CNetView::OnUpdateLeftAlign(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
+}
+void CNetView::OnUpdateTopAlign(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
+}
+void CNetView::OnUpdateRightAlign(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
+}
+void CNetView::OnUpdateBottomAlign(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
+}
+
+void CNetView::OnMakeSameSize()
+{
+	m_editor.MakeSameSizeSelected();
+}
+void CNetView::OnUpdateMakeSameSize(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
+}
+
+void CNetView::OnUp()
+{
+	m_editor.Up();
+}
+void CNetView::OnDown()
+{
+	m_editor.Down();
+}
+void CNetView::OnFront()
+{
+	m_editor.Front();
+}
+void CNetView::OnBottom()
+{
+	m_editor.Bottom();
+}
+
+void CNetView::OnUpdateUp(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+}
+void CNetView::OnUpdateDown(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+}
+void CNetView::OnUpdateFront(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+}
+void CNetView::OnUpdateBottom(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
 }
