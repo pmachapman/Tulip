@@ -150,6 +150,11 @@ void CNetView::OnDraw(CDC* pDC)
 	}
 }
 
+void CNetView::OnDrawIconicThumbnailOrLivePreview(CDC& dc, CRect rect, CSize szRequiredThumbnailSize, BOOL bIsThumbnail, BOOL& bAlphaChannelSet)
+{
+	m_editor.DrawPreview(&dc, rect);
+}
+
 
 // CNetView printing
 

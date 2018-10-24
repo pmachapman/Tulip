@@ -522,6 +522,59 @@ void CDiagramEditor::Draw(CDC* dc, CRect rect) const
 
 }
 
+void CDiagramEditor::DrawPreview(CDC* dc, CRect rect)
+/* ============================================================
+	Function :		CDiagramEditor::DrawPreview
+	Description :	Calls a series of (virtual) functions to
+					draw to "dc". "rect" is the total rectangle
+					to draw to.
+	Access :		Public
+
+	Return :		void
+	Parameters :	CDC* dc		-	The "CDC" to draw to.
+					CRect rect	-	The complete rectangle
+									(including non-visible areas)
+
+	Usage :			Is used to draw the iconic thumbnail or preview.
+
+   ============================================================*/
+{
+	// Getting coordinate data
+	SCROLLINFO sih;
+	sih.cbSize = sizeof(SCROLLINFO);
+	sih.fMask = SIF_POS;
+	SCROLLINFO siv;
+	siv.cbSize = sizeof(SCROLLINFO);
+	siv.fMask = SIF_POS;
+	if (!GetScrollInfo(SB_HORZ, &sih))
+		sih.nPos = 0;
+	if (!GetScrollInfo(SB_VERT, &siv))
+		siv.nPos = 0;
+
+	CRect totalRect;
+	int virtwidth = round(static_cast<double>(GetVirtualSize().cx) * GetZoom()) + 1;
+	int virtheight = round(static_cast<double>(GetVirtualSize().cy) * GetZoom()) + 1;
+	totalRect.SetRect(0, 0, virtwidth, virtheight);
+
+	// Creating memory CDC
+	CDC memdc;
+	memdc.CreateCompatibleDC(dc);
+	CBitmap bmp;
+	bmp.CreateCompatibleBitmap(dc, rect.right, rect.bottom);
+	CBitmap* oldbmp = memdc.SelectObject(&bmp);
+
+	// Painting
+	EraseBackground(&memdc, rect);
+
+	memdc.SetWindowOrg(sih.nPos, siv.nPos);
+
+	Draw(&memdc, totalRect);
+
+	// Blit the memory CDC to screen
+	dc->BitBlt(0, 0, rect.right, rect.bottom, &memdc, sih.nPos, siv.nPos, SRCCOPY);
+	memdc.SelectObject(oldbmp);
+}
+
 void CDiagramEditor::Print(CDC* dc, CRect rect, double zoom)
 /* ============================================================
 	Function :		CDiagramEditor::Print

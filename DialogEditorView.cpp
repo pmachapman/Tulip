@@ -163,6 +163,11 @@ void CDialogEditorView::OnDraw(CDC* pDC)
 	// of the view and will be redrawn automatically.
 }
 
+void CDialogEditorView::OnDrawIconicThumbnailOrLivePreview(CDC& dc, CRect rect, CSize szRequiredThumbnailSize, BOOL bIsThumbnail, BOOL& bAlphaChannelSet)
+{
+	m_editor.DrawPreview(&dc, rect);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CDialogEditorView printing
 

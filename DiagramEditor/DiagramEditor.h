@@ -63,6 +63,7 @@ public:
 
 	// Visuals
 	virtual void	Draw(CDC* dc, CRect rect) const;
+	virtual void	DrawPreview(CDC* dc, CRect rect);
 	virtual void	Print(CDC* dc, CRect rect, double zoom);
 
 protected:
