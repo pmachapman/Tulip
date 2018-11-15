@@ -187,7 +187,7 @@ void CFlowchartView::Dump(CDumpContext& dc) const
 	CView::Dump(dc);
 }
 
-CFlowchartDoc* CFlowchartView::GetDocument() // non-debug version is inline
+CFlowchartDoc* CFlowchartView::GetDocument() const // non-debug version is inline
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CFlowchartDoc)));
 	return (CFlowchartDoc*)m_pDocument;

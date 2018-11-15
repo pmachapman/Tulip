@@ -14,7 +14,7 @@ protected: // create from serialization only
 
 	// Attributes
 public:
-	CFlowchartDoc* GetDocument();
+	CFlowchartDoc* GetDocument() const;
 
 	// Operations
 public:
