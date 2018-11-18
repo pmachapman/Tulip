@@ -280,7 +280,7 @@ void CNetworkEditor::ExportEMF(const CString& filename)
 		// Himetric rect
 		CRect r(0, 0, 8 * 2540, 11 * 2540);
 
-		metaDC.CreateEnhanced(&dc, dlg.GetPathName(), &r, _T("UMLEditor Drawing"));
+		metaDC.CreateEnhanced(&dc, dlg.GetPathName(), &r, _T("NetworkEditor Drawing"));
 		metaDC.SetAttribDC(dc.m_hDC);
 
 		SetRedraw(FALSE);
