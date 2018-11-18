@@ -238,6 +238,8 @@
     <ClInclude Include="FlowchartEditor\LabelPropertyDialog.h" />
     <ClInclude Include="FlowchartView.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MyVisualManagerOffice2007.h" />
+    <ClInclude Include="MyVisualManagerWindows7.h" />
     <ClInclude Include="NetDoc.h" />
     <ClInclude Include="NetView.h" />
     <ClInclude Include="NetworkEditor\NetworkControlFactory.h" />
@@ -346,6 +348,8 @@
     <ClCompile Include="FlowchartEditor\LabelPropertyDialog.cpp" />
     <ClCompile Include="FlowchartView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MyVisualManagerOffice2007.cpp" />
+    <ClCompile Include="MyVisualManagerWindows7.cpp" />
     <ClCompile Include="NetDoc.cpp" />
     <ClCompile Include="NetView.cpp" />
     <ClCompile Include="NetworkEditor\NetworkControlFactory.cpp" />
