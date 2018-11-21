@@ -112,7 +112,7 @@ void CDiagramGroupbox::Draw(CDC* dc, CRect rect)
 	dc->SelectObject(&font);
 
 	dc->SetBkMode(OPAQUE);
-	dc->SetBkColor(RGB(192, 192, 192));
+	dc->SetBkColor(::GetSysColor(COLOR_3DFACE));
 	rect.left += abs(lf.lfHeight) / 2;
 	dc->DrawText(_T(" ") + GetTitle() + _T(" "), rect, DT_SINGLELINE);
 
