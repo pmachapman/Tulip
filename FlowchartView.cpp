@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(CFlowchartView, CView)
 	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
 	ON_COMMAND(ID_EXPORT, OnExport)
+	ON_UPDATE_COMMAND_UI(ID_EXPORT, OnUpdateExport)
 	ON_COMMAND(ID_FLOWCHART_BUTTON_ARROW, OnButtonArrow)
 	ON_COMMAND(IDC_SETTINGS, OnSettings)
 	ON_COMMAND(ID_ZOOM, OnZoom)
@@ -453,6 +454,11 @@ void CFlowchartView::OnExport()
 	}
 	m_editor.ExportEMF(title);
 	m_editor.SetModified(modified);
+}
+
+void CFlowchartView::OnUpdateExport(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
 }
 
 // Links menu
