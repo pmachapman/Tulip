@@ -14,7 +14,7 @@ public:
 	virtual ~CDialogEditor();
 
 	virtual void DrawBackground(CDC* dc, CRect rect, double zoom) const;
-	void ExportEMF(const CString& filename);
+	void ExportEMF(const CString& filename, const bool noDialog = false);
 
 };
 

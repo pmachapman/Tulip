@@ -644,8 +644,36 @@ void CDialogEditorView::OnUpdateBottom(CCmdUI* pCmdUI)
 
 void CDialogEditorView::OnExport()
 {
-	CDialogEditorDoc* pDoc = GetDocument();
-	pDoc->Export();
+	// We save the current modified-state of 
+	// the editor. The export mechanism 
+	// modifies the data (although in a harmless 
+	// way) and we want to reset the state 
+	// after the operation - to avoid save 
+	// questions when no conscious changes have 
+	// been made.
+
+	BOOL modified = m_editor.IsModified();
+	CDialogEditorDoc* doc = GetDocument();
+	CWaitCursor wait;
+	CString filename = doc->GetTitle();
+	int found = filename.ReverseFind(_TCHAR('.'));
+	if (found != -1)
+	{
+		filename = filename.Left(found);
+	}
+
+	CFileDialog dlg(FALSE, _T("emf"), filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("HTML File (*.html)|*.html;*.htm|Enhanced MetaFile (*.emf)|*.emf|All Files (*.*)|*.*||"));
+	if (dlg.DoModal() == IDOK)
+	{
+		if (dlg.GetFileExt().CompareNoCase(_T("EMF")) == 0)
+		{
+			m_editor.ExportEMF(dlg.GetPathName(), true);
+		}
+		else
+		{
+			doc->ExportHTML(dlg.GetPathName());
+		}
+	}
 }
 
 void CDialogEditorView::OnUpdateExport(CCmdUI* pCmdUI)

@@ -50,7 +50,7 @@ void CDialogEditor::DrawBackground(CDC* dc, CRect rect, double /*zoom*/) const
 	CStdGrfx::drawframed3dBox(dc, rect);
 }
 
-void CDialogEditor::ExportEMF(const CString& filename)
+void CDialogEditor::ExportEMF(const CString& filename, const bool noDialog)
 /* ============================================================
 	Function :		CDialogEditor::ExportEMF
 	Description :	Exports the current diagram to an EMF-file.
@@ -67,7 +67,7 @@ void CDialogEditor::ExportEMF(const CString& filename)
 {
 
 	CFileDialog dlg(FALSE, _T("emf"), filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Enhanced MetaFile (*.emf)|*.emf|All Files (*.*)|*.*||"));
-	if (dlg.DoModal() == IDOK)
+	if (noDialog || dlg.DoModal() == IDOK)
 	{
 
 		CClientDC	dc(this);
