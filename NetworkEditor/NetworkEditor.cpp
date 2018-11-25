@@ -277,8 +277,27 @@ void CNetworkEditor::ExportEMF(const CString& filename)
 			GetVirtualSize().cx,
 			GetVirtualSize().cy);
 
-		// Himetric rect
-		CRect r(0, 0, 8 * 2540, 11 * 2540);
+		// Determine the picture frame dimensions.
+		// iWidthMM is the display width in millimeters.
+		// iHeightMM is the display height in millimeters.
+		// iWidthPels is the display width in pixels.
+		// iHeightPels is the display height in pixels
+
+		int iWidthMM = GetDeviceCaps(dc, HORZSIZE);
+		int iHeightMM = GetDeviceCaps(dc, VERTSIZE);
+		int iWidthPels = GetDeviceCaps(dc, HORZRES);
+		int iHeightPels = GetDeviceCaps(dc, VERTRES);
+
+		// Convert client coordinates to .01-mm units.
+		// Use iWidthMM, iWidthPels, iHeightMM, and
+		// iHeightPels to determine the number of
+		// .01-millimeter units per pixel in the x-
+		//  and y-directions.
+		CRect r(
+			(rect.left * iWidthMM * 100) / iWidthPels,
+			(rect.top * iHeightMM * 100) / iHeightPels,
+			(rect.right * iWidthMM * 100) / iWidthPels,
+			(rect.bottom * iHeightMM * 100) / iHeightPels);
 
 		metaDC.CreateEnhanced(&dc, dlg.GetPathName(), &r, _T("NetworkEditor Drawing"));
 		metaDC.SetAttribDC(dc.m_hDC);
