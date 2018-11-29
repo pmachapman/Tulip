@@ -212,7 +212,7 @@ void CNetworkSymbol::Draw(CDC* dc, CRect rect)
 	CBitmap* bitmap = CBitmap::FromHandle(hbitmap);
 	CBitmap* oldbitmap = memDC.SelectObject(bitmap);
 
-	dc->StretchBlt(rect.left, rect.top, rect.Width(), rect.Height() - round(12 * GetZoom()), &memDC, 0, 0, 32, 32, SRCCOPY);
+	dc->TransparentBlt(rect.left, rect.top, rect.Width(), rect.Height() - round(12 * GetZoom()), &memDC, 0, 0, 32, 32, RGB(230, 230, 230));
 	memDC.SelectObject(oldbitmap);
 	bitmap->DeleteObject();
 
