@@ -374,7 +374,7 @@ void CFlowchartView::OnMargins()
 void CFlowchartView::OnRestraints()
 {
 	if (m_editor.GetRestraints() == RESTRAINT_MARGIN)
-		m_editor.SetRestraints(RESTRAINT_NONE);
+		m_editor.SetRestraints(RESTRAINT_VIRTUAL);
 	else
 		m_editor.SetRestraints(RESTRAINT_MARGIN);
 }
