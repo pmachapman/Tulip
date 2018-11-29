@@ -2602,7 +2602,13 @@ void CDiagramEditor::OnLButtonUp(UINT nFlags, CPoint point)
 			if (obj->IsSelected())
 			{
 				CRect rect = obj->GetRect();
-				if (m_snap)
+
+				// Only snap if we are not along the right or bottom margin
+				if (m_snap
+					&& !(m_restraint == RESTRAINT_VIRTUAL && rect.right == GetVirtualSize().cx)
+					&& !(m_restraint == RESTRAINT_VIRTUAL && rect.bottom == GetVirtualSize().cy)
+					&& !(m_restraint == RESTRAINT_MARGIN && rect.right == GetVirtualSize().cx - m_rightMargin)
+					&& !(m_restraint == RESTRAINT_MARGIN && rect.bottom == GetVirtualSize().cy - m_bottomMargin))
 				{
 					// If we move objects, and snap to grid is on
 					// we snap here
