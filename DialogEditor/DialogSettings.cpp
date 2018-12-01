@@ -18,6 +18,7 @@ CDialogSettings::CDialogSettings(CWnd* pParent /*=NULL*/)
 	: CDialog(CDialogSettings::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CDialogSettings)
+	m_color = RGB(0, 0, 0);
 	m_height = 0;
 	m_width = 0;
 	m_gridHeight = 0;
@@ -48,9 +49,29 @@ void CDialogSettings::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDialogSettings, CDialog)
 	//{{AFX_MSG_MAP(CDialogSettings)
-		// NOTE: the ClassWizard will add message map macros here
+	ON_BN_CLICKED(IDC_BUTTON_COLOR, OnButtonColor)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogSettings message handlers
+
+void CDialogSettings::OnButtonColor()
+/* ============================================================
+	Function :		CUMLEditorPropertyDialog::OnButtonColor
+	Description :	Handler for the dialog button Color
+	Access :		Protected
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Called from MFC.
+
+   ============================================================*/
+{
+
+	CColorDialog dlg(m_color, CC_FULLOPEN);
+	if (dlg.DoModal() == IDOK)
+		m_color = dlg.GetColor();
+
+}

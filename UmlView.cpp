@@ -734,6 +734,7 @@ void CUmlView::OnSettings()
 {
 	CDialogSettings	dlg;
 
+	dlg.m_color = m_editor.GetBackgroundColor();
 	dlg.m_width = m_editor.GetVirtualSize().cx;
 	dlg.m_height = m_editor.GetVirtualSize().cy;
 	dlg.m_gridWidth = m_editor.GetGridSize().cx;
@@ -742,6 +743,7 @@ void CUmlView::OnSettings()
 
 	if (dlg.DoModal() == IDOK)
 	{
+		m_editor.SetColor(dlg.m_color);
 		m_editor.SetGridSize(CSize(dlg.m_gridWidth, dlg.m_gridHeight));
 		m_editor.SetVirtualSize(CSize(dlg.m_width, dlg.m_height));
 		m_editor.SetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
