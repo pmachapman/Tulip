@@ -299,7 +299,7 @@ void CNetworkEditor::ExportEMF(const CString& filename)
 			(rect.right * iWidthMM * 100) / iWidthPels,
 			(rect.bottom * iHeightMM * 100) / iHeightPels);
 
-		metaDC.CreateEnhanced(&dc, dlg.GetPathName(), &r, _T("UMLEditor Drawing"));
+		metaDC.CreateEnhanced(&dc, dlg.GetPathName(), &r, _T("NetworkEditor Drawing"));
 		metaDC.SetAttribDC(dc.m_hDC);
 
 		SetRedraw(FALSE);

@@ -22,7 +22,7 @@ public:
 public:
 
 	// --- DiagramEditor ---
-	void	Export();
+	void	ExportHTML(CString filename);
 
 	// Overrides
 		// ClassWizard generated virtual function overrides

@@ -122,11 +122,9 @@ BOOL CDialogEditorDoc::SaveModified()
 
 }
 
-void CDialogEditorDoc::Export()
+void CDialogEditorDoc::ExportHTML(CString filename)
 {
-	// An example of exporting
-
-	CString filename;
+	// Exporting to HTML
 	CStringArray stra;
 
 	// Header. I don't want this in the CDiagramEntityContainer class

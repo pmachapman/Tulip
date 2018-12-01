@@ -67,6 +67,7 @@ protected:
 	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI);
 	afx_msg void OnSettings();
 	afx_msg void OnExport();
+	afx_msg void OnUpdateExport(CCmdUI* pCmdUI);
 	afx_msg void OnButtonArrow();
 	afx_msg void OnZoom();
 	afx_msg void OnZoom100();

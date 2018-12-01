@@ -1735,7 +1735,7 @@ void CUMLEntityContainer::ExportHTML(CStringArray& stra) const
 		stra.Add(_T("<html>"));
 		stra.Add(_T("<head>"));
 		stra.Add(title);
-		stra.Add(_T("<meta name=\"generator\" content=\"UMLEditorDemo\">"));
+		stra.Add(_T("<meta name=\"generator\" content=\"Tulip UML Editor\">"));
 		stra.Add(_T("<meta http-equiv=\"content-type\" content=\"text/html; charset=iso-8859-1\">"));
 		stra.Add(_T("</head>"));
 		stra.Add(_T("<body>"));

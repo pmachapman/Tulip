@@ -34,7 +34,7 @@ public:
 	void Load(CString& filename);
 
 	void ExportCPP(const CString& project, BOOL bHeaderOnly = FALSE);
-	void ExportHTML();
+	void ExportHTML(const CString& filename);
 	void ExportEMF(const CString& filename);
 
 	void SetStripLeadingClassCharacter(BOOL stripLeadingClassLetter);

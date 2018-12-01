@@ -63,6 +63,7 @@ protected:
     afx_msg void OnButtonLink();
 	afx_msg void OnUpdateLink(CCmdUI* pCmdUI);
 	afx_msg void OnExport();
+	afx_msg void OnUpdateExport(CCmdUI* pCmdUI);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnEditUndo();

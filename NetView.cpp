@@ -50,7 +50,10 @@ BEGIN_MESSAGE_MAP(CNetView, CView)
 	ON_COMMAND(ID_EDIT_SELECT_ALL, OnSelectAll)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_SELECT_ALL, OnUpdateSelectAll)
 	ON_COMMAND(ID_EXPORT, OnExport)
-    ON_COMMAND(ID_BUTTON_LINK, OnButtonLink)
+	ON_UPDATE_COMMAND_UI(ID_EXPORT, OnUpdateExport)
+	ON_COMMAND(ID_EXPORT_EMF, OnExport)
+	ON_UPDATE_COMMAND_UI(ID_EXPORT_EMF, OnUpdateExport)
+	ON_COMMAND(ID_BUTTON_LINK, OnButtonLink)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_LINK, OnUpdateLink)
 	ON_COMMAND(ID_PROPERTY, OnProperty)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
@@ -453,6 +456,11 @@ void CNetView::OnExport()
 	}
 	m_editor.ExportEMF(title);
 	m_editor.SetModified(modified);
+}
+
+void CNetView::OnUpdateExport(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
 }
 
 void CNetView::OnSettings()
