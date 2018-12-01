@@ -1499,7 +1499,7 @@ void CUMLEditor::ExportCPP(const CString& project, BOOL bHeaderOnly)
 
 }
 
-void CUMLEditor::ExportHTML()
+void CUMLEditor::ExportHTML(const CString& filename)
 /* ============================================================
 	Function :		CUMLEditor::ExportHTML
 	Description :	Export the current diagram to HTML-format.
@@ -1513,42 +1513,44 @@ void CUMLEditor::ExportHTML()
    ============================================================*/
 {
 
-	CUMLEntityContainer* container = GetUMLEntityContainer();
-	if (container)
+	CFileDialog dlg(FALSE, _T("html"), filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("HTML File (*.html)|*.html;*.htm||All Files (*.*)|*.*||"));
+	if (dlg.DoModal() == IDOK)
 	{
-
-		CStringArray stra;
-		CString filename;
-		container->Export(stra, EXPORT_HTML);
-		CString err = container->GetErrorMessage();
-		if (err.IsEmpty())
+		CUMLEntityContainer* container = GetUMLEntityContainer();
+		if (container)
 		{
-			CTextFile file(_T("html"), _T("\n"));
-			if (!file.WriteTextFile(filename, stra))
+			CStringArray stra;
+			container->Export(stra, EXPORT_HTML);
+			CString err = container->GetErrorMessage();
+			if (err.IsEmpty())
 			{
-				if (file.GetErrorMessage().GetLength())
-					AfxMessageBox(file.GetErrorMessage());
+				CTextFile file(_T("html"), _T("\n"));
+				if (!file.WriteTextFile(dlg.GetPathName(), stra))
+				{
+					if (file.GetErrorMessage().GetLength())
+						AfxMessageBox(file.GetErrorMessage());
+				}
+				else
+				{
+					CString imagedir(dlg.GetPathName());
+					int find = imagedir.ReverseFind(_TCHAR('\\'));
+					if (find != -1)
+						imagedir = imagedir.Left(find);
+					imagedir += _T("\\images");
+					CString source(GetApplicationDirectory() + _T("images"));
+					CDiskObject cdo;
+					if (!cdo.CopyDirectory(source, imagedir))
+						AfxMessageBox(cdo.GetErrorMessage());
+					else
+						AfxMessageBox(IDS_UML_EXPORT_FINISHED);
+				}
 			}
 			else
 			{
-				CString imagedir(filename);
-				int find = imagedir.ReverseFind(_TCHAR('\\'));
-				if (find != -1)
-					imagedir = imagedir.Left(find);
-				imagedir += _T("\\images");
-				CString source(GetApplicationDirectory() + _T("images"));
-				CDiskObject cdo;
-				if (!cdo.CopyDirectory(source, imagedir))
-					AfxMessageBox(cdo.GetErrorMessage());
-				else
-					AfxMessageBox(IDS_UML_EXPORT_FINISHED);
+				AfxMessageBox(err);
 			}
 		}
-		else
-			AfxMessageBox(err);
-
 	}
-
 }
 
 void CUMLEditor::SetStripLeadingClassCharacter(BOOL stripLeadingClassLetter)

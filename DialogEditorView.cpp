@@ -92,6 +92,10 @@ BEGIN_MESSAGE_MAP(CDialogEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_UP, OnUpdateUp)
 	ON_COMMAND(ID_EXPORT, OnExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT, OnUpdateExport)
+	ON_COMMAND(ID_EXPORT_EMF, OnExportEmf)
+	ON_UPDATE_COMMAND_UI(ID_EXPORT_EMF, OnUpdateExport)
+	ON_COMMAND(ID_EXPORT_HTML, OnExportHtml)
+	ON_UPDATE_COMMAND_UI(ID_EXPORT_HTML, OnUpdateExport)
 	ON_COMMAND(ID_DIALOG_ADD_NONE, OnAddNone)
 	ON_UPDATE_COMMAND_UI(ID_DIALOG_ADD_NONE, OnUpdateAddNone)
 	ON_UPDATE_COMMAND_UI(ID_DIALOG_ADD_BUTTON, OnUpdateAddButton)
@@ -673,6 +677,60 @@ void CDialogEditorView::OnExport()
 		{
 			doc->ExportHTML(dlg.GetPathName());
 		}
+	}
+}
+
+void CDialogEditorView::OnExportEmf()
+{
+	// We save the current modified-state of 
+	// the editor. The export mechanism 
+	// modifies the data (although in a harmless 
+	// way) and we want to reset the state 
+	// after the operation - to avoid save 
+	// questions when no conscious changes have 
+	// been made.
+
+	BOOL modified = m_editor.IsModified();
+	CDialogEditorDoc* doc = GetDocument();
+	CWaitCursor wait;
+	CString filename = doc->GetTitle();
+	int found = filename.ReverseFind(_TCHAR('.'));
+	if (found != -1)
+	{
+		filename = filename.Left(found);
+	}
+
+	CFileDialog dlg(FALSE, _T("emf"), filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Enhanced MetaFile (*.emf)|*.emf|All Files (*.*)|*.*||"));
+	if (dlg.DoModal() == IDOK)
+	{
+		m_editor.ExportEMF(dlg.GetPathName(), true);
+	}
+}
+
+void CDialogEditorView::OnExportHtml()
+{
+	// We save the current modified-state of 
+	// the editor. The export mechanism 
+	// modifies the data (although in a harmless 
+	// way) and we want to reset the state 
+	// after the operation - to avoid save 
+	// questions when no conscious changes have 
+	// been made.
+
+	BOOL modified = m_editor.IsModified();
+	CDialogEditorDoc* doc = GetDocument();
+	CWaitCursor wait;
+	CString filename = doc->GetTitle();
+	int found = filename.ReverseFind(_TCHAR('.'));
+	if (found != -1)
+	{
+		filename = filename.Left(found);
+	}
+
+	CFileDialog dlg(FALSE, _T("html"), filename, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("HTML File (*.html)|*.html;*.htm|All Files (*.*)|*.*||"));
+	if (dlg.DoModal() == IDOK)
+	{
+		doc->ExportHTML(dlg.GetPathName());
 	}
 }
 
