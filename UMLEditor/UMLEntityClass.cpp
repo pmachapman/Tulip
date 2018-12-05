@@ -1747,6 +1747,7 @@ BOOL CUMLEntityClass::ImportH(const CString& filename)
 		leftbracket = str.Find(_TCHAR('{'));
 		while (leftbracket != -1)
 		{
+			// See if the inline function is in or after the class definition
 			int rightbracket = str.Find(_T("};"));
 			if (rightbracket != -1)
 			{
@@ -1756,10 +1757,7 @@ BOOL CUMLEntityClass::ImportH(const CString& filename)
 			}
 			else
 			{
-				CString err;
-				err.LoadString(IDS_UML_MISSING_BRACKET);
-				GetUMLContainer()->SetErrorMessage(err);
-				return FALSE;
+				str = str.Left(leftbracket);
 			}
 
 			leftbracket = str.Find(_TCHAR('{'));

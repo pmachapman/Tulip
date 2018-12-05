@@ -178,11 +178,6 @@ BOOL CTulipApp::InitInstance()
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
-	// Enable DDE Execute open
-	EnableShellOpen();
-	RegisterShellFileTypes(TRUE);
-
-
 	// Dispatch commands specified on the command line.  Will return FALSE if
 	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
 	if (!ProcessShellCommand(cmdInfo))
