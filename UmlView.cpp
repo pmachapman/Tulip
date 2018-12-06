@@ -263,6 +263,7 @@ void CUmlView::OnInitialUpdate()
 			else
 			{
 				m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
+				m_editor.SetColor(pDoc->GetData()->GetColor());
 			}
 
 			int leftMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETX);
@@ -288,6 +289,7 @@ void CUmlView::OnInitialUpdate()
 			else
 			{
 				m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
+				m_editor.SetColor(pDoc->GetData()->GetColor());
 			}
 		}
 
