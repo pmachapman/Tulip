@@ -236,12 +236,19 @@ void CNetView::OnInitialUpdate()
 		HDC	hdc = printer.GetPrinterDC();
 		if (hdc)
 		{
-
 			double zoom = GetDeviceCaps(hdc, LOGPIXELSX) / m_screenResolutionX;
 			int horzSize = ::GetDeviceCaps(hdc, PHYSICALWIDTH);
 			int vertSize = ::GetDeviceCaps(hdc, PHYSICALHEIGHT);
 
-			m_editor.SetVirtualSize(CSize(round(static_cast<double>(horzSize) / zoom), round(static_cast<double>(vertSize) / zoom)));
+			// Only set the size if one wasn't pre-specified
+			if (pDoc->GetData()->GetVirtualSize() == CSize(0, 0))
+			{
+				m_editor.SetVirtualSize(CSize(round(static_cast<double>(horzSize) / zoom), round(static_cast<double>(vertSize) / zoom)));
+			}
+			else
+			{
+				m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
+			}
 
 			int leftMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETX);
 			int topMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETY);
@@ -255,12 +262,18 @@ void CNetView::OnInitialUpdate()
 			m_editor.SetMargins(round(static_cast<double>(leftMarg) / zoom), round(static_cast<double>(topMarg) / zoom), round(static_cast<double>(rightMarg) / zoom), round(static_cast<double>(bottomMarg) / zoom));
 
 			::DeleteDC(hdc);
-
 		}
 		else
 		{
 			// No default printer installed
-			m_editor.SetVirtualSize(CSize(8 * m_screenResolutionX, 11 * m_screenResolutionX));
+			if (pDoc->GetData()->GetVirtualSize() == CSize(0, 0))
+			{
+				m_editor.SetVirtualSize(CSize(8 * m_screenResolutionX, 11 * m_screenResolutionX));
+			}
+			else
+			{
+				m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
+			}
 		}
 
 		m_editor.SetScrollWheelMode(WHEEL_SCROLL);
