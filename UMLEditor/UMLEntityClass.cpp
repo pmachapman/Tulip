@@ -157,7 +157,7 @@ void CUMLEntityClass::Draw(CDC* dc, CRect rect)
 	CFont fontUnderlineItalic;
 	fontUnderlineItalic.CreateFont(-height, 0, 0, 0, FW_NORMAL, TRUE, TRUE, 0, 0, 0, 0, 0, 0, GetFont());
 
-	height = round(14.0 * GetZoom());
+	height = floor(14.0 * GetZoom());
 
 	CFont* oldfont = NULL;
 	oldfont = dc->SelectObject(&fontBold);
@@ -721,7 +721,7 @@ void CUMLEntityClass::CalcRestraints()
 	header += (int)m_properties.GetSize();
 
 	int lines = max(1, attrs) + max(1, ops) + header;
-	int height = round(14.0 * GetZoom());
+	int height = 14; // Don't scale to zoom, as this is done elsewhere
 	int totalheight = lines * height;
 	totalheight += GetMarkerSize().cx * 3;
 
