@@ -59,7 +59,6 @@ CUMLEntityContainer::CUMLEntityContainer()
 {
 
 	m_displayOptions = 0;
-	m_color = RGB(0, 0, 0);
 
 	SetUndoStackSize(10);
 
@@ -1174,46 +1173,6 @@ int CUMLEntityContainer::GetDisplayOptions() const
 
 }
 
-void CUMLEntityContainer::SetColor(COLORREF color)
-/* ============================================================
-	Function :		CUMLEntityContainer::SetColor
-	Description :	Sets the color of the container.
-	Access :		Public
-
-	Return :		void
-	Parameters :	COLORREF color	-	New color
-
-	Usage :			The color is used as background color for
-					the editor and will be saved/loaded with
-					the rest of the container data.
-
-   ============================================================*/
-{
-
-	m_color = color;
-
-}
-
-COLORREF CUMLEntityContainer::GetColor() const
-/* ============================================================
-	Function :		CUMLEntityContainer::GetColor
-	Description :	Gets the container color
-	Access :		Public
-
-	Return :		COLORREF	-	Container color
-	Parameters :	none
-
-	Usage :			The color is used as background color for
-					the editor and will be saved/loaded with
-					the rest of the container data.
-
-   ============================================================*/
-{
-
-	return m_color;
-
-}
-
 BOOL CUMLEntityContainer::PackageExists(const CString& name, CUMLEntity* filter)
 /* ============================================================
 	Function :		CUMLEntityContainer::PackageExists
@@ -1242,89 +1201,6 @@ BOOL CUMLEntityContainer::PackageExists(const CString& name, CUMLEntity* filter)
 			result = TRUE;
 
 	SetPackage(oldpackage);
-
-	return result;
-
-}
-
-CString CUMLEntityContainer::GetString() const
-/* ============================================================
-	Function :		CDiagramEntityContainer::GetString
-	Description :	Returns a string representation of the
-					virtual paper size and current paper color.
-	Access :		Public
-
-	Return :		CString	-	Resulting string
-	Parameters :	none
-
-	Usage :			Call to get a string representing the paper
-					size of the container. The format is
-					"paper:x,y,color;" where "x" and "y" are the
-					horisontal and vertical sizes, and "color" is
-					the paper color.
-
-   ============================================================*/
-{
-
-	CString str;
-	str.Format(_T("paper:%i,%i,%i;"), GetVirtualSize().cx, GetVirtualSize().cy, static_cast<int>(GetColor()));
-	return str;
-
-}
-
-BOOL CUMLEntityContainer::FromString(const CString& str)
-/* ============================================================
-	Function :		CDiagramEntityContainer::FromString
-	Description :	Sets the virtual paper size from a string.
-	Access :		Public
-
-	Return :		BOOL				-	"TRUE" if the string
-											represented a
-											paper.
-	Parameters :	const CString& str	-	The string
-											representation.
-
-	Usage :			Call to set the paper size of the container
-					from a string. The format is "paper:x,y,color;"
-					where "x" and "y" are the horisontal and
-					vertical sizes, "color" the background color.
-
-   ============================================================*/
-{
-
-	BOOL result = FALSE;
-
-	CTokenizer main(str, _T(":"));
-	CString header;
-	CString data;
-	if (main.GetSize() == 2)
-	{
-		main.GetAt(0, header);
-		main.GetAt(1, data);
-		header.TrimLeft();
-		header.TrimRight();
-		data.TrimLeft();
-		data.TrimRight();
-		if (header == _T("paper"))
-		{
-			CTokenizer tok(data.Left(data.GetLength() - 1));
-			INT_PTR size = tok.GetSize();
-			if (size == 3)
-			{
-				int right;
-				int bottom;
-				int color;
-
-				tok.GetAt(0, right);
-				tok.GetAt(1, bottom);
-				tok.GetAt(2, color);
-
-				SetVirtualSize(CSize(right, bottom));
-				SetColor(static_cast<COLORREF>(color));
-				result = TRUE;
-			}
-		}
-	}
 
 	return result;
 

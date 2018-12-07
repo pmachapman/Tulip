@@ -674,7 +674,7 @@ void CDiagramEditor::DrawBackground(CDC* dc, CRect rect, double /*zoom*/) const
    ============================================================*/
 {
 
-	dc->FillSolidRect(&rect, m_bkgndCol);
+	dc->FillSolidRect(&rect, GetBackgroundColor());
 
 }
 
@@ -1055,6 +1055,11 @@ void CDiagramEditor::SetBackgroundColor(COLORREF col)
 
    ============================================================*/
 {
+	if (m_objs)
+	{
+		m_objs->Snapshot();
+		m_objs->SetColor(col);
+	}
 
 	m_bkgndCol = col;
 	if (m_hWnd)
@@ -5459,6 +5464,11 @@ COLORREF CDiagramEditor::GetBackgroundColor() const
 
    ============================================================*/
 {
+	// Ensure that the color is consistent
+	if (m_objs && m_bkgndCol != m_objs->GetColor())
+	{
+		m_objs->SetColor(m_bkgndCol);
+	}
 
 	return m_bkgndCol;
 

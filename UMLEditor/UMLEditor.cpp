@@ -1284,28 +1284,6 @@ int CUMLEditor::GetDisplayOptions() const
 
 }
 
-void CUMLEditor::SetColor(COLORREF col)
-/* ============================================================
-	Function :		CUMLEditor::SetColor
-	Description :	Sets the background color of the editor.
-					Also sets the color of the container - as
-					it is saved with the container data.
-	Access :		Public
-
-	Return :		void
-	Parameters :	COLORREF col	-	Color to set
-
-	Usage :			Call to set the editor color.
-
-   ============================================================*/
-{
-
-	GetUMLEntityContainer()->Snapshot();
-	SetBackgroundColor(col);
-	GetUMLEntityContainer()->SetColor(col);
-
-}
-
 CUMLEntityContainer * CUMLEditor::GetUMLEntityContainer() const
 /* ============================================================
 	Function :		CUMLEditor::GetUMLEntityContainer

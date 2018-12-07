@@ -24,7 +24,6 @@ public:
 	void SetPackage(const CString& package);
 	void SetDisplayOptions(int displayOption);
 	int GetDisplayOptions() const;
-	void SetColor(COLORREF col);
 	CUMLEntity* GetAllNamedObject(const CString& name) const;
 
 	virtual void	StartDrawingObject(CDiagramEntity* obj);

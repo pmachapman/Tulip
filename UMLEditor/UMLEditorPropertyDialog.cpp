@@ -50,10 +50,8 @@ CUMLEditorPropertyDialog::CUMLEditorPropertyDialog(CWnd* pParent /*=NULL*/)
 	m_nooperations = FALSE;
 	m_nooperationattributenames = FALSE;
 	m_showmargin = FALSE;
-	//}}AFX_DATA_INIT
-
 	m_color = RGB(0, 0, 0);
-
+	//}}AFX_DATA_INIT
 }
 
 
@@ -107,7 +105,7 @@ void CUMLEditorPropertyDialog::OnButtonColor()
    ============================================================*/
 {
 
-	CColorDialog dlg(m_color);
+	CColorDialog dlg(m_color, CC_FULLOPEN);
 	if (dlg.DoModal() == IDOK)
 		m_color = dlg.GetColor();
 

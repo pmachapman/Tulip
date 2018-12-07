@@ -23,8 +23,6 @@ public:
 	virtual void			RemoveAt(INT_PTR index);
 	virtual void			RemoveAllSelected();
 	virtual CDiagramEntity* GetAt(INT_PTR index) const;
-	virtual CString			GetString() const;
-	virtual BOOL			FromString(const CString& str);
 	virtual void			Undo();
 	virtual void			Snapshot();
 	virtual void			Export(CStringArray& stra, UINT format = 0) const;
@@ -67,8 +65,6 @@ public:
 	// Accessors
 	void		SetDisplayOptions(int displayOption);
 	int			GetDisplayOptions() const;
-	void		SetColor(COLORREF color);
-	COLORREF	GetColor() const;
 	void		SetProjectName(const CString& value);
 	CString		GetProjectName() const;
 	void		SetProjectLocation(const CString& value);
@@ -103,7 +99,6 @@ private:
 
 	CString			m_package; // Current package
 	int				m_displayOptions; // Current display options
-	COLORREF		m_color; // Current bg color
 	CString			m_project; // Current project name
 	CString			m_location; // Current pjoject location
 	BOOL			m_stripLeadingClassLetter; // TRUE if leading char should be stripped when creating file names

@@ -125,7 +125,7 @@ CDiagramEntityContainer::CDiagramEntityContainer(CDiagramClipboardHandler* clip)
 	SetUndoStackSize(0);
 	Clear();
 	SetVirtualSize(CSize(0, 0));
-
+	m_color = RGB(0, 0, 0);
 }
 
 CDiagramEntityContainer::~CDiagramEntityContainer()
@@ -171,7 +171,7 @@ CString CDiagramEntityContainer::GetString() const
 /* ============================================================
 	Function :		CDiagramEntityContainer::GetString
 	Description :	Returns a string representation of the
-					virtual paper size
+					virtual paper size and current paper color.
 	Access :		Public
 
 	Return :		CString	-	Resulting string
@@ -179,17 +179,17 @@ CString CDiagramEntityContainer::GetString() const
 
 	Usage :			Call to get a string representing the paper
 					size of the container. The format is
-					"paper:x,y;" where "x" and "y" are the
-					horisontal and vertical sizes.
+					"paper:x,y,color;" where "x" and "y" are the
+					horisontal and vertical sizes, and "color" is
+					the paper color.
 
    ============================================================*/
 {
-
 	CString str;
-	str.Format(_T("paper:%i,%i;"), GetVirtualSize().cx, GetVirtualSize().cy);
+	str.Format(_T("paper:%i,%i,%i;"), GetVirtualSize().cx, GetVirtualSize().cy, static_cast<int>(GetColor()));
 	return str;
-
 }
+
 
 BOOL CDiagramEntityContainer::FromString(const CString& str)
 /* ============================================================
@@ -204,13 +204,12 @@ BOOL CDiagramEntityContainer::FromString(const CString& str)
 											representation.
 
 	Usage :			Call to set the paper size of the container
-					from a string. The format is "paper:x,y;"
+					from a string. The format is "paper:x,y,color;"
 					where "x" and "y" are the horisontal and
-					vertical sizes.
+					vertical sizes, "color" the background color.
 
    ============================================================*/
 {
-
 	BOOL result = FALSE;
 
 	CTokenizer main(str, _T(":"));
@@ -228,22 +227,24 @@ BOOL CDiagramEntityContainer::FromString(const CString& str)
 		{
 			CTokenizer tok(data.Left(data.GetLength() - 1));
 			INT_PTR size = tok.GetSize();
-			if (size == 2)
+			if (size == 3)
 			{
 				int right;
 				int bottom;
+				int color;
 
 				tok.GetAt(0, right);
 				tok.GetAt(1, bottom);
+				tok.GetAt(2, color);
 
 				SetVirtualSize(CSize(right, bottom));
+				SetColor(static_cast<COLORREF>(color));
 				result = TRUE;
 			}
 		}
 	}
 
 	return result;
-
 }
 
 void CDiagramEntityContainer::Export(CStringArray& stra, UINT format) const
@@ -483,6 +484,46 @@ CSize CDiagramEntityContainer::GetVirtualSize() const
 {
 
 	return m_virtualSize;
+
+}
+
+void CDiagramEntityContainer::SetColor(COLORREF color)
+/* ============================================================
+	Function :		CDiagramEntityContainer::SetColor
+	Description :	Sets the color of the container.
+	Access :		Public
+
+	Return :		void
+	Parameters :	COLORREF color	-	New color
+
+	Usage :			The color is used as background color for
+					the editor and will be saved/loaded with
+					the rest of the container data.
+
+   ============================================================*/
+{
+
+	m_color = color;
+
+}
+
+COLORREF CDiagramEntityContainer::GetColor() const
+/* ============================================================
+	Function :		CDiagramEntityContainer::GetColor
+	Description :	Gets the container color
+	Access :		Public
+
+	Return :		COLORREF	-	Container color
+	Parameters :	none
+
+	Usage :			The color is used as background color for
+					the editor and will be saved/loaded with
+					the rest of the container data.
+
+   ============================================================*/
+{
+
+	return m_color;
 
 }
 

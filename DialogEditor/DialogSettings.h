@@ -30,6 +30,8 @@ public:
 	int		m_marginRight;
 	//}}AFX_DATA
 
+	bool		m_disableColor;
+	COLORREF	m_color;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -43,9 +45,11 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CDialogSettings)
-		// NOTE: the ClassWizard will add member functions here
+	afx_msg void OnButtonColor();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual BOOL OnInitDialog();
 };
 
 //{{AFX_INSERT_LOCATION}}

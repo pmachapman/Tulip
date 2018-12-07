@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 
 CDialogEditor::CDialogEditor()
 /* ============================================================
-	Function :		CFlowchartEditor::CFlowchartEditor
+	Function :		CDialogEditor::CFlowchartEditor
 	Description :	constructor
 
 	Return :		void
@@ -26,6 +26,7 @@ CDialogEditor::CDialogEditor()
 
    ============================================================*/
 {
+	SetBackgroundColor(::GetSysColor(COLOR_3DFACE));
 	ShowGrid(FALSE);
 	SetSnapToGrid(TRUE);
 	SetRestraints(RESTRAINT_VIRTUAL);
@@ -47,6 +48,7 @@ CDialogEditor::~CDialogEditor()
 
 void CDialogEditor::DrawBackground(CDC* dc, CRect rect, double /*zoom*/) const
 {
+	GetBackgroundColor(); // Called to ensure a correct value is saved
 	CStdGrfx::drawframed3dBox(dc, rect);
 }
 

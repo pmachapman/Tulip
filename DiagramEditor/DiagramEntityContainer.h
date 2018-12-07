@@ -31,6 +31,9 @@ public:
 	void			SetVirtualSize(CSize size);
 	CSize			GetVirtualSize() const;
 
+	void			SetColor(COLORREF color);
+	COLORREF		GetColor() const;
+
 	void			SetModified(BOOL dirty);
 	BOOL			IsModified() const;
 
@@ -85,6 +88,7 @@ private:
 	CObArray		m_undo;
 	int				m_maxstacksize;
 	CSize			m_virtualSize;
+	COLORREF		m_color; // Current bg color
 
 	CDiagramClipboardHandler*	m_clip;
 	CDiagramClipboardHandler	m_internalClip;

@@ -240,6 +240,7 @@ void CFlowchartView::OnInitialUpdate()
 			else
 			{
 				m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
+				m_editor.SetBackgroundColor(pDoc->GetData()->GetColor());
 			}
 
 			int leftMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETX);
@@ -265,6 +266,7 @@ void CFlowchartView::OnInitialUpdate()
 			else
 			{
 				m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
+				m_editor.SetBackgroundColor(pDoc->GetData()->GetColor());
 			}
 		}
 
@@ -399,6 +401,7 @@ void CFlowchartView::OnSettings()
 {
 	CDialogSettings	dlg;
 
+	dlg.m_color = m_editor.GetBackgroundColor();
 	dlg.m_width = m_editor.GetVirtualSize().cx;
 	dlg.m_height = m_editor.GetVirtualSize().cy;
 	dlg.m_gridWidth = m_editor.GetGridSize().cx;
@@ -407,6 +410,7 @@ void CFlowchartView::OnSettings()
 
 	if (dlg.DoModal() == IDOK)
 	{
+		m_editor.SetBackgroundColor(dlg.m_color);
 		m_editor.SetGridSize(CSize(dlg.m_gridWidth, dlg.m_gridHeight));
 		m_editor.SetVirtualSize(CSize(dlg.m_width, dlg.m_height));
 		m_editor.SetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
