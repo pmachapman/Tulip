@@ -30,6 +30,7 @@ public:
 	int		m_marginRight;
 	//}}AFX_DATA
 
+	bool		m_disableColor;
 	COLORREF	m_color;
 
 // Overrides
@@ -47,6 +48,8 @@ protected:
 	afx_msg void OnButtonColor();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual BOOL OnInitDialog();
 };
 
 //{{AFX_INSERT_LOCATION}}

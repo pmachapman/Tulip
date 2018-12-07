@@ -58,7 +58,7 @@ END_MESSAGE_MAP()
 
 void CDialogSettings::OnButtonColor()
 /* ============================================================
-	Function :		CUMLEditorPropertyDialog::OnButtonColor
+	Function :		CDialogSettings::OnButtonColor
 	Description :	Handler for the dialog button Color
 	Access :		Protected
 
@@ -74,4 +74,34 @@ void CDialogSettings::OnButtonColor()
 	if (dlg.DoModal() == IDOK)
 		m_color = dlg.GetColor();
 
+}
+
+BOOL CDialogSettings::OnInitDialog()
+/* ============================================================
+	Function :		CDialogSettings::OnInitDialog
+	Description :	Handler for the "WM_INITDIALOG"-message.
+	Access :		Protected
+
+	Return :		BOOL	-	Always "TRUE"
+	Parameters :	none
+
+	Usage :			Called from MFC.
+
+   ============================================================*/
+{
+	CDialog::OnInitDialog();
+
+	//  Add extra initialization here
+	if (m_disableColor)
+	{
+		// Disable the color button
+		CWnd* btnColor = GetDlgItem(IDC_BUTTON_COLOR);
+		if (btnColor)
+		{
+			btnColor->EnableWindow(FALSE);
+		}
+	}
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // EXCEPTION: OCX Property Pages should return FALSE
 }

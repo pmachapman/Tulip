@@ -240,6 +240,7 @@ void CFlowchartView::OnInitialUpdate()
 			else
 			{
 				m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
+				m_editor.SetBackgroundColor(pDoc->GetData()->GetColor());
 			}
 
 			int leftMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETX);
@@ -265,6 +266,7 @@ void CFlowchartView::OnInitialUpdate()
 			else
 			{
 				m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
+				m_editor.SetBackgroundColor(pDoc->GetData()->GetColor());
 			}
 		}
 

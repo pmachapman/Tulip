@@ -157,7 +157,7 @@ void CUMLEntityClass::Draw(CDC* dc, CRect rect)
 	CFont fontUnderlineItalic;
 	fontUnderlineItalic.CreateFont(-height, 0, 0, 0, FW_NORMAL, TRUE, TRUE, 0, 0, 0, 0, 0, 0, GetFont());
 
-	height = floor(14.0 * GetZoom());
+	height = (int)floor(14.0 * GetZoom());
 
 	CFont* oldfont = NULL;
 	oldfont = dc->SelectObject(&fontBold);
