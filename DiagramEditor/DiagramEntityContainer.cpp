@@ -313,6 +313,7 @@ BOOL CDiagramEntityContainer::FromString(const CString& str)
 				SetRestraints(restraint);
 				SetMarginColor(static_cast<COLORREF>(marginColor));
 				SetMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+				SetModified(TRUE);
 				result = TRUE;
 			}
 		}

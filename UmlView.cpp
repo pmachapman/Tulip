@@ -238,7 +238,7 @@ void CUmlView::OnInitialUpdate()
 		m_editor.Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
 
 		// Only set the size if one wasn't pre-specified
-		if (pDoc->GetData()->GetVirtualSize() == CSize(0, 0))
+		if (!pDoc->GetData()->IsModified())
 		{
 			// We get the screen resolution, which we will use 
 			// for scaling to printer. See also OnDraw.
