@@ -26,7 +26,6 @@ CDialogEditor::CDialogEditor()
 
    ============================================================*/
 {
-	SetBackgroundColor(::GetSysColor(COLOR_3DFACE));
 	ShowGrid(FALSE);
 	SetSnapToGrid(TRUE);
 	SetRestraints(RESTRAINT_VIRTUAL);

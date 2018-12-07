@@ -225,13 +225,13 @@ void CDialogEditorView::OnInitialUpdate()
 		CRect rect;
 		GetClientRect(rect);
 		m_editor.Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
-		m_editor.ShowGrid(FALSE);
-		m_editor.SetGridColor(::GetSysColor(COLOR_3DDKSHADOW));
 
 		// Only set the size if one wasn't pre-specified
 		if (pDoc->GetData()->GetVirtualSize() == CSize(0, 0))
 		{
 			m_editor.SetVirtualSize(CSize(300, 200));
+			m_editor.SetBackgroundColor(::GetSysColor(COLOR_3DFACE));
+			m_editor.SetGridColor(::GetSysColor(COLOR_3DDKSHADOW));
 		}
 		else
 		{

@@ -109,8 +109,7 @@ BOOL CTulipApp::InitInstance()
 	// the specific initialization routines you do not need
 	// Change the registry key under which our settings are stored
 	SetRegistryKey(_T("Conglomo"));
-	LoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
-
+	LoadStdProfileSettings(9);  // Load standard INI file options (including MRU)
 
 	InitContextMenuManager();
 

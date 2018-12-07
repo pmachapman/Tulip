@@ -237,60 +237,54 @@ void CUmlView::OnInitialUpdate()
 		pDoc->GetData()->SetClipboardHandler(&theApp.m_umlClip);
 		m_editor.Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
 
-		// We get the screen resolution, which we will use 
-		// for scaling to printer. See also OnDraw.
-		CClientDC dc(this);
-		m_screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
-
-		// Setting up the virtual screen size
-		// We want this to represent a single paper 
-		// from the default printer.
-
-		CPrintDialog	printer(TRUE, PD_RETURNDC);
-		printer.GetDefaults();
-		HDC	hdc = printer.GetPrinterDC();
-		if (hdc)
+		// Only set the size if one wasn't pre-specified
+		if (pDoc->GetData()->GetVirtualSize() == CSize(0, 0))
 		{
-			double zoom = GetDeviceCaps(hdc, LOGPIXELSX) / m_screenResolutionX;
-			int horzSize = ::GetDeviceCaps(hdc, PHYSICALWIDTH);
-			int vertSize = ::GetDeviceCaps(hdc, PHYSICALHEIGHT);
+			// We get the screen resolution, which we will use 
+			// for scaling to printer. See also OnDraw.
+			CClientDC dc(this);
+			m_screenResolutionX = dc.GetDeviceCaps(LOGPIXELSX);
 
-			// Only set the size if one wasn't pre-specified
-			if (pDoc->GetData()->GetVirtualSize() == CSize(0, 0))
+			// Setting up the virtual screen size
+			// We want this to represent a single paper 
+			// from the default printer.
+
+			CPrintDialog	printer(TRUE, PD_RETURNDC);
+			printer.GetDefaults();
+			HDC	hdc = printer.GetPrinterDC();
+			if (hdc)
 			{
+				double zoom = GetDeviceCaps(hdc, LOGPIXELSX) / m_screenResolutionX;
+				int horzSize = ::GetDeviceCaps(hdc, PHYSICALWIDTH);
+				int vertSize = ::GetDeviceCaps(hdc, PHYSICALHEIGHT);
+
 				m_editor.SetVirtualSize(CSize(round(static_cast<double>(horzSize) / zoom), round(static_cast<double>(vertSize) / zoom)));
+				m_editor.SetBackgroundColor(RGB(250, 250, 230));
+
+				int leftMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETX);
+				int topMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETY);
+
+				int horzPrintable = ::GetDeviceCaps(hdc, HORZRES);
+				int vertPrintable = ::GetDeviceCaps(hdc, VERTRES);
+
+				int rightMarg = horzSize - (horzPrintable + leftMarg);
+				int bottomMarg = vertSize - (vertPrintable + topMarg);
+
+				m_editor.SetMargins(round(static_cast<double>(leftMarg) / zoom), round(static_cast<double>(topMarg) / zoom), round(static_cast<double>(rightMarg) / zoom), round(static_cast<double>(bottomMarg) / zoom));
+
+				::DeleteDC(hdc);
 			}
 			else
 			{
-				m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
-				m_editor.SetBackgroundColor(pDoc->GetData()->GetColor());
+				// No default printer installed
+				m_editor.SetVirtualSize(CSize(8 * m_screenResolutionX, 11 * m_screenResolutionX));
+				m_editor.SetBackgroundColor(RGB(250, 250, 230));
 			}
-
-			int leftMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETX);
-			int topMarg = ::GetDeviceCaps(hdc, PHYSICALOFFSETY);
-
-			int horzPrintable = ::GetDeviceCaps(hdc, HORZRES);
-			int vertPrintable = ::GetDeviceCaps(hdc, VERTRES);
-
-			int rightMarg = horzSize - (horzPrintable + leftMarg);
-			int bottomMarg = vertSize - (vertPrintable + topMarg);
-
-			m_editor.SetMargins(round(static_cast<double>(leftMarg) / zoom), round(static_cast<double>(topMarg) / zoom), round(static_cast<double>(rightMarg) / zoom), round(static_cast<double>(bottomMarg) / zoom));
-
-			::DeleteDC(hdc);
 		}
 		else
 		{
-			// No default printer installed
-			if (pDoc->GetData()->GetVirtualSize() == CSize(0, 0))
-			{
-				m_editor.SetVirtualSize(CSize(8 * m_screenResolutionX, 11 * m_screenResolutionX));
-			}
-			else
-			{
-				m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
-				m_editor.SetBackgroundColor(pDoc->GetData()->GetColor());
-			}
+			m_editor.SetVirtualSize(pDoc->GetData()->GetVirtualSize());
+			m_editor.SetBackgroundColor(pDoc->GetData()->GetColor());
 		}
 
 		m_editor.SetScrollWheelMode(WHEEL_SCROLL);

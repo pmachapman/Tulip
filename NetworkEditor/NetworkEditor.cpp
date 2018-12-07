@@ -39,14 +39,11 @@ CNetworkEditor::CNetworkEditor()
 
    ============================================================*/
 {
-
 	ShowGrid(FALSE);
 	SetSnapToGrid(TRUE);
-	SetBackgroundColor(RGB(230, 230, 230));
 
 	SetRestraints(RESTRAINT_VIRTUAL);
 	SetPopupMenu(new CNetworkEditorMenu);
-
 }
 
 CNetworkEditor::~CNetworkEditor()

@@ -139,34 +139,18 @@ CDiagramEditor::CDiagramEditor()
 
    ============================================================*/
 {
-
-	m_bkgndCol = ::GetSysColor(COLOR_WINDOW);
-	m_nonClientBkgndCol = ::GetSysColor(COLOR_3DSHADOW);
-
-	m_gridCol = RGB(192, 192, 192);
-	m_grid = TRUE;
-	m_gridStyle = PS_SOLID;
-	m_gridSize = CSize(8, 8);
-
-	m_snap = FALSE;
-	m_bgResize = FALSE;
-	m_bgResizeZone = 10;
-	m_bgResizeSelected = FALSE;
-	m_markerSize = CSize(8, 8);
-
 	m_drawObj = NULL;
 	m_objs = NULL;
 	m_multiSelObj = NULL;
 	m_internalData = NULL;
 
-	m_restraint = RESTRAINT_NONE;
+	SetInternalBackgroundColor(::GetSysColor(COLOR_WINDOW));
+	m_nonClientBkgndCol = ::GetSysColor(COLOR_3DSHADOW);
 
-	m_leftMargin = 8;
-	m_topMargin = 8;
-	m_rightMargin = 8;
-	m_bottomMargin = 16;
-	m_margin = FALSE;
-	m_marginColor = RGB(128, 128, 255);
+	m_bgResize = FALSE;
+	m_bgResizeZone = 10;
+	m_bgResizeSelected = FALSE;
+	m_markerSize = CSize(8, 8);
 
 	m_popupMenu = NULL;
 	m_multiDraw = FALSE;
@@ -506,10 +490,10 @@ void CDiagramEditor::Draw(CDC* dc, CRect rect) const
 
 	DrawBackground(dc, rect, zoom);
 
-	if (m_grid)
+	if (IsGridVisible())
 		DrawGrid(dc, rect, zoom);
 
-	if (m_margin)
+	if (IsMarginVisible())
 		DrawMargins(dc, rect, zoom);
 
 	DrawObjects(dc, zoom);
@@ -731,41 +715,44 @@ void CDiagramEditor::DrawMargins(CDC* dc, CRect rect, double zoom) const
 
    ============================================================*/
 {
-
 	CPen pen;
-	pen.CreatePen(PS_SOLID, 0, m_marginColor);
+	pen.CreatePen(PS_SOLID, 0, GetMarginColor());
 	dc->SelectObject(&pen);
 
-	CPoint leftTop(rect.left + round(static_cast<double>(m_leftMargin) * zoom), rect.top + round(static_cast<double>(m_topMargin) * zoom));
-	CPoint leftBottom(rect.left + round(static_cast<double>(m_leftMargin) * zoom), rect.bottom - round(static_cast<double>(m_bottomMargin) * zoom) - 1);
-	CPoint rightTop(rect.right - round(static_cast<double>(m_rightMargin) * zoom) - 1, rect.top + round(static_cast<double>(m_topMargin) * zoom));
-	CPoint rightBottom(rect.right - round(static_cast<double>(m_rightMargin) * zoom) - 1, rect.bottom - round(static_cast<double>(m_bottomMargin) * zoom) - 1);
+	int left;
+	int top;
+	int right;
+	int bottom;
+	GetMargins(left, top, right, bottom);
 
-	if (m_leftMargin)
+	CPoint leftTop(rect.left + round(static_cast<double>(left) * zoom), rect.top + round(static_cast<double>(top) * zoom));
+	CPoint leftBottom(rect.left + round(static_cast<double>(left) * zoom), rect.bottom - round(static_cast<double>(bottom) * zoom) - 1);
+	CPoint rightTop(rect.right - round(static_cast<double>(right) * zoom) - 1, rect.top + round(static_cast<double>(top) * zoom));
+	CPoint rightBottom(rect.right - round(static_cast<double>(right) * zoom) - 1, rect.bottom - round(static_cast<double>(bottom) * zoom) - 1);
+
+	if (left)
 	{
 		dc->MoveTo(leftTop);
 		dc->LineTo(leftBottom);
 	}
 
-	if (m_rightMargin)
+	if (right)
 	{
 		dc->MoveTo(rightTop);
 		dc->LineTo(rightBottom);
 	}
-	if (m_topMargin)
+	if (top)
 	{
 		dc->MoveTo(leftTop);
 		dc->LineTo(rightTop);
 	}
-	if (m_bottomMargin)
+	if (bottom)
 	{
 		dc->MoveTo(leftBottom);
 		dc->LineTo(rightBottom);
 	}
 
 	dc->SelectStockObject(BLACK_PEN);
-
-
 }
 
 void CDiagramEditor::DrawObjects(CDC* dc, double zoom) const
@@ -973,11 +960,12 @@ void CDiagramEditor::SetVirtualSize(const CSize& size)
 
    ============================================================*/
 {
-
 	ASSERT(m_objs);
-	SetInternalVirtualSize(size);
-	m_objs->SetModified(TRUE);
-
+	if (size != GetVirtualSize())
+	{
+		SetInternalVirtualSize(size);
+		m_objs->SetModified(TRUE);
+	}
 }
 
 void CDiagramEditor::SetInternalVirtualSize(const CSize& size)
@@ -994,17 +982,15 @@ void CDiagramEditor::SetInternalVirtualSize(const CSize& size)
 
    ============================================================*/
 {
-	if (m_objs && size != GetVirtualSize())
+	if (m_objs)
 	{
-
 		m_objs->SetVirtualSize(size);
-
 		SetupScrollbars();
 		if (m_hWnd)
+		{
 			RedrawWindow();
-
+		}
 	}
-
 }
 
 CSize CDiagramEditor::GetVirtualSize() const
@@ -1042,6 +1028,31 @@ CSize CDiagramEditor::GetVirtualSize() const
 void CDiagramEditor::SetBackgroundColor(COLORREF col)
 /* ============================================================
 	Function :		CDiagramEditor::SetBackgroundColor
+	Description :	Changes the virtual background color
+					without setting the data as modified.
+	Access :		Private
+
+	Return :		void
+	Parameters :	COLORREF col	-	New background color
+										to set.
+
+	Usage :			The background is the virtual area of the
+					editor (might both be smaller or bigger
+					than the client rect).
+
+   ============================================================*/
+{
+	ASSERT(m_objs);
+	if (col != GetBackgroundColor())
+	{
+		SetInternalBackgroundColor(col);
+		m_objs->SetModified(TRUE);
+	}
+}
+
+void CDiagramEditor::SetInternalBackgroundColor(COLORREF col)
+/* ============================================================
+	Function :		CDiagramEditor::SetInternalBackgroundColor
 	Description :	Sets the background color.
 	Access :		Public
 
@@ -1059,12 +1070,11 @@ void CDiagramEditor::SetBackgroundColor(COLORREF col)
 	{
 		m_objs->Snapshot();
 		m_objs->SetColor(col);
+		if (m_hWnd)
+		{
+			RedrawWindow();
+		}
 	}
-
-	m_bkgndCol = col;
-	if (m_hWnd)
-		RedrawWindow();
-
 }
 
 void CDiagramEditor::SetNonClientColor(COLORREF col)
@@ -1107,11 +1117,15 @@ void CDiagramEditor::ShowGrid(BOOL grid)
 
    ============================================================*/
 {
-
-	m_grid = grid;
-	if (m_hWnd)
-		RedrawWindow();
-
+	if (m_objs)
+	{
+		m_objs->ShowGrid(grid);
+		m_objs->SetModified(TRUE);
+		if (m_hWnd)
+		{
+			RedrawWindow();
+		}
+	}
 }
 
 BOOL CDiagramEditor::IsGridVisible() const
@@ -1131,9 +1145,14 @@ BOOL CDiagramEditor::IsGridVisible() const
 
    ============================================================*/
 {
-
-	return m_grid;
-
+	if (m_objs)
+	{
+		return m_objs->IsGridVisible();
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 void CDiagramEditor::SetGridColor(COLORREF col)
@@ -1153,11 +1172,15 @@ void CDiagramEditor::SetGridColor(COLORREF col)
 
    ============================================================*/
 {
-
-	m_gridCol = col;
-	if (m_hWnd)
-		RedrawWindow();
-
+	if (m_objs)
+	{
+		m_objs->SetGridColor(col);
+		m_objs->SetModified(TRUE);
+		if (m_hWnd)
+		{
+			RedrawWindow();
+		}
+	}
 }
 
 COLORREF CDiagramEditor::GetGridColor() const
@@ -1177,9 +1200,14 @@ COLORREF CDiagramEditor::GetGridColor() const
 
    ============================================================*/
 {
-
-	return m_gridCol;
-
+	if (m_objs)
+	{
+		return m_objs->GetGridColor();
+	}
+	else
+	{
+		return RGB(192, 192, 192);
+	}
 }
 
 void CDiagramEditor::SetGridSize(CSize size)
@@ -1198,11 +1226,15 @@ void CDiagramEditor::SetGridSize(CSize size)
 
    ============================================================*/
 {
-
-	m_gridSize = size;
-	if (m_hWnd)
-		RedrawWindow();
-
+	if (m_objs && size != GetGridSize())
+	{
+		m_objs->SetGridSize(size);
+		m_objs->SetModified(TRUE);
+		if (m_hWnd)
+		{
+			RedrawWindow();
+		}
+	}
 }
 
 CSize CDiagramEditor::GetGridSize() const
@@ -1221,9 +1253,14 @@ CSize CDiagramEditor::GetGridSize() const
 
    ============================================================*/
 {
-
-	return m_gridSize;
-
+	if (m_objs)
+	{
+		return m_objs->GetGridSize();
+	}
+	else
+	{
+		return CSize(8, 8);
+	}
 }
 
 void CDiagramEditor::SetGridPenStyle(int style)
@@ -1245,11 +1282,15 @@ void CDiagramEditor::SetGridPenStyle(int style)
 
    ============================================================*/
 {
-
-	m_gridStyle = style;
-	if (m_hWnd)
-		RedrawWindow();
-
+	if (m_objs)
+	{
+		m_objs->SetGridPenStyle(style);
+		m_objs->SetModified(TRUE);
+		if (m_hWnd)
+		{
+			RedrawWindow();
+		}
+	}
 }
 
 int CDiagramEditor::GetGridPenStyle() const
@@ -1270,9 +1311,14 @@ int CDiagramEditor::GetGridPenStyle() const
 
    ============================================================*/
 {
-
-	return m_gridStyle;
-
+	if (m_objs)
+	{
+		return m_objs->GetGridPenStyle();
+	}
+	else
+	{
+		return PS_SOLID;
+	}
 }
 
 void CDiagramEditor::SetSnapToGrid(BOOL snap)
@@ -1292,9 +1338,11 @@ void CDiagramEditor::SetSnapToGrid(BOOL snap)
 
    ============================================================*/
 {
-
-	m_snap = snap;
-
+	if (m_objs)
+	{
+		m_objs->SetSnapToGrid(snap);
+		m_objs->SetModified(TRUE);
+	}
 }
 
 BOOL CDiagramEditor::GetSnapToGrid() const
@@ -1313,9 +1361,14 @@ BOOL CDiagramEditor::GetSnapToGrid() const
 
    ============================================================*/
 {
-
-	return m_snap;
-
+	if (m_objs)
+	{
+		return m_objs->GetSnapToGrid();
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 void CDiagramEditor::SetResize(BOOL bgresize)
@@ -1421,12 +1474,17 @@ void CDiagramEditor::SetMargins(int left, int top, int right, int bottom)
 
    ============================================================*/
 {
+	int leftMargin;
+	int topMargin;
+	int rightMargin;
+	int bottomMargin;
+	GetMargins(leftMargin, topMargin, rightMargin, bottomMargin);
 
-	m_leftMargin = left;
-	m_topMargin = top;
-	m_rightMargin = right;
-	m_bottomMargin = bottom;
-
+	if (m_objs && (left != leftMargin || top != topMargin || right != rightMargin || bottom != bottomMargin))
+	{
+		m_objs->SetMargins(left, top, right, bottom);
+		m_objs->SetModified(TRUE);
+	}
 }
 
 void CDiagramEditor::GetMargins(int& left, int& top, int& right, int& bottom) const
@@ -1445,12 +1503,17 @@ void CDiagramEditor::GetMargins(int& left, int& top, int& right, int& bottom) co
 
    ============================================================*/
 {
-
-	left = m_leftMargin;
-	top = m_topMargin;
-	right = m_rightMargin;
-	bottom = m_bottomMargin;
-
+	if (m_objs)
+	{
+		m_objs->GetMargins(left, top, right, bottom);
+	}
+	else
+	{
+		left = 0;
+		top = 0;
+		right = 0;
+		bottom = 0;
+	}
 }
 
 void CDiagramEditor::SetMarginColor(COLORREF marginColor)
@@ -1466,12 +1529,15 @@ void CDiagramEditor::SetMarginColor(COLORREF marginColor)
 
    ============================================================*/
 {
-
-	m_marginColor = marginColor;
-
-	if (m_hWnd)
-		RedrawWindow();
-
+	if (m_objs)
+	{
+		m_objs->SetMarginColor(marginColor);
+		m_objs->SetModified(TRUE);
+		if (m_hWnd)
+		{
+			RedrawWindow();
+		}
+	}
 }
 
 COLORREF CDiagramEditor::GetMarginColor() const
@@ -1487,9 +1553,14 @@ COLORREF CDiagramEditor::GetMarginColor() const
 
    ============================================================*/
 {
-
-	return m_marginColor;
-
+	if (m_objs)
+	{
+		return m_objs->GetMarginColor();
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 void CDiagramEditor::ShowMargin(BOOL show)
@@ -1506,12 +1577,15 @@ void CDiagramEditor::ShowMargin(BOOL show)
 
    ============================================================*/
 {
-
-	m_margin = show;
-
-	if (m_hWnd)
-		RedrawWindow();
-
+	if (m_objs)
+	{
+		m_objs->ShowMargin(show);
+		m_objs->SetModified(TRUE);
+		if (m_hWnd)
+		{
+			RedrawWindow();
+		}
+	}
 }
 
 BOOL CDiagramEditor::IsMarginVisible() const
@@ -1530,9 +1604,14 @@ BOOL CDiagramEditor::IsMarginVisible() const
 
    ============================================================*/
 {
-
-	return m_margin;
-
+	if (m_objs)
+	{
+		return m_objs->IsMarginVisible();
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 void CDiagramEditor::SetRestraints(int restraint)
@@ -1553,9 +1632,11 @@ void CDiagramEditor::SetRestraints(int restraint)
 
    ============================================================*/
 {
-
-	m_restraint = restraint;
-
+	if (m_objs)
+	{
+		m_objs->SetRestraints(restraint);
+		m_objs->SetModified(TRUE);
+	}
 }
 
 int CDiagramEditor::GetRestraints() const
@@ -1577,9 +1658,14 @@ int CDiagramEditor::GetRestraints() const
 
    ============================================================*/
 {
-
-	return m_restraint;
-
+	if (m_objs)
+	{
+		return m_objs->GetRestraints();
+	}
+	else
+	{
+		return RESTRAINT_NONE;
+	}
 }
 
 BOOL CDiagramEditor::GetMultidraw() const
@@ -2068,12 +2154,10 @@ void CDiagramEditor::OnLButtonDown(UINT nFlags, CPoint point)
 
 		// If snap-to-grid is on, we must
 		// update the desired position
-		if (m_snap)
+		if (GetSnapToGrid())
 		{
-
 			virtpoint.x = SnapX(virtpoint.x);
 			virtpoint.y = SnapY(virtpoint.y);
-
 		}
 
 		newobj->SetRect(CRect(virtpoint.x, virtpoint.y, virtpoint.x, virtpoint.y));
@@ -2256,10 +2340,8 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 
    ============================================================*/
 {
-
 	if (m_interactMode != MODE_NONE)
 	{
-
 		CClientDC	dc(this);
 		CRect clientRect;
 		GetClientRect(&clientRect);
@@ -2268,13 +2350,10 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 
 		if (m_interactMode == MODE_BGRESIZING)
 		{
-
-			if (m_snap)
+			if (GetSnapToGrid())
 			{
-
 				virtpoint.x = SnapX(virtpoint.x);
 				virtpoint.y = SnapY(virtpoint.y);
-
 			}
 
 			virtpoint.x = max(virtpoint.x, 1);
@@ -2304,34 +2383,36 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 				ysize = virtpoint.y;
 			}
 
-			if (m_restraint == RESTRAINT_VIRTUAL)
+			if (GetRestraints() == RESTRAINT_VIRTUAL)
 			{
 				CSize size = GetContainingSize();
 				xsize = max(size.cx, xsize);
 				ysize = max(size.cy, ysize);
 			}
-			else if (m_restraint == RESTRAINT_MARGIN)
+			else if (GetRestraints() == RESTRAINT_MARGIN)
 			{
+				int leftMargin;
+				int topMargin;
+				int rightMargin;
+				int bottomMargin;
+				GetMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+
 				CSize size = GetContainingSize();
-				xsize = max(size.cx + m_rightMargin, xsize);
-				ysize = max(size.cy + m_bottomMargin, ysize);
-				xsize = max(m_leftMargin + m_rightMargin, xsize);
-				ysize = max(m_topMargin + m_bottomMargin, ysize);
+				xsize = max(size.cx + rightMargin, xsize);
+				ysize = max(size.cy + bottomMargin, ysize);
+				xsize = max(leftMargin + rightMargin, xsize);
+				ysize = max(topMargin + bottomMargin, ysize);
 			}
 
 			SetVirtualSize(CSize(xsize, ysize));
 			ScrollPoint(point);
-
 		}
 		if (m_interactMode == MODE_RESIZING)
 		{
-
-			if (m_snap)
+			if (GetSnapToGrid())
 			{
-
 				virtpoint.x = SnapX(virtpoint.x);
 				virtpoint.y = SnapY(virtpoint.y);
-
 			}
 
 			// If we are moving, we will update one or 
@@ -2346,7 +2427,6 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 				CSize maximum = obj->GetMaximumSize();
 				if (m_subMode == DEHT_BOTTOMMIDDLE)
 				{
-
 					// Constraints
 					if (minimum.cy != -1 && ypos - obj->GetTop() < minimum.cy)
 						ypos = obj->GetTop() + minimum.cy;
@@ -2355,11 +2435,9 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 
 					AdjustForRestraints(xpos, ypos);
 					obj->SetRect(obj->GetLeft(), obj->GetTop(), obj->GetRight(), ypos);
-
 				}
 				else if (m_subMode == DEHT_TOPMIDDLE)
 				{
-
 					// Constraints
 					if (minimum.cy != -1 && obj->GetBottom() - ypos < minimum.cy)
 						ypos = obj->GetBottom() - minimum.cy;
@@ -2368,11 +2446,9 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 
 					AdjustForRestraints(xpos, ypos);
 					obj->SetRect(obj->GetLeft(), ypos, obj->GetRight(), obj->GetBottom());
-
 				}
 				else if (m_subMode == DEHT_LEFTMIDDLE)
 				{
-
 					// Constraints
 					if (minimum.cx != -1 && obj->GetRight() - xpos < minimum.cx)
 						xpos = obj->GetRight() - minimum.cx;
@@ -2381,11 +2457,9 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 
 					AdjustForRestraints(xpos, ypos);
 					obj->SetRect(xpos, obj->GetTop(), obj->GetRight(), obj->GetBottom());
-
 				}
 				else if (m_subMode == DEHT_RIGHTMIDDLE)
 				{
-
 					// Constraints
 					if (minimum.cx != -1 && xpos - obj->GetLeft() < minimum.cx)
 						xpos = obj->GetLeft() + minimum.cx;
@@ -2394,11 +2468,9 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 
 					AdjustForRestraints(xpos, ypos);
 					obj->SetRect(obj->GetLeft(), obj->GetTop(), xpos, obj->GetBottom());
-
 				}
 				else if (m_subMode == DEHT_TOPLEFT)
 				{
-
 					// Constraints
 					if (minimum.cy != -1 && obj->GetBottom() - ypos < minimum.cy)
 						ypos = obj->GetBottom() - minimum.cy;
@@ -2411,11 +2483,9 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 
 					AdjustForRestraints(xpos, ypos);
 					obj->SetRect(xpos, ypos, obj->GetRight(), obj->GetBottom());
-
 				}
 				else if (m_subMode == DEHT_TOPRIGHT)
 				{
-
 					// Constraints
 					if (minimum.cy != -1 && obj->GetBottom() - ypos < minimum.cy)
 						ypos = obj->GetBottom() - minimum.cy;
@@ -2428,11 +2498,9 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 
 					AdjustForRestraints(xpos, ypos);
 					obj->SetRect(obj->GetLeft(), ypos, xpos, obj->GetBottom());
-
 				}
 				else if (m_subMode == DEHT_BOTTOMLEFT)
 				{
-
 					// Constraints
 					if (minimum.cy != -1 && ypos - obj->GetTop() < minimum.cy)
 						ypos = obj->GetTop() + minimum.cy;
@@ -2445,11 +2513,9 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 
 					AdjustForRestraints(xpos, ypos);
 					obj->SetRect(xpos, obj->GetTop(), obj->GetRight(), ypos);
-
 				}
 				else if (m_subMode == DEHT_BOTTOMRIGHT)
 				{
-
 					// Constraints
 					if (minimum.cy != -1 && ypos - obj->GetTop() < minimum.cy)
 						ypos = obj->GetTop() + minimum.cy;
@@ -2462,9 +2528,7 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 
 					AdjustForRestraints(xpos, ypos);
 					obj->SetRect(obj->GetLeft(), obj->GetTop(), xpos, ypos);
-
 				}
-
 			}
 
 			// Scroll if we are outside any edge
@@ -2473,7 +2537,6 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else if (m_objs && m_interactMode == MODE_MOVING)
 		{
-
 			// If we move, we just update the positions
 			// of all the objects.
 			double offsetx = round(static_cast<double>(m_deltaPoint.x) / GetZoom());
@@ -2490,7 +2553,7 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 			{
 				left = virtpoint.x - offsetx;
 				top = virtpoint.y - offsety;
-				if (m_snap)
+				if (GetSnapToGrid())
 				{
 					left = SnapX(static_cast<int>(left));
 					top = SnapY(static_cast<int>(top));
@@ -2509,18 +2572,16 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 			}
 			else
 			{
-
 				obj = GetSelectedObject();
 				if (obj)
 				{
-
 					width = obj->GetRight() - obj->GetLeft();
 					height = obj->GetBottom() - obj->GetTop();
 
 					left = virtpoint.x - offsetx;
 					top = virtpoint.y - offsety;
 
-					if (m_snap)
+					if (GetSnapToGrid())
 					{
 						left = SnapX(static_cast<int>(left));
 						top = SnapY(static_cast<int>(top));
@@ -2538,11 +2599,9 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 			// Scroll if we are outside any edge
 			CPoint outside = ScrollPoint(point);
 			RedrawWindow();
-
 		}
 		else if (m_interactMode == MODE_RUBBERBANDING)
 		{
-
 			// We are selecting objects
 			CRect rect(m_selectionRect);
 
@@ -2564,13 +2623,11 @@ void CDiagramEditor::OnMouseMove(UINT nFlags, CPoint point)
 			rect.NormalizeRect();
 
 			dc.DrawFocusRect(rect);
-
 		}
 
 	}
 
 	CWnd::OnMouseMove(nFlags, point);
-
 }
 
 void CDiagramEditor::OnLButtonUp(UINT nFlags, CPoint point)
@@ -2588,7 +2645,6 @@ void CDiagramEditor::OnLButtonUp(UINT nFlags, CPoint point)
 
    ============================================================*/
 {
-
 	// Reset modes
 	ReleaseCapture();
 
@@ -2597,7 +2653,6 @@ void CDiagramEditor::OnLButtonUp(UINT nFlags, CPoint point)
 
 	if (m_objs && m_interactMode == MODE_MOVING)
 	{
-
 		// We set all the object rectangles to trigger
 		// the virtual MoveObject function, thus 
 		// allowing derived editors to know that 
@@ -2608,12 +2663,18 @@ void CDiagramEditor::OnLButtonUp(UINT nFlags, CPoint point)
 			{
 				CRect rect = obj->GetRect();
 
+				int leftMargin;
+				int topMargin;
+				int rightMargin;
+				int bottomMargin;
+				GetMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+
 				// Only snap if we are not along the right or bottom margin
-				if (m_snap
-					&& !(m_restraint == RESTRAINT_VIRTUAL && rect.right == GetVirtualSize().cx)
-					&& !(m_restraint == RESTRAINT_VIRTUAL && rect.bottom == GetVirtualSize().cy)
-					&& !(m_restraint == RESTRAINT_MARGIN && rect.right == GetVirtualSize().cx - m_rightMargin)
-					&& !(m_restraint == RESTRAINT_MARGIN && rect.bottom == GetVirtualSize().cy - m_bottomMargin))
+				if (GetSnapToGrid()
+					&& !(GetRestraints() == RESTRAINT_VIRTUAL && rect.right == GetVirtualSize().cx)
+					&& !(GetRestraints() == RESTRAINT_VIRTUAL && rect.bottom == GetVirtualSize().cy)
+					&& !(GetRestraints() == RESTRAINT_MARGIN && rect.right == GetVirtualSize().cx - rightMargin)
+					&& !(GetRestraints() == RESTRAINT_MARGIN && rect.bottom == GetVirtualSize().cy - bottomMargin))
 				{
 					// If we move objects, and snap to grid is on
 					// we snap here
@@ -2633,14 +2694,12 @@ void CDiagramEditor::OnLButtonUp(UINT nFlags, CPoint point)
 		}
 
 		m_objs->SetModified(TRUE);
-
 	}
 	else if (m_objs && m_interactMode == MODE_RESIZING)
 	{
 		// If we resize objects, and snap to grid is on
 		// we snap here
-
-		if (m_snap)
+		if (GetSnapToGrid())
 		{
 			while ((obj = m_objs->GetAt(count++)))
 			{
@@ -2697,7 +2756,6 @@ void CDiagramEditor::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 	else if (m_objs && m_interactMode == MODE_RUBBERBANDING)
 	{
-
 		// Remove all former selections
 		UnselectAll();
 
@@ -2716,7 +2774,6 @@ void CDiagramEditor::OnLButtonUp(UINT nFlags, CPoint point)
 			if (obj->BodyInRect(rect))
 				obj->Select(TRUE);
 		}
-
 	}
 
 	// Redraw and reset modes
@@ -2731,7 +2788,6 @@ void CDiagramEditor::OnLButtonUp(UINT nFlags, CPoint point)
 
 	m_subMode = DEHT_NONE;
 	CWnd::OnLButtonUp(nFlags, point);
-
 }
 
 void CDiagramEditor::OnLButtonDblClk(UINT nFlags, CPoint point)
@@ -2893,10 +2949,10 @@ void CDiagramEditor::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 			double offsetstepx = 1.0 / GetZoom();
 			double offsetstepy = 1.0 / GetZoom();
-			if (m_snap)
+			if (GetSnapToGrid())
 			{
-				offsetstepx = static_cast<double>(m_gridSize.cx) / GetZoom();
-				offsetstepy = static_cast<double>(m_gridSize.cy) / GetZoom();
+				offsetstepx = static_cast<double>(GetGridSize().cx) / GetZoom();
+				offsetstepy = static_cast<double>(GetGridSize().cy) / GetZoom();
 			}
 
 			offsetstepx = max(offsetstepx, 1);
@@ -2990,7 +3046,7 @@ void CDiagramEditor::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 						double left = obj->GetLeft() + offsetx;
 						double top = obj->GetTop() + offsety;
 
-						if (m_snap)
+						if (GetSnapToGrid())
 						{
 							left = SnapX(static_cast<int>(left));
 							top = SnapY(static_cast<int>(top));
@@ -3018,7 +3074,7 @@ void CDiagramEditor::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 						double right = obj->GetRight() + offsetx;
 						double bottom = obj->GetBottom() + offsety;
-						if (m_snap)
+						if (GetSnapToGrid())
 						{
 							right = SnapX(static_cast<int>(right));
 							bottom = SnapY(static_cast<int>(bottom));
@@ -3231,9 +3287,8 @@ void CDiagramEditor::InsideRestraints(double& x, double& y)
 
    ============================================================*/
 {
-	if (m_restraint != RESTRAINT_NONE)
+	if (GetRestraints() != RESTRAINT_NONE)
 	{
-
 		int count = 0;
 		CDiagramEntity* obj;
 		double minleft = 0xffffffff;
@@ -3245,7 +3300,6 @@ void CDiagramEditor::InsideRestraints(double& x, double& y)
 		{
 			if (obj->IsSelected())
 			{
-
 				// Correcting, depending on restraint mode.
 				// Note that checks will have to be made for all 
 				// coordinates against all sides, as the coordinates 
@@ -3265,7 +3319,6 @@ void CDiagramEditor::InsideRestraints(double& x, double& y)
 				maxright = max(maxright, right);
 				maxbottom = max(maxbottom, top);
 				maxbottom = max(maxbottom, bottom);
-
 			}
 		}
 
@@ -3274,19 +3327,24 @@ void CDiagramEditor::InsideRestraints(double& x, double& y)
 		double topedge = 0;
 		double bottomedge = 0;
 
-		if (m_restraint == RESTRAINT_VIRTUAL)
+		if (GetRestraints() == RESTRAINT_VIRTUAL)
 		{
 			leftedge = 0;
 			topedge = 0;
 			rightedge = GetVirtualSize().cx;
 			bottomedge = GetVirtualSize().cy;
 		}
-		else if (m_restraint == RESTRAINT_MARGIN)
+		else if (GetRestraints() == RESTRAINT_MARGIN)
 		{
-			leftedge = m_leftMargin;
-			topedge = m_topMargin;
-			rightedge = GetVirtualSize().cx - m_rightMargin;
-			bottomedge = GetVirtualSize().cy - m_bottomMargin;
+			int leftMargin;
+			int topMargin;
+			int rightMargin;
+			int bottomMargin;
+			GetMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+			leftedge = leftMargin;
+			topedge = topMargin;
+			rightedge = GetVirtualSize().cx - rightMargin;
+			bottomedge = GetVirtualSize().cy - bottomMargin;
 		}
 
 		if (minleft < leftedge)
@@ -3297,7 +3355,6 @@ void CDiagramEditor::InsideRestraints(double& x, double& y)
 			x = rightedge - (maxright - x);
 		if (maxbottom > bottomedge)
 			y = bottomedge - (maxbottom - y);
-
 	}
 }
 
@@ -3327,7 +3384,6 @@ void CDiagramEditor::AdjustForRestraints(double& left, double& top, double& righ
 
    ============================================================*/
 {
-
 	// Saving the size
 	double width = fabs(right - left);
 	double height = fabs(bottom - top);
@@ -3336,9 +3392,8 @@ void CDiagramEditor::AdjustForRestraints(double& left, double& top, double& righ
 	// Note that checks will have to be made for all 
 	// coordinates against all sides, as the coordinates 
 	// might not be normalized (as for a line, for example).
-	if (m_restraint == RESTRAINT_VIRTUAL)
+	if (GetRestraints() == RESTRAINT_VIRTUAL)
 	{
-
 		if (left < 0)
 		{
 			left = 0;
@@ -3382,51 +3437,56 @@ void CDiagramEditor::AdjustForRestraints(double& left, double& top, double& righ
 			bottom = top - height;
 		}
 	}
-	else if (m_restraint == RESTRAINT_MARGIN)
+	else if (GetRestraints() == RESTRAINT_MARGIN)
 	{
-		if (left < m_leftMargin)
+		int leftMargin;
+		int topMargin;
+		int rightMargin;
+		int bottomMargin;
+		GetMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+
+		if (left < leftMargin)
 		{
-			left = m_leftMargin;
+			left = leftMargin;
 			right = left + width;
 		}
-		if (top < m_topMargin)
+		if (top < topMargin)
 		{
-			top = m_topMargin;
+			top = topMargin;
 			bottom = top + height;
 		}
-		if (right < m_leftMargin)
+		if (right < leftMargin)
 		{
-			right = m_leftMargin;
+			right = leftMargin;
 			left = right + width;
 		}
-		if (bottom < m_topMargin)
+		if (bottom < topMargin)
 		{
-			bottom = m_topMargin;
+			bottom = topMargin;
 			top = bottom + height;
 		}
 
-		if (right > GetVirtualSize().cx - m_rightMargin)
+		if (right > GetVirtualSize().cx - rightMargin)
 		{
-			right = (GetVirtualSize().cx - m_rightMargin);
+			right = (GetVirtualSize().cx - rightMargin);
 			left = right - width;
 		}
-		if (bottom > GetVirtualSize().cy - m_bottomMargin)
+		if (bottom > GetVirtualSize().cy - bottomMargin)
 		{
-			bottom = (GetVirtualSize().cy - m_bottomMargin);
+			bottom = (GetVirtualSize().cy - bottomMargin);
 			top = bottom - height;
 		}
-		if (left > GetVirtualSize().cx - m_rightMargin)
+		if (left > GetVirtualSize().cx - rightMargin)
 		{
-			left = (GetVirtualSize().cx - m_rightMargin);
+			left = (GetVirtualSize().cx - rightMargin);
 			right = left - width;
 		}
-		if (top > GetVirtualSize().cy - m_bottomMargin)
+		if (top > GetVirtualSize().cy - bottomMargin)
 		{
-			top = (GetVirtualSize().cy - m_bottomMargin);
+			top = (GetVirtualSize().cy - bottomMargin);
 			bottom = top - height;
 		}
 	}
-
 }
 
 void CDiagramEditor::AdjustForRestraints(double& xpos, double& ypos)
@@ -3449,22 +3509,26 @@ void CDiagramEditor::AdjustForRestraints(double& xpos, double& ypos)
 
    ============================================================*/
 {
-
-	if (m_restraint == RESTRAINT_VIRTUAL)
+	if (GetRestraints() == RESTRAINT_VIRTUAL)
 	{
 		xpos = max(xpos, 0);
 		xpos = min(xpos, GetVirtualSize().cx);
 		ypos = max(ypos, 0);
 		ypos = min(ypos, GetVirtualSize().cy);
 	}
-	else if (m_restraint == RESTRAINT_MARGIN)
+	else if (GetRestraints() == RESTRAINT_MARGIN)
 	{
-		xpos = max(xpos, m_leftMargin);
-		xpos = min(xpos, GetVirtualSize().cx - m_rightMargin);
-		ypos = max(ypos, m_topMargin);
-		ypos = min(ypos, GetVirtualSize().cy - m_bottomMargin);
-	}
+		int left;
+		int top;
+		int right;
+		int bottom;
+		GetMargins(left, top, right, bottom);
 
+		xpos = max(xpos, left);
+		xpos = min(xpos, GetVirtualSize().cx - right);
+		ypos = max(ypos, top);
+		ypos = min(ypos, GetVirtualSize().cy - bottom);
+	}
 }
 
 CSize CDiagramEditor::GetContainingSize() const
@@ -4058,8 +4122,8 @@ int CDiagramEditor::SnapX(int coord) const
 {
 
 	double x = static_cast<double>(coord);
-	double gridx = static_cast<double>(m_gridSize.cx);
-	return round(x / gridx) * m_gridSize.cx;
+	double gridx = static_cast<double>(GetGridSize().cx);
+	return round(x / gridx) * GetGridSize().cx;
 
 }
 
@@ -4080,8 +4144,8 @@ int CDiagramEditor::SnapY(int coord) const
 {
 
 	double y = static_cast<double>(coord);
-	double gridy = static_cast<double>(m_gridSize.cy);
-	return round(y / gridy) * m_gridSize.cy;
+	double gridy = static_cast<double>(GetGridSize().cy);
+	return round(y / gridy) * GetGridSize().cy;
 
 }
 
@@ -5464,14 +5528,14 @@ COLORREF CDiagramEditor::GetBackgroundColor() const
 
    ============================================================*/
 {
-	// Ensure that the color is consistent
-	if (m_objs && m_bkgndCol != m_objs->GetColor())
+	if (m_objs)
 	{
-		m_objs->SetColor(m_bkgndCol);
+		return m_objs->GetColor();
 	}
-
-	return m_bkgndCol;
-
+	else
+	{
+		return ::GetSysColor(COLOR_WINDOW);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -6105,13 +6169,10 @@ BOOL CDiagramEditor::OutsideRestraints(CPoint point)
 
    ============================================================*/
 {
-
 	BOOL result = FALSE;
 
-
-	if (m_restraint == RESTRAINT_VIRTUAL)
+	if (GetRestraints() == RESTRAINT_VIRTUAL)
 	{
-
 		if (point.x < 0)
 			result = TRUE;
 		if (point.y < 0)
@@ -6121,25 +6182,27 @@ BOOL CDiagramEditor::OutsideRestraints(CPoint point)
 			result = TRUE;
 		if (point.y > GetVirtualSize().cy)
 			result = TRUE;
-
 	}
-	else if (m_restraint == RESTRAINT_MARGIN)
+	else if (GetRestraints() == RESTRAINT_MARGIN)
 	{
+		int left;
+		int top;
+		int right;
+		int bottom;
+		GetMargins(left, top, right, bottom);
 
-		if (point.x < m_leftMargin)
+		if (point.x < left)
 			result = TRUE;
-		if (point.y < m_topMargin)
-			result = TRUE;
-
-		if (point.x > GetVirtualSize().cx - m_rightMargin)
-			result = TRUE;
-		if (point.y > GetVirtualSize().cy - m_bottomMargin)
+		if (point.y < top)
 			result = TRUE;
 
+		if (point.x > GetVirtualSize().cx - right)
+			result = TRUE;
+		if (point.y > GetVirtualSize().cy - bottom)
+			result = TRUE;
 	}
 
 	return result;
-
 }
 
 void CDiagramEditor::ScrollIntoView()

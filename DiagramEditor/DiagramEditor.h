@@ -18,11 +18,6 @@
 #define MODE_DRAWING		4
 #define MODE_BGRESIZING		5
 
-// Restraint modes
-#define RESTRAINT_NONE		0
-#define RESTRAINT_VIRTUAL	1
-#define RESTRAINT_MARGIN	2
-
 #define KEY_NONE			  0
 #define KEY_ARROW			  1 // Arrow keys
 #define KEY_PGUPDOWN		  4	// Pg up & pg down
@@ -288,27 +283,11 @@ private:
 	CDiagramEntity* m_multiSelObj;	// Primary object when moving multiple
 
 	// Properties
-	COLORREF	m_bkgndCol;			// Background of paper area
 	COLORREF	m_nonClientBkgndCol;// Background of non-paper area
 
 	int			m_bgResizeZone;		// Size, in pixels, of resize zone
 	BOOL		m_bgResize;			// TRUE if the paper can be resized
 	BOOL		m_bgResizeSelected;	// TRUE if we are resizing the background
-
-	BOOL		m_snap;				// TRUE if we should snap to grid
-	BOOL		m_grid;				// TRUE if the background grid should be displayed
-	int			m_gridStyle;		// Background style
-	CSize		m_gridSize;			// Size of a grid cell
-	COLORREF	m_gridCol;			// Color of the grid
-
-	BOOL		m_margin;			// TRUE if margins should be drawn
-	COLORREF	m_marginColor;		// Color of the margin
-	int			m_leftMargin;		// Left margin in pixels
-	int			m_topMargin;		// Top margin in pixels
-	int			m_rightMargin;		// Right margin in pixels
-	int			m_bottomMargin;		// Bottom margin in pixels
-
-	int			m_restraint;		// Restraint mode ( none, virtual or margin )
 
 	CSize		m_markerSize;		// Size of selection marker
 
@@ -353,6 +332,7 @@ protected:
 
 private:
 	// Misc internal functions
+	void		SetInternalBackgroundColor(COLORREF col);
 	void		SetInternalVirtualSize(const CSize& size);
 	void		RemoveUnselectedPropertyDialogs();
 	void		ShowPopup(CPoint point);

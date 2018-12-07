@@ -126,6 +126,22 @@ CDiagramEntityContainer::CDiagramEntityContainer(CDiagramClipboardHandler* clip)
 	Clear();
 	SetVirtualSize(CSize(0, 0));
 	m_color = RGB(0, 0, 0);
+
+	m_gridCol = RGB(192, 192, 192);
+	m_grid = TRUE;
+	m_gridStyle = PS_SOLID;
+	m_gridSize = CSize(8, 8);
+
+	m_snap = FALSE;
+
+	m_restraint = RESTRAINT_NONE;
+
+	m_leftMargin = 8;
+	m_topMargin = 8;
+	m_rightMargin = 8;
+	m_bottomMargin = 16;
+	m_margin = FALSE;
+	m_marginColor = RGB(128, 128, 255);
 }
 
 CDiagramEntityContainer::~CDiagramEntityContainer()
@@ -185,8 +201,31 @@ CString CDiagramEntityContainer::GetString() const
 
    ============================================================*/
 {
+	int leftMargin;
+	int topMargin;
+	int rightMargin;
+	int bottomMargin;
+	GetMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+
 	CString str;
-	str.Format(_T("paper:%i,%i,%i;"), GetVirtualSize().cx, GetVirtualSize().cy, static_cast<int>(GetColor()));
+	str.Format(_T("paper:%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i,%i;"),
+		GetVirtualSize().cx,
+		GetVirtualSize().cy,
+		static_cast<int>(GetColor()),
+		GetSnapToGrid(),
+		IsGridVisible(),
+		GetGridPenStyle(),
+		GetGridSize().cx,
+		GetGridSize().cy,
+		static_cast<int>(GetGridColor()),
+		IsMarginVisible(),
+		GetRestraints(),
+		static_cast<int>(GetMarginColor()),
+		leftMargin,
+		topMargin,
+		rightMargin,
+		bottomMargin
+	);
 	return str;
 }
 
@@ -227,18 +266,53 @@ BOOL CDiagramEntityContainer::FromString(const CString& str)
 		{
 			CTokenizer tok(data.Left(data.GetLength() - 1));
 			INT_PTR size = tok.GetSize();
-			if (size == 3)
+			if (size == 16)
 			{
 				int right;
 				int bottom;
 				int color;
+				int snap;
+				int grid;
+				int gridStyle;
+				int gridRight;
+				int gridBottom;
+				int gridColor;
+				int margin;
+				int restraint;
+				int marginColor;
+				int leftMargin;
+				int topMargin;
+				int rightMargin;
+				int bottomMargin;
 
 				tok.GetAt(0, right);
 				tok.GetAt(1, bottom);
 				tok.GetAt(2, color);
+				tok.GetAt(3, snap);
+				tok.GetAt(4, grid);
+				tok.GetAt(5, gridStyle);
+				tok.GetAt(6, gridRight);
+				tok.GetAt(7, gridBottom);
+				tok.GetAt(8, gridColor);
+				tok.GetAt(9, margin);
+				tok.GetAt(10, restraint);
+				tok.GetAt(11, marginColor);
+				tok.GetAt(12, leftMargin);
+				tok.GetAt(13, topMargin);
+				tok.GetAt(14, rightMargin);
+				tok.GetAt(15, bottomMargin);
 
 				SetVirtualSize(CSize(right, bottom));
 				SetColor(static_cast<COLORREF>(color));
+				SetSnapToGrid(snap);
+				ShowGrid(grid);
+				SetGridPenStyle(gridStyle);
+				SetGridSize(CSize(gridRight, gridBottom));
+				SetGridColor(static_cast<COLORREF>(gridColor));
+				ShowMargin(margin);
+				SetRestraints(restraint);
+				SetMarginColor(static_cast<COLORREF>(marginColor));
+				SetMargins(leftMargin, topMargin, rightMargin, bottomMargin);
 				result = TRUE;
 			}
 		}
@@ -524,6 +598,364 @@ COLORREF CDiagramEntityContainer::GetColor() const
 {
 
 	return m_color;
+
+}
+
+void CDiagramEntityContainer::ShowGrid(BOOL grid)
+/* ============================================================
+	Function :		CDiagramEntityContainer::ShowGrid
+	Description :	Sets grid visibility.
+	Access :		Public
+
+	Return :		void
+	Parameters :	BOOL grid	-	"TRUE" to show the grid, "FALSE"
+									to hide.
+
+	Usage :			If the grid is visible, it will be drawn
+					using the grid pen style and color. The
+					grid lines will not be scaled with the
+					zoom (the space between them will of
+					course be, however)
+
+   ============================================================*/
+{
+	m_grid = grid;
+}
+
+BOOL CDiagramEntityContainer::IsGridVisible() const
+/* ============================================================
+	Function :		CDiagramEntityContainer::IsGridVisible
+	Description :	Returns the visibility state of the grid.
+	Access :		Public
+
+	Return :		BOOL	-	"TRUE" if grid is visible.
+	Parameters :	none
+
+	Usage :			If the grid is visible, it will be drawn
+					using the grid pen style and color. The
+					grid lines will not be scaled with the
+					zoom (the space between them will of
+					course be, however)
+
+   ============================================================*/
+{
+	return m_grid;
+}
+
+void CDiagramEntityContainer::SetGridColor(COLORREF col)
+/* ============================================================
+	Function :		CDiagramEntityContainer::SetGridColor
+	Description :	Sets a new grid pen color.
+	Access :		Public
+
+	Return :		void
+	Parameters :	COLORREF col	-	New grid pen color.
+
+	Usage :			If the grid is visible, it will be drawn
+					using the grid pen style and color. The
+					grid lines will not be scaled with the
+					zoom (the space between them will of
+					course be, however)
+
+   ============================================================*/
+{
+	m_gridCol = col;
+}
+
+COLORREF CDiagramEntityContainer::GetGridColor() const
+/* ============================================================
+	Function :		CDiagramEntityContainer::GetGridColor
+	Description :	Returns the current grid pen color.
+	Access :		Public
+
+	Return :		COLORREF	-	The current grid color.
+	Parameters :	none
+
+	Usage :			If the grid is visible, it will be drawn
+					using the grid pen style and color. The
+					grid lines will not be scaled with the
+					zoom (the space between them will of
+					course be, however)
+
+   ============================================================*/
+{
+	return m_gridCol;
+}
+
+void CDiagramEntityContainer::SetGridSize(CSize size)
+/* ============================================================
+	Function :		CDiagramEntityContainer::SetGridSize
+	Description :	Sets a new grid size.
+	Access :		Public
+
+	Return :		void
+	Parameters :	CSize size	-	The new grid size.
+
+	Usage :			If snap to grid is on, added, moved and
+					resized objects snap to the closest grid
+					position. If the background is resized, it
+					will also snap to the grid.
+
+   ============================================================*/
+{
+	m_gridSize = size;
+}
+
+CSize CDiagramEntityContainer::GetGridSize() const
+/* ============================================================
+	Function :		CDiagramEntityContainer::GetGridSize
+	Description :	Gets the current grid size.
+	Access :		Public
+
+	Return :		CSize	-	The current grid size.
+	Parameters :	none
+
+	Usage :			If snap to grid is on, added, moved and
+					resized objects snap to the closest grid
+					position. If the background is resized, it
+					will also snap to the grid.
+
+   ============================================================*/
+{
+	return m_gridSize;
+}
+
+void CDiagramEntityContainer::SetGridPenStyle(int style)
+/* ============================================================
+	Function :		CDiagramEntityContainer::SetGridPenStyle
+	Description :	Sets the new grid pen style.
+	Access :		Public
+
+	Return :		void
+	Parameters :	int style	-	The new pen style, one of
+									the style constants for
+									"CreatePen".
+
+	Usage :			The grid (if visible) is drawn with a pen
+					created with the grid pen style. The grid
+					lines will not be scaled with the zoom
+					(the space between them will of course be,
+					however)
+
+   ============================================================*/
+{
+	m_gridStyle = style;
+}
+
+int CDiagramEntityContainer::GetGridPenStyle() const
+/* ============================================================
+	Function :		CDiagramEntityContainer::GetGridPenStyle
+	Description :	Returns the pen style for the grid.
+	Access :		Public
+
+	Return :		int		-	The pen style, one of the style
+								constants for "CreatePen".
+	Parameters :	none
+
+	Usage :			The grid (if visible) is drawn with a pen
+					created with the grid pen style. The grid
+					lines will not be scaled with the zoom
+					(the space between them will of course be,
+					however)
+
+   ============================================================*/
+{
+	return m_gridStyle;
+}
+
+void CDiagramEntityContainer::SetSnapToGrid(BOOL snap)
+/* ============================================================
+	Function :		CDiagramEntityContainer::SetSnapToGrid
+	Description :	Enable/disable snap to grid.
+	Access :		Public
+
+	Return :		void
+	Parameters :	BOOL snap	-	"TRUE" if objects should
+									snap to grid.
+
+	Usage :			If snap to grid is on, added, moved and
+					resized objects snap to the closest grid
+					position. If the background is resized, it
+					will also snap to the grid.
+
+   ============================================================*/
+{
+	m_snap = snap;
+}
+
+BOOL CDiagramEntityContainer::GetSnapToGrid() const
+/* ============================================================
+	Function :		CDiagramEntityContainer::GetSnapToGrid
+	Description :	Gets the state of the snap-to-grid state.
+	Access :		Public
+
+	Return :		BOOL	-	"TRUE" if snap is on.
+	Parameters :	none
+
+	Usage :			If snap to grid is on, added, moved and
+					resized objects snap to the closest grid
+					position. If the background is resized, it
+					will also snap to the grid.
+
+   ============================================================*/
+{
+	return m_snap;
+}
+
+void CDiagramEntityContainer::SetMargins(int left, int top, int right, int bottom)
+/* ============================================================
+	Function :		CDiagramEntityContainer::SetMargins
+	Description :	Sets margins for the virtual screen.
+	Access :		Public
+
+	Return :		void
+	Parameters :	int left	-	New left margin.
+					int top		-	New top margin.
+					int right	-	New right margin.
+					int bottom	-	New bottom margin.
+
+	Usage :			Call to set new margins for the editor.
+
+   ============================================================*/
+{
+	m_leftMargin = left;
+	m_topMargin = top;
+	m_rightMargin = right;
+	m_bottomMargin = bottom;
+}
+
+void CDiagramEntityContainer::GetMargins(int& left, int& top, int& right, int& bottom) const
+/* ============================================================
+	Function :		CDiagramEntityContainer::GetMargins
+	Description :	Return the current margin.
+	Access :		Public
+
+	Return :		void
+	Parameters :	int& left	-	Current left margin.
+					int& top	-	Current top margin.
+					int& right	-	Current right margin.
+					int& bottom	-	Current bottom margin.
+
+	Usage :			Call to get the margins of the editor.
+
+   ============================================================*/
+{
+	left = m_leftMargin;
+	top = m_topMargin;
+	right = m_rightMargin;
+	bottom = m_bottomMargin;
+}
+
+void CDiagramEntityContainer::SetMarginColor(COLORREF marginColor)
+/* ============================================================
+	Function :		CDiagramEntityContainer::SetMarginColor
+	Description :	Set current margin colors.
+	Access :		Public
+
+	Return :		void
+	Parameters :	COLORREF marginColor	-	The new color.
+
+	Usage :			Call to set the margin color.
+
+   ============================================================*/
+{
+	m_marginColor = marginColor;
+}
+
+COLORREF CDiagramEntityContainer::GetMarginColor() const
+/* ============================================================
+	Function :		CDiagramEntityContainer::GetMarginColor
+	Description :	Returns the current margin colors.
+	Access :		Public
+
+	Return :		COLORREF	-	Margin colors.
+	Parameters :	none
+
+	Usage :			Call to get the margin color.
+
+   ============================================================*/
+{
+	return m_marginColor;
+}
+
+void CDiagramEntityContainer::ShowMargin(BOOL show)
+/* ============================================================
+	Function :		CDiagramEntityContainer::ShowMargin
+	Description :	Show/hide margins.
+	Access :		Public
+
+	Return :		void
+	Parameters :	BOOL show	-	"TRUE" to show margins, "FALSE"
+									to hide.
+
+	Usage :			Call to show/hide the margins.
+
+   ============================================================*/
+{
+	m_margin = show;
+}
+
+BOOL CDiagramEntityContainer::IsMarginVisible() const
+/* ============================================================
+	Function :		CDiagramEntityContainer::IsMarginVisible
+	Description :	Returns the visibility state of the
+					margins.
+	Access :		Public
+
+	Return :		BOOL	-	"TRUE" if the margins are
+								visible.
+	Parameters :	none
+
+	Usage :			Call to se if the margin visibility flag is
+					on.
+
+   ============================================================*/
+{
+	return m_margin;
+}
+
+void CDiagramEntityContainer::SetRestraints(int restraint)
+/* ============================================================
+	Function :		CDiagramEntityContainer::SetRestraints
+	Description :	Sets current restraint mode
+	Access :		Public
+
+	Return :		void
+	Parameters :	BOOL restraint	-	restraint mode, see Usage
+										below
+
+	Usage :			The restraint mode can be one of the
+					following ( defined in DialogEditor.h):
+						"RESTRAINT_NONE" No restraints.
+						"RESTRAINT_VIRTUAL" No objects can be moved outside the virtual rectangle.
+						"RESTRAINT_MARGIN" No objects can be moved outside the background margins.
+
+   ============================================================*/
+{
+	m_restraint = restraint;
+}
+
+int CDiagramEntityContainer::GetRestraints() const
+/* ============================================================
+	Function :		CDiagramEntityContainer::GetRestraints
+	Description :	Returns the current restraint mode.
+	Access :		Public
+
+	Return :		int	-	The current restraint mode. See
+							Usage below
+
+	Parameters :	none
+
+	Usage :			The restraint mode can be one of the
+					following ( defined in DialogEditor.h):
+						"RESTRAINT_NONE" No restraints.
+						"RESTRAINT_VIRTUAL" No objects can be moved outside the virtual rectangle.
+						"RESTRAINT_MARGIN" No objects can be moved outside the background margins.
+
+   ============================================================*/
+{
+
+	return m_restraint;
 
 }
 

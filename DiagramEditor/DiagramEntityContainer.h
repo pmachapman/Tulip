@@ -4,6 +4,11 @@ class CDiagramEntity;
 #include "DiagramClipboardHandler.h"
 #include "UndoItem.h"
 
+// Restraint modes
+#define RESTRAINT_NONE		0
+#define RESTRAINT_VIRTUAL	1
+#define RESTRAINT_MARGIN	2
+
 class CDiagramEntityContainer {
 
 public:
@@ -33,6 +38,31 @@ public:
 
 	void			SetColor(COLORREF color);
 	COLORREF		GetColor() const;
+
+	void		ShowGrid(BOOL grid);
+	BOOL		IsGridVisible() const;
+
+	void		SetGridColor(COLORREF col);
+	COLORREF	GetGridColor() const;
+
+	void		SetGridPenStyle(int style);
+	int			GetGridPenStyle() const;
+
+	void		SetGridSize(CSize size);
+	CSize		GetGridSize() const;
+
+	void		SetSnapToGrid(BOOL snap);
+	BOOL		GetSnapToGrid() const;
+
+	void		SetMargins(int left, int top, int right, int bottom);
+	void		GetMargins(int& left, int& top, int& right, int& bottom) const;
+	void		SetMarginColor(COLORREF marginColor);
+	COLORREF	GetMarginColor() const;
+	void		ShowMargin(BOOL show);
+	BOOL		IsMarginVisible() const;
+
+	int			GetRestraints() const;
+	void		SetRestraints(int restraint);
 
 	void			SetModified(BOOL dirty);
 	BOOL			IsModified() const;
@@ -89,6 +119,21 @@ private:
 	int				m_maxstacksize;
 	CSize			m_virtualSize;
 	COLORREF		m_color; // Current bg color
+
+	BOOL		m_snap;				// TRUE if we should snap to grid
+	BOOL		m_grid;				// TRUE if the background grid should be displayed
+	int			m_gridStyle;		// Grid style
+	CSize		m_gridSize;			// Size of a grid cell
+	COLORREF	m_gridCol;			// Color of the grid
+
+	BOOL		m_margin;			// TRUE if margins should be drawn
+	COLORREF	m_marginColor;		// Color of the margin
+	int			m_leftMargin;		// Left margin in pixels
+	int			m_topMargin;		// Top margin in pixels
+	int			m_rightMargin;		// Right margin in pixels
+	int			m_bottomMargin;		// Bottom margin in pixels
+
+	int			m_restraint;		// Restraint mode ( none, virtual or margin )
 
 	CDiagramClipboardHandler*	m_clip;
 	CDiagramClipboardHandler	m_internalClip;
