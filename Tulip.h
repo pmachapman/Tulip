@@ -54,6 +54,7 @@ public:
 	afx_msg void OnFileNewFlowchart();
 	afx_msg void OnFileNewNet();
 	afx_msg void OnFileNewUml();
+	afx_msg void OnFileOpen();
 	DECLARE_MESSAGE_MAP()
 protected:
 	CMultiDocTemplate* m_dialogDocTemplate;

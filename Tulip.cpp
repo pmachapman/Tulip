@@ -44,7 +44,7 @@ BEGIN_MESSAGE_MAP(CTulipApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_NEW_FLOWCHART, &CTulipApp::OnFileNewFlowchart)
 	ON_COMMAND(ID_FILE_NEW_NET, &CTulipApp::OnFileNewNet)
 	ON_COMMAND(ID_FILE_NEW_UML, &CTulipApp::OnFileNewUml)
-	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
+	ON_COMMAND(ID_FILE_OPEN, &CTulipApp::OnFileOpen)
 	// Standard print setup command
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
@@ -261,6 +261,27 @@ void CTulipApp::OnFileNewNet()
 void CTulipApp::OnFileNewUml()
 {
 	m_umlDocTemplate->OpenDocumentFile(NULL);
+}
+
+void CTulipApp::OnFileOpen()
+{
+	LPCTSTR pszFilter =
+		_T("All Tulip Files (*.dialog;*.flowdiagram;*.netdiagram;*.umldiagram)|*.dialog;*.flowdiagram;*.netdiagram;*.umldiagram|")
+		_T("Dialog (*.dialog)|*.dialog|")
+		_T("Flowchart Diagram (*.flowdiagram)|*.flowdiagram|")
+		_T("Network Diagram (*.netdiagram)|*.netdiagram|")
+		_T("UML Diagram (*.umldiagram)|*.umldiagram|")
+		_T("All Files (*.*)|*.*||");
+
+	CFileDialog dlgFile(TRUE, NULL, NULL,
+		OFN_HIDEREADONLY | OFN_FILEMUSTEXIST,
+		pszFilter,
+		AfxGetMainWnd());
+
+	if (dlgFile.DoModal() == IDOK)
+	{
+		OpenDocumentFile(dlgFile.GetPathName());
+	}
 }
 
 // CTulipApp customization load/save methods
