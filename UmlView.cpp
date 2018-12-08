@@ -327,7 +327,25 @@ BOOL CUmlView::OnEraseBkgnd(CDC* /*pDC*/)
 
 void CUmlView::OnButtonLink()
 {
-	m_editor.StartDrawingObject(new CUMLLineSegment);
+	if (m_editor.GetObjectCount() == 2)
+	{
+		if (m_editor.IsLinked())
+		{
+			m_editor.OnUnlink();
+		}
+		else
+		{
+			m_editor.OnLink();
+		}
+	}
+	else if (m_editor.IsLinkSelected())
+	{
+		m_editor.DeleteAllSelected();
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CUMLLineSegment);
+	}
 }
 
 void CUmlView::OnButtonNote()

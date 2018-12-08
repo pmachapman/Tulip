@@ -3045,4 +3045,665 @@ BOOL CUMLEntityContainer::IsProtectedLink(CUMLLineSegment* link) const
 
 }
 
+CUMLEntity* CUMLEntityContainer::GetPrimaryLink()
+/* ============================================================
+	Function :		CUMLEntityContainer::GetPrimaryLink
+	Description :	Returns the primary object of the two
+					currently selected and linked.
+
+	Return :		CUMLEntity*			-	Primary object or
+											NULL if none.
+	Parameters :	none
+
+	Usage :			Returns NULL if not exactly two objects are
+					selected, or they are not linked.
+
+   ============================================================*/
+{
+
+	CUMLEntity* result = NULL;
+
+	if (GetSelectCount() == 2)
+	{
+		INT_PTR max = GetSize();
+		CUMLEntity* primary = NULL;
+		CUMLEntity* secondary = NULL;
+
+		for (INT_PTR t = 0; t < max; t++)
+		{
+			CUMLEntity* obj = dynamic_cast<CUMLEntity*>(GetAt(t));
+			if (obj && obj->IsSelected())
+			{
+				if (primary == NULL)
+					primary = obj;
+				else
+					secondary = obj;
+			}
+		}
+
+		if (primary && secondary)
+		{
+			CUMLLineSegment* link = GetLinkBetween(primary, secondary);
+			if (link)
+			{
+				if (primary->GetName() == link->GetLink(LINK_START))
+					result = primary;
+				else
+					result = secondary;
+			}
+		}
+	}
+
+	return result;
+
+}
+
+CUMLEntity* CUMLEntityContainer::GetSecondaryLink()
+/* ============================================================
+	Function :		CUMLEntityContainer::GetSecondaryLink
+	Description :	Returns the secondary object of the two
+					currently selected and linked.
+
+	Return :		CUMLEntity*			-	Secondary object or
+											NULL if none.
+	Parameters :	none
+
+	Usage :			Returns NULL if not exactly two objects are
+					selected, or they are not linked.
+
+   ============================================================*/
+{
+
+	CUMLEntity* result = NULL;
+
+	if (GetSelectCount() == 2)
+	{
+		INT_PTR max = GetSize();
+		CUMLEntity* primary = NULL;
+		CUMLEntity* secondary = NULL;
+
+		for (INT_PTR t = 0; t < max; t++)
+		{
+			CUMLEntity* obj = dynamic_cast<CUMLEntity*>(GetAt(t));
+			if (obj && obj->IsSelected())
+			{
+				if (primary == NULL)
+					primary = obj;
+				else
+					secondary = obj;
+			}
+		}
+
+		if (primary && secondary)
+		{
+			CUMLLineSegment* link = GetLinkBetween(primary, secondary);
+			if (link)
+			{
+				if (primary->GetName() == link->GetLink(LINK_START))
+					result = secondary;
+				else
+					result = primary;
+			}
+		}
+	}
+
+	return result;
+
+}
+
+CUMLEntity* CUMLEntityContainer::GetPrimarySelected()
+/* ============================================================
+	Function :		CUMLEntityContainer::GetPrimarySelected
+	Description :	Returns the primary object of the two
+					currently selected.
+
+	Return :		CUMLEntity*			-	Primary object or
+											NULL if none.
+	Parameters :	none
+
+	Usage :			Returns NULL if not exactly two objects are
+					selected.
+
+   ============================================================*/
+{
+
+	CUMLEntity* result = NULL;
+
+	if (GetSelectCount() == 2)
+	{
+		INT_PTR max = GetSize();
+
+		for (INT_PTR t = 0; t < max; t++)
+		{
+			CUMLEntity* obj = dynamic_cast<CUMLEntity*>(GetAt(t));
+			if (obj && obj->IsSelected())
+			{
+				if (result == NULL)
+					result = obj;
+			}
+		}
+	}
+
+	return result;
+
+}
+
+CUMLEntity* CUMLEntityContainer::GetSecondarySelected()
+/* ============================================================
+	Function :		CUMLEntityContainer::GetSecondarySelected
+	Description :	Returns the secondary object of the two
+					currently selected.
+
+	Return :		CUMLEntity*			-	secondary object or
+											NULL if none.
+	Parameters :	none
+
+	Usage :			Returns NULL if not exactly two objects are
+					selected.
+
+   ============================================================*/
+{
+
+	CUMLEntity* result = NULL;
+
+	if (GetSelectCount() == 2)
+	{
+		INT_PTR max = GetSize();
+
+		for (INT_PTR t = 0; t < max; t++)
+		{
+			CUMLEntity* obj = dynamic_cast<CUMLEntity*>(GetAt(t));
+			if (obj && obj->IsSelected())
+				result = obj;
+		}
+	}
+
+	return result;
+
+}
+
+BOOL CUMLEntityContainer::IsLinked()
+/* ============================================================
+	Function :		CUMLEntityContainer::IsLinked
+	Description :	Check if exactly two objects are selected
+					and linked.
+
+	Return :		BOOL	-	TRUE if two objects are
+								selected and linked.
+	Parameters :	none
+
+	Usage :			Call as a command enabler for commands
+					where the selected items must be two and
+					linked (such as Flip link direction).
+
+   ============================================================*/
+{
+
+	BOOL result = FALSE;
+
+	if (GetSelectCount() == 2)
+	{
+		CUMLEntity* primary = GetPrimaryLink();
+		CUMLEntity* secondary = GetSecondaryLink();
+
+		result = (primary && secondary);
+	}
+
+	return result;
+
+}
+
+BOOL CUMLEntityContainer::CanLink()
+/* ============================================================
+	Function :		CUMLEntityContainer::CanLink
+	Description :	Returns TRUE if two objects are selected,
+					but not linked and it is possible to link
+					them.
+
+	Return :		BOOL	-	TRUE if two objects are
+								selected and can be linked.
+	Parameters :	none
+
+	Usage :			Call as a command enabler for the Link
+					command.
+
+   ============================================================*/
+{
+
+	BOOL result = FALSE;
+
+	if (GetSelectCount() == 2)
+	{
+		CUMLEntity* primary = GetPrimarySelected();
+		CUMLEntity* secondary = GetSecondarySelected();
+
+		if (primary && secondary)
+			result = !GetLinkBetween(primary, secondary);
+	}
+
+	return result;
+
+}
+
+BOOL CUMLEntityContainer::CreateLink(CUMLEntity* from, CUMLEntity* to)
+/* ============================================================
+	Function :		CUMLEntityContainer::CreateLink
+	Description :	Creates a link between from and to and
+					puts it into the link-array.
+
+	Return :		BOOL					-	TRUE if ok.
+	Parameters :	CUMLEntity* from		-	From-object.
+					CUMLEntity* to			-	To-object.
+
+	Usage :			Call to create a link between from and to.
+
+   ============================================================*/
+{
+
+	BOOL result = FALSE;
+	int	fromtype = 0;
+	int	totype = 0;
+	CPoint source;
+	CPoint target;
+
+	if (FindClosestLink(from, to, fromtype, totype))
+	{
+		CUMLLineSegment* link = new CUMLLineSegment;
+
+		link->SetLink(LINK_START, from->GetName());
+		link->SetLinkType(LINK_START, fromtype);
+		link->SetLink(LINK_END, to->GetName());
+		link->SetLinkType(LINK_END, totype);
+		ReduceLine(link);
+		SetDefaultLineStyle(link);
+		Add(link);
+
+		result = TRUE;
+	}
+
+	return result;
+
+}
+
+BOOL CUMLEntityContainer::FindClosestLink(CUMLEntity* obj1, CUMLEntity* obj2, int& fromtype, int& totype)
+/* ============================================================
+	Function :		CUMLEntityContainer::FindClosestLink
+	Description :	Finds the closet link types between two
+					objects.
+
+	Return :		BOOL					-	TRUE if the
+												objects can be
+												linked.
+	Parameters :	CUMLEntity* obj1		-	First object
+												to link
+					CUMLEntity* obj2		-	Second object
+												to link
+					int& fromtype			-	Type of link for the first object
+					int& totype				-	Type of link for the second object.
+
+	Usage :			The link types can be:
+					LINK_TOP		Top of the object.
+					LINK_BOTTOM		Bottom of the object.
+					LINK_LEFT		To the left of the object.
+					LINK_RIGHT		To the right of the object.
+					LINK_START		To the start of the line (normally
+									the top-left corner of
+									the non-normalized bounding
+									rect).
+					LINK_END		To the end of the line
+									(normally the bottom-right
+									corner of the non-normalized
+									bounding rect).
+
+   ============================================================*/
+{
+
+	BOOL result = TRUE;
+	CPoint start;
+	CPoint end;
+	double diff2 = 0;
+	double diff1 = 0x7FFFFFFF;
+
+	// We go through all the allowed links for obj1, and get the 
+	// distance between the inspected link point and the allowed 
+	// link points of obj2. Shortest distance wins!
+
+	if ((obj1->AllowLink() & LINK_LEFT))
+	{
+		start = obj1->GetLinkPosition(LINK_LEFT);
+		if ((obj2->AllowLink() & LINK_START) && (obj2->AllowLink() & LINK_END))
+		{
+			end = obj2->GetLinkPosition(LINK_START);
+			diff2 = Dist(start, end);
+			if (diff2 <= diff1 && start.x > end.x)
+			{
+				fromtype = LINK_LEFT;
+				totype = LINK_START;
+				diff1 = diff2;
+			}
+
+			end = obj2->GetLinkPosition(LINK_END);
+			diff2 = Dist(start, end);
+			if (diff2 <= diff1 && start.x > end.x)
+			{
+				fromtype = LINK_LEFT;
+				totype = LINK_END;
+				diff1 = diff2;
+			}
+		}
+		else
+		{
+			end = obj2->GetLinkPosition(LINK_RIGHT);
+			diff2 = Dist(start, end);
+			if (diff2 <= diff1 && start.x > end.x)
+			{
+				fromtype = LINK_LEFT;
+				totype = LINK_RIGHT;
+				diff1 = diff2;
+			}
+		}
+	}
+
+	if ((obj1->AllowLink() & LINK_RIGHT))
+	{
+		start = obj1->GetLinkPosition(LINK_RIGHT);
+		if ((obj2->AllowLink() & LINK_START) && (obj2->AllowLink() & LINK_END))
+		{
+			end = obj2->GetLinkPosition(LINK_START);
+			diff2 = Dist(start, end);
+			if (diff2 <= diff1 && end.x > start.x)
+			{
+				fromtype = LINK_RIGHT;
+				totype = LINK_START;
+				diff1 = diff2;
+			}
+
+			end = obj2->GetLinkPosition(LINK_END);
+			diff2 = Dist(start, end);
+			if (diff2 <= diff1 && end.x > start.x)
+			{
+				fromtype = LINK_RIGHT;
+				totype = LINK_END;
+				diff1 = diff2;
+			}
+		}
+		else
+		{
+			end = obj2->GetLinkPosition(LINK_LEFT);
+			diff2 = Dist(start, end);
+			if (diff2 <= diff1 && end.x > start.x)
+			{
+				fromtype = LINK_RIGHT;
+				totype = LINK_LEFT;
+				diff1 = diff2;
+			}
+		}
+	}
+
+	if ((obj1->AllowLink() & LINK_TOP))
+	{
+		start = obj1->GetLinkPosition(LINK_TOP);
+		if ((obj2->AllowLink() & LINK_START) && (obj2->AllowLink() & LINK_END))
+		{
+			end = obj2->GetLinkPosition(LINK_START);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.y > end.y)
+			{
+				fromtype = LINK_TOP;
+				totype = LINK_START;
+				diff1 = diff2;
+			}
+			end = obj2->GetLinkPosition(LINK_END);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.y > end.y)
+			{
+				fromtype = LINK_TOP;
+				totype = LINK_END;
+				diff1 = diff2;
+			}
+		}
+		else
+		{
+			end = obj2->GetLinkPosition(LINK_BOTTOM);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.y > end.y)
+			{
+				fromtype = LINK_TOP;
+				totype = LINK_BOTTOM;
+				diff1 = diff2;
+			}
+		}
+	}
+
+	if ((obj1->AllowLink() & LINK_BOTTOM))
+	{
+		start = obj1->GetLinkPosition(LINK_BOTTOM);
+		if ((obj2->AllowLink() & LINK_START) && (obj2->AllowLink() & LINK_END))
+		{
+			end = obj2->GetLinkPosition(LINK_START);
+			diff2 = Dist(start, end);
+			if (diff2 <= diff1 && end.y > start.y)
+			{
+				fromtype = LINK_BOTTOM;
+				totype = LINK_START;
+				diff1 = diff2;
+			}
+			end = obj2->GetLinkPosition(LINK_END);
+			diff2 = Dist(start, end);
+			if (diff2 <= diff1 && end.y > start.y)
+			{
+				fromtype = LINK_BOTTOM;
+				totype = LINK_END;
+				diff1 = diff2;
+			}
+		}
+		else
+		{
+			end = obj2->GetLinkPosition(LINK_TOP);
+			diff2 = Dist(start, end);
+			if (diff2 <= diff1 && end.y > start.y)
+			{
+				fromtype = LINK_BOTTOM;
+				totype = LINK_TOP;
+				diff1 = diff2;
+			}
+		}
+	}
+
+	int sum2 = 0;
+	if ((obj1->AllowLink() & LINK_START))
+	{
+		start = obj1->GetLinkPosition(LINK_START);
+
+		if (obj2->AllowLink() & LINK_START)
+		{
+			end = obj2->GetLinkPosition(LINK_START);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1)
+			{
+				fromtype = LINK_START;
+				totype = LINK_START;
+				diff1 = diff2;
+			}
+		}
+
+		if (obj2->AllowLink() & LINK_END)
+		{
+			end = obj2->GetLinkPosition(LINK_END);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1)
+			{
+				fromtype = LINK_START;
+				totype = LINK_END;
+				diff1 = diff2;
+			}
+		}
+
+		if (obj2->AllowLink() & LINK_LEFT)
+		{
+			end = obj2->GetLinkPosition(LINK_LEFT);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.x <= end.x)
+			{
+				fromtype = LINK_START;
+				totype = LINK_LEFT;
+				diff1 = diff2;
+			}
+		}
+
+		if (obj2->AllowLink() & LINK_RIGHT)
+		{
+			end = obj2->GetLinkPosition(LINK_RIGHT);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.x >= end.x)
+			{
+				fromtype = LINK_START;
+				totype = LINK_RIGHT;
+				diff1 = diff2;
+			}
+		}
+
+		if (obj2->AllowLink() & LINK_TOP)
+		{
+			end = obj2->GetLinkPosition(LINK_TOP);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.y <= end.y)
+			{
+				fromtype = LINK_START;
+				totype = LINK_TOP;
+				diff1 = diff2;
+			}
+		}
+
+		if (obj2->AllowLink() & LINK_BOTTOM)
+		{
+			end = obj2->GetLinkPosition(LINK_BOTTOM);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.y >= end.y)
+			{
+				fromtype = LINK_START;
+				totype = LINK_BOTTOM;
+				diff1 = diff2;
+			}
+		}
+
+	}
+
+	if ((obj1->AllowLink() & LINK_END))
+	{
+		start = obj1->GetLinkPosition(LINK_END);
+		if (obj2->AllowLink() & LINK_START)
+		{
+			end = obj2->GetLinkPosition(LINK_START);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1)
+			{
+				fromtype = LINK_END;
+				totype = LINK_START;
+				diff1 = diff2;
+			}
+		}
+
+		if (obj2->AllowLink() & LINK_END)
+		{
+			end = obj2->GetLinkPosition(LINK_END);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1)
+			{
+				fromtype = LINK_END;
+				totype = LINK_END;
+				diff1 = diff2;
+			}
+		}
+
+		if (obj2->AllowLink() & LINK_LEFT)
+		{
+			end = obj2->GetLinkPosition(LINK_LEFT);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.x <= end.x)
+			{
+				fromtype = LINK_END;
+				totype = LINK_LEFT;
+				diff1 = diff2;
+			}
+		}
+
+		if (obj2->AllowLink() & LINK_RIGHT)
+		{
+			end = obj2->GetLinkPosition(LINK_RIGHT);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.x >= end.x)
+			{
+				fromtype = LINK_END;
+				totype = LINK_RIGHT;
+				diff1 = diff2;
+			}
+		}
+
+		if (obj2->AllowLink() & LINK_TOP)
+		{
+			end = obj2->GetLinkPosition(LINK_TOP);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.y <= end.y)
+			{
+				fromtype = LINK_END;
+				totype = LINK_TOP;
+				diff1 = diff2;
+			}
+		}
+
+		if (obj2->AllowLink() & LINK_BOTTOM)
+		{
+			end = obj2->GetLinkPosition(LINK_BOTTOM);
+			diff2 = Dist(start, end);
+			if (diff2 < diff1 && start.y >= end.y)
+			{
+				fromtype = LINK_END;
+				totype = LINK_BOTTOM;
+				diff1 = diff2;
+			}
+		}
+
+	}
+
+	// To be really, really sure
+	if (!(obj1->AllowLink() & fromtype))
+	{
+		result = FALSE;
+		fromtype = 0;
+	}
+
+	if (!(obj2->AllowLink() & totype))
+	{
+		result = FALSE;
+		totype = 0;
+	}
+
+	return result;
+
+}
+
+double CUMLEntityContainer::Dist(CPoint point1, CPoint point2)
+/* ============================================================
+	Function :		CUMLEntityContainer::Dist
+	Description :	Calculates the distance between point1 and
+					point2.
+
+	Return :		double			-	Resulting distance
+	Parameters :	CPoint point1	-	First point to test
+					CPoint point2	-	Second point to test
+
+	Usage :			Used to find the closest link points between
+					two objects.
+
+   ============================================================*/
+{
+	double width = abs(point1.x - point2.x);
+	double height = abs(point1.y - point2.y);
+
+	double hyp = _hypot(width, height);
+
+	return hyp;
+}
+
 #pragma warning( default : 4706 )

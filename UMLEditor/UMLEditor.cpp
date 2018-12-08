@@ -1604,6 +1604,249 @@ void CUMLEditor::FlipLink()
 
 }
 
+BOOL CUMLEditor::CanLink()
+/* ============================================================
+	Function :		CUMLEditor::CanLink
+	Description :	Will check if the currently selected items
+					can be linked to each other.
+
+	Return :		BOOL	-	TRUE if the currently selected
+								items can be linked.
+	Parameters :	none
+
+	Usage :			Call from - for example - a command enabler
+					to see if linking is currently possible.
+
+   ============================================================*/
+{
+
+	BOOL result = FALSE;
+
+	if (GetUMLEntityContainer())
+		result = GetUMLEntityContainer()->CanLink();
+
+	return result;
+
+}
+
+BOOL CUMLEditor::IsLinked()
+/* ============================================================
+	Function :		CUMLEditor::IsLinked
+	Description :	Checks if the currently selected items are
+					linked to each other.
+
+	Return :		BOOL	-	TRUE if they are linked.
+	Parameters :	none
+
+	Usage :			Call from - for example - a command enabler
+					to see if the currently selected items are
+					linked.
+
+   ============================================================*/
+{
+
+	BOOL result = FALSE;
+
+	if (GetUMLEntityContainer())
+		result = GetUMLEntityContainer()->IsLinked();
+	return result;
+
+}
+
+void CUMLEditor::OnLink()
+/* ============================================================
+	Function :		CUMLEditor::OnLink
+	Description :	Command handler for the Link command.
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Called internally.
+
+   ============================================================*/
+{
+
+	if (CanLink())
+	{
+		// Get the two selected objects 
+		CUMLEntityContainer* objs = GetUMLEntityContainer();
+		CUMLEntity* primary = objs->GetPrimarySelected();
+		CUMLEntity* secondary = objs->GetSecondarySelected();
+
+		if (primary && secondary)
+		{
+			GetDiagramEntityContainer()->Snapshot();
+
+			// Link them
+			if (objs->CreateLink(primary, secondary))
+			{
+				// Move other objects already linked to the secondary
+				AdjustLinkedObjects(primary);
+
+				INT_PTR max = GetObjectCount();
+				for (int t = 0; t < max; t++)
+				{
+					CUMLEntity* obj = dynamic_cast<CUMLEntity*>(GetObject(t));
+					if (obj)
+						obj->SetMoved(FALSE);
+				}
+
+				RedrawWindow();
+			}
+		}
+	}
+}
+
+void CUMLEditor::OnUnlink()
+/* ============================================================
+	Function :		CUMLEditor::OnUnlink
+	Description :	Command handler for the Break link command.
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Called internally.
+
+   ============================================================*/
+{
+
+	if (IsLinked())
+	{
+		// Get the two selected objects 
+		CUMLEntityContainer* objs = GetUMLEntityContainer();
+		CUMLEntity* primary = objs->GetPrimaryLink();
+		CUMLEntity* secondary = objs->GetSecondaryLink();
+		if (primary && secondary)
+		{
+			CUMLLineSegment* link = objs->GetLinkBetween(primary, secondary);
+			if (link)
+			{
+				GetDiagramEntityContainer()->Snapshot();
+				objs->DeleteLine(link);
+				RedrawWindow();
+			}
+		}
+	}
+
+}
+
+void CUMLEditor::AdjustLinkedObjects(CUMLEntity* parent, CUMLEntity* filter)
+/* ============================================================
+	Function :		CUMLEditor::AdjustLinkedObjects
+	Description :	The function adjusts all objects attached
+					to parent, except filter (filter is assumed
+					to be last iteration's parent).
+
+	Return :		void
+	Parameters :	CUMLEntity* parent			-	The object to
+													find attached
+													links to.
+					CUMLEntity* filter			-	Object attached
+													to parent that
+													is not to be
+													moved.
+
+	Usage :			The function is called to recursively adjust
+					the positions of objects attached to an
+					object being moved.
+
+   ============================================================*/
+{
+
+	parent->SetMoved(TRUE);
+	BOOL moved = FALSE;
+
+	CString name1 = parent->GetName();
+	CString name2;
+
+	double sizediff = 0.0;
+
+	CUMLEntityContainer* objs = GetUMLEntityContainer();
+	if (objs)
+	{
+		INT_PTR max = objs->GetSize();
+		for (INT_PTR t = 0; t < max; t++)
+		{
+			CUMLLineSegment* link = dynamic_cast<CUMLLineSegment*>(objs->GetAt(t));
+			if (link)
+			{
+				int fromtype = link->GetLinkType(LINK_START);
+				int totype = link->GetLinkType(LINK_END);
+
+				name2 = _T("");
+				if (link->GetLink(LINK_START) == parent->GetName())
+					name2 = link->GetLink(LINK_END);
+				else if (link->GetLink(LINK_END) == parent->GetName())
+				{
+					fromtype = link->GetLinkType(LINK_END);
+					totype = link->GetLinkType(LINK_START);
+					name2 = link->GetLink(LINK_START);
+				}
+
+				if (name2.GetLength())
+				{
+					CUMLEntity* obj = GetNamedObject(name2);
+					if (obj && obj != filter && !obj->GetMoved())
+					{
+						CPoint source;
+						CPoint target;
+
+						source = parent->GetLinkPosition(fromtype);
+						target = obj->GetLinkPosition(totype);
+
+						moved = FALSE;
+						switch (fromtype)
+						{
+						case LINK_LEFT:
+							sizediff = source.y - target.y;
+							obj->MoveRect(0, source.y - target.y);
+							break;
+						case LINK_RIGHT:
+							sizediff = source.y - target.y;
+							obj->MoveRect(0, source.y - target.y);
+							break;
+						case LINK_TOP:
+							sizediff = source.x - target.x;
+							obj->MoveRect(source.x - target.x, 0);
+							break;
+						case LINK_BOTTOM:
+							sizediff = source.x - target.x;
+							obj->MoveRect(source.x - target.x, 0);
+							break;
+						default:
+							switch (totype)
+							{
+							case LINK_LEFT:
+								sizediff = source.y - target.y;
+								obj->MoveRect(0, source.y - target.y);
+								break;
+							case LINK_RIGHT:
+								sizediff = source.y - target.y;
+								obj->MoveRect(0, source.y - target.y);
+								break;
+							case LINK_TOP:
+								sizediff = source.x - target.x;
+								obj->MoveRect(source.x - target.x, 0);
+								break;
+							case LINK_BOTTOM:
+								sizediff = source.x - target.x;
+								obj->MoveRect(source.x - target.x, 0);
+								break;
+							}
+							break;
+						}
+
+						if (sizediff)
+							AdjustLinkedObjects(obj, parent);
+
+					}
+				}
+			}
+		}
+	}
+
+}
+
 void CUMLEditor::Import()
 /* ============================================================
 	Function :		CUMLEditor::Import

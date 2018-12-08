@@ -412,6 +412,48 @@ CRect CUMLEntity::GetLinkMarkerRect(int type) const
 
 }
 
+int CUMLEntity::AllowLink()
+/* ============================================================
+	Function :		CUMLEntity::AllowLink
+	Description :	Returns the allowed link types for this
+					object.
+
+	Return :		int		-	The allowed link types
+	Parameters :	none
+
+	Usage :			Call this function to get the link types
+					allowed for this object. Several link-types
+					can be ORed together. The possible link
+					types are:
+
+					LINK_TOP		Links are allowed to the
+									top of the object.
+					LINK_BOTTOM		Links are allowed to the
+									bottom.
+					LINK_LEFT		Links are allowed to the
+									left.
+					LINK_RIGHT		Links are allowed to the
+									right.
+					LINK_ALL		Links are allowed to all
+									of the above.
+					LINK_START		Links are allowed to the
+									start of a line (normally
+									the top-left corner of
+									the non-normalized bounding
+									rect).
+					LINK_END		Links are allowed to the
+									end of a line (normally the
+									bottom-right corner of the
+									non-normalized bounding
+									rect).
+
+   ============================================================*/
+{
+
+	return LINK_ALL;
+
+}
+
 void CUMLEntity::SetDefaultSize(CSize sz)
 /* ============================================================
 	Function :		CUMLEntity::SetDefaultSize
@@ -656,6 +698,49 @@ CString CUMLEntity::GetStereotype() const
 {
 
 	return m_stereotype;
+
+}
+
+void CUMLEntity::SetMoved(BOOL moved)
+/* ============================================================
+	Function :		CUMLEntity::SetMoved
+	Description :	Sets the moved-flag of the object.
+
+	Return :		void
+	Parameters :	BOOL moved	-	TRUE if the object is moved
+									while moving linked objects,
+									FALSE if not.
+
+	Usage :			To avoid infinite recursion while moving
+					linked objects, we use a flag to mark this
+					object as already moved.
+
+   ============================================================*/
+{
+
+	m_moved = moved;
+
+}
+
+BOOL CUMLEntity::GetMoved()
+/* ============================================================
+	Function :		CUMLEntity::GetMoved
+	Description :	Gets the moved-flag of the object.
+
+	Return :		BOOL	-	TRUE if the object is moved
+									while moving linked objects,
+									FALSE if not.
+
+	Parameters :	none
+
+	Usage :			To avoid infinite recursion while moving
+					linked objects, we use a flag to mark this
+					object as already moved.
+
+   ============================================================*/
+{
+
+	return m_moved;
 
 }
 

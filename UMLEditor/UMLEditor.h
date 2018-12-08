@@ -19,6 +19,10 @@ public:
 	// Operations
 	BOOL	IsLinkSelected() const;
 	void	FlipLink();
+	BOOL CanLink();
+	BOOL IsLinked();
+	void OnLink();
+	void OnUnlink();
 
 	CString GetPackage() const;
 	void SetPackage(const CString& package);
@@ -58,6 +62,7 @@ protected:
 private:
 	// Private helpers
 	void			ModifyLinkedPositions();
+	void			AdjustLinkedObjects(CUMLEntity* parent, CUMLEntity* filter = NULL);
 	CUMLEntity*		GetNamedObject(const CString& name) const;
 
 	BOOL			IsConnected(CUMLLineSegment* link) const;
