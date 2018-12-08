@@ -108,7 +108,7 @@ void CNetDoc::Serialize(CArchive& ar)
 			}
 		}
 
-		m_objs.SetModified(FALSE);
+		m_objs.SetModified(TRUE);
 
 	}
 }

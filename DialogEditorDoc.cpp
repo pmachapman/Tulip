@@ -83,7 +83,7 @@ void CDialogEditorDoc::Serialize(CArchive& ar)
 					m_objs.Add(obj);
 			}
 		}
-		m_objs.SetModified(FALSE);
+		m_objs.SetModified(TRUE);
 	}
 }
 

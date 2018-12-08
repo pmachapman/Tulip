@@ -2887,7 +2887,7 @@ void CUMLEntityContainer::Load(CArchive& ar)
 		}
 	}
 
-	SetModified(FALSE);
+	SetModified(TRUE);
 
 }
 
