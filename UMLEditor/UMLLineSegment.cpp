@@ -2208,16 +2208,16 @@ CString CUMLLineSegment::GetArrowHeadHTML() const
 		if (!invert)
 		{
 			if (marker.right > marker.left)
-				img = _T("images/larrow.gif");
+				img = GetImageResourceAsDataUri(IDB_LARROW);
 			else
-				img = _T("images/rarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_RARROW);
 		}
 		else
 		{
 			if (marker.right < marker.left)
-				img = _T("images/larrow.gif");
+				img = GetImageResourceAsDataUri(IDB_LARROW);
 			else
-				img = _T("images/rarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_RARROW);
 		}
 	}
 	else
@@ -2227,16 +2227,16 @@ CString CUMLLineSegment::GetArrowHeadHTML() const
 		if (!invert)
 		{
 			if (marker.bottom > marker.top)
-				img = _T("images/uarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_UARROW);
 			else
-				img = _T("images/darrow.gif");
+				img = GetImageResourceAsDataUri(IDB_DARROW);
 		}
 		else
 		{
 			if (marker.bottom < marker.top)
-				img = _T("images/uarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_UARROW);
 			else
-				img = _T("images/darrow.gif");
+				img = GetImageResourceAsDataUri(IDB_DARROW);
 		}
 	}
 
@@ -2284,16 +2284,16 @@ CString CUMLLineSegment::GetFilledArrowHeadHTML() const
 		if (!invert)
 		{
 			if (marker.right < marker.left)
-				img = _T("images/rfarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_RFARROW);
 			else
-				img = _T("images/lfarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_LFARROW);
 		}
 		else
 		{
 			if (marker.right > marker.left)
-				img = _T("images/rfarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_RFARROW);
 			else
-				img = _T("images/lfarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_LFARROW);
 		}
 	}
 	else
@@ -2303,16 +2303,16 @@ CString CUMLLineSegment::GetFilledArrowHeadHTML() const
 		if (!invert)
 		{
 			if (marker.bottom < marker.top)
-				img = _T("images/dfarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_DFARROW);
 			else
-				img = _T("images/ufarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_UFARROW);
 		}
 		else
 		{
 			if (marker.bottom > marker.top)
-				img = _T("images/dfarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_DFARROW);
 			else
-				img = _T("images/ufarrow.gif");
+				img = GetImageResourceAsDataUri(IDB_UFARROW);
 		}
 	}
 
@@ -2351,13 +2351,13 @@ CString CUMLLineSegment::GetFilledDiamondHTML() const
 	{
 		width = size.cx;
 		height = size.cy;
-		img = _T("images/lrdiamond.gif");
+		img = GetImageResourceAsDataUri(IDB_LRDIAMOND);
 	}
 	else
 	{
 		width = size.cy;
 		height = size.cx;
-		img = _T("images/uddiamond.gif");
+		img = GetImageResourceAsDataUri(IDB_UDDIAMOND);
 	}
 
 	CPoint pos = GetStyleMarkerRect(LINK_END, size);
@@ -2384,18 +2384,14 @@ CString CUMLLineSegment::GetCircleCrossHTML() const
 
    ============================================================*/
 {
-
-	CString img(_T("images/partof.gif"));
-
 	CSize marker(16, 16);
 	CPoint pos = GetStyleMarkerRect(LINK_END, marker);
 
 	CString arrow;
 	arrow.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;background-image:url(\"%s\");background-repeat:no-repeat;'>&nbsp;</div>"),
-		pos.x, pos.y, marker.cx, marker.cy, img);
+		pos.x, pos.y, marker.cx, marker.cy, GetImageResourceAsDataUri(IDB_PARTOF));
 
 	return arrow;
-
 }
 
 CPoint CUMLLineSegment::GetStyleMarkerRect(int node, const CSize& size) const

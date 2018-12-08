@@ -1613,6 +1613,7 @@ void CUMLEntityContainer::ExportHTML(CStringArray& stra) const
 		stra.Add(title);
 		stra.Add(_T("<meta name=\"generator\" content=\"Tulip UML Editor\">"));
 		stra.Add(_T("<meta http-equiv=\"content-type\" content=\"text/html; charset=iso-8859-1\">"));
+		stra.Add(_T("<style type=\"text/css\">div { line-height:14px; }</style>"));
 		stra.Add(_T("</head>"));
 		stra.Add(_T("<body>"));
 	}
@@ -1648,8 +1649,8 @@ void CUMLEntityContainer::ExportHTML(CStringArray& stra) const
 	// every other line onwards. If they cross, we add a 
 	// div with a jog-picture.
 
-	CString horzTemplate(_T("<div style='position:absolute;left:%i;top:%i;width:16;height:8;background-image:url(\"images/lrjog.gif\");background-repeat:no-repeat;);'>&nbsp;&nbsp;&nbsp;&nbsp;</div>"));
-	CString vertTemplate(_T("<div style='position:absolute;left:%i;top:%i;width:8;height:16;background-image:url(\"images/udjog.gif\");background-repeat:no-repeat;);'>&nbsp;</div>"));
+	CString horzTemplate(_T("<div style='position:absolute;left:%i;top:%i;width:16;height:8;background-image:url(\"%s\");background-repeat:no-repeat;);'>&nbsp;&nbsp;&nbsp;&nbsp;</div>"));
+	CString vertTemplate(_T("<div style='position:absolute;left:%i;top:%i;width:8;height:16;background-image:url(\"%s\");background-repeat:no-repeat;);'>&nbsp;</div>"));
 	CString result;
 	max = GetSize();
 	for (INT_PTR i = 0; i < max; i++)
@@ -1671,7 +1672,7 @@ void CUMLEntityContainer::ExportHTML(CStringArray& stra) const
 							max(line->GetTop(), line->GetBottom()) > obj->GetTop())
 						{
 							CRect rect(round(line->GetLeft() - 7), round(obj->GetTop() - 7), round(line->GetLeft() + 7), round(obj->GetTop() + 4));
-							result.Format(vertTemplate, rect.left, rect.top);
+							result.Format(vertTemplate, rect.left, rect.top, GetImageResourceAsDataUri(IDB_UDJOG));
 							stra.Add(result);
 						}
 					}
@@ -1684,7 +1685,7 @@ void CUMLEntityContainer::ExportHTML(CStringArray& stra) const
 							max(obj->GetTop(), obj->GetBottom()) > line->GetTop())
 						{
 							CRect rect(round(obj->GetLeft() - 7), round(line->GetTop() - 7), round(obj->GetLeft() + 4), round(line->GetTop() + 7));
-							result.Format(horzTemplate, rect.left, rect.top);
+							result.Format(horzTemplate, rect.left, rect.top, GetImageResourceAsDataUri(IDB_LRJOG));
 							stra.Add(result);
 						}
 					}

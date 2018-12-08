@@ -440,7 +440,7 @@ CString CUMLEntityPackage::ExportHTML() const
 
 	CString color = ColorrefToString(GetBkColor());
 
-	result.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;'>&nbsp;</div><div style='position:absolute;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;text-align:center;font-family:%s;font-size:%i;overflow:hidden;'><b>%s</b></div>"),
+	result.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;'>&nbsp;</div><div style='position:absolute;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;text-align:center;font-family:%s;font-size:%i;overflow:hidden;z-index:-1'><b>%s</b></div>"),
 		rect.left + cut, rect.top, cut * 10, cut * 2, color, rect.left, rect.top + cut * 2, rect.Width(), rect.Height() - cut * 2, color, GetFont(), font_size, GetTitle());
 
 	return result;

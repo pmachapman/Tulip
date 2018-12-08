@@ -1506,20 +1506,6 @@ void CUMLEditor::ExportHTML(const CString& filename)
 					if (file.GetErrorMessage().GetLength())
 						AfxMessageBox(file.GetErrorMessage());
 				}
-				else
-				{
-					CString imagedir(dlg.GetPathName());
-					int find = imagedir.ReverseFind(_TCHAR('\\'));
-					if (find != -1)
-						imagedir = imagedir.Left(find);
-					imagedir += _T("\\images");
-					CString source(GetApplicationDirectory() + _T("images"));
-					CDiskObject cdo;
-					if (!cdo.CopyDirectory(source, imagedir))
-						AfxMessageBox(cdo.GetErrorMessage());
-					else
-						AfxMessageBox(IDS_UML_EXPORT_FINISHED);
-				}
 			}
 			else
 			{

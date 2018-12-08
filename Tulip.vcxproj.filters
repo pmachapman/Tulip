@@ -55,6 +55,9 @@
     <Filter Include="Header Files\DialogEditor">
       <UniqueIdentifier>{e3da9ea2-9abc-481f-b203-b7d16fd56499}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\images">
+      <UniqueIdentifier>{bf9a1b66-e8de-4886-a796-582b23bfe08a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tulip.h">
@@ -724,6 +727,9 @@
     <None Include="UMLEditor\res\attach.cur">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="res\gif1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Tulip.rc">
@@ -793,6 +799,51 @@
     </Image>
     <Image Include="res\NetworkDoc.ico">
       <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\images\darrow.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\dfarrow.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\interface.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\larrow.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\lfarrow.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\lrdiamond.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\lrjog.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\note.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\partof.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\rarrow.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\rfarrow.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\uarrow.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\uddiamond.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\udjog.gif">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="res\images\ufarrow.gif">
+      <Filter>Resource Files\images</Filter>
     </Image>
   </ItemGroup>
 </Project>

@@ -87,6 +87,42 @@ IDB_WRITESMALL          PNG                     "res\\writesmall.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// GIF
+//
+
+IDB_DARROW              GIF                     "res\\images\\darrow.gif"
+
+IDB_DFARROW             GIF                     "res\\images\\dfarrow.gif"
+
+IDB_INTERFACE           GIF                     "res\\images\\interface.gif"
+
+IDB_LARROW              GIF                     "res\\images\\larrow.gif"
+
+IDB_LFARROW             GIF                     "res\\images\\lfarrow.gif"
+
+IDB_LRDIAMOND           GIF                     "res\\images\\lrdiamond.gif"
+
+IDB_LRJOG               GIF                     "res\\images\\lrjog.gif"
+
+IDB_NOTE                GIF                     "res\\images\\note.gif"
+
+IDB_PARTOF              GIF                     "res\\images\\partof.gif"
+
+IDB_RARROW              GIF                     "res\\images\\rarrow.gif"
+
+IDB_RFARROW             GIF                     "res\\images\\rfarrow.gif"
+
+IDB_UARROW              GIF                     "res\\images\\uarrow.gif"
+
+IDB_UDDIAMOND           GIF                     "res\\images\\uddiamond.gif"
+
+IDB_UDJOG               GIF                     "res\\images\\udjog.gif"
+
+IDB_UFARROW             GIF                     "res\\images\\ufarrow.gif"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Toolbar
 //
 

@@ -12,6 +12,7 @@
    ========================================================================*/
 #include "stdafx.h"
 #include "StringHelpers.h"
+#include "atlenc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -105,3 +106,25 @@ CString GetApplicationDirectory()
 
 }
 
+CString GetImageResourceAsDataUri(int id)
+{
+	// Gets the specified resource ID as a Data URI
+	HMODULE hModule = GetModuleHandle(NULL); // get the handle to the current module (the executable file)
+	HRSRC hResource = FindResource(AfxGetResourceHandle(), MAKEINTRESOURCE(id), _T("GIF"));
+	HGLOBAL hMemory = LoadResource(hModule, hResource);
+	DWORD dwSize = SizeofResource(hModule, hResource);
+	LPVOID lpAddress = LockResource(hMemory);
+
+	byte *bytes = new byte[dwSize];
+	memcpy(bytes, lpAddress, dwSize);
+
+	ASSERT(0 != bytes);
+
+	CStringA base64;
+	int base64Length = Base64EncodeGetRequiredLength(dwSize, ATL_BASE64_FLAG_NOCRLF);
+
+	VERIFY(Base64Encode(bytes, dwSize, base64.GetBufferSetLength(base64Length), &base64Length, ATL_BASE64_FLAG_NOCRLF));
+
+	base64.ReleaseBufferSetLength(base64Length);
+	return CString("data:image/gif;base64," + base64);
+}

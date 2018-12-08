@@ -412,6 +412,7 @@
     <ClCompile Include="UMLEditor\UMLUndoItem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\gif1.bin" />
     <None Include="res\ribbon.mfcribbon-ms" />
     <None Include="res\Tulip.rc2" />
     <None Include="UMLEditor\res\attach.cur" />
@@ -434,6 +435,21 @@
     <Image Include="res\filelarge.png" />
     <Image Include="res\filesmall.png" />
     <Image Include="res\FlowchartDoc.ico" />
+    <Image Include="res\images\darrow.gif" />
+    <Image Include="res\images\dfarrow.gif" />
+    <Image Include="res\images\interface.gif" />
+    <Image Include="res\images\larrow.gif" />
+    <Image Include="res\images\lfarrow.gif" />
+    <Image Include="res\images\lrdiamond.gif" />
+    <Image Include="res\images\lrjog.gif" />
+    <Image Include="res\images\note.gif" />
+    <Image Include="res\images\partof.gif" />
+    <Image Include="res\images\rarrow.gif" />
+    <Image Include="res\images\rfarrow.gif" />
+    <Image Include="res\images\uarrow.gif" />
+    <Image Include="res\images\uddiamond.gif" />
+    <Image Include="res\images\udjog.gif" />
+    <Image Include="res\images\ufarrow.gif" />
     <Image Include="res\main.png" />
     <Image Include="res\NetworkDoc.ico" />
     <Image Include="res\Toolbar.bmp" />

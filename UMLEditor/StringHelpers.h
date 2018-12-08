@@ -28,5 +28,6 @@ void	UnmakeSaveString(CString& str);
 CString	ColorrefToString(COLORREF col);
 void	AddString(const CString& str, CStringArray& stra);
 CString	GetApplicationDirectory();
+CString	GetImageResourceAsDataUri(int id);
 
 #endif // _STRINGHELPERS_H_

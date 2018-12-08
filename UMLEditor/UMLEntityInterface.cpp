@@ -352,8 +352,8 @@ CString CUMLEntityInterface::Export(UINT format) const
 			textRect.right += diff / 2;
 		}
 
-		result.Format(_T("<div style='position:absolute;left:%i;top:%i;width:32;height:32;background-color:#%s;background-image:url(\"images/interface.gif\");background-repeat:no-repeat;'>&nbsp;</div>\n<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:%i;font-weight:bold;text-align:center;'>%s</div>"),
-			rect.left, rect.top, color, textRect.left, textRect.top, textRect.Width(), textRect.Height(), GetFont(), font_size, GetTitle());
+		result.Format(_T("<div style='position:absolute;left:%i;top:%i;width:32;height:32;background-color:#%s;background-image:url(\"%s\");background-repeat:no-repeat;'>&nbsp;</div>\n<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:%i;font-weight:bold;text-align:center;'>%s</div>"),
+			rect.left, rect.top, color, GetImageResourceAsDataUri(IDB_INTERFACE), textRect.left, textRect.top, textRect.Width(), textRect.Height(), GetFont(), font_size, GetTitle());
 	}
 
 	return result;
