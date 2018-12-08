@@ -36,8 +36,17 @@ public:
 	void			AdjustLinkedObjects(CUMLEntity* in, CUMLEntity* filter = NULL);
 	CUMLEntity*		GetObjectAt(INT_PTR index) const;
 
+	// Links
+	BOOL			CreateLink(CUMLEntity* from, CUMLEntity* to);
+	CUMLEntity*		GetPrimaryLink();
+	CUMLEntity*		GetSecondaryLink();
+	BOOL			IsLinked();
+	BOOL			CanLink();
+
 	// Selection
 	INT_PTR			GetSelectCount() const;
+	CUMLEntity*		GetPrimarySelected();
+	CUMLEntity	*	GetSecondarySelected();
 
 	// Segment iterators
 	CUMLLineSegment*	GetNextSegment(CUMLLineSegment* from) const;
@@ -54,6 +63,7 @@ public:
 	void		ReduceLine(CUMLLineSegment* line);
 	void		SetDefaultLineStyle(CUMLLineSegment* line);
 	BOOL		LineSelected(CUMLLineSegment* line) const;
+	void		DeleteLine(CUMLLineSegment* from);
 
 	// Links
 	BOOL		IsLinkSelected() const;
@@ -96,8 +106,9 @@ public:
 
 private:
 	// Private helpers
-	void		DeleteLine(CUMLLineSegment* from);
+	BOOL		FindClosestLink(CUMLEntity* obj1, CUMLEntity* obj2, int& fromtype, int& totype);
 	CPoint		GetLinkPosition(CUMLEntity* obj, CUMLLineSegment* line) const;
+	double		Dist(CPoint point1, CPoint point2);
 
 	CString			m_package; // Current package
 	int				m_displayOptions; // Current display options

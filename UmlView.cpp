@@ -327,7 +327,22 @@ void CUmlView::OnUpdateButtonLabel(CCmdUI* pCmdUI)
 
 void CUmlView::OnButtonLink()
 {
-	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LINK)
+	if (m_editor.GetObjectCount() == 2)
+	{
+		if (m_editor.IsLinked())
+		{
+			m_editor.OnUnlink();
+		}
+		else
+		{
+			m_editor.OnLink();
+		}
+	}
+	else if (m_editor.IsLinkSelected())
+	{
+		m_editor.DeleteAllSelected();
+	}
+	else if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LINK)
 	{
 		m_editor.StartDrawingObject(NULL);
 		m_drawObject = DRAW_OBJECT_NONE;

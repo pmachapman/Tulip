@@ -56,9 +56,13 @@ public:
 	virtual BOOL	FromString(const CString& str);
 
 	// Implementation
+	virtual int		AllowLink();
 	virtual CPoint	GetLinkPosition(int type) const;
 	virtual int		GetLinkCode(CPoint point) const;
 	virtual CRect	GetLinkMarkerRect(int type) const;
+
+	void			SetMoved(BOOL moved);
+	BOOL			GetMoved();
 
 	virtual void	SetRect(double left, double top, double right, double bottom);
 	virtual void	Copy(CDiagramEntity* obj);
@@ -97,7 +101,7 @@ private:
 	CSize			m_defaultSize;
 	int				m_displayOptions;
 	CString			m_stereotype;
-
+	BOOL			m_moved;
 	CString			m_oldid;
 
 };
