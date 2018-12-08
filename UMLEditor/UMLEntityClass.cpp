@@ -968,54 +968,46 @@ CString CUMLEntityClass::ExportH() const
 	// Create attribute list
 	CString attributeList = GetAttributeList(EXPORT_H);
 
-	// Load template into result
-	CTextFile file(_T(""), _T("\n"));
-	CString templatename = GetApplicationDirectory();
-
 	// Create base class string
 	CStringArray baseClassArray;
 	CStringArray baseClassAccessArray;
 	GetBaseClassArray(baseClassArray, baseClassAccessArray);
 
-	templatename += GetHeaderTemplateFilename();
-	if (file.ReadTextFile(templatename, result))
+	// Load template into result
+	result = GetHeaderTemplate();
+
+	// Add the prepared info
+	result.Replace(_T("[%filename%]"), fileName);
+	result.Replace(_T("[%classname%]"), className);
+	result.Replace(_T("[%currentdate%]"), currentDate);
+	result.Replace(_T("[%operationlist%]"), operationList);
+	result.Replace(_T("[%attributelist%]"), attributeList);
+	result.Replace(_T("[%definename%]"), definename);
+
+	if (baseClassArray.GetSize())
 	{
-
-		// Add the prepared info
-		result.Replace(_T("[%filename%]"), fileName);
-		result.Replace(_T("[%classname%]"), className);
-		result.Replace(_T("[%currentdate%]"), currentDate);
-		result.Replace(_T("[%operationlist%]"), operationList);
-		result.Replace(_T("[%attributelist%]"), attributeList);
-		result.Replace(_T("[%definename%]"), definename);
-
-		if (baseClassArray.GetSize())
+		CString baseClass;
+		INT_PTR size = baseClassArray.GetSize();
+		for (INT_PTR t = 0; t < size; t++)
 		{
-			CString baseClass;
-			INT_PTR size = baseClassArray.GetSize();
-			for (INT_PTR t = 0; t < size; t++)
-			{
-				if (t == 0)
-					baseClass += _T(" : ");
-				else
-					baseClass += _T(", ");
+			if (t == 0)
+				baseClass += _T(" : ");
+			else
+				baseClass += _T(", ");
 
-				baseClass += baseClassAccessArray[t] + _T(" ") + baseClassArray[t];
-			}
-
-			result.Replace(_T("[%baseclass%]"), baseClass);
+			baseClass += baseClassAccessArray[t] + _T(" ") + baseClassArray[t];
 		}
-		else
-			result.Replace(_T("[%baseclass%]"), _T(""));
 
-		result.Replace(_T("[%includelist%]"), includeList);
-
+		result.Replace(_T("[%baseclass%]"), baseClass);
 	}
 	else
-		GetUMLContainer()->SetErrorMessage(file.GetErrorMessage());
+	{
+		result.Replace(_T("[%baseclass%]"), _T(""));
+	}
+
+	result.Replace(_T("[%includelist%]"), includeList);
 
 	return result;
-
 }
 
 CString CUMLEntityClass::GetOperationList(int format) const
@@ -1230,7 +1222,6 @@ CString CUMLEntityClass::ExportCPP() const
 
    ============================================================*/
 {
-	CString result;
 	CStringArray functionaccess;
 	functionaccess.Add(_T("[%privatefunctions%]"));
 	functionaccess.Add(_T("[%protectedfunctions%]"));
@@ -1245,146 +1236,193 @@ CString CUMLEntityClass::ExportCPP() const
 	currentDate = time.Format(_T("%x"));
 	CString dependencyList = GetDependencyList();
 
-	CTextFile file(_T(""), _T("\n"));;
-	CString templatename = GetApplicationDirectory();
+	// Load template into result
+	CTextFile file(_T(""), _T("\n"));
+	CString templatename = GetApplicationDirectory() + _T("cpp_template.txt");
+	CString result;
+	if (!file.ReadTextFile(templatename, result))
+	{
+		result =
+			_T("/* ==========================================================================\r\n")
+			_T("	File :			[%filename%].cpp\r\n")
+			_T("\r\n")
+			_T("	Class :			[%classname%]\r\n")
+			_T("\r\n")
+			_T("	Date :			[%currentdate%]\r\n")
+			_T("\r\n")
+			_T("	Purpose :		\r\n")
+			_T("\r\n")
+			_T("	Description :	\r\n")
+			_T("\r\n")
+			_T("	Usage :			\r\n")
+			_T("\r\n")
+			_T("   ========================================================================*/\r\n")
+			_T("\r\n")
+			_T("#include \"stdafx.h\"\r\n")
+			_T("#include \"[%filename%].h\"\r\n")
+			_T("[%includes%]\r\n")
+			_T("\r\n")
+			_T("////////////////////////////////////////////////////////////////////\r\n")
+			_T("// Public functions\r\n")
+			_T("//\r\n")
+			_T("[%publicfunctions%]\r\n")
+			_T("\r\n")
+			_T("////////////////////////////////////////////////////////////////////\r\n")
+			_T("// Protected functions\r\n")
+			_T("//\r\n")
+			_T("[%protectedfunctions%]\r\n")
+			_T("\r\n")
+			_T("////////////////////////////////////////////////////////////////////\r\n")
+			_T("// Private functions\r\n")
+			_T("//\r\n")
+			_T("[%privatefunctions%]\r\n")
+			_T("\r\n");
+	}
 
-	CString functiontemplatename(templatename);
-	templatename += _T("cpp_template.txt");
-	functiontemplatename += _T("cpp_function_template.txt");
+	// Load function template into function
+	CString functiontemplatename = GetApplicationDirectory() + _T("cpp_function_template.txt");
 	CString function;
+	if (!file.ReadTextFile(functiontemplatename, function))
+	{
+		function =
+			_T("[%signature%]\r\n")
+			_T("/* ============================================================\r\n")
+			_T("	Function :		[%classname%]::[%functionname%]\r\n")
+			_T("	Description :	[%description%]\r\n")
+			_T("	Access :		[%access%]\r\n")
+			_T("					\r\n")
+			_T("	Return :		[%returnvalue%]\r\n")
+			_T("	Parameters :	[%parameters%]\r\n")
+			_T("	Usage :			[%usage%]\r\n")
+			_T("\r\n")
+			_T("   ============================================================*/\r\n")
+			_T("{[%body%]\r\n")
+			_T("}\r\n")
+			_T("\r\n");
+	}
+
 	CString functions;
 	CString initializationList = GetAttributeInitializationList();
 
-	if (file.ReadTextFile(templatename, result))
+	result.Replace(_T("[%filename%]"), fileName);
+	result.Replace(_T("[%classname%]"), className);
+	result.Replace(_T("[%currentdate%]"), currentDate);
+	result.Replace(_T("[%includes%]"), dependencyList);
+
+	function.Replace(_T("[%filename%]"), fileName);
+	function.Replace(_T("[%classname%]"), className);
+	function.Replace(_T("[%currentdate%]"), currentDate);
+
+	// Create function bodies
+	for (int access = ACCESS_TYPE_PRIVATE; access <= ACCESS_TYPE_PUBLIC; access++)
 	{
-		if (file.ReadTextFile(functiontemplatename, function))
+		INT_PTR max = GetOperations();
+		for (INT_PTR t = 0; t < max; t++)
 		{
-
-			result.Replace(_T("[%filename%]"), fileName);
-			result.Replace(_T("[%classname%]"), className);
-			result.Replace(_T("[%currentdate%]"), currentDate);
-			result.Replace(_T("[%includes%]"), dependencyList);
-
-			function.Replace(_T("[%filename%]"), fileName);
-			function.Replace(_T("[%classname%]"), className);
-			function.Replace(_T("[%currentdate%]"), currentDate);
-
-			// Create function bodies
-			for (int access = ACCESS_TYPE_PRIVATE; access <= ACCESS_TYPE_PUBLIC; access++)
+			CString functiontemplate(function);
+			COperation* op = GetOperation(t);
+			if (op->access == access)
 			{
-				INT_PTR max = GetOperations();
-				for (INT_PTR t = 0; t < max; t++)
+				if (!(op->maintype & ENTITY_TYPE_ABSTRACT))
 				{
-					CString functiontemplate(function);
-					COperation* op = GetOperation(t);
-					if (op->access == access)
+					////////////////////////////////////////////////
+					// Function signature
+					//
+					CString signature;
+					if (op->name != className && op->name != CString(_T("~")) + className)
 					{
-						if (!(op->maintype & ENTITY_TYPE_ABSTRACT))
-						{
-							////////////////////////////////////////////////
-							// Function signature
-							//
-							CString signature;
-							if (op->name != className && op->name != CString(_T("~")) + className)
-							{
-								if (op->type.GetLength())
-									signature = op->type + _T(" ");
-								else
-									signature = _T("void ");
-							}
-
-							signature += className + _T("::") + op->name + _T("( ");
-							signature += op->parameters.GetString(STRING_FORMAT_CPP);
-							signature += _T(" )");
-							if (op->properties.GetPropertyValue(_T("query")) == _T("true"))
-								signature += _T(" const");
-
-							////////////////////////////////////////////////
-							// Function parameters for comments
-							//
-							CString parameters = op->parameters.GetString(STRING_FORMAT_CPP);
-							parameters.Replace(_T(", "), _T("\t-\t\r\n\t\t\t\t\t"));
-							if (parameters.IsEmpty())
-								parameters = _T("none\r\n");
-
-							////////////////////////////////////////////////
-							// Function body
-							//
-							CString comment;
-							CString usage;
-							CString body;
-							if (op->getter)
-							{
-								comment = _T("Accessor. Getter for \"") + op->getsetvariable + _T("\".");
-								body = _T("\r\n\r\n\treturn ") + op->getsetvariable + _T(";\r\n");
-								usage = _T("Call to get the value of \"") + op->getsetvariable + _T("\".");
-							}
-
-							if (op->setter && op->parameters.GetSize() == 1)
-							{
-								comment = _T("Accessor. Setter for \"") + op->getsetvariable + _T("\".");
-								body = _T("\r\n\r\n\t") + op->getsetvariable + _T(" = ") + op->parameters.GetAt(0)->name + _T(";\r\n");
-								usage = _T("Call to set the value of \"") + op->getsetvariable + _T("\".");
-							}
-
-							if (body.IsEmpty() && op->type.GetLength() && op->type != _T("void"))
-								body = _T("\r\n\r\n\t") + op->type + _T("\tresult;\r\n\t// TODO: Implement\r\n\treturn result;\r\n");
-
-							if (body.IsEmpty())
-								body = _T("\r\n\r\n\t// TODO: Implement\r\n");
-
-							if (op->name == className)
-							{
-								signature += initializationList;
-								comment = _T("Constructor.");
-							}
-
-							if (op->name == CString(_T("~")) + className)
-								comment = _T("Destructor.");
-
-							////////////////////////////////////////////////
-							// Function return
-							//
-							CString returnvalue = op->type;
-							if (returnvalue.IsEmpty())
-								returnvalue = _T("void");
-
-							////////////////////////////////////////////////
-							// Function access
-							//
-							CString access;
-							if (op->access == ACCESS_TYPE_PRIVATE)
-								access = _T("Private");
-							if (op->access == ACCESS_TYPE_PROTECTED)
-								access = _T("Protected");
-							if (op->access == ACCESS_TYPE_PUBLIC)
-								access = _T("Public");
-
-							functiontemplate.Replace(_T("[%signature%]"), signature);
-							functiontemplate.Replace(_T("[%functionname%]"), op->name);
-							functiontemplate.Replace(_T("[%returnvalue%]"), returnvalue);
-							functiontemplate.Replace(_T("[%parameters%]"), parameters);
-							functiontemplate.Replace(_T("[%body%]"), body);
-							functiontemplate.Replace(_T("[%description%]"), comment);
-							functiontemplate.Replace(_T("[%access%]"), access);
-							functiontemplate.Replace(_T("[%usage%]"), usage);
-
-							functions += functiontemplate;
-						}
+						if (op->type.GetLength())
+							signature = op->type + _T(" ");
+						else
+							signature = _T("void ");
 					}
+
+					signature += className + _T("::") + op->name + _T("( ");
+					signature += op->parameters.GetString(STRING_FORMAT_CPP);
+					signature += _T(" )");
+					if (op->properties.GetPropertyValue(_T("query")) == _T("true"))
+						signature += _T(" const");
+
+					////////////////////////////////////////////////
+					// Function parameters for comments
+					//
+					CString parameters = op->parameters.GetString(STRING_FORMAT_CPP);
+					parameters.Replace(_T(", "), _T("\t-\t\r\n\t\t\t\t\t"));
+					if (parameters.IsEmpty())
+						parameters = _T("none\r\n");
+
+					////////////////////////////////////////////////
+					// Function body
+					//
+					CString comment;
+					CString usage;
+					CString body;
+					if (op->getter)
+					{
+						comment = _T("Accessor. Getter for \"") + op->getsetvariable + _T("\".");
+						body = _T("\r\n\r\n\treturn ") + op->getsetvariable + _T(";\r\n");
+						usage = _T("Call to get the value of \"") + op->getsetvariable + _T("\".");
+					}
+
+					if (op->setter && op->parameters.GetSize() == 1)
+					{
+						comment = _T("Accessor. Setter for \"") + op->getsetvariable + _T("\".");
+						body = _T("\r\n\r\n\t") + op->getsetvariable + _T(" = ") + op->parameters.GetAt(0)->name + _T(";\r\n");
+						usage = _T("Call to set the value of \"") + op->getsetvariable + _T("\".");
+					}
+
+					if (body.IsEmpty() && op->type.GetLength() && op->type != _T("void"))
+						body = _T("\r\n\r\n\t") + op->type + _T("\tresult;\r\n\t// TODO: Implement\r\n\treturn result;\r\n");
+
+					if (body.IsEmpty())
+						body = _T("\r\n\r\n\t// TODO: Implement\r\n");
+
+					if (op->name == className)
+					{
+						signature += initializationList;
+						comment = _T("Constructor.");
+					}
+
+					if (op->name == CString(_T("~")) + className)
+						comment = _T("Destructor.");
+
+					////////////////////////////////////////////////
+					// Function return
+					//
+					CString returnvalue = op->type;
+					if (returnvalue.IsEmpty())
+						returnvalue = _T("void");
+
+					////////////////////////////////////////////////
+					// Function access
+					//
+					CString access;
+					if (op->access == ACCESS_TYPE_PRIVATE)
+						access = _T("Private");
+					if (op->access == ACCESS_TYPE_PROTECTED)
+						access = _T("Protected");
+					if (op->access == ACCESS_TYPE_PUBLIC)
+						access = _T("Public");
+
+					functiontemplate.Replace(_T("[%signature%]"), signature);
+					functiontemplate.Replace(_T("[%functionname%]"), op->name);
+					functiontemplate.Replace(_T("[%returnvalue%]"), returnvalue);
+					functiontemplate.Replace(_T("[%parameters%]"), parameters);
+					functiontemplate.Replace(_T("[%body%]"), body);
+					functiontemplate.Replace(_T("[%description%]"), comment);
+					functiontemplate.Replace(_T("[%access%]"), access);
+					functiontemplate.Replace(_T("[%usage%]"), usage);
+
+					functions += functiontemplate;
 				}
-
-				result.Replace(functionaccess[access], functions);
-				functions = _T("");
-
 			}
 		}
+
+		result.Replace(functionaccess[access], functions);
+		functions = _T("");
 	}
-	else
-		GetUMLContainer()->SetErrorMessage(file.GetErrorMessage());
 
 	return result;
-
 }
 
 void CUMLEntityClass::SetBaseClassArray(const CStringArray& baseClass, const CStringArray& baseClassAccess)
@@ -2334,20 +2372,48 @@ CAttributeContainer* CUMLEntityClass::GetAttributesContainer()
 	return &m_attributes;
 }
 
-CString CUMLEntityClass::GetHeaderTemplateFilename() const
+CString CUMLEntityClass::GetHeaderTemplate() const
 /* ============================================================
-	Function :		CUMLEntityClass::GetHeaderTemplateFilename
+	Function :		CUMLEntityClass::GetHeaderTemplate
 	Description :	Returns the name of the prefered header
 					file template.
-	Access :		Private
+	Access :
 
-	Return :		CString	-	Name of header file template
+	Return :		CString	-	Contents of header file template
 	Parameters :	none
 
-	Usage :			Call to get the name of the prefered header
+	Usage :			Call to get the contents of the prefered header
 					file template during generation to c++.
 
    ============================================================*/
 {
-	return _T("h_template.txt");
+	// Load template into result
+	CTextFile file(_T(""), _T("\n"));
+	CString templatename = GetApplicationDirectory() + _T("h_template.txt");
+	CString result;
+	if (!file.ReadTextFile(templatename, result))
+	{
+		result =
+			_T("#ifndef [%definename%]\r\n")
+			_T("#define [%definename%]\r\n")
+			_T("\r\n")
+			_T("///////////////////////////////////////////////////////////\r\n")
+			_T("// File :		[%filename%]\r\n")
+			_T("// Created :	[%currentdate%]\r\n")
+			_T("//\r\n")
+			_T("\r\n")
+			_T("[%includelist%]\r\n")
+			_T("class [%classname%][%baseclass%]\r\n")
+			_T("{\r\n")
+			_T("public:\r\n")
+			_T("[%operationlist%]\r\n")
+			_T("\r\n")
+			_T("// Attributes\r\n")
+			_T("[%attributelist%]\r\n")
+			_T("\r\n")
+			_T("};\r\n")
+			_T("#endif //[%definename%]\r\n");
+	}
+
+	return result;
 }

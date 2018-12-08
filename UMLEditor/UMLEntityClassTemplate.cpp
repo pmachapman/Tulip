@@ -481,24 +481,50 @@ CString CUMLEntityClassTemplate::ExportH() const
 
 }
 
-CString CUMLEntityClassTemplate::GetHeaderTemplateFilename() const
+CString CUMLEntityClassTemplate::GetHeaderTemplate() const
 /* ============================================================
-	Function :		CUMLEntityClassTemplate::GetHeaderTemplateFilename
+	Function :		CUMLEntityClassTemplate::GetHeaderTemplate
 	Description :	Returns the name of the prefered header
 					file template.
 	Access :
 
-	Return :		CString	-	Name of header file template
+	Return :		CString	-	Contents of header file template
 	Parameters :	none
 
-	Usage :			Call to get the name of the prefered header
+	Usage :			Call to get the contents of the prefered header
 					file template during generation to c++.
 
    ============================================================*/
 {
+	// Load template into result
+	CTextFile file(_T(""), _T("\n"));
+	CString templatename = GetApplicationDirectory() + _T("h_template_template.txt");
+	CString result;
+	if (!file.ReadTextFile(templatename, result))
+	{
+		result =
+			_T("#ifndef [%definename%]\r\n")
+			_T("#define [%definename%]\r\n")
+			_T("\r\n")
+			_T("///////////////////////////////////////////////////////////\r\n")
+			_T("// File :		[%filename%]\r\n")
+			_T("// Created :	[%currentdate%]\r\n")
+			_T("//\r\n")
+			_T("\r\n")
+			_T("[%includelist%]\r\n")
+			_T("template< [%parametertype%] > class [%classname%][%baseclass%]\r\n")
+			_T("{\r\n")
+			_T("public:\r\n")
+			_T("[%operationlist%]\r\n")
+			_T("\r\n")
+			_T("// Attributes\r\n")
+			_T("[%attributelist%]\r\n")
+			_T("\r\n")
+			_T("};\r\n")
+			_T("#endif //[%definename%]\r\n");
+	}
 
-	return _T("h_template_template.txt");
-
+	return result;
 }
 
 CString CUMLEntityClassTemplate::GetOperationList(int format) const

@@ -27,7 +27,7 @@ public:
 	CString GetParameterType() const;
 
 protected:
-	virtual CString GetHeaderTemplateFilename() const;
+	virtual CString GetHeaderTemplate() const;
 	virtual CString GetOperationList(int format) const;
 
 private:

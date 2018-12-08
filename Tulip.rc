@@ -1187,6 +1187,12 @@ BEGIN
     IDS_UML_MUST_SELECT_AN_ATTRIBUTE "You must select an attribute"
 END
 
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_UML_EXPORT_FINISHED "The export is finished"
+    IDS_UML_TEMPLATE        "Template"
+END
+
 STRINGTABLE
 BEGIN
     ID_FLIP_LINK            "Change the link direction\nFlip Link"

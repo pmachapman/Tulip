@@ -71,7 +71,7 @@ protected:
 	COperationContainer*	GetOperationsContainer();
 	CAttributeContainer*	GetAttributesContainer();
 
-	virtual CString GetHeaderTemplateFilename() const;
+	virtual CString GetHeaderTemplate() const;
 
 private:
 

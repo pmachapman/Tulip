@@ -1333,7 +1333,7 @@ CString CUMLEditor::BrowseForFolder()
 	bi.pidlRoot = NULL;
 	bi.pszDisplayName = NULL;
 	bi.lpszTitle = title;
-	bi.ulFlags = 0;
+	bi.ulFlags = BIF_USENEWUI;
 	bi.lpfn = NULL;
 	bi.lpfn = BFFCallbackProc;
 	bi.lParam = (LPARAM)initialPath;

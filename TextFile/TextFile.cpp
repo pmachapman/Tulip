@@ -306,7 +306,7 @@ BOOL CTextFile::WriteTextFile(CString& filename, const CString& contents)
 		if (file.Open(filename, CFile::modeWrite | CFile::modeCreate, &feError))
 		{
 
-			file.Write(contents, contents.GetLength());
+			file.Write(CStringA(contents), contents.GetLength());
 			file.Close();
 
 		}
@@ -363,7 +363,7 @@ BOOL CTextFile::AppendFile(CString& filename, const CString& contents)
 		{
 
 			file.SeekToEnd();
-			file.Write(contents, contents.GetLength());
+			file.Write(CStringA(contents), contents.GetLength());
 			file.Close();
 
 		}
