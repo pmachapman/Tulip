@@ -26,9 +26,6 @@ CDialogEditor::CDialogEditor()
 
    ============================================================*/
 {
-	ShowGrid(FALSE);
-	SetSnapToGrid(TRUE);
-	SetRestraints(RESTRAINT_VIRTUAL);
 }
 
 CDialogEditor::~CDialogEditor()

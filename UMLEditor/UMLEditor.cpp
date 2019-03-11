@@ -74,9 +74,6 @@ CUMLEditor::CUMLEditor()
    ============================================================*/
 {
 	m_data = NULL;
-	SetSnapToGrid(TRUE);
-	ShowGrid(FALSE);
-	SetRestraints(RESTRAINT_VIRTUAL);
 
 	SetPopupMenu(new CUMLMenu);
 

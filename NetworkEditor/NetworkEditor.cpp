@@ -39,10 +39,6 @@ CNetworkEditor::CNetworkEditor()
 
    ============================================================*/
 {
-	ShowGrid(FALSE);
-	SetSnapToGrid(TRUE);
-
-	SetRestraints(RESTRAINT_VIRTUAL);
 	SetPopupMenu(new CNetworkEditorMenu);
 }
 

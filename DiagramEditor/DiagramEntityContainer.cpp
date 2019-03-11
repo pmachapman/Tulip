@@ -132,9 +132,9 @@ CDiagramEntityContainer::CDiagramEntityContainer(CDiagramClipboardHandler* clip)
 	m_gridStyle = PS_SOLID;
 	m_gridSize = CSize(8, 8);
 
-	m_snap = FALSE;
+	m_snap = TRUE;
 
-	m_restraint = RESTRAINT_NONE;
+	m_restraint = RESTRAINT_VIRTUAL;
 
 	m_leftMargin = 8;
 	m_topMargin = 8;

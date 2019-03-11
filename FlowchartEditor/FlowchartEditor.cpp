@@ -93,9 +93,6 @@ CFlowchartEditor::CFlowchartEditor()
 
    ============================================================*/
 {
-	ShowGrid(FALSE);
-	SetSnapToGrid(TRUE);
-	SetRestraints(RESTRAINT_VIRTUAL);
 	SetPopupMenu(new CFlowchartMenu);
 }
 
