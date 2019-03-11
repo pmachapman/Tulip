@@ -647,11 +647,11 @@ void CDialogEditorView::OnUpdateDown(CCmdUI* pCmdUI)
 }
 void CDialogEditorView::OnUpdateFront(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
 }
 void CDialogEditorView::OnUpdateBottom(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
 }
 
 ///////////////////////////////////////////////////////////

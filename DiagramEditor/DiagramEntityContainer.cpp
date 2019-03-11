@@ -1151,9 +1151,12 @@ void CDiagramEntityContainer::Front(CDiagramEntity* obj)
 {
 
 	int index = Find(obj);
-	m_objs.RemoveAt(index);
-	m_objs.Add(obj);
-	SetModified(TRUE);
+	if (index < m_objs.GetSize() - 1)
+	{
+		m_objs.RemoveAt(index);
+		m_objs.Add(obj);
+		SetModified(TRUE);
+	}
 
 }
 
@@ -1172,10 +1175,12 @@ void CDiagramEntityContainer::Bottom(CDiagramEntity* obj)
 {
 
 	int index = Find(obj);
-	m_objs.RemoveAt(index);
-	m_objs.InsertAt(0, obj);
-	SetModified(TRUE);
-
+	if (index > 0)
+	{
+		m_objs.RemoveAt(index);
+		m_objs.InsertAt(0, obj);
+		SetModified(TRUE);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////

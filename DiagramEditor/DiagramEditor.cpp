@@ -4746,22 +4746,21 @@ void CDiagramEditor::Down()
 void CDiagramEditor::Front()
 /* ============================================================
 	Function :		CDiagramEditor::Front
-	Description :	Moves the selected object to the front of
+	Description :	Moves the selected objects to the front of
 					all other objects.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to move the selected object to the
+	Usage :			Call to move the selected objects to the
 					top of the z-order.
 					This command should only be callable if
-					"GetSelectCount()" returns 1, that is, if one
-					and only one object is selected.
+					"GetSelectCount()" returns greater than 0
+					i.e. if one or more objects are selected.
 
    ============================================================*/
 {
-
 	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
@@ -4771,27 +4770,47 @@ void CDiagramEditor::Front()
 			RedrawWindow();
 		}
 	}
+	else if (GetSelectCount() > 1)
+	{
+		CDiagramEntity* obj = GetSelectedObject();
+		if (obj)
+		{
+			CObArray* objs = new CObArray();
+			objs->Copy(*m_objs->GetData());
+			for (int i = 0; i < objs->GetSize(); i++)
+			{
+				CDiagramEntity* obj = (CDiagramEntity*)objs->GetAt(i);
+				if (obj->IsSelected())
+				{
+					m_objs->Front(obj);
+				}
+			}
+
+			delete objs;
+		}
+
+		RedrawWindow();
+	}
 }
 
 void CDiagramEditor::Bottom()
 /* ============================================================
 	Function :		CDiagramEditor::Bottom
-	Description :	Moves the selected object to the bottom of
+	Description :	Moves the selected objects to the bottom of
 					all objects.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to move the selected object to the
+	Usage :			Call to move the selected objects to the
 					bottom of the z-order.
 					This command should only be callable if
-					"GetSelectCount()" returns 1, that is, if one
-					and only one object is selected.
+					"GetSelectCount()" returns greater than 0
+					i.e. if one or more objects are selected.
 
    ============================================================*/
 {
-
 	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
@@ -4800,6 +4819,27 @@ void CDiagramEditor::Bottom()
 			m_objs->Bottom(obj);
 			RedrawWindow();
 		}
+	}
+	else if (GetSelectCount() > 1)
+	{
+		CDiagramEntity* obj = GetSelectedObject();
+		if (obj)
+		{
+			CObArray* objs = new CObArray();
+			objs->Copy(*m_objs->GetData());
+			for (INT_PTR i = objs->GetSize() - 1; i >= 0; i--)
+			{
+				CDiagramEntity* obj = (CDiagramEntity*)objs->GetAt(i);
+				if (obj->IsSelected())
+				{
+					m_objs->Bottom(obj);
+				}
+			}
+
+			delete objs;
+		}
+
+		RedrawWindow();
 	}
 }
 

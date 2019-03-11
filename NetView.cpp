@@ -642,9 +642,9 @@ void CNetView::OnUpdateDown(CCmdUI* pCmdUI)
 }
 void CNetView::OnUpdateFront(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
 }
 void CNetView::OnUpdateBottom(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
 }

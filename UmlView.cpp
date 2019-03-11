@@ -860,9 +860,9 @@ void CUmlView::OnUpdateDown(CCmdUI* pCmdUI)
 }
 void CUmlView::OnUpdateFront(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
 }
 void CUmlView::OnUpdateBottom(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
 }
