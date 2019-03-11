@@ -57,14 +57,13 @@ public:
 	CDiagramEntityContainer* GetDiagramEntityContainer() const;
 
 	// Visuals
-	virtual void	Draw(CDC* dc, CRect rect) const;
-	virtual void	DrawPreview(CDC* dc, CRect rect);
+	virtual void	Draw(CDC* dc, CRect rect);
 	virtual void	Print(CDC* dc, CRect rect, double zoom);
 
 protected:
 	virtual void EraseBackground(CDC* dc, CRect rect) const;
 	virtual void DrawBackground(CDC* dc, CRect rect, double zoom) const;
-	virtual void DrawGrid(CDC* dc, CRect rect, double zoom) const;
+	virtual void DrawGrid(CBitmap* bmp, CRect rect, double zoom) const;
 	virtual void DrawMargins(CDC* dc, CRect rect, double zoom) const;
 	virtual void DrawObjects(CDC* dc, double zoom) const;
 	virtual void DrawSelectionMarkers(CDC* dc) const;

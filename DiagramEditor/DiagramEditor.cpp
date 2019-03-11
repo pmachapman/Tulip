@@ -429,44 +429,10 @@ void CDiagramEditor::OnPaint()
 	// Getting coordinate data
 	CRect rect;
 	GetClientRect(&rect);
-
-	SCROLLINFO sih;
-	sih.cbSize = sizeof(SCROLLINFO);
-	sih.fMask = SIF_POS;
-	SCROLLINFO siv;
-	siv.cbSize = sizeof(SCROLLINFO);
-	siv.fMask = SIF_POS;
-	if (!GetScrollInfo(SB_HORZ, &sih))
-		sih.nPos = 0;
-	if (!GetScrollInfo(SB_VERT, &siv))
-		siv.nPos = 0;
-
-	CRect totalRect;
-	int virtwidth = round(static_cast<double>(GetVirtualSize().cx) * GetZoom()) + 1;
-	int virtheight = round(static_cast<double>(GetVirtualSize().cy) * GetZoom()) + 1;
-	totalRect.SetRect(0, 0, virtwidth, virtheight);
-
-	// Creating memory CDC
-	CDC dc;
-	dc.CreateCompatibleDC(&outputdc);
-	CBitmap bmp;
-	bmp.CreateCompatibleBitmap(&outputdc, rect.right, rect.bottom);
-	CBitmap* oldbmp = dc.SelectObject(&bmp);
-
-	// Painting
-	EraseBackground(&dc, rect);
-
-	dc.SetWindowOrg(sih.nPos, siv.nPos);
-
-	Draw(&dc, totalRect);
-
-	// Blit the memory CDC to screen
-	outputdc.BitBlt(0, 0, rect.right, rect.bottom, &dc, sih.nPos, siv.nPos, SRCCOPY);
-	dc.SelectObject(oldbmp);
-
+	Draw(&outputdc, rect);
 }
 
-void CDiagramEditor::Draw(CDC* dc, CRect rect) const
+void CDiagramEditor::Draw(CDC* dc, CRect rect)
 /* ============================================================
 	Function :		CDiagramEditor::Draw
 	Description :	Calls a series of (virtual) functions to
@@ -485,45 +451,7 @@ void CDiagramEditor::Draw(CDC* dc, CRect rect) const
 
    ============================================================*/
 {
-
-	double zoom = GetZoom();
-
-	DrawBackground(dc, rect, zoom);
-
-	if (IsGridVisible())
-		DrawGrid(dc, rect, zoom);
-
-	if (IsMarginVisible())
-		DrawMargins(dc, rect, zoom);
-
-	DrawObjects(dc, zoom);
-
-	if (m_bgResize && m_bgResizeSelected)
-		DrawSelectionMarkers(dc);
-
-	if (GetPanning())
-		DrawPanning(dc);
-
-}
-
-void CDiagramEditor::DrawPreview(CDC* dc, CRect rect)
-/* ============================================================
-	Function :		CDiagramEditor::DrawPreview
-	Description :	Calls a series of (virtual) functions to
-					draw to "dc". "rect" is the total rectangle
-					to draw to.
-	Access :		Public
-
-	Return :		void
-	Parameters :	CDC* dc		-	The "CDC" to draw to.
-					CRect rect	-	The complete rectangle
-									(including non-visible areas)
-
-	Usage :			Is used to draw the iconic thumbnail or preview.
-
-   ============================================================*/
-{
-	// Getting coordinate data
+	// Getting co-ordinate data
 	SCROLLINFO sih;
 	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
@@ -535,9 +463,12 @@ void CDiagramEditor::DrawPreview(CDC* dc, CRect rect)
 	if (!GetScrollInfo(SB_VERT, &siv))
 		siv.nPos = 0;
 
+	// Get the zoom
+	double zoom = GetZoom();
+
 	CRect totalRect;
-	int virtwidth = round(static_cast<double>(GetVirtualSize().cx) * GetZoom()) + 1;
-	int virtheight = round(static_cast<double>(GetVirtualSize().cy) * GetZoom()) + 1;
+	int virtwidth = round(static_cast<double>(GetVirtualSize().cx) * zoom) + 1;
+	int virtheight = round(static_cast<double>(GetVirtualSize().cy) * zoom) + 1;
 	totalRect.SetRect(0, 0, virtwidth, virtheight);
 
 	// Creating memory CDC
@@ -550,13 +481,33 @@ void CDiagramEditor::DrawPreview(CDC* dc, CRect rect)
 	// Painting
 	EraseBackground(&memdc, rect);
 
+	// Set origin based on co-ordinate data
 	memdc.SetWindowOrg(sih.nPos, siv.nPos);
 
-	Draw(&memdc, totalRect);
+	DrawBackground(&memdc, totalRect, zoom);
+
+	if (IsGridVisible())
+		DrawGrid(&bmp, totalRect, zoom);
+
+	if (IsMarginVisible())
+		DrawMargins(&memdc, totalRect, zoom);
+
+	DrawObjects(&memdc, zoom);
+
+	if (m_bgResize && m_bgResizeSelected)
+		DrawSelectionMarkers(&memdc);
+
+	if (GetPanning())
+		DrawPanning(&memdc);
 
 	// Blit the memory CDC to screen
 	dc->BitBlt(0, 0, rect.right, rect.bottom, &memdc, sih.nPos, siv.nPos, SRCCOPY);
 	memdc.SelectObject(oldbmp);
+
+	// Clean up
+	oldbmp->DeleteObject();
+	bmp.DeleteObject();
+	memdc.DeleteDC();
 }
 
 void CDiagramEditor::Print(CDC* dc, CRect rect, double zoom)
@@ -662,7 +613,7 @@ void CDiagramEditor::DrawBackground(CDC* dc, CRect rect, double /*zoom*/) const
 
 }
 
-void CDiagramEditor::DrawGrid(CDC* dc, CRect /*rect*/, double zoom) const
+void CDiagramEditor::DrawGrid(CBitmap* bmp, CRect rect, double zoom) const
 /* ============================================================
 	Function :		CDiagramEditor::DrawGrid
 	Description :	Draws the grid
@@ -682,17 +633,40 @@ void CDiagramEditor::DrawGrid(CDC* dc, CRect /*rect*/, double zoom) const
 
    ============================================================*/
 {
+	// Get the grid color
+	COLORREF color = GetGridColor();
+	
+	// Get the bitmap bits for manual modification
+	BITMAP bitmap;
+	bmp->GetBitmap(&bitmap);
+	COLORREF* dib = new COLORREF[bitmap.bmWidthBytes * bitmap.bmHeight];
+	bmp->GetBitmapBits(bitmap.bmWidthBytes * bitmap.bmHeight, dib);
 
-	COLORREF gridcol = GetGridColor();
+	// Get the values for drawing the grid dots
+	int width = round(static_cast<double>(min(rect.right, bitmap.bmWidth)) / zoom) - 1;
+	int height = round(static_cast<double>(min(rect.bottom, bitmap.bmHeight)) / zoom) - 1;
+	int cx = GetGridSize().cx;
+	int cy = GetGridSize().cy;
+	int stepx = width / cx;
+	int stepy = height / cy;
 
-	dc->SelectStockObject(BLACK_PEN);
-
-	int stepx = GetVirtualSize().cx / GetGridSize().cx;
-	int stepy = GetVirtualSize().cy / GetGridSize().cy;
-
+	// Draw the grid in the bitmap data
 	for (int x = 0; x <= stepx; x++)
+	{
 		for (int y = 0; y <= stepy; y++)
-			dc->SetPixel(round((double)(GetGridSize().cx * x) * zoom), round((double)(GetGridSize().cy * y) * zoom), gridcol);
+		{
+			int ix = round(static_cast<double>(cx * x) * zoom);
+			int iy = round(static_cast<double>(cy * y) * zoom);
+			int index = ix + iy * bitmap.bmWidth;
+			dib[index] = color;
+		}
+	}
+
+	// Set the updated bitmap data
+	bmp->SetBitmapBits(bitmap.bmWidthBytes * bitmap.bmHeight, dib);
+
+	// Clean up
+	delete dib;
 }
 
 void CDiagramEditor::DrawMargins(CDC* dc, CRect rect, double zoom) const

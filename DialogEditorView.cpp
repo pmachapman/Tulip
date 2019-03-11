@@ -169,7 +169,7 @@ void CDialogEditorView::OnDraw(CDC* pDC)
 
 void CDialogEditorView::OnDrawIconicThumbnailOrLivePreview(CDC& dc, CRect rect, CSize szRequiredThumbnailSize, BOOL bIsThumbnail, BOOL& bAlphaChannelSet)
 {
-	m_editor.DrawPreview(&dc, rect);
+	m_editor.Draw(&dc, rect);
 }
 
 /////////////////////////////////////////////////////////////////////////////
