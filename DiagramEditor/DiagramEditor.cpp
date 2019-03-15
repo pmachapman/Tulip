@@ -1042,7 +1042,6 @@ void CDiagramEditor::SetInternalBackgroundColor(COLORREF col)
 {
 	if (m_objs)
 	{
-		m_objs->Snapshot();
 		m_objs->SetColor(col);
 		if (m_hWnd)
 		{
@@ -1094,7 +1093,6 @@ void CDiagramEditor::ShowGrid(BOOL grid)
 	if (m_objs)
 	{
 		m_objs->ShowGrid(grid);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1149,7 +1147,6 @@ void CDiagramEditor::SetGridColor(COLORREF col)
 	if (m_objs)
 	{
 		m_objs->SetGridColor(col);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1203,7 +1200,6 @@ void CDiagramEditor::SetGridSize(CSize size)
 	if (m_objs && size != GetGridSize())
 	{
 		m_objs->SetGridSize(size);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1259,7 +1255,6 @@ void CDiagramEditor::SetGridPenStyle(int style)
 	if (m_objs)
 	{
 		m_objs->SetGridPenStyle(style);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1315,7 +1310,6 @@ void CDiagramEditor::SetSnapToGrid(BOOL snap)
 	if (m_objs)
 	{
 		m_objs->SetSnapToGrid(snap);
-		m_objs->SetModified(TRUE);
 	}
 }
 
@@ -1457,7 +1451,6 @@ void CDiagramEditor::SetMargins(int left, int top, int right, int bottom)
 	if (m_objs && (left != leftMargin || top != topMargin || right != rightMargin || bottom != bottomMargin))
 	{
 		m_objs->SetMargins(left, top, right, bottom);
-		m_objs->SetModified(TRUE);
 	}
 }
 
@@ -1506,7 +1499,6 @@ void CDiagramEditor::SetMarginColor(COLORREF marginColor)
 	if (m_objs)
 	{
 		m_objs->SetMarginColor(marginColor);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1554,7 +1546,6 @@ void CDiagramEditor::ShowMargin(BOOL show)
 	if (m_objs)
 	{
 		m_objs->ShowMargin(show);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1609,7 +1600,6 @@ void CDiagramEditor::SetRestraints(int restraint)
 	if (m_objs)
 	{
 		m_objs->SetRestraints(restraint);
-		m_objs->SetModified(TRUE);
 	}
 }
 
@@ -4707,6 +4697,7 @@ void CDiagramEditor::Up()
 		CDiagramEntity* obj = GetSelectedObject();
 		if (obj)
 		{
+			m_objs->Snapshot();
 			m_objs->Up(obj);
 			RedrawWindow();
 		}
@@ -4737,6 +4728,7 @@ void CDiagramEditor::Down()
 		CDiagramEntity* obj = GetSelectedObject();
 		if (obj)
 		{
+			m_objs->Snapshot();
 			m_objs->Down(obj);
 			RedrawWindow();
 		}
@@ -4766,6 +4758,7 @@ void CDiagramEditor::Front()
 		CDiagramEntity* obj = GetSelectedObject();
 		if (obj)
 		{
+			m_objs->Snapshot();
 			m_objs->Front(obj);
 			RedrawWindow();
 		}
@@ -4775,6 +4768,7 @@ void CDiagramEditor::Front()
 		CDiagramEntity* obj = GetSelectedObject();
 		if (obj)
 		{
+			m_objs->Snapshot();
 			CObArray* objs = new CObArray();
 			objs->Copy(*m_objs->GetData());
 			for (int i = 0; i < objs->GetSize(); i++)
@@ -4816,6 +4810,7 @@ void CDiagramEditor::Bottom()
 		CDiagramEntity* obj = GetSelectedObject();
 		if (obj)
 		{
+			m_objs->Snapshot();
 			m_objs->Bottom(obj);
 			RedrawWindow();
 		}
@@ -4825,6 +4820,7 @@ void CDiagramEditor::Bottom()
 		CDiagramEntity* obj = GetSelectedObject();
 		if (obj)
 		{
+			m_objs->Snapshot();
 			CObArray* objs = new CObArray();
 			objs->Copy(*m_objs->GetData());
 			for (INT_PTR i = objs->GetSize() - 1; i >= 0; i--)

@@ -398,6 +398,12 @@ void CUmlView::OnButtonDisplayProperties()
 	displayOptions = DISPLAY_ALL;
 	if (dlg.DoModal() == IDOK)
 	{
+		// Check if we need to snapshot for undo
+		if (m_editor.GetBackgroundColor() != dlg.m_color)
+		{
+			m_editor.GetDiagramEntityContainer()->Snapshot();
+		}
+
 		m_editor.ShowGrid(dlg.m_showgrid);
 		m_editor.ShowMargin(dlg.m_showmargin);
 		m_editor.SetSnapToGrid(dlg.m_grid);
@@ -752,6 +758,12 @@ void CUmlView::OnSettings()
 
 	if (dlg.DoModal() == IDOK)
 	{
+		// Check if we need to snapshot for undo
+		if (m_editor.GetBackgroundColor() != dlg.m_color)
+		{
+			m_editor.GetDiagramEntityContainer()->Snapshot();
+		}
+
 		m_editor.SetBackgroundColor(dlg.m_color);
 		m_editor.SetGridSize(CSize(dlg.m_gridWidth, dlg.m_gridHeight));
 		m_editor.SetVirtualSize(CSize(dlg.m_width, dlg.m_height));

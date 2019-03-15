@@ -1455,6 +1455,9 @@ void CDiagramEntityContainer::Undo()
 
 		}
 
+		// Set the background color
+		SetColor(undo->col);
+
 		// Set the saved virtual size as well
 		SetVirtualSize(undo->pt);
 
@@ -1508,6 +1511,8 @@ void CDiagramEntityContainer::Snapshot()
 
 	if (undo)
 	{
+		// Save the background color
+		undo->col = GetColor();
 
 		// Save current virtual size
 		undo->pt = GetVirtualSize();
