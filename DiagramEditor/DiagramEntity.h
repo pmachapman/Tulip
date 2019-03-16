@@ -61,6 +61,7 @@ public:
 	virtual void	SetRect(CRect rect);
 	virtual void	SetRect(double left, double top, double right, double bottom);
 	virtual void	MoveRect(double x, double y);
+	virtual void	MoveRect(CSize point);
 
 	double			GetLeft() const;
 	double			GetRight() const;

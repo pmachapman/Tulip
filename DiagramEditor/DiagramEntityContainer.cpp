@@ -1040,15 +1040,39 @@ void CDiagramEntityContainer::Duplicate(CDiagramEntity* obj)
 
    ============================================================*/
 {
-
 	int index = Find(obj);
 	if (index != -1)
 	{
+		// Clone the object
 		CDiagramEntity* newobj = obj->Clone();
-		newobj->SetRect(newobj->GetLeft() + 10, newobj->GetTop() + 10, newobj->GetRight() + 10, newobj->GetBottom() + 10);
+
+		// Move it by the grid size
+		CSize gridSize = GetGridSize();
+		newobj->SetRect(newobj->GetLeft() + gridSize.cx, newobj->GetTop() + gridSize.cy, newobj->GetRight() + gridSize.cx, newobj->GetBottom() + gridSize.cy);
+
+		// Ensure it is within the boundaries
+		if (static_cast<long>(newobj->GetRight()) > m_virtualSize.cx
+			|| static_cast<long>(newobj->GetBottom()) > m_virtualSize.cy)
+		{
+			double height = obj->GetBottom() - newobj->GetTop();
+			double width = obj->GetRight() - newobj->GetLeft();
+			newobj->SetTop(0);
+			newobj->SetLeft(0);
+			newobj->SetBottom(height);
+			newobj->SetRight(width);
+		}
+
+		// If it is still not within the boundaries, shrink it
+		if (static_cast<long>(newobj->GetRight()) > m_virtualSize.cx
+			|| static_cast<long>(newobj->GetBottom()) > m_virtualSize.cy)
+		{
+			newobj->SetRight(static_cast<double>(m_virtualSize.cx));
+			newobj->SetBottom(static_cast<double>(m_virtualSize.cy));
+		}
+
+		// Add the object
 		Add(newobj);
 	}
-
 }
 
 void CDiagramEntityContainer::Cut(CDiagramEntity* obj)

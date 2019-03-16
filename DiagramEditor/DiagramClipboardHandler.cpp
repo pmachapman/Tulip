@@ -87,13 +87,14 @@ void CDiagramClipboardHandler::Copy(CDiagramEntity* obj)
 
    ============================================================*/
 {
-
-	ClearPaste();
-	CDiagramEntity* newobj = obj->Clone();
-	newobj->Select(TRUE);
-	newobj->MoveRect(10, 10);
-	m_paste.Add(newobj);
-
+	if (obj)
+	{
+		ClearPaste();
+		CDiagramEntity* newobj = obj->Clone();
+		newobj->Select(TRUE);
+		newobj->MoveRect(obj->GetParent()->GetGridSize());
+		m_paste.Add(newobj);
+	}
 }
 
 void CDiagramClipboardHandler::CopyAllSelected(CDiagramEntityContainer* container)
@@ -111,24 +112,24 @@ void CDiagramClipboardHandler::CopyAllSelected(CDiagramEntityContainer* containe
 
    ============================================================*/
 {
-
-	ClearPaste();
-	CObArray* arr = container->GetData();
-
-	INT_PTR	max = arr->GetSize();
-	for (INT_PTR t = 0; t < max; t++)
+	if (container)
 	{
-		CDiagramEntity* obj = static_cast<CDiagramEntity*>(arr->GetAt(t));
-		if (obj->IsSelected())
+		ClearPaste();
+		CObArray* arr = container->GetData();
+
+		INT_PTR	max = arr->GetSize();
+		for (INT_PTR t = 0; t < max; t++)
 		{
-			CDiagramEntity* newobj = obj->Clone();
-			newobj->Select(TRUE);
-			newobj->MoveRect(10, 10);
-			newobj->SetGroup(obj->GetGroup());
-			m_paste.Add(newobj);
+			CDiagramEntity* obj = static_cast<CDiagramEntity*>(arr->GetAt(t));
+			if (obj->IsSelected())
+			{
+				CDiagramEntity* newobj = obj->Clone();
+				newobj->Select(TRUE);
+				newobj->SetGroup(obj->GetGroup());
+				m_paste.Add(newobj);
+			}
 		}
 	}
-
 }
 
 INT_PTR CDiagramClipboardHandler::ObjectsInPaste()
@@ -201,7 +202,7 @@ void CDiagramClipboardHandler::Paste(CDiagramEntityContainer* container)
 			INT_PTR size = oldgroup.GetSize();
 			BOOL found = FALSE;
 			for (INT_PTR i = 0; i < size; i++)
-				if (obj->GetGroup() == static_cast<int> (oldgroup[i]))
+				if (obj->GetGroup() == static_cast<int>(oldgroup[i]))
 					found = TRUE;
 
 			if (!found)
@@ -214,7 +215,34 @@ void CDiagramClipboardHandler::Paste(CDiagramEntityContainer* container)
 
 	for (INT_PTR t = 0; t < max; t++)
 	{
+		// Get the object
 		CDiagramEntity* obj = static_cast<CDiagramEntity*>(m_paste.GetAt(t));
+
+		// Increment the object's position
+		obj->MoveRect(container->GetGridSize());
+
+		// Ensure it is within the boundaries
+		CSize virtualSize = container->GetVirtualSize();
+		if (static_cast<long>(obj->GetRight()) > virtualSize.cx
+			|| static_cast<long>(obj->GetBottom()) > virtualSize.cy)
+		{
+			double height = obj->GetBottom() - obj->GetTop();
+			double width = obj->GetRight() - obj->GetLeft();
+			obj->SetTop(0);
+			obj->SetLeft(0);
+			obj->SetBottom(height);
+			obj->SetRight(width);
+		}
+
+		// IF it is still not within the boundaries, shrink it
+		if (static_cast<long>(obj->GetRight()) > virtualSize.cx
+			|| static_cast<long>(obj->GetBottom()) > virtualSize.cy)
+		{
+			obj->SetRight(static_cast<double>(virtualSize.cx));
+			obj->SetBottom(static_cast<double>(virtualSize.cy));
+		}
+
+		// Clone the object
 		CDiagramEntity* clone = obj->Clone();
 
 		int group = 0;

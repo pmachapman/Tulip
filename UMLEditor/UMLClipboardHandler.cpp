@@ -94,11 +94,7 @@ void CUMLClipboardHandler::Copy(CDiagramEntity* obj)
 
 	if (obj)
 	{
-		ClearPaste();
-		CDiagramEntity* newobj = obj->Clone();
-		newobj->Select(TRUE);
-		newobj->MoveRect(10, 10);
-		GetData()->Add(newobj);
+		CDiagramClipboardHandler::Copy(obj);
 		FixLinks();
 	}
 

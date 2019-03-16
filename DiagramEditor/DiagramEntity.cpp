@@ -560,9 +560,23 @@ void CDiagramEntity::MoveRect(double x, double y)
 
    ============================================================*/
 {
-
 	SetRect(GetLeft() + x, GetTop() + y, GetRight() + x, GetBottom() + y);
+}
 
+void CDiagramEntity::MoveRect(CSize point)
+/* ============================================================
+	Function :		CDiagramEntity::MoveRect
+	Description :	Moves the object rectangle.
+	Access :		Public
+
+	Return :		void
+	Parameters :	CSize x		-	Move cx and cy steps.
+
+	Usage :			Call to move the object on screen.
+
+   ============================================================*/
+{
+	SetRect(GetLeft() + point.cx, GetTop() + point.cy, GetRight() + point.cx, GetBottom() + point.cy);
 }
 
 void CDiagramEntity::Select(BOOL selected)
