@@ -51,6 +51,8 @@ BEGIN_MESSAGE_MAP(CFlowchartView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_SELECT_ALL, OnUpdateSelectAll)
 	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
+	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
 	ON_COMMAND(ID_EXPORT, OnExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT, OnUpdateExport)
 	ON_COMMAND(ID_EXPORT_EMF, OnExport)
@@ -439,6 +441,11 @@ void CFlowchartView::OnEditUndo()
 	m_editor.Undo();
 }
 
+void CFlowchartView::OnEditRedo()
+{
+	m_editor.Redo();
+}
+
 void CFlowchartView::OnProperty()
 {
 	if (m_editor.IsLinked())
@@ -515,6 +522,11 @@ void CFlowchartView::OnSelectAll()
 void CFlowchartView::OnUpdateEditUndo(CCmdUI* pCmdUI)
 {
 	m_editor.UpdateUndo(pCmdUI);
+}
+
+void CFlowchartView::OnUpdateEditRedo(CCmdUI* pCmdUI)
+{
+	m_editor.UpdateRedo(pCmdUI);
 }
 
 void CFlowchartView::OnUpdateEditCopy(CCmdUI* pCmdUI)

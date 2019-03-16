@@ -168,6 +168,7 @@ public:
 	virtual void		Copy();
 	virtual void		Paste();
 	virtual void		Undo();
+	virtual void		Redo();
 
 	// Group 
 	void		Group();
@@ -201,6 +202,7 @@ public:
 	void		UpdateCopy(CCmdUI* pCmdUI) const;
 	void		UpdatePaste(CCmdUI* pCmdUI) const;
 	void		UpdateUndo(CCmdUI* pCmdUI) const;
+	void		UpdateRedo(CCmdUI* pCmdUI) const;
 	void		UpdateGroup(CCmdUI* pCmdUI) const;
 	void		UpdateUngroup(CCmdUI* pCmdUI) const;
 

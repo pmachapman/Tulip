@@ -1125,6 +1125,8 @@ END
 STRINGTABLE
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+    IDS_UML_EXPORT_FINISHED "The export is finished"
+    IDS_UML_TEMPLATE        "Template"
 END
 
 STRINGTABLE
@@ -1185,12 +1187,6 @@ STRINGTABLE
 BEGIN
     IDS_UML_GETSET_DEFINED  "Getter and setter already defined for the selected attribute."
     IDS_UML_MUST_SELECT_AN_ATTRIBUTE "You must select an attribute"
-END
-
-STRINGTABLE DISCARDABLE
-BEGIN
-    IDS_UML_EXPORT_FINISHED "The export is finished"
-    IDS_UML_TEMPLATE        "Template"
 END
 
 STRINGTABLE

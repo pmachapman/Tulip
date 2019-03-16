@@ -51,10 +51,9 @@ CNetworkEntityContainer::~CNetworkEntityContainer()
 
    ============================================================*/
 {
-
 	ClearLinks();
 	ClearUndo();
-
+	ClearRedo();
 }
 
 void CNetworkEntityContainer::RemoveAt(int index)
@@ -106,19 +105,23 @@ void CNetworkEntityContainer::Undo()
 
    ============================================================*/
 {
-
-	CDiagramEntityContainer::Undo();
-
 	if (m_undoLinks.GetSize())
 	{
+		// Push the current state to the redo links stack
+		PushLinks(&m_redoLinks);
+
+		// Undo any non-link changes
+		CDiagramEntityContainer::Undo();
+
+		// Remove all links
+		ClearLinks();
+
 		CObArray* undo = static_cast<CObArray*>(m_undoLinks.GetAt(m_undoLinks.GetUpperBound()));
 		INT_PTR count = undo->GetSize();
 		for (INT_PTR t = 0; t < count; t++)
 		{
-
 			CNetworkLink* obj = static_cast<CNetworkLink*>(undo->GetAt(t));
 			AddLink(obj->Clone());
-
 		}
 
 		INT_PTR max = undo->GetSize();
@@ -128,9 +131,7 @@ void CNetworkEntityContainer::Undo()
 		delete undo;
 
 		m_undoLinks.RemoveAt(m_undoLinks.GetUpperBound());
-
 	}
-
 }
 
 void CNetworkEntityContainer::Snapshot()
@@ -146,38 +147,8 @@ void CNetworkEntityContainer::Snapshot()
 
    ============================================================*/
 {
-
 	CDiagramEntityContainer::Snapshot();
-	if (GetUndoStackSize() > 0 && m_undoLinks.GetSize() == GetUndoStackSize())
-	{
-		delete m_undoLinks.GetAt(0);
-		m_undoLinks.RemoveAt(0);
-	}
-
-	CObArray* undo = new CObArray;
-
-	while (!undo && m_undoLinks.GetSize())
-	{
-
-		delete m_undoLinks.GetAt(0);
-		m_undoLinks.RemoveAt(0);
-		undo = new CObArray;
-
-	}
-
-	if (undo)
-	{
-
-		// Save all objects
-		INT_PTR count = m_links.GetSize();
-		for (INT_PTR t = 0; t < count; t++)
-			undo->Add(GetLinkAt(t)->Clone());
-
-		// Add to undo stack
-		m_undoLinks.Add(undo);
-
-	}
-
+	PushLinks(&m_undoLinks);
 }
 
 void CNetworkEntityContainer::ClearUndo()
@@ -193,7 +164,6 @@ void CNetworkEntityContainer::ClearUndo()
 
    ============================================================*/
 {
-
 	CDiagramEntityContainer::ClearUndo();
 	INT_PTR count = m_undoLinks.GetSize() - 1;
 	for (INT_PTR t = count; t >= 0; t--)
@@ -211,7 +181,117 @@ void CNetworkEntityContainer::ClearUndo()
 	}
 
 	m_undoLinks.RemoveAll();
+}
 
+void CNetworkEntityContainer::Redo()
+/* ============================================================
+	Function :		CNetworkEntityContainer::Undo
+	Description :	Redo the latest operation
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Overridden to also redo link operations.
+
+   ============================================================*/
+{
+	if (m_redoLinks.GetSize())
+	{
+		// Push the current state to the undo links stack
+		PushLinks(&m_undoLinks);
+
+		// Redo any non-link changes
+		CDiagramEntityContainer::Redo();
+
+		// Remove all links
+		ClearLinks();
+
+		CObArray* redo = static_cast<CObArray*>(m_redoLinks.GetAt(m_redoLinks.GetUpperBound()));
+		INT_PTR count = redo->GetSize();
+		for (INT_PTR t = 0; t < count; t++)
+		{
+			CNetworkLink* obj = static_cast<CNetworkLink*>(redo->GetAt(t));
+			AddLink(obj->Clone());
+		}
+
+		INT_PTR max = redo->GetSize();
+		for (INT_PTR t = max - 1; t >= 0; t--)
+			delete redo->GetAt(t);
+		redo->RemoveAll();
+		delete redo;
+
+		m_redoLinks.RemoveAt(m_redoLinks.GetUpperBound());
+	}
+}
+
+void CNetworkEntityContainer::PushLinks(CObArray* stack)
+/* ============================================================
+	Function :		CNetworkEntityContainer::PushLinks
+	Description :	Creates a snapshot of the current link
+					state for the undo/redo functionality.
+
+	Return :		void
+	Parameters :	none
+
+   ============================================================*/
+{
+	if (GetUndoStackSize() > 0 && stack->GetSize() == GetUndoStackSize())
+	{
+		delete stack->GetAt(0);
+		stack->RemoveAt(0);
+	}
+
+	CObArray* item = new CObArray;
+
+	while (!item && stack->GetSize())
+	{
+		delete stack->GetAt(0);
+		stack->RemoveAt(0);
+		item = new CObArray;
+	}
+
+	if (item)
+	{
+		// Save all objects
+		INT_PTR count = m_links.GetSize();
+		for (INT_PTR t = 0; t < count; t++)
+			item->Add(GetLinkAt(t)->Clone());
+
+		// Add to the stack
+		stack->Add(item);
+	}
+}
+
+void CNetworkEntityContainer::ClearRedo()
+/* ============================================================
+	Function :		CNetworkEntityContainer::ClearRedo
+	Description :	Clears the redo-array
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Overridden to also clear the link redo
+					states.
+
+   ============================================================*/
+{
+	CDiagramEntityContainer::ClearRedo();
+	INT_PTR count = m_redoLinks.GetSize() - 1;
+	for (INT_PTR t = count; t >= 0; t--)
+	{
+		CObArray* redo = static_cast<CObArray*>(m_redoLinks.GetAt(t));
+
+		// Remove all objects in the stack entry
+		INT_PTR max = redo->GetSize();
+		for (INT_PTR i = 0; i < max; i++)
+			delete redo->GetAt(i);
+		redo->RemoveAll();
+
+		// Remove the stack entry itself.
+		delete redo;
+	}
+
+	m_redoLinks.RemoveAll();
 }
 
 /////////////////////////////////////////////////////////////////////////////

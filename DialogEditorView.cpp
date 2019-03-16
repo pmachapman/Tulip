@@ -46,6 +46,8 @@ BEGIN_MESSAGE_MAP(CDialogEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_SELECT_ALL, OnUpdateSelectAll)
 	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
+	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
 	ON_COMMAND(ID_PROPERTY, OnProperty)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
 	ON_COMMAND(ID_ZOOM, OnZoom)
@@ -316,12 +318,21 @@ void CDialogEditorView::OnUpdateEditPaste(CCmdUI* pCmdUI)
 void CDialogEditorView::OnEditUndo()
 {
 	m_editor.Undo();
-
 }
 
 void CDialogEditorView::OnUpdateEditUndo(CCmdUI* pCmdUI)
 {
 	m_editor.UpdateUndo(pCmdUI);
+}
+
+void CDialogEditorView::OnEditRedo()
+{
+	m_editor.Redo();
+}
+
+void CDialogEditorView::OnUpdateEditRedo(CCmdUI* pCmdUI)
+{
+	m_editor.UpdateRedo(pCmdUI);
 }
 
 void CDialogEditorView::OnSelectAll()

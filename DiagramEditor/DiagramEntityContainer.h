@@ -74,11 +74,16 @@ public:
 	// Undo handling
 	virtual void	Undo();
 	virtual void	Snapshot();
+	virtual void	Push(CObArray* stack);
 	BOOL			IsUndoPossible() const;
 	virtual void	ClearUndo();
 	void			SetUndoStackSize(int maxstacksize);
 	int				GetUndoStackSize() const;
-	void			PopUndo();
+
+	// Redo handling
+	virtual void	Redo();
+	BOOL			IsRedoPossible() const;
+	virtual void	ClearRedo();
 
 	// Group handling
 	virtual void	Group();
@@ -107,14 +112,16 @@ public:
 	CPoint					GetStartPoint();
 
 protected:
-	CObArray * GetPaste();
+	CObArray*				GetPaste();
 	CObArray*				GetUndo();
+	CObArray*				GetRedo();
 	int						Find(CDiagramEntity* obj);
 
 private:
 
 	// Data
 	CObArray		m_objs;
+	CObArray		m_redo;
 	CObArray		m_undo;
 	int				m_maxstacksize;
 	CSize			m_virtualSize;

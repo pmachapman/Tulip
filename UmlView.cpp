@@ -56,6 +56,8 @@ BEGIN_MESSAGE_MAP(CUmlView, CView)
 	ON_COMMAND(ID_BUTTON_DISPLAY_PROPERTIES, OnButtonDisplayProperties)
 	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
+	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
 	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
@@ -444,6 +446,11 @@ void CUmlView::OnEditUndo()
 	m_editor.Undo();
 }
 
+void CUmlView::OnEditRedo()
+{
+	m_editor.Redo();
+}
+
 void CUmlView::OnEditCopy()
 {
 	m_editor.Copy();
@@ -703,6 +710,11 @@ void CUmlView::OnSelectAll()
 void CUmlView::OnUpdateEditUndo(CCmdUI* pCmdUI)
 {
 	m_editor.UpdateUndo(pCmdUI);
+}
+
+void CUmlView::OnUpdateEditRedo(CCmdUI* pCmdUI)
+{
+	m_editor.UpdateRedo(pCmdUI);
 }
 
 void CUmlView::OnUpdateEditCopy(CCmdUI* pCmdUI)

@@ -65,6 +65,8 @@ protected:
 	afx_msg void OnButtonDisplayProperties();
 	afx_msg void OnEditUndo();
 	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI);
+	afx_msg void OnEditRedo();
+	afx_msg void OnUpdateEditRedo(CCmdUI* pCmdUI);
 	afx_msg void OnEditCopy();
 	afx_msg void OnUpdateEditCopy(CCmdUI* pCmdUI);
 	afx_msg void OnEditCut();

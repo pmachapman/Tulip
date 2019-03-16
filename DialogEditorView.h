@@ -69,6 +69,8 @@ protected:
 	afx_msg void OnUpdateSelectAll(CCmdUI* pCmdUI);
 	afx_msg void OnEditUndo();
 	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI);
+	afx_msg void OnEditRedo();
+	afx_msg void OnUpdateEditRedo(CCmdUI* pCmdUI);
 	afx_msg void OnSettings();
 	afx_msg void OnProperty();
 	afx_msg void OnUpdateProperty(CCmdUI* pCmdUI);

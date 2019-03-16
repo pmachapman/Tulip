@@ -2987,6 +2987,8 @@ void CDiagramEditor::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				Copy();
 			else if ((m_keyInterface & KEY_CTRL) && nChar == _TCHAR('Z') && GetAsyncKeyState(VK_CONTROL))
 				Undo();
+			else if ((m_keyInterface & KEY_CTRL) && nChar == _TCHAR('Y') && GetAsyncKeyState(VK_CONTROL))
+				Redo();
 			else if ((m_keyInterface & KEY_PGUPDOWN) && nChar == VK_NEXT && GetAsyncKeyState(VK_CONTROL))
 				Bottom();
 			else if ((m_keyInterface & KEY_PGUPDOWN) && nChar == VK_PRIOR && GetAsyncKeyState(VK_CONTROL))
@@ -5122,13 +5124,32 @@ void CDiagramEditor::Undo()
 
    ============================================================*/
 {
-
 	if (m_objs)
 	{
 		m_objs->Undo();
 		RedrawWindow();
 	}
+}
 
+void CDiagramEditor::Redo()
+/* ============================================================
+	Function :		CDiagramEditor::Redo
+	Description :	Redo the last operation.
+	Access :		Public
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Call to restore the objects to the last
+					snapshot.
+
+   ============================================================*/
+{
+	if (m_objs)
+	{
+		m_objs->Redo();
+		RedrawWindow();
+	}
 }
 
 void CDiagramEditor::Group()
@@ -5270,10 +5291,28 @@ void CDiagramEditor::UpdateUndo(CCmdUI* pCmdUI) const
 
    ============================================================*/
 {
-
 	if (m_objs)
 		pCmdUI->Enable(m_objs->IsUndoPossible());
+}
 
+void CDiagramEditor::UpdateRedo(CCmdUI* pCmdUI) const
+/* ============================================================
+	Function :		CDiagramEditor::UpdateRedo
+	Description :	Command enabling for an Redo command UI-
+					element.
+	Access :		Public
+
+	Return :		void
+	Parameters :	CCmdUI* pCmdUI	-	Command element to
+										update
+
+	Usage :			Can be called from a doc/view command update
+					function
+
+   ============================================================*/
+{
+	if (m_objs)
+		pCmdUI->Enable(m_objs->IsRedoPossible());
 }
 
 void CDiagramEditor::UpdateGroup(CCmdUI* pCmdUI) const

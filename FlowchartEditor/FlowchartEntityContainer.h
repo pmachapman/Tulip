@@ -43,11 +43,16 @@ public:
 	virtual void	Snapshot();
 	virtual void	ClearUndo();
 
+	virtual void	Redo();
+	void			PushLinks(CObArray* stack);
+	virtual void	ClearRedo();
+
 	CObArray*		GetLinkArray() { return &m_links; }
 
 private:
 	// Private data
 	CObArray		m_links;
+	CObArray		m_redoLinks;
 	CObArray		m_undoLinks;
 
 	// Private helpers

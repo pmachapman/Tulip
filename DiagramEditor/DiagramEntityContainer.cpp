@@ -87,6 +87,8 @@
 					22/1  2005	Added PopUndo function to pop the latest
 								undo item from the stack
 								Made IsUndoPossible const.
+   ========================================================================
+					16/3  2019	Added Redo support, removed PopUndo
    ========================================================================*/
 
 #include "stdafx.h"
@@ -179,6 +181,7 @@ void CDiagramEntityContainer::Clear()
 
 	RemoveAll();
 	ClearUndo();
+	ClearRedo();
 	SetModified(FALSE);
 
 }
@@ -1437,9 +1440,11 @@ void CDiagramEntityContainer::Undo()
 
    ============================================================*/
 {
-
 	if (m_undo.GetSize())
 	{
+		// Push the current state to the redo stack
+		Push(&m_redo);
+
 		// We remove all current data
 		RemoveAll();
 
@@ -1449,10 +1454,8 @@ void CDiagramEntityContainer::Undo()
 		INT_PTR count = (undo->arr).GetSize();
 		for (INT_PTR t = 0; t < count; t++)
 		{
-
 			CDiagramEntity* obj = static_cast<CDiagramEntity*>((undo->arr).GetAt(t));
 			Add(obj->Clone());
-
 		}
 
 		// Set the background color
@@ -1465,9 +1468,7 @@ void CDiagramEntityContainer::Undo()
 		delete undo;
 
 		m_undo.RemoveAt(m_undo.GetUpperBound());
-
 	}
-
 }
 
 void CDiagramEntityContainer::Snapshot()
@@ -1487,46 +1488,11 @@ void CDiagramEntityContainer::Snapshot()
 
    ============================================================*/
 {
+	// Clear the redo stack
+	ClearRedo();
 
-	if (m_maxstacksize > 0 && m_undo.GetSize() == m_maxstacksize)
-	{
-		delete m_undo.GetAt(0);
-		m_undo.RemoveAt(0);
-	}
-
-	CUndoItem* undo = new CUndoItem;
-
-	while (!undo && m_undo.GetSize())
-	{
-
-		// We seem - however unlikely -
-		// to be out of memory.
-		// Remove first element in
-		// undo-stack and try again
-		delete m_undo.GetAt(0);
-		m_undo.RemoveAt(0);
-		undo = new CUndoItem;
-
-	}
-
-	if (undo)
-	{
-		// Save the background color
-		undo->col = GetColor();
-
-		// Save current virtual size
-		undo->pt = GetVirtualSize();
-
-		// Save all objects
-		INT_PTR count = m_objs.GetSize();
-		for (INT_PTR t = 0; t < count; t++)
-			(undo->arr).Add(GetAt(t)->Clone());
-
-		// Add to undo stack
-		m_undo.Add(undo);
-
-	}
-
+	// Push the current state to the undo stack
+	Push(&m_undo);
 }
 
 void CDiagramEntityContainer::ClearUndo()
@@ -1612,27 +1578,146 @@ int CDiagramEntityContainer::GetUndoStackSize() const
 
 }
 
-void CDiagramEntityContainer::PopUndo()
+void CDiagramEntityContainer::Redo()
 /* ============================================================
-	Function :		CUMLEntityContainer::PopUndo
-	Description :	Pops the undo stack (removes the last stack
-					item)
+	Function :		CDiagramEntityContainer::Redo
+	Description :	Sets the container data to the last entry
+					in the redo stack.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call do undo the last Snapshot
+	Usage :			Call to redo the last operation
 
    ============================================================*/
 {
 
-	INT_PTR size = m_undo.GetSize();
-	if (size)
+	if (m_redo.GetSize())
 	{
-		delete m_undo.GetAt(size - 1);
-		m_undo.RemoveAt(size - 1);
+		// Push the current state to the undo stack
+		Push(&m_undo);
+
+		// We remove all current data
+		RemoveAll();
+
+		// We get the last entry from the redo-stack
+		// and clone it into the container data
+		CUndoItem* redo = static_cast<CUndoItem*>(m_redo.GetAt(m_redo.GetUpperBound()));
+		INT_PTR count = (redo->arr).GetSize();
+		for (INT_PTR t = 0; t < count; t++)
+		{
+			CDiagramEntity* obj = static_cast<CDiagramEntity*>((redo->arr).GetAt(t));
+			Add(obj->Clone());
+		}
+
+		// Set the background color
+		SetColor(redo->col);
+
+		// Set the saved virtual size as well
+		SetVirtualSize(redo->pt);
+
+		// We remove the entry from the redo-stack
+		delete redo;
+
+		m_redo.RemoveAt(m_redo.GetUpperBound());
 	}
+}
+
+void CDiagramEntityContainer::Push(CObArray* stack)
+/* ============================================================
+	Function :		CDiagramEntityContainer::PushRedo
+	Description :	Copies the current state of the data to
+					the specified stack.
+	Access :		Public
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Call to add the current state to the stack.
+					If the stack has a maximum size and
+					the stack will grow above the stack limit,
+					the first array will be removed.
+
+   ============================================================*/
+{
+	if (m_maxstacksize > 0 && stack->GetSize() == m_maxstacksize)
+	{
+		delete stack->GetAt(0);
+		stack->RemoveAt(0);
+	}
+
+	CUndoItem* item = new CUndoItem;
+
+	while (!item && stack->GetSize())
+	{
+		// We seem - however unlikely - to be out of memory.
+		// Remove first element in stack and try again
+		delete stack->GetAt(0);
+		stack->RemoveAt(0);
+		item = new CUndoItem;
+	}
+
+	if (item)
+	{
+		// Save the background color
+		item->col = GetColor();
+
+		// Save current virtual size
+		item->pt = GetVirtualSize();
+
+		// Save all objects
+		INT_PTR count = m_objs.GetSize();
+		for (INT_PTR t = 0; t < count; t++)
+			(item->arr).Add(GetAt(t)->Clone());
+
+		// Add to stack
+		stack->Add(item);
+	}
+}
+
+void CDiagramEntityContainer::ClearRedo()
+/* ============================================================
+	Function :		CDiagramEntityContainer::ClearRedo
+	Description :	Remove all redo arrays from the redo stack
+	Access :		Public
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Call to clear the redo-stack. All memory will
+					be deleted.
+
+   ============================================================*/
+{
+
+	INT_PTR count = m_redo.GetSize() - 1;
+	for (INT_PTR t = count; t >= 0; t--)
+	{
+		CUndoItem* redo = static_cast<CUndoItem*>(m_redo.GetAt(t));
+		// Remove the stack entry itself.
+		delete redo;
+	}
+
+	m_redo.RemoveAll();
+
+}
+
+BOOL CDiagramEntityContainer::IsRedoPossible() const
+/* ============================================================
+	Function :		CDiagramEntityContainer::IsRedoPossible
+	Description :	Check if it is possible to redo.
+	Access :		Public
+
+	Return :		BOOL	-	"TRUE" if redo is possible.
+	Parameters :	none
+
+	Usage :			Use this call for command enabling
+
+   ============================================================*/
+{
+
+	return m_redo.GetSize() > 0;
 
 }
 
@@ -1697,6 +1782,26 @@ CObArray* CDiagramEntityContainer::GetUndo()
 {
 
 	return &m_undo;
+
+}
+
+CObArray* CDiagramEntityContainer::GetRedo()
+/* ============================================================
+	Function :		CDiagramEntityContainer::GetRedo
+	Description :	Accessor for the internal redo array
+	Access :		Protected
+
+	Return :		CObArray*	-	A pointer to the redo
+									array
+	Parameters :	none
+
+	Usage :			Call to access the internal redo array. To
+					be used in derived classes.
+
+   ============================================================*/
+{
+
+	return &m_redo;
 
 }
 

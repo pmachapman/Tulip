@@ -41,6 +41,8 @@ BEGIN_MESSAGE_MAP(CNetView, CView)
 	ON_WM_ERASEBKGND()
 	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
+	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
 	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
@@ -315,6 +317,11 @@ void CNetView::OnEditUndo()
 	m_editor.Undo();
 }
 
+void CNetView::OnEditRedo()
+{
+	m_editor.Redo();
+}
+
 void CNetView::OnEditCopy()
 {
 	m_editor.Copy();
@@ -509,6 +516,11 @@ void CNetView::OnSelectAll()
 void CNetView::OnUpdateEditUndo(CCmdUI* pCmdUI)
 {
 	m_editor.UpdateUndo(pCmdUI);
+}
+
+void CNetView::OnUpdateEditRedo(CCmdUI* pCmdUI)
+{
+	m_editor.UpdateRedo(pCmdUI);
 }
 
 void CNetView::OnUpdateEditCopy(CCmdUI* pCmdUI)
