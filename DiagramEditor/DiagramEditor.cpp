@@ -937,7 +937,9 @@ void CDiagramEditor::SetVirtualSize(const CSize& size)
 	ASSERT(m_objs);
 	if (size != GetVirtualSize())
 	{
-		SetInternalVirtualSize(size);
+		// Ensure that the size is not too small
+		CSize containingSize = GetContainingSize();
+		SetInternalVirtualSize(CSize(max(size.cx, containingSize.cx), max(size.cy, containingSize.cy)));
 		m_objs->SetModified(TRUE);
 	}
 }
