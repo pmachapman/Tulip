@@ -121,6 +121,8 @@ protected:
 	afx_msg void OnUpdateUp(CCmdUI* pCmdUI);
 	afx_msg void OnImport();
 	afx_msg void OnUpdateImport(CCmdUI* pCmdUI);
+	afx_msg void OnOpenPackage();
+	afx_msg void OnUpdateOpenPackage(CCmdUI* pCmdUI);
 	afx_msg void OnEditDelete();
 	afx_msg void OnUpdateEditDelete(CCmdUI* pCmdUI);
 	afx_msg void OnButtonTemplate();

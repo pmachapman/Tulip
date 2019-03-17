@@ -809,13 +809,13 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904B0"
+        BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName", "Conglomo"
             VALUE "FileDescription", "Tulip"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "Tulip.exe"
-            VALUE "LegalCopyright", "Copyrigth 2018 Conglomo.  All rights reserved."
+            VALUE "LegalCopyright", "Copyright 2018-2019 Conglomo.  All rights reserved."
             VALUE "OriginalFilename", "Tulip.exe"
             VALUE "ProductName", "Tulip"
             VALUE "ProductVersion", "1.0.0.1"
@@ -900,14 +900,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Ribbon
-//
-
-IDR_RIBBON              RT_RIBBON_XML           "res\\ribbon.mfcribbon-ms"
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Cursor
 //
 
@@ -985,6 +977,14 @@ IDD_DIALOG_SETTINGS AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Ribbon
+//
+
+IDR_RIBBON              RT_RIBBON_XML           "res\\ribbon.mfcribbon-ms"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1279,6 +1279,7 @@ END
 STRINGTABLE
 BEGIN
     ID_DUPLICATE            "Duplicate the selected object\nDuplicate"
+    ID_UML_OPEN_PACKAGE     "Opens a package for editing\nOpen Package"
 END
 
 #endif    // English (United States) resources

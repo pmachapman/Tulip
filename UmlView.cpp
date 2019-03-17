@@ -115,6 +115,8 @@ BEGIN_MESSAGE_MAP(CUmlView, CView)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_GRID, OnUpdateShowGrid)
 	ON_COMMAND(ID_IMPORT, OnImport)
 	ON_UPDATE_COMMAND_UI(ID_IMPORT, OnUpdateImport)
+	ON_COMMAND(ID_UML_OPEN_PACKAGE, OnOpenPackage)
+	ON_UPDATE_COMMAND_UI(ID_UML_OPEN_PACKAGE, OnUpdateOpenPackage)
 	ON_COMMAND(ID_EDIT_DELETE, OnEditDelete)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, OnUpdateEditDelete)
 	ON_COMMAND(ID_BUTTON_TEMPLATE, OnButtonTemplate)
@@ -563,6 +565,17 @@ void CUmlView::OnImport()
 	m_editor.Import();
 }
 
+void CUmlView::OnOpenPackage()
+{
+	CUMLEntityPackage* package = dynamic_cast<CUMLEntityPackage*>(m_editor.GetSelectedObject());
+	if (package)
+	{
+		m_editor.UnselectAll();
+		m_editor.SetPackage(package->GetName());
+		m_editor.RedrawWindow();
+	}
+}
+
 // Displays the Export dialog and exports the editor contents to the desired format.
 void CUmlView::OnExport()
 {
@@ -803,6 +816,22 @@ void CUmlView::OnUpdateImport(CCmdUI* pCmdUI)
 	if (m_editor.GetSelectCount() == 1)
 	{
 		CUMLEntityClass* obj = dynamic_cast<CUMLEntityClass*>(m_editor.GetSelectedObject());
+		if (obj)
+		{
+			result = TRUE;
+		}
+	}
+
+	pCmdUI->Enable(result);
+}
+
+void CUmlView::OnUpdateOpenPackage(CCmdUI* pCmdUI)
+{
+	BOOL result = FALSE;
+
+	if (m_editor.GetSelectCount() == 1)
+	{
+		CUMLEntityPackage* obj = dynamic_cast<CUMLEntityPackage*>(m_editor.GetSelectedObject());
 		if (obj)
 		{
 			result = TRUE;
