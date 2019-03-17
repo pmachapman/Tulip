@@ -40,7 +40,8 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CButtonPropertyDlg)
-	afx_msg void OnButtonApply();
+	virtual void OnOK();
+	virtual void OnCancel();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

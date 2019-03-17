@@ -159,7 +159,6 @@
 #define IDC_DIALOG_EDIT_RIGHT           3006
 #define IDC_DIALOG_EDIT_BOTTOM          3007
 #define IDC_DIALOG_EDIT_TITLE           3008
-#define IDC_DIALOG_BUTTON_APPLY         3009
 #define IDC_DIALOG_EDIT_NAME            3010
 #define IDD_DIALOG_SETTINGS             3130
 #define IDD_DIALOG_BUTTON_PROPERTIES    3131
