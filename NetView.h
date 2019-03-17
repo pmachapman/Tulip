@@ -80,6 +80,8 @@ protected:
 	afx_msg void OnUpdateSelectAll(CCmdUI* pCmdUI);
 	afx_msg void OnProperty();
 	afx_msg void OnUpdateProperty(CCmdUI* pCmdUI);
+	afx_msg void OnDuplicate();
+	afx_msg void OnUpdateDuplicate(CCmdUI* pCmdUI);
 	afx_msg void OnSettings();
 	afx_msg void OnZoom();
 	afx_msg void OnZoom100();

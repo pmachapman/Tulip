@@ -78,6 +78,8 @@ BEGIN_MESSAGE_MAP(CFlowchartView, CView)
 	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_FLIP_LINK, OnUpdateFlipLink)
 	ON_COMMAND(ID_PROPERTY, OnProperty)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
+	ON_COMMAND(ID_DUPLICATE, OnDuplicate)
+	ON_UPDATE_COMMAND_UI(ID_DUPLICATE, OnUpdateDuplicate)
 	ON_COMMAND(ID_MARGINS, OnMargins)
 	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
 	ON_COMMAND(ID_RESTRAIN, OnRestraints)
@@ -446,6 +448,11 @@ void CFlowchartView::OnEditRedo()
 	m_editor.Redo();
 }
 
+void CFlowchartView::OnDuplicate()
+{
+	m_editor.Duplicate();
+}
+
 void CFlowchartView::OnProperty()
 {
 	if (m_editor.IsLinked())
@@ -542,6 +549,11 @@ void CFlowchartView::OnUpdateEditCut(CCmdUI* pCmdUI)
 void CFlowchartView::OnUpdateEditPaste(CCmdUI* pCmdUI)
 {
 	m_editor.UpdatePaste(pCmdUI);
+}
+
+void CFlowchartView::OnUpdateDuplicate(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
 }
 
 void CFlowchartView::OnUpdateProperty(CCmdUI* pCmdUI)

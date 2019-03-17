@@ -59,6 +59,8 @@ BEGIN_MESSAGE_MAP(CNetView, CView)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_LINK, OnUpdateLink)
 	ON_COMMAND(ID_PROPERTY, OnProperty)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
+	ON_COMMAND(ID_DUPLICATE, OnDuplicate)
+	ON_UPDATE_COMMAND_UI(ID_DUPLICATE, OnUpdateDuplicate)
 	ON_COMMAND(ID_MARGINS, OnMargins)
 	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
 	ON_COMMAND(ID_RESTRAIN, OnRestraints)
@@ -342,6 +344,11 @@ void CNetView::OnEditDelete()
 	m_editor.DeleteAllSelected();
 }
 
+void CNetView::OnDuplicate()
+{
+	m_editor.Duplicate();
+}
+
 void CNetView::OnProperty()
 {
 	if (m_editor.GetSelectCount() == 1)
@@ -574,6 +581,11 @@ void CNetView::OnUpdateLink(CCmdUI* pCmdUI)
 	{
 		pCmdUI->SetText(_T("Link"));
 	}
+}
+
+void CNetView::OnUpdateDuplicate(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
 }
 
 void CNetView::OnUpdateProperty(CCmdUI* pCmdUI)

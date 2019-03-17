@@ -112,6 +112,8 @@ protected:
 	afx_msg void OnUpdateFlipLink(CCmdUI* pCmdUI);
 	afx_msg void OnProperty();
 	afx_msg void OnUpdateProperty(CCmdUI* pCmdUI);
+	afx_msg void OnDuplicate();
+	afx_msg void OnUpdateDuplicate(CCmdUI* pCmdUI);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

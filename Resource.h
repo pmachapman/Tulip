@@ -240,6 +240,7 @@
 #define ID_EXPORT_EMF                   32819
 #define ID_EXPORT_HTML                  32820
 #define ID_EXPORT_CPP                   32821
+#define ID_DUPLICATE                    32823
 #define IDM_NETWORKEDITOR_LINK          33442
 #define IDM_NETWORKEDITOR_UNLINK        33445
 #define IDS_UML_CLASS                   33447
@@ -285,7 +286,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32822
+#define _APS_NEXT_COMMAND_VALUE         32824
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           311
 #endif

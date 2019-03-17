@@ -78,6 +78,8 @@ BEGIN_MESSAGE_MAP(CUmlView, CView)
 	ON_UPDATE_COMMAND_UI(ID_FLIP_LINK, OnUpdateFlipLink)
 	ON_COMMAND(ID_PROPERTY, OnProperty)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
+	ON_COMMAND(ID_DUPLICATE, OnDuplicate)
+	ON_UPDATE_COMMAND_UI(ID_DUPLICATE, OnUpdateDuplicate)
 	ON_COMMAND(ID_MARGINS, OnMargins)
 	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
 	ON_COMMAND(ID_RESTRAIN, OnRestraints)
@@ -475,6 +477,16 @@ void CUmlView::OnFlipLink()
 {
 	m_editor.FlipLink();
 	m_editor.RedrawWindow();
+}
+
+void CUmlView::OnDuplicate()
+{
+	m_editor.Duplicate();
+}
+
+void CUmlView::OnUpdateDuplicate(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
 }
 
 void CUmlView::OnProperty()

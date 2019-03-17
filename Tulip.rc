@@ -1276,6 +1276,11 @@ BEGIN
     ID_BOTTOM               "Send the object to the back\nSend to Back"
 END
 
+STRINGTABLE
+BEGIN
+    ID_DUPLICATE            "Duplicate the selected object\nDuplicate"
+END
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

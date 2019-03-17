@@ -50,6 +50,8 @@ BEGIN_MESSAGE_MAP(CDialogEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
 	ON_COMMAND(ID_PROPERTY, OnProperty)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
+	ON_COMMAND(ID_DUPLICATE, OnDuplicate)
+	ON_UPDATE_COMMAND_UI(ID_DUPLICATE, OnUpdateDuplicate)
 	ON_COMMAND(ID_ZOOM, OnZoom)
 	ON_COMMAND(ID_ZOOM_100, OnZoom100)
 	ON_COMMAND(ID_ZOOM_150, OnZoom150)
@@ -343,6 +345,16 @@ void CDialogEditorView::OnSelectAll()
 void CDialogEditorView::OnUpdateSelectAll(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
+}
+
+void CDialogEditorView::OnDuplicate()
+{
+	m_editor.Duplicate();
+}
+
+void CDialogEditorView::OnUpdateDuplicate(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
 }
 
 ///////////////////////////////////////////////////////////
