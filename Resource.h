@@ -16,9 +16,8 @@
 #define IDR_UMLTYPE                     130
 #define ID_WINDOW_MANAGER               131
 #define IDR_NETWORTYPE                  132
-#define IDR_NET_MENU_EDITOR_POPUP       133
+#define IDR_MENU_EDITOR_POPUP           133
 #define IDR_FLOWCHTYPE                  134
-#define IDR_FLOWCHART_MENU_EDITOR_POPUP 135
 #define IDD_NET_PROPERTY_DIALOG         136
 #define IDB_BITMAP1                     137
 #define IDB_NET_BITMAP_SYMBOL_ADSL      138
@@ -66,7 +65,6 @@
 #define IDD_UML_DIALOG_LINK_TITLE       432
 #define IDD_UML_DIALOG_PROPERTY_LINK    432
 #define IDD_UML_DIALOG_PROPERTY_LABEL   433
-#define IDR_UML_MENU_EDITOR_POPUP       433
 #define IDD_UML_DIALOG_PROPERTY_CLASS_ATTRIBUTE 434
 #define IDI_UML_ICON_UP                 435
 #define IDC_UML_CURSOR_DRAW             436

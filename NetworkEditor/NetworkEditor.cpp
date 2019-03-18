@@ -18,7 +18,6 @@
 #include "stdafx.h"
 #include "NetworkEditor.h"
 #include "NetworkEntityContainer.h"
-#include "NetworkEditorMenu.h"
 #include "../resource.h"
 
 #ifdef _DEBUG
@@ -39,7 +38,6 @@ CNetworkEditor::CNetworkEditor()
 
    ============================================================*/
 {
-	SetPopupMenu(new CNetworkEditorMenu);
 }
 
 CNetworkEditor::~CNetworkEditor()

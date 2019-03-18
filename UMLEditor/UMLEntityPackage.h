@@ -15,7 +15,7 @@ public:
 	virtual void Draw(CDC* dc, CRect rect);
 
 	virtual CPoint	GetLinkPosition(int type) const;
-	virtual void	ShowPopup(CPoint point, CWnd* parent);
+	virtual int		GetMenuResourceId() const;
 	virtual void	SetTitle(CString title);
 	virtual CString	Export(UINT format = 0) const;
 

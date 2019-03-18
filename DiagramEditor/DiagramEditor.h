@@ -245,11 +245,13 @@ protected:
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
+	afx_msg void OnEditUndo();
+	afx_msg void OnEditRedo();
 	afx_msg void OnEditCut();
 	afx_msg void OnEditCopy();
 	afx_msg void OnEditPaste();
-	afx_msg void OnEditGroup();
-	afx_msg void OnEditUngroup();
+	afx_msg void OnEditDelete();
+	afx_msg void OnEditSelectAll();
 
 	DECLARE_MESSAGE_MAP()
 

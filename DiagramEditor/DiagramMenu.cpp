@@ -34,6 +34,8 @@
 					members are accessible.
    ========================================================================
 					26/6 2004	Added group handling (Unruled Boy).
+   ========================================================================
+					18/3 2019	Removed group handling, added undo/redo, etc
    ========================================================================*/
 #include "stdafx.h"
 #include "DiagramMenu.h"
@@ -52,6 +54,7 @@ CDiagramMenu::CDiagramMenu()
 
    ============================================================*/
 {
+	selectedMenu = 0;
 }
 
 CDiagramMenu::~CDiagramMenu()
@@ -68,10 +71,8 @@ CDiagramMenu::~CDiagramMenu()
 
    ============================================================*/
 {
-
 	if (m_menu.m_hMenu != NULL)
 		m_menu.DestroyMenu();
-
 }
 
 CMenu* CDiagramMenu::GetPopupMenu(CDiagramEditor* editor)
@@ -91,45 +92,73 @@ CMenu* CDiagramMenu::GetPopupMenu(CDiagramEditor* editor)
 
    ============================================================*/
 {
+	// Set the default menu
+	int resourceId = IDR_MENU_EDITOR_POPUP;
 
-	if (m_menu.m_hMenu == NULL)
+	// See if an object is selected. If it is, get its menu
+	if (editor->GetSelectCount() == 1)
 	{
-		if (m_menu.CreatePopupMenu())
-		{
-
-			m_menu.AppendMenu(MF_STRING, ID_EDIT_CUT, _T("Cut"));
-			m_menu.AppendMenu(MF_STRING, ID_EDIT_COPY, _T("Copy"));
-			m_menu.AppendMenu(MF_STRING, ID_EDIT_PASTE, _T("Paste"));
-
-			m_menu.AppendMenu(MF_SEPARATOR);
-
-			m_menu.AppendMenu(MF_STRING, ID_EDIT_GROUP, _T("Group"));
-			m_menu.AppendMenu(MF_STRING, ID_EDIT_UNGROUP, _T("Ungroup"));
-		}
+		resourceId = editor->GetSelectedObject()->GetMenuResourceId();
 	}
 
+	// Free then old menu if it is changing
+	if (m_menu.m_hMenu != NULL && selectedMenu != resourceId)
+	{
+		m_menu.DestroyMenu();
+		m_menu.m_hMenu = NULL;
+	}
+
+	// Load the menu if it is changing (or first run)
+	if (selectedMenu != resourceId)
+	{
+		m_menu.LoadMenu(resourceId);
+		selectedMenu = resourceId;
+	}
+
+	UINT undo = MF_GRAYED;
+	UINT redo = MF_GRAYED;
 	UINT cut = MF_GRAYED;
 	UINT copy = MF_GRAYED;
 	UINT paste = MF_GRAYED;
-	UINT group = MF_GRAYED;
+	UINT deleteSelected = MF_GRAYED;
+	UINT selectall = MF_GRAYED;
 	if (editor->IsAnyObjectSelected())
 	{
 		cut = 0;
 		copy = 0;
+		deleteSelected = 0;
 	}
 
-	if (editor->GetSelectCount() > 1)
-		group = 0;
+	if (editor->GetObjectCount() > 0)
+	{
+		selectall = 0;
+	}
 
 	if (editor->GetDiagramEntityContainer() && editor->GetDiagramEntityContainer()->ObjectsInPaste())
+	{
 		paste = 0;
+	}
 
+	if (editor->GetDiagramEntityContainer() && editor->GetDiagramEntityContainer()->IsUndoPossible())
+	{
+		undo = 0;
+	}
+
+	if (editor->GetDiagramEntityContainer() && editor->GetDiagramEntityContainer()->IsRedoPossible())
+	{
+		redo = 0;
+	}
+
+	// TODO: Custom menu item support for GetSelectedItem
+	// Maybe load a custom menu from a resource?
+	// TODO: Remove other custom menu classes
+	m_menu.EnableMenuItem(ID_EDIT_UNDO, MF_BYCOMMAND | undo);
+	m_menu.EnableMenuItem(ID_EDIT_REDO, MF_BYCOMMAND | redo);
 	m_menu.EnableMenuItem(ID_EDIT_CUT, MF_BYCOMMAND | cut);
 	m_menu.EnableMenuItem(ID_EDIT_COPY, MF_BYCOMMAND | copy);
 	m_menu.EnableMenuItem(ID_EDIT_PASTE, MF_BYCOMMAND | paste);
-	m_menu.EnableMenuItem(ID_EDIT_GROUP, MF_BYCOMMAND | group);
-	m_menu.EnableMenuItem(ID_EDIT_UNGROUP, MF_BYCOMMAND | group);
+	m_menu.EnableMenuItem(ID_EDIT_DELETE, MF_BYCOMMAND | deleteSelected);
+	m_menu.EnableMenuItem(ID_EDIT_SELECT_ALL, MF_BYCOMMAND | selectall);
 
-	return &m_menu;
-
+	return m_menu.GetSubMenu(0);
 }

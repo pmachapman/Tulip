@@ -1624,26 +1624,20 @@ BOOL CUMLEntityClass::IsAbstract() const
 
 }
 
-void CUMLEntityClass::ShowPopup(CPoint point, CWnd* parent)
+int CUMLEntityClass::GetMenuResourceId() const
 /* ============================================================
 	Function :		CUMLEntityClass::ShowPopup
-	Description :	Shows the popup menu for the object.
+	Description :	Gets the resource id for the popup menu for the object.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CPoint point	-	The point to track.
-					CWnd* parent	-	The parent "CWnd" of the
-										menu (should be the
-										"CDiagramEditor")
+	Parameters :
 
-	Usage :
+	Usage :			The function should return a menu resource id.
+
    ============================================================*/
 {
-
-	CMenu menu;
-	menu.LoadMenu(IDR_UML_MENU_CLASS_POPUP);
-	menu.GetSubMenu(0)->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, parent);
-
+	return IDR_UML_MENU_CLASS_POPUP;
 }
 
 BOOL CUMLEntityClass::DoMessage(UINT msg, CDiagramEntity* sender, CWnd* from)

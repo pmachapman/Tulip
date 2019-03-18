@@ -66,7 +66,6 @@
 #include "stdafx.h"
 #include "FlowchartEditor.h"
 #include "FlowchartEntityContainer.h"
-#include "FlowchartMenu.h"
 #include "FlowchartLinkPropertiesDialog.h"
 #include "FlowchartLinkableLineSegment.h"
 
@@ -93,7 +92,6 @@ CFlowchartEditor::CFlowchartEditor()
 
    ============================================================*/
 {
-	SetPopupMenu(new CFlowchartMenu);
 }
 
 CFlowchartEditor::~CFlowchartEditor()

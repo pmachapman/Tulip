@@ -94,7 +94,6 @@ public:
 
 	// Auxilliary
 	virtual void	ShowProperties(CWnd* parent, BOOL show = TRUE);
-	virtual void	ShowPopup(CPoint point, CWnd* parent);
 
 	// Visuals
 	virtual void	Draw(CDC* dc, CRect rect);
@@ -118,6 +117,8 @@ public:
 
 	void						SetParent(CDiagramEntityContainer* parent);
 	CDiagramEntityContainer*	GetParent() const;
+
+	virtual int		GetMenuResourceId() const;
 
 protected:
 

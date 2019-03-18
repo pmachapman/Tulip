@@ -175,6 +175,8 @@ CDiagramEditor::CDiagramEditor()
 
 	SetScrollWheelMode(WHEEL_SCROLL);
 
+	SetPopupMenu(new CDiagramMenu);
+
 	Clear();
 
 }
@@ -398,11 +400,13 @@ BEGIN_MESSAGE_MAP(CDiagramEditor, CWnd)
 	ON_WM_MOUSEWHEEL()
 	ON_COMMAND_RANGE(CMD_START, CMD_END, OnObjectCommand)
 
+	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
+	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
 	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
-	ON_COMMAND(ID_EDIT_GROUP, OnEditGroup)
-	ON_COMMAND(ID_EDIT_UNGROUP, OnEditUngroup)
+	ON_COMMAND(ID_EDIT_DELETE, OnEditDelete)
+	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
 
 END_MESSAGE_MAP()
 
@@ -2840,26 +2844,12 @@ void CDiagramEditor::OnRButtonUp(UINT nFlags, CPoint point)
 
    ============================================================*/
 {
-
 	CPoint screen(point);
-	CPoint virtpoint(point);
 
 	ClientToScreen(&screen);
-	ScreenToVirtual(virtpoint);
-
-	if (GetSelectCount() == 1)
-	{
-		CDiagramEntity* obj = GetSelectedObject();
-		if (obj->GetHitCode(virtpoint) == DEHT_BODY)
-			obj->ShowPopup(screen, this);
-		else
-			ShowPopup(screen);
-	}
-	else
-		ShowPopup(screen);
+	ShowPopup(screen);
 
 	CWnd::OnRButtonUp(nFlags, point);
-
 }
 
 UINT CDiagramEditor::OnGetDlgCode()
@@ -4931,6 +4921,40 @@ void CDiagramEditor::ShowPopup(CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor copy/paste/undo
 
+void CDiagramEditor::OnEditUndo()
+/* ============================================================
+	Function :		CDiagramEditor::OnEditUndo
+	Description :	Command handler for the MFC standard
+					"ID_EDIT_UNDO" command.
+	Access :		Protected
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Called from MFC. Call "Undo" from code instead.
+
+   ============================================================*/
+{
+	Undo();
+}
+
+void CDiagramEditor::OnEditRedo()
+/* ============================================================
+	Function :		CDiagramEditor::OnEditRedo
+	Description :	Command handler for the MFC standard
+					"ID_EDIT_REDO" command.
+	Access :		Protected
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Called from MFC. Call "Redo" from code instead.
+
+   ============================================================*/
+{
+	Redo();
+}
+
 void CDiagramEditor::OnEditCut()
 /* ============================================================
 	Function :		CDiagramEditor::OnEditCut
@@ -4945,9 +4969,7 @@ void CDiagramEditor::OnEditCut()
 
    ============================================================*/
 {
-
 	Cut();
-
 }
 
 void CDiagramEditor::OnEditCopy()
@@ -4965,9 +4987,7 @@ void CDiagramEditor::OnEditCopy()
 
    ============================================================*/
 {
-
 	Copy();
-
 }
 
 void CDiagramEditor::OnEditPaste()
@@ -4985,53 +5005,43 @@ void CDiagramEditor::OnEditPaste()
 
    ============================================================*/
 {
-
 	Paste();
-
 }
 
-void CDiagramEditor::OnEditGroup()
+void CDiagramEditor::OnEditDelete()
 /* ============================================================
-	Function :		CDiagramEditor::OnEditGroup
-	Description :	Handler for the "ID_EDIT_GROUP" command
+	Function :		CDiagramEditor::OnEditDelete
+	Description :	Command handler for the MFC standard
+					"ID_EDIT_DELETE" command.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Groups the currently selected objects.
-					Grouped objects can be moved as a
-					single entity. Technically, when one object
-					in a group is selected, all other objects
-					are also selected automatically.
+	Usage :			Called from MFC. Call "DeleteAllSelected" from code
+					instead.
 
    ============================================================*/
 {
-
-	Group();
-
+	DeleteAllSelected();
 }
 
-void CDiagramEditor::OnEditUngroup()
+void CDiagramEditor::OnEditSelectAll()
 /* ============================================================
-	Function :		CDiagramEditor::OnEditUngroup
-	Description :	Handler for the "ID_EDIT_UNGROUP" command
+	Function :		CDiagramEditor::OnEditSelectAll
+	Description :	Command handler for the MFC standard
+					"ID_EDIT_SELECT_ALL" command.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Ungroups the currently selected objects.
-					Grouped objects can be moved as a
-					single entity. Technically, when one object
-					in a group is selected, all other objects
-					are also selected automatically.
+	Usage :			Called from MFC. Call "SelectAll" from code
+					instead.
 
    ============================================================*/
 {
-
-	Ungroup();
-
+	SelectAll();
 }
 
 void CDiagramEditor::Cut()

@@ -16,7 +16,7 @@ public:
 
 protected:
 	CMenu	m_menu;
-
+	int		selectedMenu;
 };
 
 #endif // _DIAGRAMMENU_H_

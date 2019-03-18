@@ -33,7 +33,6 @@
 #include "stdafx.h"
 #include "UMLEditor.h"
 #include "UMLEntityContainer.h"
-#include "UMLMenu.h"
 #include "UMLLineSegment.h"
 #include "UMLEntityPackage.h"
 #include "../TextFile/TextFile.h"
@@ -74,8 +73,6 @@ CUMLEditor::CUMLEditor()
    ============================================================*/
 {
 	m_data = NULL;
-
-	SetPopupMenu(new CUMLMenu);
 
 	m_drawingLine = FALSE;
 
