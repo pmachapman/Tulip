@@ -305,6 +305,8 @@
 #define ID_EDIT_REPLACE                 0xE129
 #define ID_EDIT_SELECT_ALL              0xE12A
 #define ID_EDIT_REDO                    0xE12C
+#define ID_EDIT_GROUP                   0xE12D
+#define ID_EDIT_UNGROUP                 0xE12E
 #define ID_WINDOW_ARRANGE               0xE131
 #define ID_WINDOW_CASCADE               0xE132
 #define ID_WINDOW_TILE_HORZ             0xE133
@@ -336,7 +338,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32825
+#define _APS_NEXT_COMMAND_VALUE         32826
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           311
 #endif

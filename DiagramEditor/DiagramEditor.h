@@ -29,11 +29,6 @@
 
 #define KEY_ALL				0xFFFFFFFF
 
-#ifndef ID_EDIT_GROUP
-#define ID_EDIT_GROUP		ID_EDIT_REDO + 1
-#define ID_EDIT_UNGROUP		ID_EDIT_GROUP + 1
-#endif
-
 #define WHEEL_SCROLL	0
 #define WHEEL_ZOOM		1
 

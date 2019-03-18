@@ -1,6 +1,8 @@
 #ifndef _DIAGRAMMENU_H_
 #define _DIAGRAMMENU_H_
 
+#include "resource.h"
+
 class CDiagramEditor;
 
 class CDiagramMenu

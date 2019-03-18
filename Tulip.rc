@@ -243,8 +243,8 @@ BEGIN
         MENUITEM "Copy",                        ID_EDIT_COPY
         MENUITEM "Paste",                       ID_EDIT_PASTE
         MENUITEM SEPARATOR
-        MENUITEM "Group",                       57645
-        MENUITEM "Ungroup",                     57646
+        MENUITEM "Group",                       ID_EDIT_GROUP
+        MENUITEM "Ungroup",                     ID_EDIT_UNGROUP
     END
 END
 

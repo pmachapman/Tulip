@@ -80,6 +80,10 @@ BEGIN_MESSAGE_MAP(CUmlView, CView)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
 	ON_COMMAND(ID_DUPLICATE, OnDuplicate)
 	ON_UPDATE_COMMAND_UI(ID_DUPLICATE, OnUpdateDuplicate)
+	ON_COMMAND(ID_EDIT_GROUP, OnGroup)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_GROUP, OnUpdateGroup)
+	ON_COMMAND(ID_EDIT_UNGROUP, OnUngroup)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_UNGROUP, OnUpdateUngroup)
 	ON_COMMAND(ID_MARGINS, OnMargins)
 	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
 	ON_COMMAND(ID_RESTRAIN, OnRestraints)
@@ -489,6 +493,70 @@ void CUmlView::OnDuplicate()
 void CUmlView::OnUpdateDuplicate(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
+}
+
+void CUmlView::OnGroup()
+{
+	m_editor.Group();
+}
+
+void CUmlView::OnUpdateGroup(CCmdUI* pCmdUI)
+{
+	BOOL enable = FALSE;
+	if (m_editor.GetSelectCount() > 1)
+	{
+		int count = 0;
+		int lastGroup = -1;
+		CDiagramEntity* obj;
+		while (!enable && (obj = m_editor.GetDiagramEntityContainer()->GetAt(count++)))
+		{
+			if (obj->IsSelected())
+			{
+				int group = obj->GetGroup();
+
+				// Initialise the last group
+				if (lastGroup == -1)
+				{
+					lastGroup = group;
+				}
+
+				// If there is an object with no group or a different group, allow grouping
+				if (group == 0 || group != lastGroup)
+				{
+					enable = TRUE;
+				}
+
+				lastGroup = group;
+			}
+		}
+	}
+
+	pCmdUI->Enable(enable);
+}
+
+void CUmlView::OnUngroup()
+{
+	m_editor.Ungroup();
+}
+
+void CUmlView::OnUpdateUngroup(CCmdUI* pCmdUI)
+{
+	BOOL enable = FALSE;
+	if (m_editor.GetSelectCount() > 1)
+	{
+		int count = 0;
+		CDiagramEntity* obj;
+		while (!enable && (obj = m_editor.GetDiagramEntityContainer()->GetAt(count++)))
+		{
+			// If there is a selected object with a group, allow ungrouping
+			if (obj->IsSelected() && obj->GetGroup() != 0)
+			{
+				enable = TRUE;
+			}
+		}
+	}
+
+	pCmdUI->Enable(enable);
 }
 
 void CUmlView::OnProperty()
