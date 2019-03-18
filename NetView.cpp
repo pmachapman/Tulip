@@ -20,6 +20,7 @@
 #endif
 
 #include "MainFrm.h"
+#include "DiagramView.h"
 #include "NetDoc.h"
 #include "NetView.h"
 
@@ -34,72 +35,17 @@
 
 // CNetView
 
-IMPLEMENT_DYNCREATE(CNetView, CView)
+IMPLEMENT_DYNCREATE(CNetView, CDiagramView)
 
-BEGIN_MESSAGE_MAP(CNetView, CView)
+BEGIN_MESSAGE_MAP(CNetView, CDiagramView)
 	ON_WM_SIZE()
 	ON_WM_ERASEBKGND()
-	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
-	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
-	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
-	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
-	ON_COMMAND(ID_EDIT_SELECT_ALL, OnSelectAll)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_SELECT_ALL, OnUpdateSelectAll)
 	ON_COMMAND(ID_EXPORT, OnExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT, OnUpdateExport)
 	ON_COMMAND(ID_EXPORT_EMF, OnExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT_EMF, OnUpdateExport)
 	ON_COMMAND(ID_BUTTON_LINK, OnButtonLink)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_LINK, OnUpdateLink)
-	ON_COMMAND(ID_PROPERTY, OnProperty)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
-	ON_COMMAND(ID_DUPLICATE, OnDuplicate)
-	ON_UPDATE_COMMAND_UI(ID_DUPLICATE, OnUpdateDuplicate)
-	ON_COMMAND(ID_EDIT_GROUP, OnGroup)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_GROUP, OnUpdateGroup)
-	ON_COMMAND(ID_EDIT_UNGROUP, OnUngroup)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_UNGROUP, OnUpdateUngroup)
-	ON_COMMAND(ID_MARGINS, OnMargins)
-	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
-	ON_COMMAND(ID_RESTRAIN, OnRestraints)
-	ON_UPDATE_COMMAND_UI(ID_RESTRAIN, OnUpdateRestraints)
-	ON_COMMAND(ID_BOTTOM, OnBottom)
-	ON_UPDATE_COMMAND_UI(ID_BOTTOM, OnUpdateBottom)
-	ON_COMMAND(ID_BOTTOM_ALIGN, OnBottomAlign)
-	ON_UPDATE_COMMAND_UI(ID_BOTTOM_ALIGN, OnUpdateBottomAlign)
-	ON_COMMAND(ID_DOWN, OnDown)
-	ON_UPDATE_COMMAND_UI(ID_DOWN, OnUpdateDown)
-	ON_COMMAND(ID_FRONT, OnFront)
-	ON_UPDATE_COMMAND_UI(ID_FRONT, OnUpdateFront)
-	ON_COMMAND(ID_LEFT_ALIGN, OnLeftAlign)
-	ON_UPDATE_COMMAND_UI(ID_LEFT_ALIGN, OnUpdateLeftAlign)
-	ON_COMMAND(ID_MAKE_SAME_SIZE, OnMakeSameSize)
-	ON_UPDATE_COMMAND_UI(ID_MAKE_SAME_SIZE, OnUpdateMakeSameSize)
-	ON_COMMAND(ID_RIGHT_ALIGN, OnRightAlign)
-	ON_UPDATE_COMMAND_UI(ID_RIGHT_ALIGN, OnUpdateRightAlign)
-	ON_COMMAND(ID_TOP_ALIGN, OnTopAlign)
-	ON_UPDATE_COMMAND_UI(ID_TOP_ALIGN, OnUpdateTopAlign)
-	ON_COMMAND(ID_UP, OnUp)
-	ON_UPDATE_COMMAND_UI(ID_UP, OnUpdateUp)
-	ON_COMMAND(IDC_SETTINGS, OnSettings)
-	ON_COMMAND(ID_ZOOM, OnZoom)
-	ON_COMMAND(ID_ZOOM_100, OnZoom100)
-	ON_COMMAND(ID_ZOOM_150, OnZoom150)
-	ON_COMMAND(ID_ZOOM_200, OnZoom200)
-	ON_COMMAND(ID_ZOOM_25, OnZoom25)
-	ON_COMMAND(ID_ZOOM_50, OnZoom50)
-	ON_COMMAND(ID_SNAP, OnSnap)
-	ON_UPDATE_COMMAND_UI(ID_SNAP, OnUpdateSnap)
-	ON_COMMAND(ID_SHOW_GRID, OnShowGrid)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_GRID, OnUpdateShowGrid)
-	ON_COMMAND(ID_EDIT_DELETE, OnEditDelete)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, OnUpdateEditDelete)
 	// Custom to the document type
 	ON_COMMAND(ID_NET_BUTTON_ADD_CLIENT, OnButtonAddClient)
 	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_CLIENT, OnUpdateButtonAddClient)
@@ -116,7 +62,7 @@ BEGIN_MESSAGE_MAP(CNetView, CView)
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CNetView::OnFilePrintPreview)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 END_MESSAGE_MAP()
@@ -175,14 +121,6 @@ void CNetView::OnDrawIconicThumbnailOrLivePreview(CDC& dc, CRect rect, CSize szR
 
 // CNetView printing
 
-
-void CNetView::OnFilePrintPreview()
-{
-#ifndef SHARED_HANDLERS
-	AFXPrintPreview(this);
-#endif
-}
-
 BOOL CNetView::OnPreparePrinting(CPrintInfo* pInfo)
 {
 	// default preparation
@@ -235,6 +173,9 @@ void CNetView::OnInitialUpdate()
 		GetClientRect(rect);
 		pDoc->GetData()->SetClipboardHandler(&theApp.m_netClip);
 		m_editor.Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
+
+		// Pass the editor to the base class
+		SetEditor(&m_editor);
 
 		// Only set the size if one wasn't pre-specified
 		if (!pDoc->GetData()->IsModified())
@@ -305,130 +246,7 @@ void CNetView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeac
 	pMainFrame->SetRibbonContextCategory(ID_NETCONTEXT, bActivate);
 }
 
-// CNetView message handlers
-
-void CNetView::OnSize(UINT nType, int cx, int cy)
-{
-	CView::OnSize(nType, cx, cy);
-
-	if (m_editor.m_hWnd)
-	{
-		m_editor.MoveWindow(0, 0, cx, cy);
-	}
-}
-
-BOOL CNetView::OnEraseBkgnd(CDC* /*pDC*/)
-{
-	return TRUE;
-}
-
 // CNetView button and menu handlers
-
-void CNetView::OnEditUndo()
-{
-	m_editor.Undo();
-}
-
-void CNetView::OnEditRedo()
-{
-	m_editor.Redo();
-}
-
-void CNetView::OnEditCopy()
-{
-	m_editor.Copy();
-}
-
-void CNetView::OnEditCut()
-{
-	m_editor.Cut();
-}
-
-void CNetView::OnEditPaste()
-{
-	m_editor.Paste();
-}
-
-void CNetView::OnEditDelete()
-{
-	m_editor.DeleteAllSelected();
-}
-
-void CNetView::OnDuplicate()
-{
-	m_editor.Duplicate();
-}
-
-void CNetView::OnGroup()
-{
-	m_editor.Group();
-}
-
-void CNetView::OnUngroup()
-{
-	m_editor.Ungroup();
-}
-
-void CNetView::OnProperty()
-{
-	if (m_editor.GetSelectCount() == 1)
-	{
-		m_editor.ShowProperties();
-	}
-}
-
-void CNetView::OnZoom()
-{
-}
-
-void CNetView::OnZoom100()
-{
-	m_editor.SetZoom(1);
-}
-
-void CNetView::OnZoom150()
-{
-	m_editor.SetZoom(1.5);
-}
-
-void CNetView::OnZoom200()
-{
-	m_editor.SetZoom(2);
-}
-
-void CNetView::OnZoom25()
-{
-	m_editor.SetZoom(.25);
-}
-
-void CNetView::OnZoom50()
-{
-	m_editor.SetZoom(.5);
-}
-
-void CNetView::OnSnap()
-{
-	m_editor.SetSnapToGrid(!m_editor.GetSnapToGrid());
-}
-
-void CNetView::OnShowGrid()
-{
-	m_editor.ShowGrid(!m_editor.IsGridVisible());
-}
-
-void CNetView::OnMargins()
-{
-	m_editor.ShowMargin(!m_editor.IsMarginVisible());
-}
-
-void CNetView::OnRestraints()
-{
-	if (m_editor.GetRestraints() == RESTRAINT_MARGIN)
-		m_editor.SetRestraints(RESTRAINT_VIRTUAL);
-	else
-		m_editor.SetRestraints(RESTRAINT_MARGIN);
-}
-
 void CNetView::OnButtonLink()
 {
 	if (m_editor.IsLinked())
@@ -584,89 +402,7 @@ void CNetView::OnUpdateExport(CCmdUI* pCmdUI)
 	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
 }
 
-void CNetView::OnSettings()
-{
-	CDialogSettings	dlg;
-
-	dlg.m_color = m_editor.GetBackgroundColor();
-	dlg.m_width = m_editor.GetVirtualSize().cx;
-	dlg.m_height = m_editor.GetVirtualSize().cy;
-	dlg.m_gridWidth = m_editor.GetGridSize().cx;
-	dlg.m_gridHeight = m_editor.GetGridSize().cy;
-	m_editor.GetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
-
-	if (dlg.DoModal() == IDOK)
-	{
-		// Check if we need to snapshot for undo
-		if (m_editor.GetBackgroundColor() != dlg.m_color)
-		{
-			m_editor.GetDiagramEntityContainer()->Snapshot();
-		}
-
-		m_editor.SetBackgroundColor(dlg.m_color);
-		m_editor.SetGridSize(CSize(dlg.m_gridWidth, dlg.m_gridHeight));
-		m_editor.SetVirtualSize(CSize(dlg.m_width, dlg.m_height));
-		m_editor.SetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
-		m_editor.RedrawWindow();
-	}
-}
-
-void CNetView::OnSelectAll()
-{
-	m_editor.SelectAll();
-}
-
-// CNetEditorDemoView update handlers
-
-void CNetView::OnUpdateEditUndo(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateUndo(pCmdUI);
-}
-
-void CNetView::OnUpdateEditRedo(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateRedo(pCmdUI);
-}
-
-void CNetView::OnUpdateEditCopy(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateCopy(pCmdUI);
-}
-
-void CNetView::OnUpdateEditCut(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateCut(pCmdUI);
-}
-
-void CNetView::OnUpdateEditPaste(CCmdUI* pCmdUI)
-{
-	m_editor.UpdatePaste(pCmdUI);
-}
-
-void CNetView::OnUpdateSnap(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.GetSnapToGrid());
-}
-
-void CNetView::OnUpdateShowGrid(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.IsGridVisible());
-}
-
-void CNetView::OnUpdateMargins(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.IsMarginVisible());
-}
-
-void CNetView::OnUpdateRestraints(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.GetRestraints() == RESTRAINT_MARGIN);
-}
-
-void CNetView::OnUpdateEditDelete(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
-}
+// CNetView update handlers
 
 void CNetView::OnUpdateLink(CCmdUI* pCmdUI)
 {
@@ -679,154 +415,4 @@ void CNetView::OnUpdateLink(CCmdUI* pCmdUI)
 	{
 		pCmdUI->SetText(_T("Link"));
 	}
-}
-
-void CNetView::OnUpdateDuplicate(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-
-void CNetView::OnUpdateGroup(CCmdUI* pCmdUI)
-{
-	BOOL enable = FALSE;
-	if (m_editor.GetSelectCount() > 1)
-	{
-		int count = 0;
-		int lastGroup = -1;
-		CDiagramEntity* obj;
-		while (!enable && (obj = m_editor.GetDiagramEntityContainer()->GetAt(count++)))
-		{
-			if (obj->IsSelected())
-			{
-				int group = obj->GetGroup();
-
-				// Initialise the last group
-				if (lastGroup == -1)
-				{
-					lastGroup = group;
-				}
-
-				// If there is an object with no group or a different group, allow grouping
-				if (group == 0 || group != lastGroup)
-				{
-					enable = TRUE;
-				}
-
-				lastGroup = group;
-			}
-		}
-	}
-
-	pCmdUI->Enable(enable);
-}
-
-void CNetView::OnUpdateUngroup(CCmdUI* pCmdUI)
-{
-	BOOL enable = FALSE;
-	if (m_editor.GetSelectCount() > 1)
-	{
-		int count = 0;
-		CDiagramEntity* obj;
-		while (!enable && (obj = m_editor.GetDiagramEntityContainer()->GetAt(count++)))
-		{
-			// If there is a selected object with a group, allow ungrouping
-			if (obj->IsSelected() && obj->GetGroup() != 0)
-			{
-				enable = TRUE;
-			}
-		}
-	}
-
-	pCmdUI->Enable(enable);
-}
-
-void CNetView::OnUpdateProperty(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-
-void CNetView::OnUpdateSelectAll(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
-}
-
-///////////////////////////////////////////////////////////
-// Align menu
-//
-
-void CNetView::OnLeftAlign()
-{
-	m_editor.LeftAlignSelected();
-}
-void CNetView::OnTopAlign()
-{
-	m_editor.TopAlignSelected();
-}
-void CNetView::OnRightAlign()
-{
-	m_editor.RightAlignSelected();
-}
-void CNetView::OnBottomAlign()
-{
-	m_editor.BottomAlignSelected();
-}
-
-void CNetView::OnUpdateLeftAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CNetView::OnUpdateTopAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CNetView::OnUpdateRightAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CNetView::OnUpdateBottomAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-
-void CNetView::OnMakeSameSize()
-{
-	m_editor.MakeSameSizeSelected();
-}
-void CNetView::OnUpdateMakeSameSize(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-
-void CNetView::OnUp()
-{
-	m_editor.Up();
-}
-void CNetView::OnDown()
-{
-	m_editor.Down();
-}
-void CNetView::OnFront()
-{
-	m_editor.Front();
-}
-void CNetView::OnBottom()
-{
-	m_editor.Bottom();
-}
-
-void CNetView::OnUpdateUp(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-void CNetView::OnUpdateDown(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-void CNetView::OnUpdateFront(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
-}
-void CNetView::OnUpdateBottom(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
 }

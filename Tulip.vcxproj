@@ -187,6 +187,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DiagramView.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="DiagramEditor\DiagramClipboardHandler.h" />
     <ClInclude Include="DiagramEditor\DiagramEditor.h" />
@@ -296,6 +297,7 @@
     <ClInclude Include="UMLEditor\UMLUndoItem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DiagramView.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="DiagramEditor\DiagramClipboardHandler.cpp" />
     <ClCompile Include="DiagramEditor\DiagramEditor.cpp" />

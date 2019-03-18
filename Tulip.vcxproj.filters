@@ -381,6 +381,9 @@
     <ClInclude Include="MyVisualManagerWindows7.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DiagramView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tulip.cpp">
@@ -690,6 +693,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyVisualManagerWindows7.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiagramView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

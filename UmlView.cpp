@@ -20,6 +20,7 @@
 #endif
 
 #include "MainFrm.h"
+#include "DiagramView.h"
 #include "UmlDoc.h"
 #include "UmlView.h"
 
@@ -42,9 +43,9 @@
 
 // CUmlView
 
-IMPLEMENT_DYNCREATE(CUmlView, CView)
+IMPLEMENT_DYNCREATE(CUmlView, CDiagramView)
 
-BEGIN_MESSAGE_MAP(CUmlView, CView)
+BEGIN_MESSAGE_MAP(CUmlView, CDiagramView)
 	ON_WM_SIZE()
 	ON_WM_ERASEBKGND()
 	ON_COMMAND(ID_BUTTON_CLASS, OnButtonClass)
@@ -62,18 +63,6 @@ BEGIN_MESSAGE_MAP(CUmlView, CView)
 	ON_COMMAND(ID_BUTTON_TEMPLATE, OnButtonTemplate)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_TEMPLATE, OnUpdateButtonTemplate)
 	ON_COMMAND(ID_BUTTON_DISPLAY_PROPERTIES, OnButtonDisplayProperties)
-	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
-	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
-	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
-	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
-	ON_COMMAND(ID_EDIT_SELECT_ALL, OnSelectAll)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_SELECT_ALL, OnUpdateSelectAll)
 	ON_COMMAND(ID_EXPORT, OnExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT, OnUpdateExport)
 	ON_COMMAND(ID_EXPORT_CPP, OnExportCpp)
@@ -86,55 +75,14 @@ BEGIN_MESSAGE_MAP(CUmlView, CView)
 	ON_UPDATE_COMMAND_UI(ID_FLIP_LINK, OnUpdateFlipLink)
 	ON_COMMAND(ID_PROPERTY, OnProperty)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
-	ON_COMMAND(ID_DUPLICATE, OnDuplicate)
-	ON_UPDATE_COMMAND_UI(ID_DUPLICATE, OnUpdateDuplicate)
-	ON_COMMAND(ID_EDIT_GROUP, OnGroup)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_GROUP, OnUpdateGroup)
-	ON_COMMAND(ID_EDIT_UNGROUP, OnUngroup)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_UNGROUP, OnUpdateUngroup)
-	ON_COMMAND(ID_MARGINS, OnMargins)
-	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
-	ON_COMMAND(ID_RESTRAIN, OnRestraints)
-	ON_UPDATE_COMMAND_UI(ID_RESTRAIN, OnUpdateRestraints)
-	ON_COMMAND(ID_BOTTOM, OnBottom)
-	ON_UPDATE_COMMAND_UI(ID_BOTTOM, OnUpdateBottom)
-	ON_COMMAND(ID_BOTTOM_ALIGN, OnBottomAlign)
-	ON_UPDATE_COMMAND_UI(ID_BOTTOM_ALIGN, OnUpdateBottomAlign)
-	ON_COMMAND(ID_DOWN, OnDown)
-	ON_UPDATE_COMMAND_UI(ID_DOWN, OnUpdateDown)
-	ON_COMMAND(ID_FRONT, OnFront)
-	ON_UPDATE_COMMAND_UI(ID_FRONT, OnUpdateFront)
-	ON_COMMAND(ID_LEFT_ALIGN, OnLeftAlign)
-	ON_UPDATE_COMMAND_UI(ID_LEFT_ALIGN, OnUpdateLeftAlign)
-	ON_COMMAND(ID_MAKE_SAME_SIZE, OnMakeSameSize)
-	ON_UPDATE_COMMAND_UI(ID_MAKE_SAME_SIZE, OnUpdateMakeSameSize)
-	ON_COMMAND(ID_RIGHT_ALIGN, OnRightAlign)
-	ON_UPDATE_COMMAND_UI(ID_RIGHT_ALIGN, OnUpdateRightAlign)
-	ON_COMMAND(ID_TOP_ALIGN, OnTopAlign)
-	ON_UPDATE_COMMAND_UI(ID_TOP_ALIGN, OnUpdateTopAlign)
-	ON_COMMAND(ID_UP, OnUp)
-	ON_UPDATE_COMMAND_UI(ID_UP, OnUpdateUp)
-	ON_COMMAND(IDC_SETTINGS, OnSettings)
-	ON_COMMAND(ID_ZOOM, OnZoom)
-	ON_COMMAND(ID_ZOOM_100, OnZoom100)
-	ON_COMMAND(ID_ZOOM_150, OnZoom150)
-	ON_COMMAND(ID_ZOOM_200, OnZoom200)
-	ON_COMMAND(ID_ZOOM_25, OnZoom25)
-	ON_COMMAND(ID_ZOOM_50, OnZoom50)
-	ON_COMMAND(ID_SNAP, OnSnap)
-	ON_UPDATE_COMMAND_UI(ID_SNAP, OnUpdateSnap)
-	ON_COMMAND(ID_SHOW_GRID, OnShowGrid)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_GRID, OnUpdateShowGrid)
 	ON_COMMAND(ID_IMPORT, OnImport)
 	ON_UPDATE_COMMAND_UI(ID_IMPORT, OnUpdateImport)
 	ON_COMMAND(ID_UML_OPEN_PACKAGE, OnOpenPackage)
 	ON_UPDATE_COMMAND_UI(ID_UML_OPEN_PACKAGE, OnUpdateOpenPackage)
-	ON_COMMAND(ID_EDIT_DELETE, OnEditDelete)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, OnUpdateEditDelete)
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CUmlView::OnFilePrintPreview)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 END_MESSAGE_MAP()
@@ -193,14 +141,6 @@ void CUmlView::OnDrawIconicThumbnailOrLivePreview(CDC& dc, CRect rect, CSize szR
 
 // CUmlView printing
 
-
-void CUmlView::OnFilePrintPreview()
-{
-#ifndef SHARED_HANDLERS
-	AFXPrintPreview(this);
-#endif
-}
-
 BOOL CUmlView::OnPreparePrinting(CPrintInfo* pInfo)
 {
 	// default preparation
@@ -253,6 +193,9 @@ void CUmlView::OnInitialUpdate()
 		GetClientRect(rect);
 		pDoc->GetData()->SetClipboardHandler(&theApp.m_umlClip);
 		m_editor.Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
+
+		// Pass the editor to the base class
+		SetEditor(&m_editor);
 
 		// Only set the size if one wasn't pre-specified
 		if (!pDoc->GetData()->IsModified())
@@ -323,23 +266,6 @@ void CUmlView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeac
 	pMainFrame->SetRibbonContextCategory(ID_UMLCONTEXT, bActivate);
 }
 
-// CUmlView message handlers
-
-void CUmlView::OnSize(UINT nType, int cx, int cy)
-{
-	CView::OnSize(nType, cx, cy);
-
-	if (m_editor.m_hWnd)
-	{
-		m_editor.MoveWindow(0, 0, cx, cy);
-	}
-}
-
-BOOL CUmlView::OnEraseBkgnd(CDC* /*pDC*/)
-{
-	return TRUE;
-}
-
 // CUmlView button and menu handlers
 
 void CUmlView::OnButtonClass()
@@ -382,7 +308,7 @@ void CUmlView::OnUpdateButtonInterface(CCmdUI* pCmdUI)
 
 void CUmlView::OnButtonLabel()
 {
-	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LABEL)
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_UML_LABEL)
 	{
 		m_editor.StartDrawingObject(NULL);
 		m_drawObject = DRAW_OBJECT_NONE;
@@ -390,13 +316,13 @@ void CUmlView::OnButtonLabel()
 	else
 	{
 		m_editor.StartDrawingObject(new CUMLEntityLabel);
-		m_drawObject = DRAW_OBJECT_LABEL;
+		m_drawObject = DRAW_OBJECT_UML_LABEL;
 	}
 }
 
 void CUmlView::OnUpdateButtonLabel(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LABEL);
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_UML_LABEL);
 }
 
 void CUmlView::OnButtonLink()
@@ -555,114 +481,10 @@ void CUmlView::OnButtonDisplayProperties()
 	}
 }
 
-void CUmlView::OnEditUndo()
-{
-	m_editor.Undo();
-}
-
-void CUmlView::OnEditRedo()
-{
-	m_editor.Redo();
-}
-
-void CUmlView::OnEditCopy()
-{
-	m_editor.Copy();
-}
-
-void CUmlView::OnEditCut()
-{
-	m_editor.Cut();
-}
-
-void CUmlView::OnEditPaste()
-{
-	m_editor.Paste();
-}
-
-void CUmlView::OnEditDelete()
-{
-	m_editor.DeleteAllSelected();
-}
-
 void CUmlView::OnFlipLink()
 {
 	m_editor.FlipLink();
 	m_editor.RedrawWindow();
-}
-
-void CUmlView::OnDuplicate()
-{
-	m_editor.Duplicate();
-}
-
-void CUmlView::OnUpdateDuplicate(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-
-void CUmlView::OnGroup()
-{
-	m_editor.Group();
-}
-
-void CUmlView::OnUpdateGroup(CCmdUI* pCmdUI)
-{
-	BOOL enable = FALSE;
-	if (m_editor.GetSelectCount() > 1)
-	{
-		int count = 0;
-		int lastGroup = -1;
-		CDiagramEntity* obj;
-		while (!enable && (obj = m_editor.GetDiagramEntityContainer()->GetAt(count++)))
-		{
-			if (obj->IsSelected())
-			{
-				int group = obj->GetGroup();
-
-				// Initialise the last group
-				if (lastGroup == -1)
-				{
-					lastGroup = group;
-				}
-
-				// If there is an object with no group or a different group, allow grouping
-				if (group == 0 || group != lastGroup)
-				{
-					enable = TRUE;
-				}
-
-				lastGroup = group;
-			}
-		}
-	}
-
-	pCmdUI->Enable(enable);
-}
-
-void CUmlView::OnUngroup()
-{
-	m_editor.Ungroup();
-}
-
-void CUmlView::OnUpdateUngroup(CCmdUI* pCmdUI)
-{
-	BOOL enable = FALSE;
-	if (m_editor.GetSelectCount() > 1)
-	{
-		int count = 0;
-		CDiagramEntity* obj;
-		while (!enable && (obj = m_editor.GetDiagramEntityContainer()->GetAt(count++)))
-		{
-			// If there is a selected object with a group, allow ungrouping
-			if (obj->IsSelected() && obj->GetGroup() != 0)
-			{
-				enable = TRUE;
-			}
-		}
-	}
-
-	pCmdUI->Enable(enable);
 }
 
 void CUmlView::OnProperty()
@@ -679,59 +501,7 @@ void CUmlView::OnProperty()
 
 void CUmlView::OnUpdateProperty(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(m_editor.GetSelectCount() <= 1);
-}
-
-void CUmlView::OnZoom()
-{
-}
-
-void CUmlView::OnZoom100()
-{
-	m_editor.SetZoom(1);
-}
-
-void CUmlView::OnZoom150()
-{
-	m_editor.SetZoom(1.5);
-}
-
-void CUmlView::OnZoom200()
-{
-	m_editor.SetZoom(2);
-}
-
-void CUmlView::OnZoom25()
-{
-	m_editor.SetZoom(.25);
-}
-
-void CUmlView::OnZoom50()
-{
-	m_editor.SetZoom(.5);
-}
-
-void CUmlView::OnSnap()
-{
-	m_editor.SetSnapToGrid(!m_editor.GetSnapToGrid());
-}
-
-void CUmlView::OnShowGrid()
-{
-	m_editor.ShowGrid(!m_editor.IsGridVisible());
-}
-
-void CUmlView::OnRestraints()
-{
-	if (m_editor.GetRestraints() == RESTRAINT_MARGIN)
-		m_editor.SetRestraints(RESTRAINT_VIRTUAL);
-	else
-		m_editor.SetRestraints(RESTRAINT_MARGIN);
-}
-
-void CUmlView::OnUpdateRestraints(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.GetRestraints() == RESTRAINT_MARGIN);
+	pCmdUI->Enable(TRUE);
 }
 
 void CUmlView::OnImport()
@@ -893,88 +663,11 @@ void CUmlView::OnUpdateExport(CCmdUI* pCmdUI)
 	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
 }
 
-void CUmlView::OnSelectAll()
-{
-	m_editor.SelectAll();
-}
-
-// CUMLEditorDemoView update handlers
-
-void CUmlView::OnUpdateEditUndo(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateUndo(pCmdUI);
-}
-
-void CUmlView::OnUpdateEditRedo(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateRedo(pCmdUI);
-}
-
-void CUmlView::OnUpdateEditCopy(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateCopy(pCmdUI);
-}
-
-void CUmlView::OnUpdateEditCut(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateCut(pCmdUI);
-}
-
-void CUmlView::OnUpdateEditPaste(CCmdUI* pCmdUI)
-{
-	m_editor.UpdatePaste(pCmdUI);
-}
+// CUmlView update handlers
 
 void CUmlView::OnUpdateFlipLink(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.IsLinkSelected());
-}
-
-void CUmlView::OnUpdateSnap(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.GetSnapToGrid());
-}
-
-void CUmlView::OnUpdateShowGrid(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.IsGridVisible());
-}
-
-void CUmlView::OnUpdateMargins(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.IsMarginVisible());
-}
-
-void CUmlView::OnMargins()
-{
-	m_editor.ShowMargin(!m_editor.IsMarginVisible());
-}
-
-void CUmlView::OnSettings()
-{
-	CDialogSettings	dlg;
-
-	dlg.m_color = m_editor.GetBackgroundColor();
-	dlg.m_width = m_editor.GetVirtualSize().cx;
-	dlg.m_height = m_editor.GetVirtualSize().cy;
-	dlg.m_gridWidth = m_editor.GetGridSize().cx;
-	dlg.m_gridHeight = m_editor.GetGridSize().cy;
-	m_editor.GetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
-
-	if (dlg.DoModal() == IDOK)
-	{
-		// Check if we need to snapshot for undo
-		if (m_editor.GetBackgroundColor() != dlg.m_color)
-		{
-			m_editor.GetDiagramEntityContainer()->Snapshot();
-		}
-
-		m_editor.SetBackgroundColor(dlg.m_color);
-		m_editor.SetGridSize(CSize(dlg.m_gridWidth, dlg.m_gridHeight));
-		m_editor.SetVirtualSize(CSize(dlg.m_width, dlg.m_height));
-		m_editor.SetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
-		m_editor.RedrawWindow();
-	}
 }
 
 void CUmlView::OnUpdateImport(CCmdUI* pCmdUI)
@@ -1007,95 +700,4 @@ void CUmlView::OnUpdateOpenPackage(CCmdUI* pCmdUI)
 	}
 
 	pCmdUI->Enable(result);
-}
-
-void CUmlView::OnUpdateEditDelete(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
-}
-
-void CUmlView::OnUpdateSelectAll(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
-}
-
-///////////////////////////////////////////////////////////
-// Align menu
-//
-
-void CUmlView::OnLeftAlign()
-{
-	m_editor.LeftAlignSelected();
-}
-void CUmlView::OnTopAlign()
-{
-	m_editor.TopAlignSelected();
-}
-void CUmlView::OnRightAlign()
-{
-	m_editor.RightAlignSelected();
-}
-void CUmlView::OnBottomAlign()
-{
-	m_editor.BottomAlignSelected();
-}
-
-void CUmlView::OnUpdateLeftAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CUmlView::OnUpdateTopAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CUmlView::OnUpdateRightAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CUmlView::OnUpdateBottomAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-
-void CUmlView::OnMakeSameSize()
-{
-	m_editor.MakeSameSizeSelected();
-}
-void CUmlView::OnUpdateMakeSameSize(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-
-void CUmlView::OnUp()
-{
-	m_editor.Up();
-}
-void CUmlView::OnDown()
-{
-	m_editor.Down();
-}
-void CUmlView::OnFront()
-{
-	m_editor.Front();
-}
-void CUmlView::OnBottom()
-{
-	m_editor.Bottom();
-}
-
-void CUmlView::OnUpdateUp(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-void CUmlView::OnUpdateDown(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-void CUmlView::OnUpdateFront(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
-}
-void CUmlView::OnUpdateBottom(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
 }
