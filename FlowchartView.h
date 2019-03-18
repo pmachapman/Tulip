@@ -6,6 +6,16 @@
 
 #include "FlowchartEditor/FlowchartEditor.h"
 
+#define DRAW_OBJECT_NONE		0
+#define DRAW_OBJECT_ARROW		1
+#define DRAW_OBJECT_BOX			2
+#define DRAW_OBJECT_CONDITION	3
+#define DRAW_OBJECT_CONNECTOR	4
+#define DRAW_OBJECT_IO			5
+#define DRAW_OBJECT_LABEL		6
+#define DRAW_OBJECT_LINE		7
+#define DRAW_OBJECT_START		8
+
 class CFlowchartView : public CView
 {
 protected: // create from serialization only
@@ -49,12 +59,22 @@ protected:
 	//{{AFX_MSG(CFlowchartView)
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnButtonArrow();
+	afx_msg void OnUpdateButtonArrow(CCmdUI* pCmdUI);
 	afx_msg void OnButtonBox();
+	afx_msg void OnUpdateButtonBox(CCmdUI* pCmdUI);
 	afx_msg void OnButtonCondition();
+	afx_msg void OnUpdateButtonCondition(CCmdUI* pCmdUI);
 	afx_msg void OnButtonConnector();
+	afx_msg void OnUpdateButtonConnector(CCmdUI* pCmdUI);
 	afx_msg void OnButtonIo();
+	afx_msg void OnUpdateButtonIo(CCmdUI* pCmdUI);
+	afx_msg void OnButtonLabel();
+	afx_msg void OnUpdateButtonLabel(CCmdUI* pCmdUI);
 	afx_msg void OnButtonLine();
+	afx_msg void OnUpdateButtonLine(CCmdUI* pCmdUI);
 	afx_msg void OnButtonStart();
+	afx_msg void OnUpdateButtonStart(CCmdUI* pCmdUI);
 	afx_msg void OnEditCopy();
 	afx_msg void OnUpdateEditCopy(CCmdUI* pCmdUI);
 	afx_msg void OnEditCut();
@@ -70,7 +90,6 @@ protected:
 	afx_msg void OnSettings();
 	afx_msg void OnExport();
 	afx_msg void OnUpdateExport(CCmdUI* pCmdUI);
-	afx_msg void OnButtonArrow();
 	afx_msg void OnZoom();
 	afx_msg void OnZoom100();
 	afx_msg void OnZoom150();
@@ -103,7 +122,6 @@ protected:
 	afx_msg void OnUpdateTopAlign(CCmdUI* pCmdUI);
 	afx_msg void OnUp();
 	afx_msg void OnUpdateUp(CCmdUI* pCmdUI);
-	afx_msg void OnButtonLabel();
 	afx_msg void OnButtonLink();
 	afx_msg void OnUpdateButtonLink(CCmdUI* pCmdUI);
 	afx_msg void OnLinkLabel();
@@ -124,6 +142,7 @@ protected:
 private:
 	// Private data
 	CFlowchartEditor	m_editor;
+	int					m_drawObject; // What type of object we are drawing
 	int					m_screenResolutionX;
 
 };

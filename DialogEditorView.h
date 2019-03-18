@@ -125,8 +125,6 @@ protected:
 	afx_msg void OnUpdateExport(CCmdUI* pCmdUI);
 	afx_msg void OnExportEmf();
 	afx_msg void OnExportHtml();
-	afx_msg void OnAddNone();
-	afx_msg void OnUpdateAddNone(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateAddButton(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateAddCheckbox(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateAddCombobox(CCmdUI* pCmdUI);

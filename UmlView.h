@@ -16,6 +16,15 @@
 
 #include "UMLEditor/UMLEditor.h"
 
+#define DRAW_OBJECT_NONE		0
+#define DRAW_OBJECT_CLASS		1
+#define DRAW_OBJECT_INTERFACE	2
+#define DRAW_OBJECT_LABEL		3
+#define DRAW_OBJECT_LINK		4
+#define DRAW_OBJECT_NOTE		5
+#define DRAW_OBJECT_PACKAGE		6
+#define DRAW_OBJECT_TEMPLATE	7
+
 class CUmlView : public CView
 {
 protected: // create from serialization only
@@ -54,14 +63,22 @@ protected:
 	// Generated message map functions
 protected:
 	afx_msg void OnFilePrintPreview();
-	afx_msg void OnButtonClass();
-	afx_msg void OnButtonLink();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnButtonNote();
-	afx_msg void OnButtonPackage();
+	afx_msg void OnButtonClass();
+	afx_msg void OnUpdateButtonClass(CCmdUI* pCmdUI);
 	afx_msg void OnButtonLabel();
+	afx_msg void OnUpdateButtonLabel(CCmdUI* pCmdUI);
+	afx_msg void OnButtonLink();
+	afx_msg void OnUpdateButtonLink(CCmdUI* pCmdUI);
 	afx_msg void OnButtonInterface();
+	afx_msg void OnUpdateButtonInterface(CCmdUI* pCmdUI);
+	afx_msg void OnButtonNote();
+	afx_msg void OnUpdateButtonNote(CCmdUI* pCmdUI);
+	afx_msg void OnButtonPackage();
+	afx_msg void OnUpdateButtonPackage(CCmdUI* pCmdUI);
+	afx_msg void OnButtonTemplate();
+	afx_msg void OnUpdateButtonTemplate(CCmdUI* pCmdUI);
 	afx_msg void OnButtonDisplayProperties();
 	afx_msg void OnEditUndo();
 	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI);
@@ -129,12 +146,12 @@ protected:
 	afx_msg void OnUpdateOpenPackage(CCmdUI* pCmdUI);
 	afx_msg void OnEditDelete();
 	afx_msg void OnUpdateEditDelete(CCmdUI* pCmdUI);
-	afx_msg void OnButtonTemplate();
 	DECLARE_MESSAGE_MAP()
 
 private:
 	CUMLEditor	m_editor;
 	int			m_screenResolutionX;
+	int			m_drawObject;			// What type of object we are drawing
 	BOOL		m_onlyh;
 };
 

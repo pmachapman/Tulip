@@ -343,12 +343,12 @@ void CUMLEditor::StartDrawingObject(CDiagramEntity* obj)
 
    ============================================================*/
 {
-
-	UnselectAll();
-
-	CUMLEntity* uml = static_cast<CUMLEntity*>(obj);
-	uml->SetPackage(GetPackage());
-	uml->SetDisplayOptions(GetDisplayOptions());
+	if (obj)
+	{
+		CUMLEntity* uml = static_cast<CUMLEntity*>(obj);
+		uml->SetPackage(GetPackage());
+		uml->SetDisplayOptions(GetDisplayOptions());
+	}
 
 	CDiagramEditor::StartDrawingObject(obj);
 

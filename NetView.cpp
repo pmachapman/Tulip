@@ -102,11 +102,17 @@ BEGIN_MESSAGE_MAP(CNetView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, OnUpdateEditDelete)
 	// Custom to the document type
 	ON_COMMAND(ID_NET_BUTTON_ADD_CLIENT, OnButtonAddClient)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_CLIENT, OnUpdateButtonAddClient)
 	ON_COMMAND(ID_NET_BUTTON_ADD_HUB, OnButtonAddHub)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_HUB, OnUpdateButtonAddHub)
 	ON_COMMAND(ID_NET_BUTTON_ADD_INTERNET, OnButtonAddInternet)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_INTERNET, OnUpdateButtonAddInternet)
 	ON_COMMAND(ID_NET_BUTTON_ADD_MODEM, OnButtonAddModem)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_MODEM, OnUpdateButtonAddModem)
 	ON_COMMAND(ID_NET_BUTTON_ADD_PRINTER, OnButtonAddPrinter)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_PRINTER, OnUpdateButtonAddPrinter)
 	ON_COMMAND(ID_NET_BUTTON_ADD_SERVER, OnButtonAddServer)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_SERVER, OnUpdateButtonAddServer)
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
@@ -437,38 +443,116 @@ void CNetView::OnButtonLink()
 
 void CNetView::OnButtonAddClient()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_CLIENT);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CLIENT)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_CLIENT));
+		m_drawObject = DRAW_OBJECT_CLIENT;
+	}
 }
 
 void CNetView::OnButtonAddHub()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_HUB);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_HUB)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_HUB));
+		m_drawObject = DRAW_OBJECT_HUB;
+	}
 }
 
 void CNetView::OnButtonAddInternet()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_INTERNET);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_INTERNET)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_INTERNET));
+		m_drawObject = DRAW_OBJECT_INTERNET;
+	}
 }
 
 void CNetView::OnButtonAddModem()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_ADSL);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_MODEM)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_ADSL));
+		m_drawObject = DRAW_OBJECT_MODEM;
+	}
 }
 
 void CNetView::OnButtonAddPrinter()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_PRINTER);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_PRINTER)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_PRINTER));
+		m_drawObject = DRAW_OBJECT_PRINTER;
+	}
 }
 
 void CNetView::OnButtonAddServer()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_SERVER);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_SERVER)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_SERVER));
+		m_drawObject = DRAW_OBJECT_SERVER;
+	}
+}
+
+void CNetView::OnUpdateButtonAddClient(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CLIENT);
+}
+
+void CNetView::OnUpdateButtonAddHub(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_HUB);
+}
+
+void CNetView::OnUpdateButtonAddInternet(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_INTERNET);
+}
+
+void CNetView::OnUpdateButtonAddModem(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_MODEM);
+}
+
+void CNetView::OnUpdateButtonAddPrinter(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_PRINTER);
+}
+
+void CNetView::OnUpdateButtonAddServer(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_SERVER);
 }
 
 // Displays the Export dialog and exports the editor contents to the desired format.

@@ -45,14 +45,22 @@
 IMPLEMENT_DYNCREATE(CUmlView, CView)
 
 BEGIN_MESSAGE_MAP(CUmlView, CView)
-	ON_COMMAND(ID_BUTTON_CLASS, OnButtonClass)
-	ON_COMMAND(ID_BUTTON_LINK, OnButtonLink)
 	ON_WM_SIZE()
 	ON_WM_ERASEBKGND()
-	ON_COMMAND(ID_BUTTON_NOTE, OnButtonNote)
-	ON_COMMAND(ID_BUTTON_PACKAGE, OnButtonPackage)
-	ON_COMMAND(ID_BUTTON_LABEL, OnButtonLabel)
+	ON_COMMAND(ID_BUTTON_CLASS, OnButtonClass)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_CLASS, OnUpdateButtonClass)
 	ON_COMMAND(ID_BUTTON_INTERFACE, OnButtonInterface)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_INTERFACE, OnUpdateButtonInterface)
+	ON_COMMAND(ID_BUTTON_LABEL, OnButtonLabel)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_LABEL, OnUpdateButtonLabel)
+	ON_COMMAND(ID_BUTTON_LINK, OnButtonLink)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_LINK, OnUpdateButtonLink)
+	ON_COMMAND(ID_BUTTON_NOTE, OnButtonNote)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_NOTE, OnUpdateButtonNote)
+	ON_COMMAND(ID_BUTTON_PACKAGE, OnButtonPackage)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_PACKAGE, OnUpdateButtonPackage)
+	ON_COMMAND(ID_BUTTON_TEMPLATE, OnButtonTemplate)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_TEMPLATE, OnUpdateButtonTemplate)
 	ON_COMMAND(ID_BUTTON_DISPLAY_PROPERTIES, OnButtonDisplayProperties)
 	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
@@ -123,7 +131,6 @@ BEGIN_MESSAGE_MAP(CUmlView, CView)
 	ON_UPDATE_COMMAND_UI(ID_UML_OPEN_PACKAGE, OnUpdateOpenPackage)
 	ON_COMMAND(ID_EDIT_DELETE, OnEditDelete)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, OnUpdateEditDelete)
-	ON_COMMAND(ID_BUTTON_TEMPLATE, OnButtonTemplate)
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
@@ -335,39 +342,138 @@ BOOL CUmlView::OnEraseBkgnd(CDC* /*pDC*/)
 
 // CUmlView button and menu handlers
 
-void CUmlView::OnButtonLink()
-{
-	m_editor.StartDrawingObject(new CUMLLineSegment);
-}
-
-void CUmlView::OnButtonNote()
-{
-	CUMLEntityNote* obj = new CUMLEntityNote;
-	m_editor.StartDrawingObject(obj);
-}
-
-void CUmlView::OnButtonPackage()
-{
-	CUMLEntityPackage* obj = new CUMLEntityPackage;
-	m_editor.StartDrawingObject(obj);
-}
-
 void CUmlView::OnButtonClass()
 {
-	CUMLEntityClass* obj = new CUMLEntityClass;
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CLASS)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CUMLEntityClass);
+		m_drawObject = DRAW_OBJECT_CLASS;
+	}
 }
 
-void CUmlView::OnButtonLabel()
+void CUmlView::OnUpdateButtonClass(CCmdUI* pCmdUI)
 {
-	CUMLEntityLabel* obj = new CUMLEntityLabel;
-	m_editor.StartDrawingObject(obj);
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CLASS);
 }
 
 void CUmlView::OnButtonInterface()
 {
-	CUMLEntityInterface* obj = new CUMLEntityInterface;
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_INTERFACE)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CUMLEntityInterface);
+		m_drawObject = DRAW_OBJECT_INTERFACE;
+	}
+}
+
+void CUmlView::OnUpdateButtonInterface(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_INTERFACE);
+}
+
+void CUmlView::OnButtonLabel()
+{
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LABEL)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CUMLEntityLabel);
+		m_drawObject = DRAW_OBJECT_LABEL;
+	}
+}
+
+void CUmlView::OnUpdateButtonLabel(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LABEL);
+}
+
+void CUmlView::OnButtonLink()
+{
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LINK)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CUMLLineSegment);
+		m_drawObject = DRAW_OBJECT_LINK;
+	}
+}
+
+void CUmlView::OnUpdateButtonLink(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_editor.GetObjectCount() > 1);
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LINK);
+}
+
+void CUmlView::OnButtonNote()
+{
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_NOTE)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CUMLEntityNote);
+		m_drawObject = DRAW_OBJECT_NOTE;
+	}
+}
+
+void CUmlView::OnUpdateButtonNote(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_NOTE);
+}
+
+void CUmlView::OnButtonPackage()
+{
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_PACKAGE)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CUMLEntityPackage);
+		m_drawObject = DRAW_OBJECT_PACKAGE;
+	}
+}
+
+void CUmlView::OnUpdateButtonPackage(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_PACKAGE);
+}
+
+void CUmlView::OnButtonTemplate()
+{
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_TEMPLATE)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CUMLEntityClassTemplate);
+		m_drawObject = DRAW_OBJECT_TEMPLATE;
+	}
+}
+
+void CUmlView::OnUpdateButtonTemplate(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_TEMPLATE);
 }
 
 void CUmlView::OnButtonDisplayProperties()
@@ -785,12 +891,6 @@ void CUmlView::OnExportHtml()
 void CUmlView::OnUpdateExport(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
-}
-
-void CUmlView::OnButtonTemplate()
-{
-	CUMLEntityClassTemplate* obj = new CUMLEntityClassTemplate;
-	m_editor.StartDrawingObject(obj);
 }
 
 void CUmlView::OnSelectAll()

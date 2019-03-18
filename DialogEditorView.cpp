@@ -104,8 +104,6 @@ BEGIN_MESSAGE_MAP(CDialogEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT_EMF, OnUpdateExport)
 	ON_COMMAND(ID_EXPORT_HTML, OnExportHtml)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT_HTML, OnUpdateExport)
-	ON_COMMAND(ID_DIALOG_ADD_NONE, OnAddNone)
-	ON_UPDATE_COMMAND_UI(ID_DIALOG_ADD_NONE, OnUpdateAddNone)
 	ON_UPDATE_COMMAND_UI(ID_DIALOG_ADD_BUTTON, OnUpdateAddButton)
 	ON_UPDATE_COMMAND_UI(ID_DIALOG_ADD_CHECKBOX, OnUpdateAddCheckbox)
 	ON_UPDATE_COMMAND_UI(ID_DIALOG_ADD_COMBOBOX, OnUpdateAddCombobox)
@@ -473,64 +471,114 @@ void CDialogEditorView::OnSettings()
 
 void CDialogEditorView::OnAddButton()
 {
-	CDiagramButton* obj = new CDiagramButton;
-	m_editor.StartDrawingObject(obj);
-	m_drawObject = DRAW_OBJECT_BUTTON;
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_BUTTON)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CDiagramButton);
+		m_drawObject = DRAW_OBJECT_BUTTON;
+	}
 }
 
 void CDialogEditorView::OnAddEdit()
 {
-	CDiagramEdit* obj = new CDiagramEdit;
-	m_editor.StartDrawingObject(obj);
-	m_drawObject = DRAW_OBJECT_EDIT;
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_EDIT)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CDiagramEdit);
+		m_drawObject = DRAW_OBJECT_EDIT;
+	}
 }
 
 void CDialogEditorView::OnAddStatic()
 {
-	CDiagramStatic* obj = new CDiagramStatic;
-	m_editor.StartDrawingObject(obj);
-	m_drawObject = DRAW_OBJECT_STATIC;
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_STATIC)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CDiagramStatic);
+		m_drawObject = DRAW_OBJECT_STATIC;
+	}
 }
 
 void CDialogEditorView::OnAddCheckbox()
 {
-	CDiagramCheckbox* obj = new CDiagramCheckbox;
-	m_editor.StartDrawingObject(obj);
-	m_drawObject = DRAW_OBJECT_CHECKBOX;
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CHECKBOX)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CDiagramCheckbox);
+		m_drawObject = DRAW_OBJECT_CHECKBOX;
+	}
 }
 
 void CDialogEditorView::OnAddCombobox()
 {
-	CDiagramCombobox* obj = new CDiagramCombobox;
-	m_editor.StartDrawingObject(obj);
-	m_drawObject = DRAW_OBJECT_COMBOBOX;
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_COMBOBOX)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CDiagramCombobox);
+		m_drawObject = DRAW_OBJECT_COMBOBOX;
+	}
 }
 
 void CDialogEditorView::OnAddGroupbox()
 {
-	CDiagramGroupbox* obj = new CDiagramGroupbox;
-	m_editor.StartDrawingObject(obj);
-	m_drawObject = DRAW_OBJECT_GROUPBOX;
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_GROUPBOX)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CDiagramGroupbox);
+		m_drawObject = DRAW_OBJECT_GROUPBOX;
+	}
 }
 
 void CDialogEditorView::OnAddListbox()
 {
-	CDiagramListbox* obj = new CDiagramListbox;
-	m_editor.StartDrawingObject(obj);
-	m_drawObject = DRAW_OBJECT_LISTBOX;
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LISTBOX)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CDiagramListbox);
+		m_drawObject = DRAW_OBJECT_LISTBOX;
+	}
 }
 
 void CDialogEditorView::OnAddRadiobutton()
 {
-	CDiagramRadiobutton* obj = new CDiagramRadiobutton;
-	m_editor.StartDrawingObject(obj);
-	m_drawObject = DRAW_OBJECT_RADIOBUTTON;
-}
-
-void CDialogEditorView::OnAddNone()
-{
-	m_editor.StartDrawingObject(NULL);
-	m_drawObject = DRAW_OBJECT_NONE;
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_RADIOBUTTON)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CDiagramRadiobutton);
+		m_drawObject = DRAW_OBJECT_RADIOBUTTON;
+	}
 }
 
 void CDialogEditorView::OnUpdateAddButton(CCmdUI* pCmdUI)
@@ -571,11 +619,6 @@ void CDialogEditorView::OnUpdateAddRadiobutton(CCmdUI* pCmdUI)
 void CDialogEditorView::OnUpdateAddStatic(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_STATIC);
-}
-
-void CDialogEditorView::OnUpdateAddNone(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(!m_editor.IsDrawing());
 }
 
 ///////////////////////////////////////////////////////////

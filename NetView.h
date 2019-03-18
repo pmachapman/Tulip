@@ -16,6 +16,14 @@
 
 #include "NetworkEditor/NetworkEditor.h"
 
+#define DRAW_OBJECT_NONE		0
+#define DRAW_OBJECT_CLIENT		1
+#define DRAW_OBJECT_HUB			2
+#define DRAW_OBJECT_INTERNET	3
+#define DRAW_OBJECT_MODEM		4
+#define DRAW_OBJECT_PRINTER		5
+#define DRAW_OBJECT_SERVER		6
+
 class CNetView : public CView
 {
 protected: // create from serialization only
@@ -55,12 +63,18 @@ protected:
 protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnButtonAddClient();
+	afx_msg void OnUpdateButtonAddClient(CCmdUI* pCmdUI);
 	afx_msg void OnButtonAddHub();
+	afx_msg void OnUpdateButtonAddHub(CCmdUI* pCmdUI);
 	afx_msg void OnButtonAddInternet();
+	afx_msg void OnUpdateButtonAddInternet(CCmdUI* pCmdUI);
 	afx_msg void OnButtonAddModem();
+	afx_msg void OnUpdateButtonAddModem(CCmdUI* pCmdUI);
 	afx_msg void OnButtonAddPrinter();
+	afx_msg void OnUpdateButtonAddPrinter(CCmdUI* pCmdUI);
 	afx_msg void OnButtonAddServer();
-    afx_msg void OnButtonLink();
+	afx_msg void OnUpdateButtonAddServer(CCmdUI* pCmdUI);
+	afx_msg void OnButtonLink();
 	afx_msg void OnUpdateLink(CCmdUI* pCmdUI);
 	afx_msg void OnExport();
 	afx_msg void OnUpdateExport(CCmdUI* pCmdUI);
@@ -126,6 +140,7 @@ protected:
 private:
 	CNetworkEditor	m_editor;
 	int			m_screenResolutionX;
+	int			m_drawObject; // What type of object we are drawing
 	BOOL		m_onlyh;
 };
 
