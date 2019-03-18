@@ -1509,6 +1509,41 @@ void CUMLEditor::ExportHTML(const CString& filename)
 	}
 }
 
+void CUMLEditor::MakeSameSizeSelected()
+/* ============================================================
+	Function :		CUMLEditor::MakeSameSizeSelected
+	Description :	Makes all selected objects the same size as
+					the top selected object in the data container.
+	Access :		Public
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Call to make all selected objects the same
+					size.
+					Should only be called if "GetSelectCount() >
+					1", that is, more than one object is selected.
+
+   ============================================================*/
+{
+	if (GetSelectCount() > 1)
+	{
+		GetUMLEntityContainer()->Snapshot();
+		CDiagramEntity* obj = GetSelectedObject();
+		if (obj)
+		{
+			double width = obj->GetRight() - obj->GetLeft();
+			double height = obj->GetBottom() - obj->GetTop();
+			int count = 0;
+			while ((obj = GetUMLEntityContainer()->GetAt(count++)))
+				if (obj->IsSelected() && obj->GetType() != _T("uml_line"))
+					obj->SetRect(obj->GetLeft(), obj->GetTop(), obj->GetLeft() + width, obj->GetTop() + height);
+		}
+		SetModified(TRUE);
+		RedrawWindow();
+	}
+}
+
 void CUMLEditor::SetStripLeadingClassCharacter(BOOL stripLeadingClassLetter)
 /* ============================================================
 	Function :		CUMLEditor::SetStripLeadingClassCharacter

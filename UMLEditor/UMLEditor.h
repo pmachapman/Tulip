@@ -28,6 +28,7 @@ public:
 
 	virtual void	StartDrawingObject(CDiagramEntity* obj);
 	virtual void	SelectAll();
+	virtual void	MakeSameSizeSelected();
 
 	void Save(CString& filename);
 	void Load(CString& filename);
