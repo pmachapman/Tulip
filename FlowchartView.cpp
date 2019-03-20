@@ -5,6 +5,7 @@
 #include "Tulip.h"
 
 #include "MainFrm.h"
+#include "DiagramView.h"
 #include "FlowchartDoc.h"
 #include "FlowchartView.h"
 
@@ -29,45 +30,32 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CFlowchartView
 
-IMPLEMENT_DYNCREATE(CFlowchartView, CView)
+IMPLEMENT_DYNCREATE(CFlowchartView, CDiagramView)
 
-BEGIN_MESSAGE_MAP(CFlowchartView, CView)
+BEGIN_MESSAGE_MAP(CFlowchartView, CDiagramView)
 	//{{AFX_MSG_MAP(CFlowchartView)
 	ON_WM_SIZE()
 	ON_WM_ERASEBKGND()
+	ON_COMMAND(ID_FLOWCHART_BUTTON_ARROW, OnButtonArrow)
+	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_BUTTON_ARROW, OnUpdateButtonArrow)
 	ON_COMMAND(ID_FLOWCHART_BUTTON_BOX, OnButtonBox)
+	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_BUTTON_BOX, OnUpdateButtonBox)
 	ON_COMMAND(ID_FLOWCHART_BUTTON_CONDITION, OnButtonCondition)
+	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_BUTTON_CONDITION, OnUpdateButtonCondition)
 	ON_COMMAND(ID_FLOWCHART_BUTTON_CONNECTOR, OnButtonConnector)
+	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_BUTTON_CONNECTOR, OnUpdateButtonConnector)
 	ON_COMMAND(ID_FLOWCHART_BUTTON_IO, OnButtonIo)
+	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_BUTTON_IO, OnUpdateButtonIo)
+	ON_COMMAND(ID_FLOWCHART_BUTTON_LABEL, OnButtonLabel)
+	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_BUTTON_LABEL, OnUpdateButtonLabel)
 	ON_COMMAND(ID_FLOWCHART_BUTTON_LINE, OnButtonLine)
+	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_BUTTON_LINE, OnUpdateButtonLine)
 	ON_COMMAND(ID_FLOWCHART_BUTTON_START, OnButtonStart)
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
-	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
-	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
-	ON_COMMAND(ID_EDIT_SELECT_ALL, OnSelectAll)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_SELECT_ALL, OnUpdateSelectAll)
-	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
+	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_BUTTON_START, OnUpdateButtonStart)
 	ON_COMMAND(ID_EXPORT, OnExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT, OnUpdateExport)
 	ON_COMMAND(ID_EXPORT_EMF, OnExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT_EMF, OnUpdateExport)
-	ON_COMMAND(ID_FLOWCHART_BUTTON_ARROW, OnButtonArrow)
-	ON_COMMAND(IDC_SETTINGS, OnSettings)
-	ON_COMMAND(ID_ZOOM, OnZoom)
-	ON_COMMAND(ID_ZOOM_100, OnZoom100)
-	ON_COMMAND(ID_ZOOM_150, OnZoom150)
-	ON_COMMAND(ID_ZOOM_200, OnZoom200)
-	ON_COMMAND(ID_ZOOM_25, OnZoom25)
-	ON_COMMAND(ID_ZOOM_50, OnZoom50)
-	ON_COMMAND(ID_SNAP, OnSnap)
-	ON_UPDATE_COMMAND_UI(ID_SNAP, OnUpdateSnap)
-	ON_COMMAND(ID_SHOW_GRID, OnShowGrid)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_GRID, OnUpdateShowGrid)
-	ON_COMMAND(ID_FLOWCHART_BUTTON_LABEL, OnButtonLabel)
 	ON_COMMAND(ID_BUTTON_LINK, OnButtonLink)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_LINK, OnUpdateButtonLink)
 	ON_COMMAND(ID_FLOWCHART_LINK_LABEL, OnLinkLabel)
@@ -76,28 +64,6 @@ BEGIN_MESSAGE_MAP(CFlowchartView, CView)
 	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_FLIP_LINK, OnUpdateFlipLink)
 	ON_COMMAND(ID_PROPERTY, OnProperty)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
-	ON_COMMAND(ID_MARGINS, OnMargins)
-	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
-	ON_COMMAND(ID_RESTRAIN, OnRestraints)
-	ON_UPDATE_COMMAND_UI(ID_RESTRAIN, OnUpdateRestraints)
-	ON_COMMAND(ID_BOTTOM, OnBottom)
-	ON_UPDATE_COMMAND_UI(ID_BOTTOM, OnUpdateBottom)
-	ON_COMMAND(ID_BOTTOM_ALIGN, OnBottomAlign)
-	ON_UPDATE_COMMAND_UI(ID_BOTTOM_ALIGN, OnUpdateBottomAlign)
-	ON_COMMAND(ID_DOWN, OnDown)
-	ON_UPDATE_COMMAND_UI(ID_DOWN, OnUpdateDown)
-	ON_COMMAND(ID_FRONT, OnFront)
-	ON_UPDATE_COMMAND_UI(ID_FRONT, OnUpdateFront)
-	ON_COMMAND(ID_LEFT_ALIGN, OnLeftAlign)
-	ON_UPDATE_COMMAND_UI(ID_LEFT_ALIGN, OnUpdateLeftAlign)
-	ON_COMMAND(ID_MAKE_SAME_SIZE, OnMakeSameSize)
-	ON_UPDATE_COMMAND_UI(ID_MAKE_SAME_SIZE, OnUpdateMakeSameSize)
-	ON_COMMAND(ID_RIGHT_ALIGN, OnRightAlign)
-	ON_UPDATE_COMMAND_UI(ID_RIGHT_ALIGN, OnUpdateRightAlign)
-	ON_COMMAND(ID_TOP_ALIGN, OnTopAlign)
-	ON_UPDATE_COMMAND_UI(ID_TOP_ALIGN, OnUpdateTopAlign)
-	ON_COMMAND(ID_UP, OnUp)
-	ON_UPDATE_COMMAND_UI(ID_UP, OnUpdateUp)
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -157,7 +123,7 @@ void CFlowchartView::OnDraw(CDC* pDC)
 
 void CFlowchartView::OnDrawIconicThumbnailOrLivePreview(CDC& dc, CRect rect, CSize szRequiredThumbnailSize, BOOL bIsThumbnail, BOOL& bAlphaChannelSet)
 {
-	m_editor.DrawPreview(&dc, rect);
+	m_editor.Draw(&dc, rect);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -213,6 +179,9 @@ void CFlowchartView::OnInitialUpdate()
 		GetClientRect(rect);
 		pDoc->GetData()->SetClipboardHandler(&theApp.m_flowchartClip);
 		m_editor.Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
+
+		// Pass the editor to the base class
+		SetEditor(&m_editor);
 
 		// Only set the size if one wasn't pre-specified
 		if (!pDoc->GetData()->IsModified())
@@ -281,19 +250,6 @@ void CFlowchartView::OnActivateView(BOOL bActivate, CView* pActivateView, CView*
 	pMainFrame->SetRibbonContextCategory(ID_FLOWCHARTCONTEXT, bActivate);
 }
 
-void CFlowchartView::OnSize(UINT nType, int cx, int cy)
-{
-	CView::OnSize(nType, cx, cy);
-
-	if (m_editor.m_hWnd)
-		m_editor.MoveWindow(0, 0, cx, cy);
-}
-
-BOOL CFlowchartView::OnEraseBkgnd(CDC* /*pDC*/)
-{
-	return TRUE;
-}
-
 /////////////////////////////////////////////////////////////////////////////
 // CFlowchartView command handlers
 
@@ -302,136 +258,158 @@ BOOL CFlowchartView::OnEraseBkgnd(CDC* /*pDC*/)
 void CFlowchartView::OnButtonBox()
 {
 	m_editor.StartDrawingObject(new CFlowchartEntityBox);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_BOX)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CFlowchartEntityBox);
+		m_drawObject = DRAW_OBJECT_BOX;
+	}
 }
 
 void CFlowchartView::OnButtonCondition()
 {
 	m_editor.StartDrawingObject(new CFlowchartEntityCondition);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CONDITION)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CFlowchartEntityCondition);
+		m_drawObject = DRAW_OBJECT_CONDITION;
+	}
 }
 
 void CFlowchartView::OnButtonConnector()
 {
-	m_editor.StartDrawingObject(new CFlowchartEntityConnector);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CONNECTOR)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CFlowchartEntityConnector);
+		m_drawObject = DRAW_OBJECT_CONNECTOR;
+	}
 }
 
 void CFlowchartView::OnButtonIo()
 {
-	m_editor.StartDrawingObject(new CFlowchartEntityIO);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_IO)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CFlowchartEntityIO);
+		m_drawObject = DRAW_OBJECT_IO;
+	}
 }
 
 void CFlowchartView::OnButtonLine()
 {
-	m_editor.StartDrawingObject(new CFlowchartLineSegment);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LINE)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CFlowchartLineSegment);
+		m_drawObject = DRAW_OBJECT_LINE;
+	}
 }
 
 void CFlowchartView::OnButtonStart()
 {
-	m_editor.StartDrawingObject(new CFlowchartEntityTerminator);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_START)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CFlowchartEntityTerminator);
+		m_drawObject = DRAW_OBJECT_START;
+	}
 }
 
 void CFlowchartView::OnButtonArrow()
 {
-	m_editor.StartDrawingObject(new CFlowchartLinkableLineSegment);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_ARROW)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CFlowchartLinkableLineSegment);
+		m_drawObject = DRAW_OBJECT_ARROW;
+	}
 }
 
 void CFlowchartView::OnButtonLabel()
 {
-	m_editor.StartDrawingObject(new CFlowchartLabel);
-}
-
-void CFlowchartView::OnZoom()
-{
-}
-
-void CFlowchartView::OnZoom100()
-{
-	m_editor.SetZoom(1);
-}
-
-void CFlowchartView::OnZoom150()
-{
-	m_editor.SetZoom(1.5);
-}
-
-void CFlowchartView::OnZoom200()
-{
-	m_editor.SetZoom(2);
-}
-
-void CFlowchartView::OnZoom25()
-{
-	m_editor.SetZoom(.25);
-}
-
-void CFlowchartView::OnZoom50()
-{
-	m_editor.SetZoom(.5);
-}
-
-void CFlowchartView::OnSnap()
-{
-	m_editor.SetSnapToGrid(!m_editor.GetSnapToGrid());
-}
-
-void CFlowchartView::OnShowGrid()
-{
-	m_editor.ShowGrid(!m_editor.IsGridVisible());
-}
-
-void CFlowchartView::OnMargins()
-{
-	m_editor.ShowMargin(!m_editor.IsMarginVisible());
-}
-
-void CFlowchartView::OnRestraints()
-{
-	if (m_editor.GetRestraints() == RESTRAINT_MARGIN)
-		m_editor.SetRestraints(RESTRAINT_VIRTUAL);
-	else
-		m_editor.SetRestraints(RESTRAINT_MARGIN);
-}
-
-void CFlowchartView::OnSettings()
-{
-	CDialogSettings	dlg;
-
-	dlg.m_color = m_editor.GetBackgroundColor();
-	dlg.m_width = m_editor.GetVirtualSize().cx;
-	dlg.m_height = m_editor.GetVirtualSize().cy;
-	dlg.m_gridWidth = m_editor.GetGridSize().cx;
-	dlg.m_gridHeight = m_editor.GetGridSize().cy;
-	m_editor.GetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
-
-	if (dlg.DoModal() == IDOK)
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LABEL)
 	{
-		m_editor.SetBackgroundColor(dlg.m_color);
-		m_editor.SetGridSize(CSize(dlg.m_gridWidth, dlg.m_gridHeight));
-		m_editor.SetVirtualSize(CSize(dlg.m_width, dlg.m_height));
-		m_editor.SetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
-		m_editor.RedrawWindow();
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CFlowchartLabel);
+		m_drawObject = DRAW_OBJECT_LABEL;
 	}
 }
 
+void CFlowchartView::OnUpdateButtonBox(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_BOX);
+}
+
+void CFlowchartView::OnUpdateButtonCondition(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CONDITION);
+}
+
+void CFlowchartView::OnUpdateButtonConnector(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CONNECTOR);
+}
+
+void CFlowchartView::OnUpdateButtonIo(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_IO);
+}
+
+void CFlowchartView::OnUpdateButtonLine(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LINE);
+}
+
+void CFlowchartView::OnUpdateButtonStart(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_START);
+}
+
+void CFlowchartView::OnUpdateButtonArrow(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_ARROW);
+}
+
+void CFlowchartView::OnUpdateButtonLabel(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LABEL);
+}
+
 // Edit menu
-void CFlowchartView::OnEditCopy()
-{
-	m_editor.Copy();
-}
-
-void CFlowchartView::OnEditCut()
-{
-	m_editor.Cut();
-}
-
-void CFlowchartView::OnEditPaste()
-{
-	m_editor.Paste();
-}
-
-void CFlowchartView::OnEditUndo()
-{
-	m_editor.Undo();
-}
 
 void CFlowchartView::OnProperty()
 {
@@ -446,6 +424,7 @@ void CFlowchartView::OnProperty()
 }
 
 // File menu
+
 void CFlowchartView::OnExport()
 {
 	// We save the current modified-state of 
@@ -475,6 +454,7 @@ void CFlowchartView::OnUpdateExport(CCmdUI* pCmdUI)
 }
 
 // Links menu
+
 void CFlowchartView::OnButtonLink()
 {
 	if (m_editor.IsLinked())
@@ -497,34 +477,10 @@ void CFlowchartView::OnFlipLink()
 	m_editor.OnLinkDirection();
 }
 
-void CFlowchartView::OnSelectAll()
-{
-	m_editor.SelectAll();
-}
-
 /////////////////////////////////////////////////////////////////////////////
-// CFlowchartView cammand enablers
+// CFlowchartView command enablers
 
 // Edit menu
-void CFlowchartView::OnUpdateEditUndo(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateUndo(pCmdUI);
-}
-
-void CFlowchartView::OnUpdateEditCopy(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateCopy(pCmdUI);
-}
-
-void CFlowchartView::OnUpdateEditCut(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateCut(pCmdUI);
-}
-
-void CFlowchartView::OnUpdateEditPaste(CCmdUI* pCmdUI)
-{
-	m_editor.UpdatePaste(pCmdUI);
-}
 
 void CFlowchartView::OnUpdateProperty(CCmdUI* pCmdUI)
 {
@@ -553,110 +509,4 @@ void CFlowchartView::OnUpdateLinkLabel(CCmdUI* pCmdUI)
 void CFlowchartView::OnUpdateFlipLink(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.IsLinked());
-}
-
-void CFlowchartView::OnUpdateSnap(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.GetSnapToGrid());
-}
-
-void CFlowchartView::OnUpdateShowGrid(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.IsGridVisible());
-}
-
-void CFlowchartView::OnUpdateMargins(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.IsMarginVisible());
-}
-
-void CFlowchartView::OnUpdateRestraints(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.GetRestraints() == RESTRAINT_MARGIN);
-}
-
-void CFlowchartView::OnUpdateSelectAll(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
-}
-
-///////////////////////////////////////////////////////////
-// Align menu
-//
-
-void CFlowchartView::OnLeftAlign()
-{
-	m_editor.LeftAlignSelected();
-}
-void CFlowchartView::OnTopAlign()
-{
-	m_editor.TopAlignSelected();
-}
-void CFlowchartView::OnRightAlign()
-{
-	m_editor.RightAlignSelected();
-}
-void CFlowchartView::OnBottomAlign()
-{
-	m_editor.BottomAlignSelected();
-}
-
-void CFlowchartView::OnUpdateLeftAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CFlowchartView::OnUpdateTopAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CFlowchartView::OnUpdateRightAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CFlowchartView::OnUpdateBottomAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-
-void CFlowchartView::OnMakeSameSize()
-{
-	m_editor.MakeSameSizeSelected();
-}
-void CFlowchartView::OnUpdateMakeSameSize(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-
-void CFlowchartView::OnUp()
-{
-	m_editor.Up();
-}
-void CFlowchartView::OnDown()
-{
-	m_editor.Down();
-}
-void CFlowchartView::OnFront()
-{
-	m_editor.Front();
-}
-void CFlowchartView::OnBottom()
-{
-	m_editor.Bottom();
-}
-
-void CFlowchartView::OnUpdateUp(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-void CFlowchartView::OnUpdateDown(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-void CFlowchartView::OnUpdateFront(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-void CFlowchartView::OnUpdateBottom(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
 }

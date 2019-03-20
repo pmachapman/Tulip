@@ -198,95 +198,21 @@ BEGIN
     END
 END
 
-IDR_TULIPTYPE MENU
-BEGIN
-    POPUP "&File"
-    BEGIN
-        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
-        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
-        MENUITEM "&Close",                      ID_FILE_CLOSE
-        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
-        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
-        MENUITEM SEPARATOR
-        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
-        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
-        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
-        MENUITEM SEPARATOR
-        MENUITEM "E&xit",                       ID_APP_EXIT
-    END
-    POPUP "&Edit"
-    BEGIN
-        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
-        MENUITEM SEPARATOR
-        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
-        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
-        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
-    END
-    POPUP "&View"
-    BEGIN
-        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
-        POPUP "&Application Look"
-        BEGIN
-            MENUITEM "Windows &2000",               ID_VIEW_APPLOOK_WIN_2000
-            MENUITEM "Office &XP",                  ID_VIEW_APPLOOK_OFF_XP
-            MENUITEM "&Windows XP",                 ID_VIEW_APPLOOK_WIN_XP
-            MENUITEM "Office 200&3",                ID_VIEW_APPLOOK_OFF_2003
-            MENUITEM "Visual Studio 200&5",         ID_VIEW_APPLOOK_VS_2005
-            MENUITEM "Visual Studio 200&8",         ID_VIEW_APPLOOK_VS_2008
-            POPUP "Office 200&7"
-            BEGIN
-                MENUITEM "&Blue Style",                 ID_VIEW_APPLOOK_OFF_2007_BLUE
-                MENUITEM "B&lack Style",                ID_VIEW_APPLOOK_OFF_2007_BLACK
-                MENUITEM "&Silver Style",               ID_VIEW_APPLOOK_OFF_2007_SILVER
-                MENUITEM "&Aqua Style",                 ID_VIEW_APPLOOK_OFF_2007_AQUA
-            END
-        END
-    END
-    POPUP "&Window"
-    BEGIN
-        MENUITEM "&New Window",                 ID_WINDOW_NEW
-    END
-    POPUP "&Help"
-    BEGIN
-        MENUITEM "&About Tulip...",             ID_APP_ABOUT
-    END
-END
-
-IDR_WINDOWS_MENU MENU
-BEGIN
-    MENUITEM "&New Window",                 ID_WINDOW_NEW
-END
-
-IDR_HELP_MENU MENU
-BEGIN
-    MENUITEM "&About Tulip...",             ID_APP_ABOUT
-END
-
-IDR_THEME_MENU MENU
-BEGIN
-    MENUITEM "Office 2007 (&Blue Style)",   ID_VIEW_APPLOOK_OFF_2007_BLUE
-    MENUITEM "Office 2007 (B&lack Style)",  ID_VIEW_APPLOOK_OFF_2007_BLACK
-    MENUITEM "Office 2007 (&Silver Style)", ID_VIEW_APPLOOK_OFF_2007_SILVER
-    MENUITEM "Office 2007 (&Aqua Style)",   ID_VIEW_APPLOOK_OFF_2007_AQUA
-    MENUITEM "Win&dows 7",                  ID_VIEW_APPLOOK_WINDOWS_7
-END
-
 IDR_UML_MENU_PACKAGE_POPUP MENU
 BEGIN
     POPUP "_MENU_"
     BEGIN
-        MENUITEM "Open",                        199
+        MENUITEM "Open Package",                199
         MENUITEM SEPARATOR
-        MENUITEM "Cut",                         100
-        MENUITEM "Copy",                        101
-        MENUITEM "Duplicate",                   102
+        MENUITEM "Undo",                        ID_EDIT_UNDO
+        MENUITEM "Redo",                        ID_EDIT_REDO
         MENUITEM SEPARATOR
-        MENUITEM "Up",                          104
-        MENUITEM "Down",                        105
-        MENUITEM "To front",                    106
-        MENUITEM "To back",                     107
+        MENUITEM "Cut",                         ID_EDIT_CUT
+        MENUITEM "Copy",                        ID_EDIT_COPY
+        MENUITEM "Paste",                       ID_EDIT_PASTE
+        MENUITEM "Delete",                      ID_EDIT_DELETE
         MENUITEM SEPARATOR
-        MENUITEM "Properties",                  103
+        MENUITEM "Select All",                  ID_EDIT_SELECT_ALL
     END
 END
 
@@ -294,30 +220,33 @@ IDR_UML_MENU_LINK MENU
 BEGIN
     POPUP "_MENU_"
     BEGIN
-        MENUITEM "Cut",                         100
-        MENUITEM "Copy",                        101
-        MENUITEM "Duplicate",                   102
-        MENUITEM SEPARATOR
-        MENUITEM "Up",                          104
-        MENUITEM "Down",                        105
-        MENUITEM "To front",                    106
-        MENUITEM "To back",                     107
-        MENUITEM SEPARATOR
         MENUITEM "Flip direction",              197
-        MENUITEM "Properties",                  103
-    END
-END
-
-IDR_UML_MENU_EDITOR_POPUP MENU
-BEGIN
-    POPUP ""
-    BEGIN
+        MENUITEM SEPARATOR
+        MENUITEM "Undo",                        ID_EDIT_UNDO
+        MENUITEM "Redo",                        ID_EDIT_REDO
+        MENUITEM SEPARATOR
         MENUITEM "Cut",                         ID_EDIT_CUT
         MENUITEM "Copy",                        ID_EDIT_COPY
         MENUITEM "Paste",                       ID_EDIT_PASTE
+        MENUITEM "Delete",                      ID_EDIT_DELETE
         MENUITEM SEPARATOR
-        MENUITEM "Group",                       57645
-        MENUITEM "Ungroup",                     57646
+        MENUITEM "Select All",                  ID_EDIT_SELECT_ALL
+    END
+END
+
+IDR_MENU_EDITOR_POPUP MENU
+BEGIN
+    POPUP "_MENU_"
+    BEGIN
+        MENUITEM "Undo",                        ID_EDIT_UNDO
+        MENUITEM "Redo",                        ID_EDIT_REDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cut",                         ID_EDIT_CUT
+        MENUITEM "Copy",                        ID_EDIT_COPY
+        MENUITEM "Paste",                       ID_EDIT_PASTE
+        MENUITEM "Delete",                      ID_EDIT_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "Select All",                  ID_EDIT_SELECT_ALL
     END
 END
 
@@ -327,44 +256,15 @@ BEGIN
     BEGIN
         MENUITEM "Import...",                   198
         MENUITEM SEPARATOR
-        MENUITEM "Cut",                         100
-        MENUITEM "Copy",                        101
-        MENUITEM "Duplicate",                   102
+        MENUITEM "Undo",                        ID_EDIT_UNDO
+        MENUITEM "Redo",                        ID_EDIT_REDO
         MENUITEM SEPARATOR
-        MENUITEM "Up",                          104
-        MENUITEM "Down",                        105
-        MENUITEM "To front",                    106
-        MENUITEM "To back",                     107
-        MENUITEM SEPARATOR
-        MENUITEM "Properties",                  103
-    END
-END
-
-IDR_NET_MENU_EDITOR_POPUP MENU
-BEGIN
-    POPUP ""
-    BEGIN
         MENUITEM "Cut",                         ID_EDIT_CUT
         MENUITEM "Copy",                        ID_EDIT_COPY
         MENUITEM "Paste",                       ID_EDIT_PASTE
+        MENUITEM "Delete",                      ID_EDIT_DELETE
         MENUITEM SEPARATOR
-        MENUITEM "Link",                        IDM_NETWORKEDITOR_LINK
-        MENUITEM "Break link",                  IDM_NETWORKEDITOR_UNLINK
-    END
-END
-
-IDR_FLOWCHART_MENU_EDITOR_POPUP MENU
-BEGIN
-    POPUP ""
-    BEGIN
-        MENUITEM "Cut",                         ID_EDIT_CUT
-        MENUITEM "Copy",                        ID_EDIT_COPY
-        MENUITEM "Paste",                       ID_EDIT_PASTE
-        MENUITEM SEPARATOR
-        MENUITEM "Link",                        IDM_FLOWCHART_LINK
-        MENUITEM "Break link",                  IDM_FLOWCHART_UNLINK
-        MENUITEM "Flip link direction",         IDM_FLOWCHART_LINK_DIRECTION
-        MENUITEM "Link label...",               IDM_FLOWCHART_LINK_PROPERTIES
+        MENUITEM "Select All",                  ID_EDIT_SELECT_ALL
     END
 END
 
@@ -405,7 +305,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
     LTEXT           "Tulip, Version 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
-    LTEXT           "Copyright (C) 2018",IDC_STATIC,42,26,114,8
+    LTEXT           "Copyright 2018-2019 Conglomo. All rights reserved.",IDC_STATIC,42,26,114,8
     DEFPUSHBUTTON   "OK",IDOK,113,41,50,14,WS_GROUP
 END
 
@@ -710,7 +610,7 @@ CAPTION "Title"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_NET_EDIT_TITLE,5,5,65,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "Apply",IDOK,75,5,50,14
+    PUSHBUTTON      "Apply",IDOK,75,5,50,14
 END
 
 IDD_FLOWCHART_DIALOG_PROPERTY DIALOGEX 0, 0, 186, 52
@@ -720,7 +620,7 @@ CAPTION "Properties"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_TEXT,5,10,175,15,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "Apply",IDOK,130,30,50,14
+    PUSHBUTTON      "Apply",IDOK,130,30,50,14
     LTEXT           "Text:",IDC_STATIC,5,0,17,8
 END
 
@@ -772,7 +672,7 @@ FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_DIALOG_EDIT_TITLE,30,4,130,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_DIALOG_EDIT_NAME,30,20,90,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Apply",IDC_DIALOG_BUTTON_APPLY,125,20,35,15
+    PUSHBUTTON      "Apply",IDOK,125,20,35,15
     LTEXT           "Title:",IDC_STATIC,5,5,15,10
     LTEXT           "Name:",IDC_STATIC,5,20,20,10
 END
@@ -783,7 +683,7 @@ EXSTYLE WS_EX_TOOLWINDOW
 CAPTION "Control properties"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    PUSHBUTTON      "Apply",IDC_DIALOG_BUTTON_APPLY,125,20,35,15
+    PUSHBUTTON      "Apply",IDOK,125,20,35,15
     LTEXT           "Name:",-1,5,5,20,10
     EDITTEXT        IDC_DIALOG_EDIT_NAME,30,5,130,12,ES_AUTOHSCROLL
 END
@@ -809,13 +709,13 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904B0"
+        BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName", "Conglomo"
             VALUE "FileDescription", "Tulip"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "Tulip.exe"
-            VALUE "LegalCopyright", "Copyrigth 2018 Conglomo.  All rights reserved."
+            VALUE "LegalCopyright", "Copyright 2018-2019 Conglomo. All rights reserved."
             VALUE "OriginalFilename", "Tulip.exe"
             VALUE "ProductName", "Tulip"
             VALUE "ProductVersion", "1.0.0.1"
@@ -900,14 +800,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Ribbon
-//
-
-IDR_RIBBON              RT_RIBBON_XML           "res\\ribbon.mfcribbon-ms"
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Cursor
 //
 
@@ -985,6 +877,14 @@ IDD_DIALOG_SETTINGS AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Ribbon
+//
+
+IDR_RIBBON              RT_RIBBON_XML           "res\\ribbon.mfcribbon-ms"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1125,6 +1025,8 @@ END
 STRINGTABLE
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+    IDS_UML_EXPORT_FINISHED "The export is finished"
+    IDS_UML_TEMPLATE        "Template"
 END
 
 STRINGTABLE
@@ -1185,12 +1087,6 @@ STRINGTABLE
 BEGIN
     IDS_UML_GETSET_DEFINED  "Getter and setter already defined for the selected attribute."
     IDS_UML_MUST_SELECT_AN_ATTRIBUTE "You must select an attribute"
-END
-
-STRINGTABLE DISCARDABLE
-BEGIN
-    IDS_UML_EXPORT_FINISHED "The export is finished"
-    IDS_UML_TEMPLATE        "Template"
 END
 
 STRINGTABLE
@@ -1278,6 +1174,12 @@ END
 STRINGTABLE
 BEGIN
     ID_BOTTOM               "Send the object to the back\nSend to Back"
+END
+
+STRINGTABLE
+BEGIN
+    ID_DUPLICATE            "Duplicate the selected object\nDuplicate"
+    ID_UML_OPEN_PACKAGE     "Opens a package for editing\nOpen Package"
 END
 
 #endif    // English (United States) resources

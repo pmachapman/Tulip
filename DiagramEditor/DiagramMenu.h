@@ -1,6 +1,8 @@
 #ifndef _DIAGRAMMENU_H_
 #define _DIAGRAMMENU_H_
 
+#include "resource.h"
+
 class CDiagramEditor;
 
 class CDiagramMenu
@@ -14,7 +16,7 @@ public:
 
 protected:
 	CMenu	m_menu;
-
+	int		selectedMenu;
 };
 
 #endif // _DIAGRAMMENU_H_

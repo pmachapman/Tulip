@@ -76,6 +76,7 @@
 					23/1 2005	Made SetParent/GetParent public.
    ========================================================================*/
 #include "stdafx.h"
+#include "resource.h"
 #include "DiagramEntity.h"
 #include "DiagramEntityContainer.h"
 #include "Tokenizer.h"
@@ -560,9 +561,23 @@ void CDiagramEntity::MoveRect(double x, double y)
 
    ============================================================*/
 {
-
 	SetRect(GetLeft() + x, GetTop() + y, GetRight() + x, GetBottom() + y);
+}
 
+void CDiagramEntity::MoveRect(CSize point)
+/* ============================================================
+	Function :		CDiagramEntity::MoveRect
+	Description :	Moves the object rectangle.
+	Access :		Public
+
+	Return :		void
+	Parameters :	CSize x		-	Move cx and cy steps.
+
+	Usage :			Call to move the object on screen.
+
+   ============================================================*/
+{
+	SetRect(GetLeft() + point.cx, GetTop() + point.cy, GetRight() + point.cx, GetBottom() + point.cy);
 }
 
 void CDiagramEntity::Select(BOOL selected)
@@ -779,45 +794,20 @@ BOOL CDiagramEntity::DoMessage(UINT msg, CDiagramEntity* sender, CWnd* from)
 
 }
 
-void CDiagramEntity::ShowPopup(CPoint point, CWnd* parent)
+int CDiagramEntity::GetMenuResourceId() const
 /* ============================================================
 	Function :		CDiagramEntity::ShowPopup
-	Description :	Shows the popup menu for the object.
+	Description :	Gets the resource id for the popup menu for the object.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CPoint point	-	The point to track.
-					CWnd* parent	-	The parent "CWnd" of the
-										menu (should be the
-										"CDiagramEditor")
+	Parameters :	
 
-	Usage :			The function uses hardcoded strings to
-					avoid having to include resource file
-					fragments. Derived classes needing a non-
-					standard or localized menu should load
-					menues from resources instead.
+	Usage :			The function should return a menu resource id.
 
    ============================================================*/
 {
-
-	CMenu menu;
-	if (menu.CreatePopupMenu())
-	{
-
-		menu.AppendMenu(MF_STRING, CMD_CUT, _T("Cut"));
-		menu.AppendMenu(MF_STRING, CMD_COPY, _T("Copy"));
-		menu.AppendMenu(MF_STRING, CMD_DUPLICATE, _T("Duplicate"));
-		menu.AppendMenu(MF_SEPARATOR);
-		menu.AppendMenu(MF_STRING, CMD_UP, _T("Up"));
-		menu.AppendMenu(MF_STRING, CMD_DOWN, _T("Down"));
-		menu.AppendMenu(MF_STRING, CMD_FRONT, _T("To front"));
-		menu.AppendMenu(MF_STRING, CMD_BOTTOM, _T("To back"));
-		menu.AppendMenu(MF_SEPARATOR);
-		menu.AppendMenu(MF_STRING, CMD_PROPERTIES, _T("Properties"));
-		menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, parent);
-
-	}
-
+	return IDR_MENU_EDITOR_POPUP;
 }
 
 void CDiagramEntity::ShowProperties(CWnd* parent, BOOL show)

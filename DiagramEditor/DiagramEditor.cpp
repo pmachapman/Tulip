@@ -175,6 +175,8 @@ CDiagramEditor::CDiagramEditor()
 
 	SetScrollWheelMode(WHEEL_SCROLL);
 
+	SetPopupMenu(new CDiagramMenu);
+
 	Clear();
 
 }
@@ -398,11 +400,13 @@ BEGIN_MESSAGE_MAP(CDiagramEditor, CWnd)
 	ON_WM_MOUSEWHEEL()
 	ON_COMMAND_RANGE(CMD_START, CMD_END, OnObjectCommand)
 
+	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
+	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
 	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
-	ON_COMMAND(ID_EDIT_GROUP, OnEditGroup)
-	ON_COMMAND(ID_EDIT_UNGROUP, OnEditUngroup)
+	ON_COMMAND(ID_EDIT_DELETE, OnEditDelete)
+	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
 
 END_MESSAGE_MAP()
 
@@ -429,44 +433,10 @@ void CDiagramEditor::OnPaint()
 	// Getting coordinate data
 	CRect rect;
 	GetClientRect(&rect);
-
-	SCROLLINFO sih;
-	sih.cbSize = sizeof(SCROLLINFO);
-	sih.fMask = SIF_POS;
-	SCROLLINFO siv;
-	siv.cbSize = sizeof(SCROLLINFO);
-	siv.fMask = SIF_POS;
-	if (!GetScrollInfo(SB_HORZ, &sih))
-		sih.nPos = 0;
-	if (!GetScrollInfo(SB_VERT, &siv))
-		siv.nPos = 0;
-
-	CRect totalRect;
-	int virtwidth = round(static_cast<double>(GetVirtualSize().cx) * GetZoom()) + 1;
-	int virtheight = round(static_cast<double>(GetVirtualSize().cy) * GetZoom()) + 1;
-	totalRect.SetRect(0, 0, virtwidth, virtheight);
-
-	// Creating memory CDC
-	CDC dc;
-	dc.CreateCompatibleDC(&outputdc);
-	CBitmap bmp;
-	bmp.CreateCompatibleBitmap(&outputdc, rect.right, rect.bottom);
-	CBitmap* oldbmp = dc.SelectObject(&bmp);
-
-	// Painting
-	EraseBackground(&dc, rect);
-
-	dc.SetWindowOrg(sih.nPos, siv.nPos);
-
-	Draw(&dc, totalRect);
-
-	// Blit the memory CDC to screen
-	outputdc.BitBlt(0, 0, rect.right, rect.bottom, &dc, sih.nPos, siv.nPos, SRCCOPY);
-	dc.SelectObject(oldbmp);
-
+	Draw(&outputdc, rect);
 }
 
-void CDiagramEditor::Draw(CDC* dc, CRect rect) const
+void CDiagramEditor::Draw(CDC* dc, CRect rect)
 /* ============================================================
 	Function :		CDiagramEditor::Draw
 	Description :	Calls a series of (virtual) functions to
@@ -485,45 +455,7 @@ void CDiagramEditor::Draw(CDC* dc, CRect rect) const
 
    ============================================================*/
 {
-
-	double zoom = GetZoom();
-
-	DrawBackground(dc, rect, zoom);
-
-	if (IsGridVisible())
-		DrawGrid(dc, rect, zoom);
-
-	if (IsMarginVisible())
-		DrawMargins(dc, rect, zoom);
-
-	DrawObjects(dc, zoom);
-
-	if (m_bgResize && m_bgResizeSelected)
-		DrawSelectionMarkers(dc);
-
-	if (GetPanning())
-		DrawPanning(dc);
-
-}
-
-void CDiagramEditor::DrawPreview(CDC* dc, CRect rect)
-/* ============================================================
-	Function :		CDiagramEditor::DrawPreview
-	Description :	Calls a series of (virtual) functions to
-					draw to "dc". "rect" is the total rectangle
-					to draw to.
-	Access :		Public
-
-	Return :		void
-	Parameters :	CDC* dc		-	The "CDC" to draw to.
-					CRect rect	-	The complete rectangle
-									(including non-visible areas)
-
-	Usage :			Is used to draw the iconic thumbnail or preview.
-
-   ============================================================*/
-{
-	// Getting coordinate data
+	// Getting co-ordinate data
 	SCROLLINFO sih;
 	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
@@ -535,9 +467,12 @@ void CDiagramEditor::DrawPreview(CDC* dc, CRect rect)
 	if (!GetScrollInfo(SB_VERT, &siv))
 		siv.nPos = 0;
 
+	// Get the zoom
+	double zoom = GetZoom();
+
 	CRect totalRect;
-	int virtwidth = round(static_cast<double>(GetVirtualSize().cx) * GetZoom()) + 1;
-	int virtheight = round(static_cast<double>(GetVirtualSize().cy) * GetZoom()) + 1;
+	int virtwidth = round(static_cast<double>(GetVirtualSize().cx) * zoom) + 1;
+	int virtheight = round(static_cast<double>(GetVirtualSize().cy) * zoom) + 1;
 	totalRect.SetRect(0, 0, virtwidth, virtheight);
 
 	// Creating memory CDC
@@ -550,13 +485,33 @@ void CDiagramEditor::DrawPreview(CDC* dc, CRect rect)
 	// Painting
 	EraseBackground(&memdc, rect);
 
+	// Set origin based on co-ordinate data
 	memdc.SetWindowOrg(sih.nPos, siv.nPos);
 
-	Draw(&memdc, totalRect);
+	DrawBackground(&memdc, totalRect, zoom);
+
+	if (IsGridVisible())
+		DrawGrid(&bmp, totalRect, zoom);
+
+	if (IsMarginVisible())
+		DrawMargins(&memdc, totalRect, zoom);
+
+	DrawObjects(&memdc, zoom);
+
+	if (m_bgResize && m_bgResizeSelected)
+		DrawSelectionMarkers(&memdc);
+
+	if (GetPanning())
+		DrawPanning(&memdc);
 
 	// Blit the memory CDC to screen
 	dc->BitBlt(0, 0, rect.right, rect.bottom, &memdc, sih.nPos, siv.nPos, SRCCOPY);
 	memdc.SelectObject(oldbmp);
+
+	// Clean up
+	oldbmp->DeleteObject();
+	bmp.DeleteObject();
+	memdc.DeleteDC();
 }
 
 void CDiagramEditor::Print(CDC* dc, CRect rect, double zoom)
@@ -662,7 +617,7 @@ void CDiagramEditor::DrawBackground(CDC* dc, CRect rect, double /*zoom*/) const
 
 }
 
-void CDiagramEditor::DrawGrid(CDC* dc, CRect /*rect*/, double zoom) const
+void CDiagramEditor::DrawGrid(CBitmap* bmp, CRect rect, double zoom) const
 /* ============================================================
 	Function :		CDiagramEditor::DrawGrid
 	Description :	Draws the grid
@@ -682,17 +637,40 @@ void CDiagramEditor::DrawGrid(CDC* dc, CRect /*rect*/, double zoom) const
 
    ============================================================*/
 {
+	// Get the grid color
+	COLORREF color = GetGridColor();
+	
+	// Get the bitmap bits for manual modification
+	BITMAP bitmap;
+	bmp->GetBitmap(&bitmap);
+	COLORREF* dib = new COLORREF[bitmap.bmWidthBytes * bitmap.bmHeight];
+	bmp->GetBitmapBits(bitmap.bmWidthBytes * bitmap.bmHeight, dib);
 
-	COLORREF gridcol = GetGridColor();
+	// Get the values for drawing the grid dots
+	int width = round(static_cast<double>(min(rect.right, bitmap.bmWidth)) / zoom) - 1;
+	int height = round(static_cast<double>(min(rect.bottom, bitmap.bmHeight)) / zoom) - 1;
+	int cx = GetGridSize().cx;
+	int cy = GetGridSize().cy;
+	int stepx = width / cx;
+	int stepy = height / cy;
 
-	dc->SelectStockObject(BLACK_PEN);
-
-	int stepx = GetVirtualSize().cx / GetGridSize().cx;
-	int stepy = GetVirtualSize().cy / GetGridSize().cy;
-
+	// Draw the grid in the bitmap data
 	for (int x = 0; x <= stepx; x++)
+	{
 		for (int y = 0; y <= stepy; y++)
-			dc->SetPixel(round((double)(GetGridSize().cx * x) * zoom), round((double)(GetGridSize().cy * y) * zoom), gridcol);
+		{
+			int ix = round(static_cast<double>(cx * x) * zoom);
+			int iy = round(static_cast<double>(cy * y) * zoom);
+			int index = ix + iy * bitmap.bmWidth;
+			dib[index] = color;
+		}
+	}
+
+	// Set the updated bitmap data
+	bmp->SetBitmapBits(bitmap.bmWidthBytes * bitmap.bmHeight, dib);
+
+	// Clean up
+	delete dib;
 }
 
 void CDiagramEditor::DrawMargins(CDC* dc, CRect rect, double zoom) const
@@ -963,7 +941,9 @@ void CDiagramEditor::SetVirtualSize(const CSize& size)
 	ASSERT(m_objs);
 	if (size != GetVirtualSize())
 	{
-		SetInternalVirtualSize(size);
+		// Ensure that the size is not too small
+		CSize containingSize = GetContainingSize();
+		SetInternalVirtualSize(CSize(max(size.cx, containingSize.cx), max(size.cy, containingSize.cy)));
 		m_objs->SetModified(TRUE);
 	}
 }
@@ -1068,7 +1048,6 @@ void CDiagramEditor::SetInternalBackgroundColor(COLORREF col)
 {
 	if (m_objs)
 	{
-		m_objs->Snapshot();
 		m_objs->SetColor(col);
 		if (m_hWnd)
 		{
@@ -1120,7 +1099,6 @@ void CDiagramEditor::ShowGrid(BOOL grid)
 	if (m_objs)
 	{
 		m_objs->ShowGrid(grid);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1175,7 +1153,6 @@ void CDiagramEditor::SetGridColor(COLORREF col)
 	if (m_objs)
 	{
 		m_objs->SetGridColor(col);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1229,7 +1206,6 @@ void CDiagramEditor::SetGridSize(CSize size)
 	if (m_objs && size != GetGridSize())
 	{
 		m_objs->SetGridSize(size);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1285,7 +1261,6 @@ void CDiagramEditor::SetGridPenStyle(int style)
 	if (m_objs)
 	{
 		m_objs->SetGridPenStyle(style);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1341,7 +1316,6 @@ void CDiagramEditor::SetSnapToGrid(BOOL snap)
 	if (m_objs)
 	{
 		m_objs->SetSnapToGrid(snap);
-		m_objs->SetModified(TRUE);
 	}
 }
 
@@ -1483,7 +1457,6 @@ void CDiagramEditor::SetMargins(int left, int top, int right, int bottom)
 	if (m_objs && (left != leftMargin || top != topMargin || right != rightMargin || bottom != bottomMargin))
 	{
 		m_objs->SetMargins(left, top, right, bottom);
-		m_objs->SetModified(TRUE);
 	}
 }
 
@@ -1532,7 +1505,6 @@ void CDiagramEditor::SetMarginColor(COLORREF marginColor)
 	if (m_objs)
 	{
 		m_objs->SetMarginColor(marginColor);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1580,7 +1552,6 @@ void CDiagramEditor::ShowMargin(BOOL show)
 	if (m_objs)
 	{
 		m_objs->ShowMargin(show);
-		m_objs->SetModified(TRUE);
 		if (m_hWnd)
 		{
 			RedrawWindow();
@@ -1635,7 +1606,6 @@ void CDiagramEditor::SetRestraints(int restraint)
 	if (m_objs)
 	{
 		m_objs->SetRestraints(restraint);
-		m_objs->SetModified(TRUE);
 	}
 }
 
@@ -2874,26 +2844,12 @@ void CDiagramEditor::OnRButtonUp(UINT nFlags, CPoint point)
 
    ============================================================*/
 {
-
 	CPoint screen(point);
-	CPoint virtpoint(point);
 
 	ClientToScreen(&screen);
-	ScreenToVirtual(virtpoint);
-
-	if (GetSelectCount() == 1)
-	{
-		CDiagramEntity* obj = GetSelectedObject();
-		if (obj->GetHitCode(virtpoint) == DEHT_BODY)
-			obj->ShowPopup(screen, this);
-		else
-			ShowPopup(screen);
-	}
-	else
-		ShowPopup(screen);
+	ShowPopup(screen);
 
 	CWnd::OnRButtonUp(nFlags, point);
-
 }
 
 UINT CDiagramEditor::OnGetDlgCode()
@@ -3023,6 +2979,8 @@ void CDiagramEditor::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 				Copy();
 			else if ((m_keyInterface & KEY_CTRL) && nChar == _TCHAR('Z') && GetAsyncKeyState(VK_CONTROL))
 				Undo();
+			else if ((m_keyInterface & KEY_CTRL) && nChar == _TCHAR('Y') && GetAsyncKeyState(VK_CONTROL))
+				Redo();
 			else if ((m_keyInterface & KEY_PGUPDOWN) && nChar == VK_NEXT && GetAsyncKeyState(VK_CONTROL))
 				Bottom();
 			else if ((m_keyInterface & KEY_PGUPDOWN) && nChar == VK_PRIOR && GetAsyncKeyState(VK_CONTROL))
@@ -4733,6 +4691,7 @@ void CDiagramEditor::Up()
 		CDiagramEntity* obj = GetSelectedObject();
 		if (obj)
 		{
+			m_objs->Snapshot();
 			m_objs->Up(obj);
 			RedrawWindow();
 		}
@@ -4763,6 +4722,7 @@ void CDiagramEditor::Down()
 		CDiagramEntity* obj = GetSelectedObject();
 		if (obj)
 		{
+			m_objs->Snapshot();
 			m_objs->Down(obj);
 			RedrawWindow();
 		}
@@ -4772,60 +4732,104 @@ void CDiagramEditor::Down()
 void CDiagramEditor::Front()
 /* ============================================================
 	Function :		CDiagramEditor::Front
-	Description :	Moves the selected object to the front of
+	Description :	Moves the selected objects to the front of
 					all other objects.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to move the selected object to the
+	Usage :			Call to move the selected objects to the
 					top of the z-order.
 					This command should only be callable if
-					"GetSelectCount()" returns 1, that is, if one
-					and only one object is selected.
+					"GetSelectCount()" returns greater than 0
+					i.e. if one or more objects are selected.
 
    ============================================================*/
 {
-
 	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
 		if (obj)
 		{
+			m_objs->Snapshot();
 			m_objs->Front(obj);
 			RedrawWindow();
 		}
+	}
+	else if (GetSelectCount() > 1)
+	{
+		CDiagramEntity* obj = GetSelectedObject();
+		if (obj)
+		{
+			m_objs->Snapshot();
+			CObArray* objs = new CObArray();
+			objs->Copy(*m_objs->GetData());
+			for (int i = 0; i < objs->GetSize(); i++)
+			{
+				CDiagramEntity* obj = (CDiagramEntity*)objs->GetAt(i);
+				if (obj->IsSelected())
+				{
+					m_objs->Front(obj);
+				}
+			}
+
+			delete objs;
+		}
+
+		RedrawWindow();
 	}
 }
 
 void CDiagramEditor::Bottom()
 /* ============================================================
 	Function :		CDiagramEditor::Bottom
-	Description :	Moves the selected object to the bottom of
+	Description :	Moves the selected objects to the bottom of
 					all objects.
 	Access :		Public
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to move the selected object to the
+	Usage :			Call to move the selected objects to the
 					bottom of the z-order.
 					This command should only be callable if
-					"GetSelectCount()" returns 1, that is, if one
-					and only one object is selected.
+					"GetSelectCount()" returns greater than 0
+					i.e. if one or more objects are selected.
 
    ============================================================*/
 {
-
 	if (GetSelectCount() == 1)
 	{
 		CDiagramEntity* obj = GetSelectedObject();
 		if (obj)
 		{
+			m_objs->Snapshot();
 			m_objs->Bottom(obj);
 			RedrawWindow();
 		}
+	}
+	else if (GetSelectCount() > 1)
+	{
+		CDiagramEntity* obj = GetSelectedObject();
+		if (obj)
+		{
+			m_objs->Snapshot();
+			CObArray* objs = new CObArray();
+			objs->Copy(*m_objs->GetData());
+			for (INT_PTR i = objs->GetSize() - 1; i >= 0; i--)
+			{
+				CDiagramEntity* obj = (CDiagramEntity*)objs->GetAt(i);
+				if (obj->IsSelected())
+				{
+					m_objs->Bottom(obj);
+				}
+			}
+
+			delete objs;
+		}
+
+		RedrawWindow();
 	}
 }
 
@@ -4917,6 +4921,40 @@ void CDiagramEditor::ShowPopup(CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 // CDiagramEditor copy/paste/undo
 
+void CDiagramEditor::OnEditUndo()
+/* ============================================================
+	Function :		CDiagramEditor::OnEditUndo
+	Description :	Command handler for the MFC standard
+					"ID_EDIT_UNDO" command.
+	Access :		Protected
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Called from MFC. Call "Undo" from code instead.
+
+   ============================================================*/
+{
+	Undo();
+}
+
+void CDiagramEditor::OnEditRedo()
+/* ============================================================
+	Function :		CDiagramEditor::OnEditRedo
+	Description :	Command handler for the MFC standard
+					"ID_EDIT_REDO" command.
+	Access :		Protected
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Called from MFC. Call "Redo" from code instead.
+
+   ============================================================*/
+{
+	Redo();
+}
+
 void CDiagramEditor::OnEditCut()
 /* ============================================================
 	Function :		CDiagramEditor::OnEditCut
@@ -4931,9 +4969,7 @@ void CDiagramEditor::OnEditCut()
 
    ============================================================*/
 {
-
 	Cut();
-
 }
 
 void CDiagramEditor::OnEditCopy()
@@ -4951,9 +4987,7 @@ void CDiagramEditor::OnEditCopy()
 
    ============================================================*/
 {
-
 	Copy();
-
 }
 
 void CDiagramEditor::OnEditPaste()
@@ -4971,53 +5005,43 @@ void CDiagramEditor::OnEditPaste()
 
    ============================================================*/
 {
-
 	Paste();
-
 }
 
-void CDiagramEditor::OnEditGroup()
+void CDiagramEditor::OnEditDelete()
 /* ============================================================
-	Function :		CDiagramEditor::OnEditGroup
-	Description :	Handler for the "ID_EDIT_GROUP" command
+	Function :		CDiagramEditor::OnEditDelete
+	Description :	Command handler for the MFC standard
+					"ID_EDIT_DELETE" command.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Groups the currently selected objects.
-					Grouped objects can be moved as a
-					single entity. Technically, when one object
-					in a group is selected, all other objects
-					are also selected automatically.
+	Usage :			Called from MFC. Call "DeleteAllSelected" from code
+					instead.
 
    ============================================================*/
 {
-
-	Group();
-
+	DeleteAllSelected();
 }
 
-void CDiagramEditor::OnEditUngroup()
+void CDiagramEditor::OnEditSelectAll()
 /* ============================================================
-	Function :		CDiagramEditor::OnEditUngroup
-	Description :	Handler for the "ID_EDIT_UNGROUP" command
+	Function :		CDiagramEditor::OnEditSelectAll
+	Description :	Command handler for the MFC standard
+					"ID_EDIT_SELECT_ALL" command.
 	Access :		Protected
 
 	Return :		void
 	Parameters :	none
 
-	Usage :			Ungroups the currently selected objects.
-					Grouped objects can be moved as a
-					single entity. Technically, when one object
-					in a group is selected, all other objects
-					are also selected automatically.
+	Usage :			Called from MFC. Call "SelectAll" from code
+					instead.
 
    ============================================================*/
 {
-
-	Ungroup();
-
+	SelectAll();
 }
 
 void CDiagramEditor::Cut()
@@ -5112,13 +5136,32 @@ void CDiagramEditor::Undo()
 
    ============================================================*/
 {
-
 	if (m_objs)
 	{
 		m_objs->Undo();
 		RedrawWindow();
 	}
+}
 
+void CDiagramEditor::Redo()
+/* ============================================================
+	Function :		CDiagramEditor::Redo
+	Description :	Redo the last operation.
+	Access :		Public
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Call to restore the objects to the last
+					snapshot.
+
+   ============================================================*/
+{
+	if (m_objs)
+	{
+		m_objs->Redo();
+		RedrawWindow();
+	}
 }
 
 void CDiagramEditor::Group()
@@ -5260,10 +5303,28 @@ void CDiagramEditor::UpdateUndo(CCmdUI* pCmdUI) const
 
    ============================================================*/
 {
-
 	if (m_objs)
 		pCmdUI->Enable(m_objs->IsUndoPossible());
+}
 
+void CDiagramEditor::UpdateRedo(CCmdUI* pCmdUI) const
+/* ============================================================
+	Function :		CDiagramEditor::UpdateRedo
+	Description :	Command enabling for an Redo command UI-
+					element.
+	Access :		Public
+
+	Return :		void
+	Parameters :	CCmdUI* pCmdUI	-	Command element to
+										update
+
+	Usage :			Can be called from a doc/view command update
+					function
+
+   ============================================================*/
+{
+	if (m_objs)
+		pCmdUI->Enable(m_objs->IsRedoPossible());
 }
 
 void CDiagramEditor::UpdateGroup(CCmdUI* pCmdUI) const

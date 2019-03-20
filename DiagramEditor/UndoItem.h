@@ -16,6 +16,7 @@ public:
 
 	// Public data
 	CObArray	arr;	// Object array
+	COLORREF	col;	// Background color
 	CPoint		pt;		// Virtual editor size
 
 };

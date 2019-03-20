@@ -37,7 +37,7 @@ public:
 	virtual BOOL		FromString(const CString& str);
 	virtual CString		Export(UINT format = 0) const;
 	virtual BOOL		DoMessage(UINT msg, CDiagramEntity* sender, CWnd* from);
-	virtual void		ShowPopup(CPoint point, CWnd* parent);
+	virtual int			GetMenuResourceId() const;
 	virtual void		SetRect(double left, double top, double right, double bottom);
 	virtual void		Copy(CDiagramEntity* obj);
 

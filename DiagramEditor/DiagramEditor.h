@@ -29,11 +29,6 @@
 
 #define KEY_ALL				0xFFFFFFFF
 
-#ifndef ID_EDIT_GROUP
-#define ID_EDIT_GROUP		ID_EDIT_REDO + 1
-#define ID_EDIT_UNGROUP		ID_EDIT_GROUP + 1
-#endif
-
 #define WHEEL_SCROLL	0
 #define WHEEL_ZOOM		1
 
@@ -57,14 +52,13 @@ public:
 	CDiagramEntityContainer* GetDiagramEntityContainer() const;
 
 	// Visuals
-	virtual void	Draw(CDC* dc, CRect rect) const;
-	virtual void	DrawPreview(CDC* dc, CRect rect);
+	virtual void	Draw(CDC* dc, CRect rect);
 	virtual void	Print(CDC* dc, CRect rect, double zoom);
 
 protected:
 	virtual void EraseBackground(CDC* dc, CRect rect) const;
 	virtual void DrawBackground(CDC* dc, CRect rect, double zoom) const;
-	virtual void DrawGrid(CDC* dc, CRect rect, double zoom) const;
+	virtual void DrawGrid(CBitmap* bmp, CRect rect, double zoom) const;
 	virtual void DrawMargins(CDC* dc, CRect rect, double zoom) const;
 	virtual void DrawObjects(CDC* dc, double zoom) const;
 	virtual void DrawSelectionMarkers(CDC* dc) const;
@@ -169,6 +163,7 @@ public:
 	virtual void		Copy();
 	virtual void		Paste();
 	virtual void		Undo();
+	virtual void		Redo();
 
 	// Group 
 	void		Group();
@@ -202,6 +197,7 @@ public:
 	void		UpdateCopy(CCmdUI* pCmdUI) const;
 	void		UpdatePaste(CCmdUI* pCmdUI) const;
 	void		UpdateUndo(CCmdUI* pCmdUI) const;
+	void		UpdateRedo(CCmdUI* pCmdUI) const;
 	void		UpdateGroup(CCmdUI* pCmdUI) const;
 	void		UpdateUngroup(CCmdUI* pCmdUI) const;
 
@@ -249,11 +245,13 @@ protected:
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
+	afx_msg void OnEditUndo();
+	afx_msg void OnEditRedo();
 	afx_msg void OnEditCut();
 	afx_msg void OnEditCopy();
 	afx_msg void OnEditPaste();
-	afx_msg void OnEditGroup();
-	afx_msg void OnEditUngroup();
+	afx_msg void OnEditDelete();
+	afx_msg void OnEditSelectAll();
 
 	DECLARE_MESSAGE_MAP()
 

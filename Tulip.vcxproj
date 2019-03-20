@@ -187,6 +187,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DiagramView.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="DiagramEditor\DiagramClipboardHandler.h" />
     <ClInclude Include="DiagramEditor\DiagramEditor.h" />
@@ -234,7 +235,6 @@
     <ClInclude Include="FlowchartEditor\FlowchartLink.h" />
     <ClInclude Include="FlowchartEditor\FlowchartLinkableLineSegment.h" />
     <ClInclude Include="FlowchartEditor\FlowchartLinkPropertiesDialog.h" />
-    <ClInclude Include="FlowchartEditor\FlowchartMenu.h" />
     <ClInclude Include="FlowchartEditor\LabelPropertyDialog.h" />
     <ClInclude Include="FlowchartView.h" />
     <ClInclude Include="MainFrm.h" />
@@ -245,7 +245,6 @@
     <ClInclude Include="NetworkEditor\NetworkControlFactory.h" />
     <ClInclude Include="NetworkEditor\NetworkEditor.h" />
     <ClInclude Include="NetworkEditor\NetworkEditorClipboardHandler.h" />
-    <ClInclude Include="NetworkEditor\NetworkEditorMenu.h" />
     <ClInclude Include="NetworkEditor\NetworkEntityContainer.h" />
     <ClInclude Include="NetworkEditor\NetworkLink.h" />
     <ClInclude Include="NetworkEditor\NetworkSymbol.h" />
@@ -292,13 +291,13 @@
     <ClInclude Include="UMLEditor\UMLLabelPropertyDialog.h" />
     <ClInclude Include="UMLEditor\UMLLineSegment.h" />
     <ClInclude Include="UMLEditor\UMLLinkPropertyDialog.h" />
-    <ClInclude Include="UMLEditor\UMLMenu.h" />
     <ClInclude Include="UMLEditor\UMLNotePropertyDialog.h" />
     <ClInclude Include="UMLEditor\UMLPackagePropertyDialog.h" />
     <ClInclude Include="UMLEditor\UMLTemplatePropertyDialog.h" />
     <ClInclude Include="UMLEditor\UMLUndoItem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DiagramView.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="DiagramEditor\DiagramClipboardHandler.cpp" />
     <ClCompile Include="DiagramEditor\DiagramEditor.cpp" />
@@ -344,7 +343,6 @@
     <ClCompile Include="FlowchartEditor\FlowchartLink.cpp" />
     <ClCompile Include="FlowchartEditor\FlowchartLinkableLineSegment.cpp" />
     <ClCompile Include="FlowchartEditor\FlowchartLinkPropertiesDialog.cpp" />
-    <ClCompile Include="FlowchartEditor\FlowchartMenu.cpp" />
     <ClCompile Include="FlowchartEditor\LabelPropertyDialog.cpp" />
     <ClCompile Include="FlowchartView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
@@ -355,7 +353,6 @@
     <ClCompile Include="NetworkEditor\NetworkControlFactory.cpp" />
     <ClCompile Include="NetworkEditor\NetworkEditor.cpp" />
     <ClCompile Include="NetworkEditor\NetworkEditorClipboardHandler.cpp" />
-    <ClCompile Include="NetworkEditor\NetworkEditorMenu.cpp" />
     <ClCompile Include="NetworkEditor\NetworkEntityContainer.cpp" />
     <ClCompile Include="NetworkEditor\NetworkLink.cpp" />
     <ClCompile Include="NetworkEditor\NetworkSymbol.cpp" />
@@ -405,7 +402,6 @@
     <ClCompile Include="UMLEditor\UMLLabelPropertyDialog.cpp" />
     <ClCompile Include="UMLEditor\UMLLineSegment.cpp" />
     <ClCompile Include="UMLEditor\UMLLinkPropertyDialog.cpp" />
-    <ClCompile Include="UMLEditor\UMLMenu.cpp" />
     <ClCompile Include="UMLEditor\UMLNotePropertyDialog.cpp" />
     <ClCompile Include="UMLEditor\UMLPackagePropertyDialog.cpp" />
     <ClCompile Include="UMLEditor\UMLTemplatePropertyDialog.cpp" />

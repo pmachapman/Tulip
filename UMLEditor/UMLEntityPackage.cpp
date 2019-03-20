@@ -240,27 +240,20 @@ CPoint CUMLEntityPackage::GetLinkPosition(int type) const
 
 }
 
-void CUMLEntityPackage::ShowPopup(CPoint point, CWnd* parent)
+int CUMLEntityPackage::GetMenuResourceId() const
 /* ============================================================
 	Function :		CUMLEntityPackage::ShowPopup
-	Description :	Shows the popup menu for the object.
+	Description :	Gets the resource id for the popup menu for the object.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CPoint point	-	The point to track.
-					CWnd* parent	-	The parent "CWnd" of the
-										menu (should be the
-										"CDiagramEditor")
+	Parameters :
 
-	Usage :			Called from the editor.
+	Usage :			The function should return a menu resource id.
 
    ============================================================*/
 {
-
-	CMenu menu;
-	menu.LoadMenu(IDR_UML_MENU_PACKAGE_POPUP);
-	menu.GetSubMenu(0)->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, parent);
-
+	return IDR_UML_MENU_PACKAGE_POPUP;
 }
 
 void CUMLEntityPackage::CalcRestraints()

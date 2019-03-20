@@ -61,6 +61,7 @@ public:
 	virtual void	SetRect(CRect rect);
 	virtual void	SetRect(double left, double top, double right, double bottom);
 	virtual void	MoveRect(double x, double y);
+	virtual void	MoveRect(CSize point);
 
 	double			GetLeft() const;
 	double			GetRight() const;
@@ -93,7 +94,6 @@ public:
 
 	// Auxilliary
 	virtual void	ShowProperties(CWnd* parent, BOOL show = TRUE);
-	virtual void	ShowPopup(CPoint point, CWnd* parent);
 
 	// Visuals
 	virtual void	Draw(CDC* dc, CRect rect);
@@ -117,6 +117,8 @@ public:
 
 	void						SetParent(CDiagramEntityContainer* parent);
 	CDiagramEntityContainer*	GetParent() const;
+
+	virtual int		GetMenuResourceId() const;
 
 protected:
 

@@ -2568,24 +2568,18 @@ BOOL CUMLLineSegment::DoMessage(UINT msg, CDiagramEntity* sender, CWnd* from)
 
 }
 
-void CUMLLineSegment::ShowPopup(CPoint point, CWnd* parent)
+int CUMLLineSegment::GetMenuResourceId() const
 /* ============================================================
 	Function :		CUMLLineSegment::ShowPopup
-	Description :	Displays an object-specific popup menu.
+	Description :	Gets the resource id for the popup menu for the object.
 	Access :		Public
 
 	Return :		void
-	Parameters :	CPoint point	-	position of popup
-					CWnd* parent	-	parent window of popup
+	Parameters :
 
-	Usage :			Called from the editor when the line is
-					right-clicked.
+	Usage :			The function should return a menu resource id.
 
    ============================================================*/
 {
-
-	CMenu menu;
-	menu.LoadMenu(IDR_UML_MENU_LINK);
-	menu.GetSubMenu(0)->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, parent);
-
+	return IDR_UML_MENU_LINK;
 }

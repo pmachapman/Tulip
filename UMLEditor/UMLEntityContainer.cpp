@@ -77,9 +77,8 @@ CUMLEntityContainer::~CUMLEntityContainer()
 
    ============================================================*/
 {
-
 	ClearUndo();
-
+	ClearRedo();
 }
 
 
@@ -1260,9 +1259,11 @@ void CUMLEntityContainer::Undo()
 
    ============================================================*/
 {
-
 	if (GetUndo()->GetSize())
 	{
+		// Push the current state to the redo stack
+		Push(GetRedo());
+
 		// We remove all current data
 		RemoveAll();
 
@@ -1272,15 +1273,15 @@ void CUMLEntityContainer::Undo()
 		INT_PTR count = (undo->arr).GetSize();
 		for (INT_PTR t = 0; t < count; t++)
 		{
-
 			CDiagramEntity* obj = static_cast<CDiagramEntity*>((undo->arr).GetAt(t));
-			Add(obj->Clone());
-
+			CDiagramEntity* newObj = obj->Clone();
+			newObj->SetName(obj->GetName());
+			Add(newObj);
 		}
 
 		FixLinks(GetData());
 
-		// Set the saved virtual size as well
+		// Set the saved virtual size, background color, and package
 		SetVirtualSize(undo->pt);
 		SetColor(undo->col);
 		SetPackage(undo->package);
@@ -1288,9 +1289,7 @@ void CUMLEntityContainer::Undo()
 		// We remove the entry from the undo-stack
 		delete undo;
 		GetUndo()->RemoveAt(GetUndo()->GetUpperBound());
-
 	}
-
 }
 
 void CUMLEntityContainer::Snapshot()
@@ -1307,48 +1306,120 @@ void CUMLEntityContainer::Snapshot()
 
    ============================================================*/
 {
+	// Clear the redo stack
+	ClearRedo();
 
-	if (GetUndoStackSize() > 0 && GetUndo()->GetSize() == GetUndoStackSize())
+	// Push the current state to the undo stack
+	Push(GetUndo());
+}
+
+void CUMLEntityContainer::Redo()
+/* ============================================================
+	Function :		CUMLEntityContainer::Redo
+	Description :	Redos the last operation
+	Access :		Public
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			We fix links and restore the paper size,
+					color and current package as well.
+
+   ============================================================*/
+{
+	if (GetRedo()->GetSize())
 	{
-		delete GetUndo()->GetAt(0);
-		GetUndo()->RemoveAt(0);
+		// Push the current state to the undo stack
+		Push(GetUndo());
+
+		// We remove all current data
+		RemoveAll();
+
+		// We get the last entry from the redo-stack
+		// and clone it into the container data
+		CUMLUndoItem* redo = static_cast<CUMLUndoItem*>(GetRedo()->GetAt(GetRedo()->GetUpperBound()));
+		INT_PTR count = (redo->arr).GetSize();
+		for (INT_PTR t = 0; t < count; t++)
+		{
+			CDiagramEntity* obj = static_cast<CDiagramEntity*>((redo->arr).GetAt(t));
+			CDiagramEntity* newObj = obj->Clone();
+			newObj->SetName(obj->GetName());
+			Add(newObj);
+		}
+
+		FixLinks(GetData());
+
+		// Set the saved virtual size, background color, and package
+		SetVirtualSize(redo->pt);
+		SetColor(redo->col);
+		SetPackage(redo->package);
+
+		// We remove the entry from the redo-stack
+		delete redo;
+		GetRedo()->RemoveAt(GetRedo()->GetUpperBound());
+	}
+}
+
+void CUMLEntityContainer::Push(CObArray* stack)
+/* ============================================================
+	Function :		CUMLEntityContainer::PushRedo
+	Description :	Copies the current state of the data to
+					the specified stack.
+	Access :		Public
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Call to add the current state to the stack.
+					If the stack has a maximum size and
+					the stack will grow above the stack limit,
+					the first array will be removed.
+
+   ============================================================*/
+{
+	if (GetUndoStackSize() > 0 && stack->GetSize() == GetUndoStackSize())
+	{
+		delete stack->GetAt(0);
+		stack->RemoveAt(0);
 	}
 
-	CUMLUndoItem* undo = new CUMLUndoItem;
+	CUMLUndoItem* item = new CUMLUndoItem;
 
-	while (!undo && GetUndo()->GetSize())
+	while (!item && stack->GetSize())
 	{
-
-		// We seem - however unlikely -
-		// to be out of memory.
-		// Remove first element in
-		// undo-stack and try again
-		delete GetUndo()->GetAt(0);
-		GetUndo()->RemoveAt(0);
-		undo = new CUMLUndoItem;
-
+		// We seem - however unlikely - to be out of memory.
+		// Remove first element in stack and try again
+		delete stack->GetAt(0);
+		stack->RemoveAt(0);
+		item = new CUMLUndoItem;
 	}
 
-	if (undo)
+	if (item)
 	{
+		// Save the background color
+		item->col = GetColor();
 
 		// Save current virtual size
-		undo->pt = GetVirtualSize();
-		undo->col = GetColor();
-		undo->package = GetPackage();
+		item->pt = GetVirtualSize();
+
+		// Save the package
+		item->package = GetPackage();
 
 		// Save all objects
 		INT_PTR count = GetData()->GetSize();
 		for (INT_PTR t = 0; t < count; t++)
-			(undo->arr).Add(GetAt(t)->Clone());
+		{
+			CDiagramEntity* obj = static_cast<CDiagramEntity*>(GetData()->GetAt(t));
+			CDiagramEntity* newObj = obj->Clone();
+			newObj->SetName(obj->GetName());
+			(item->arr).Add(newObj);
+		}
 
-		FixLinks(&(undo->arr));
+		FixLinks(&(item->arr));
 
-		// Add to undo stack
-		GetUndo()->Add(undo);
-
+		// Add to stack
+		stack->Add(item);
 	}
-
 }
 
 void CUMLEntityContainer::FixLinks(CObArray *arr)

@@ -20,6 +20,7 @@
 #endif
 
 #include "MainFrm.h"
+#include "DiagramView.h"
 #include "NetDoc.h"
 #include "NetView.h"
 
@@ -34,75 +35,34 @@
 
 // CNetView
 
-IMPLEMENT_DYNCREATE(CNetView, CView)
+IMPLEMENT_DYNCREATE(CNetView, CDiagramView)
 
-BEGIN_MESSAGE_MAP(CNetView, CView)
+BEGIN_MESSAGE_MAP(CNetView, CDiagramView)
 	ON_WM_SIZE()
 	ON_WM_ERASEBKGND()
-	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
-	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
-	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
-	ON_COMMAND(ID_EDIT_SELECT_ALL, OnSelectAll)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_SELECT_ALL, OnUpdateSelectAll)
 	ON_COMMAND(ID_EXPORT, OnExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT, OnUpdateExport)
 	ON_COMMAND(ID_EXPORT_EMF, OnExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT_EMF, OnUpdateExport)
 	ON_COMMAND(ID_BUTTON_LINK, OnButtonLink)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_LINK, OnUpdateLink)
-	ON_COMMAND(ID_PROPERTY, OnProperty)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
-	ON_COMMAND(ID_MARGINS, OnMargins)
-	ON_UPDATE_COMMAND_UI(ID_MARGINS, OnUpdateMargins)
-	ON_COMMAND(ID_RESTRAIN, OnRestraints)
-	ON_UPDATE_COMMAND_UI(ID_RESTRAIN, OnUpdateRestraints)
-	ON_COMMAND(ID_BOTTOM, OnBottom)
-	ON_UPDATE_COMMAND_UI(ID_BOTTOM, OnUpdateBottom)
-	ON_COMMAND(ID_BOTTOM_ALIGN, OnBottomAlign)
-	ON_UPDATE_COMMAND_UI(ID_BOTTOM_ALIGN, OnUpdateBottomAlign)
-	ON_COMMAND(ID_DOWN, OnDown)
-	ON_UPDATE_COMMAND_UI(ID_DOWN, OnUpdateDown)
-	ON_COMMAND(ID_FRONT, OnFront)
-	ON_UPDATE_COMMAND_UI(ID_FRONT, OnUpdateFront)
-	ON_COMMAND(ID_LEFT_ALIGN, OnLeftAlign)
-	ON_UPDATE_COMMAND_UI(ID_LEFT_ALIGN, OnUpdateLeftAlign)
-	ON_COMMAND(ID_MAKE_SAME_SIZE, OnMakeSameSize)
-	ON_UPDATE_COMMAND_UI(ID_MAKE_SAME_SIZE, OnUpdateMakeSameSize)
-	ON_COMMAND(ID_RIGHT_ALIGN, OnRightAlign)
-	ON_UPDATE_COMMAND_UI(ID_RIGHT_ALIGN, OnUpdateRightAlign)
-	ON_COMMAND(ID_TOP_ALIGN, OnTopAlign)
-	ON_UPDATE_COMMAND_UI(ID_TOP_ALIGN, OnUpdateTopAlign)
-	ON_COMMAND(ID_UP, OnUp)
-	ON_UPDATE_COMMAND_UI(ID_UP, OnUpdateUp)
-	ON_COMMAND(IDC_SETTINGS, OnSettings)
-	ON_COMMAND(ID_ZOOM, OnZoom)
-	ON_COMMAND(ID_ZOOM_100, OnZoom100)
-	ON_COMMAND(ID_ZOOM_150, OnZoom150)
-	ON_COMMAND(ID_ZOOM_200, OnZoom200)
-	ON_COMMAND(ID_ZOOM_25, OnZoom25)
-	ON_COMMAND(ID_ZOOM_50, OnZoom50)
-	ON_COMMAND(ID_SNAP, OnSnap)
-	ON_UPDATE_COMMAND_UI(ID_SNAP, OnUpdateSnap)
-	ON_COMMAND(ID_SHOW_GRID, OnShowGrid)
-	ON_UPDATE_COMMAND_UI(ID_SHOW_GRID, OnUpdateShowGrid)
-	ON_COMMAND(ID_EDIT_DELETE, OnEditDelete)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, OnUpdateEditDelete)
 	// Custom to the document type
 	ON_COMMAND(ID_NET_BUTTON_ADD_CLIENT, OnButtonAddClient)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_CLIENT, OnUpdateButtonAddClient)
 	ON_COMMAND(ID_NET_BUTTON_ADD_HUB, OnButtonAddHub)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_HUB, OnUpdateButtonAddHub)
 	ON_COMMAND(ID_NET_BUTTON_ADD_INTERNET, OnButtonAddInternet)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_INTERNET, OnUpdateButtonAddInternet)
 	ON_COMMAND(ID_NET_BUTTON_ADD_MODEM, OnButtonAddModem)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_MODEM, OnUpdateButtonAddModem)
 	ON_COMMAND(ID_NET_BUTTON_ADD_PRINTER, OnButtonAddPrinter)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_PRINTER, OnUpdateButtonAddPrinter)
 	ON_COMMAND(ID_NET_BUTTON_ADD_SERVER, OnButtonAddServer)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_SERVER, OnUpdateButtonAddServer)
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CNetView::OnFilePrintPreview)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 END_MESSAGE_MAP()
@@ -155,19 +115,11 @@ void CNetView::OnDraw(CDC* pDC)
 
 void CNetView::OnDrawIconicThumbnailOrLivePreview(CDC& dc, CRect rect, CSize szRequiredThumbnailSize, BOOL bIsThumbnail, BOOL& bAlphaChannelSet)
 {
-	m_editor.DrawPreview(&dc, rect);
+	m_editor.Draw(&dc, rect);
 }
 
 
 // CNetView printing
-
-
-void CNetView::OnFilePrintPreview()
-{
-#ifndef SHARED_HANDLERS
-	AFXPrintPreview(this);
-#endif
-}
 
 BOOL CNetView::OnPreparePrinting(CPrintInfo* pInfo)
 {
@@ -221,6 +173,9 @@ void CNetView::OnInitialUpdate()
 		GetClientRect(rect);
 		pDoc->GetData()->SetClipboardHandler(&theApp.m_netClip);
 		m_editor.Create(WS_CHILD | WS_VISIBLE, rect, this, pDoc->GetData());
+
+		// Pass the editor to the base class
+		SetEditor(&m_editor);
 
 		// Only set the size if one wasn't pre-specified
 		if (!pDoc->GetData()->IsModified())
@@ -291,110 +246,7 @@ void CNetView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeac
 	pMainFrame->SetRibbonContextCategory(ID_NETCONTEXT, bActivate);
 }
 
-// CNetView message handlers
-
-void CNetView::OnSize(UINT nType, int cx, int cy)
-{
-	CView::OnSize(nType, cx, cy);
-
-	if (m_editor.m_hWnd)
-	{
-		m_editor.MoveWindow(0, 0, cx, cy);
-	}
-}
-
-BOOL CNetView::OnEraseBkgnd(CDC* /*pDC*/)
-{
-	return TRUE;
-}
-
 // CNetView button and menu handlers
-
-void CNetView::OnEditUndo()
-{
-	m_editor.Undo();
-}
-
-void CNetView::OnEditCopy()
-{
-	m_editor.Copy();
-}
-
-void CNetView::OnEditCut()
-{
-	m_editor.Cut();
-}
-
-void CNetView::OnEditPaste()
-{
-	m_editor.Paste();
-}
-
-void CNetView::OnEditDelete()
-{
-	m_editor.DeleteAllSelected();
-}
-
-void CNetView::OnProperty()
-{
-	if (m_editor.GetSelectCount() == 1)
-	{
-		m_editor.ShowProperties();
-	}
-}
-
-void CNetView::OnZoom()
-{
-}
-
-void CNetView::OnZoom100()
-{
-	m_editor.SetZoom(1);
-}
-
-void CNetView::OnZoom150()
-{
-	m_editor.SetZoom(1.5);
-}
-
-void CNetView::OnZoom200()
-{
-	m_editor.SetZoom(2);
-}
-
-void CNetView::OnZoom25()
-{
-	m_editor.SetZoom(.25);
-}
-
-void CNetView::OnZoom50()
-{
-	m_editor.SetZoom(.5);
-}
-
-void CNetView::OnSnap()
-{
-	m_editor.SetSnapToGrid(!m_editor.GetSnapToGrid());
-}
-
-void CNetView::OnShowGrid()
-{
-	m_editor.ShowGrid(!m_editor.IsGridVisible());
-}
-
-void CNetView::OnMargins()
-{
-	m_editor.ShowMargin(!m_editor.IsMarginVisible());
-}
-
-void CNetView::OnRestraints()
-{
-	if (m_editor.GetRestraints() == RESTRAINT_MARGIN)
-		m_editor.SetRestraints(RESTRAINT_VIRTUAL);
-	else
-		m_editor.SetRestraints(RESTRAINT_MARGIN);
-}
-
 void CNetView::OnButtonLink()
 {
 	if (m_editor.IsLinked())
@@ -409,38 +261,116 @@ void CNetView::OnButtonLink()
 
 void CNetView::OnButtonAddClient()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_CLIENT);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CLIENT)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_CLIENT));
+		m_drawObject = DRAW_OBJECT_CLIENT;
+	}
 }
 
 void CNetView::OnButtonAddHub()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_HUB);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_HUB)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_HUB));
+		m_drawObject = DRAW_OBJECT_HUB;
+	}
 }
 
 void CNetView::OnButtonAddInternet()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_INTERNET);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_INTERNET)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_INTERNET));
+		m_drawObject = DRAW_OBJECT_INTERNET;
+	}
 }
 
 void CNetView::OnButtonAddModem()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_ADSL);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_MODEM)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_ADSL));
+		m_drawObject = DRAW_OBJECT_MODEM;
+	}
 }
 
 void CNetView::OnButtonAddPrinter()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_PRINTER);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_PRINTER)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_PRINTER));
+		m_drawObject = DRAW_OBJECT_PRINTER;
+	}
 }
 
 void CNetView::OnButtonAddServer()
 {
-	CNetworkSymbol*	obj = new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_SERVER);
-	m_editor.StartDrawingObject(obj);
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_SERVER)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		m_editor.StartDrawingObject(new CNetworkSymbol(IDB_NET_BITMAP_SYMBOL_SERVER));
+		m_drawObject = DRAW_OBJECT_SERVER;
+	}
+}
+
+void CNetView::OnUpdateButtonAddClient(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CLIENT);
+}
+
+void CNetView::OnUpdateButtonAddHub(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_HUB);
+}
+
+void CNetView::OnUpdateButtonAddInternet(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_INTERNET);
+}
+
+void CNetView::OnUpdateButtonAddModem(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_MODEM);
+}
+
+void CNetView::OnUpdateButtonAddPrinter(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_PRINTER);
+}
+
+void CNetView::OnUpdateButtonAddServer(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_SERVER);
 }
 
 // Displays the Export dialog and exports the editor contents to the desired format.
@@ -472,78 +402,7 @@ void CNetView::OnUpdateExport(CCmdUI* pCmdUI)
 	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
 }
 
-void CNetView::OnSettings()
-{
-	CDialogSettings	dlg;
-
-	dlg.m_color = m_editor.GetBackgroundColor();
-	dlg.m_width = m_editor.GetVirtualSize().cx;
-	dlg.m_height = m_editor.GetVirtualSize().cy;
-	dlg.m_gridWidth = m_editor.GetGridSize().cx;
-	dlg.m_gridHeight = m_editor.GetGridSize().cy;
-	m_editor.GetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
-
-	if (dlg.DoModal() == IDOK)
-	{
-		m_editor.SetBackgroundColor(dlg.m_color);
-		m_editor.SetGridSize(CSize(dlg.m_gridWidth, dlg.m_gridHeight));
-		m_editor.SetVirtualSize(CSize(dlg.m_width, dlg.m_height));
-		m_editor.SetMargins(dlg.m_marginLeft, dlg.m_marginTop, dlg.m_marginRight, dlg.m_marginBottom);
-		m_editor.RedrawWindow();
-	}
-}
-
-void CNetView::OnSelectAll()
-{
-	m_editor.SelectAll();
-}
-
-// CNetEditorDemoView update handlers
-
-void CNetView::OnUpdateEditUndo(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateUndo(pCmdUI);
-}
-
-void CNetView::OnUpdateEditCopy(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateCopy(pCmdUI);
-}
-
-void CNetView::OnUpdateEditCut(CCmdUI* pCmdUI)
-{
-	m_editor.UpdateCut(pCmdUI);
-}
-
-void CNetView::OnUpdateEditPaste(CCmdUI* pCmdUI)
-{
-	m_editor.UpdatePaste(pCmdUI);
-}
-
-void CNetView::OnUpdateSnap(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.GetSnapToGrid());
-}
-
-void CNetView::OnUpdateShowGrid(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.IsGridVisible());
-}
-
-void CNetView::OnUpdateMargins(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.IsMarginVisible());
-}
-
-void CNetView::OnUpdateRestraints(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck(m_editor.GetRestraints() == RESTRAINT_MARGIN);
-}
-
-void CNetView::OnUpdateEditDelete(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 0);
-}
+// CNetView update handlers
 
 void CNetView::OnUpdateLink(CCmdUI* pCmdUI)
 {
@@ -556,95 +415,4 @@ void CNetView::OnUpdateLink(CCmdUI* pCmdUI)
 	{
 		pCmdUI->SetText(_T("Link"));
 	}
-}
-
-void CNetView::OnUpdateProperty(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-
-void CNetView::OnUpdateSelectAll(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetObjectCount() > 0);
-}
-
-///////////////////////////////////////////////////////////
-// Align menu
-//
-
-void CNetView::OnLeftAlign()
-{
-	m_editor.LeftAlignSelected();
-}
-void CNetView::OnTopAlign()
-{
-	m_editor.TopAlignSelected();
-}
-void CNetView::OnRightAlign()
-{
-	m_editor.RightAlignSelected();
-}
-void CNetView::OnBottomAlign()
-{
-	m_editor.BottomAlignSelected();
-}
-
-void CNetView::OnUpdateLeftAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CNetView::OnUpdateTopAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CNetView::OnUpdateRightAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-void CNetView::OnUpdateBottomAlign(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-
-void CNetView::OnMakeSameSize()
-{
-	m_editor.MakeSameSizeSelected();
-}
-void CNetView::OnUpdateMakeSameSize(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() > 1);
-}
-
-void CNetView::OnUp()
-{
-	m_editor.Up();
-}
-void CNetView::OnDown()
-{
-	m_editor.Down();
-}
-void CNetView::OnFront()
-{
-	m_editor.Front();
-}
-void CNetView::OnBottom()
-{
-	m_editor.Bottom();
-}
-
-void CNetView::OnUpdateUp(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-void CNetView::OnUpdateDown(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-void CNetView::OnUpdateFront(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
-}
-void CNetView::OnUpdateBottom(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1);
 }

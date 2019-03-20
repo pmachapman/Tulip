@@ -49,14 +49,40 @@ void CButtonPropertyDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CButtonPropertyDlg, CDialog)
 	//{{AFX_MSG_MAP(CButtonPropertyDlg)
-	ON_BN_CLICKED(IDC_DIALOG_BUTTON_APPLY, OnButtonApply)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CButtonPropertyDlg message handlers
 
-void CButtonPropertyDlg::OnButtonApply()
+void CButtonPropertyDlg::OnCancel()
+/* ============================================================
+	Function :		CButtonPropertyDlg::OnCancel
+	Description :	Sets the focus to the editor
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Called from MFC
+
+   ============================================================*/
+{
+	CDialog::OnCancel();
+	GetRedrawWnd()->SetFocus();
+}
+
+void CButtonPropertyDlg::OnOK()
+/* ============================================================
+	Function :		CButtonPropertyDlg::OnOK
+	Description :	Updates the object from the dialog box,
+					redrawing the editor window.
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Called from MFC
+
+   ============================================================*/
 {
 	if (m_hWnd)
 	{
@@ -85,6 +111,17 @@ void CButtonPropertyDlg::OnButtonApply()
 // CButtonPropertyDlg virtuals
 
 void CButtonPropertyDlg::SetValues()
+/* ============================================================
+	Function :		CButtonPropertyDlg::SetValues
+	Description :	Sets the values of the dialog box fields
+					from the attached object.
+
+	Return :		void
+	Parameters :	none
+
+	Usage :			Called from CDiagramEditor.
+
+   ============================================================*/
 {
 	if (m_hWnd)
 	{

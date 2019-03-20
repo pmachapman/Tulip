@@ -15,8 +15,18 @@
 #pragma once
 
 #include "UMLEditor/UMLEditor.h"
+#include "DiagramView.h"
 
-class CUmlView : public CView
+#define DRAW_OBJECT_NONE		0
+#define DRAW_OBJECT_CLASS		1
+#define DRAW_OBJECT_INTERFACE	2
+#define DRAW_OBJECT_UML_LABEL	3
+#define DRAW_OBJECT_LINK		4
+#define DRAW_OBJECT_NOTE		5
+#define DRAW_OBJECT_PACKAGE		6
+#define DRAW_OBJECT_TEMPLATE	7
+
+class CUmlView : public CDiagramView
 {
 protected: // create from serialization only
 	CUmlView();
@@ -49,30 +59,23 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
-
 	// Generated message map functions
 protected:
-	afx_msg void OnFilePrintPreview();
 	afx_msg void OnButtonClass();
-	afx_msg void OnButtonLink();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnButtonNote();
-	afx_msg void OnButtonPackage();
+	afx_msg void OnUpdateButtonClass(CCmdUI* pCmdUI);
 	afx_msg void OnButtonLabel();
+	afx_msg void OnUpdateButtonLabel(CCmdUI* pCmdUI);
+	afx_msg void OnButtonLink();
+	afx_msg void OnUpdateButtonLink(CCmdUI* pCmdUI);
 	afx_msg void OnButtonInterface();
+	afx_msg void OnUpdateButtonInterface(CCmdUI* pCmdUI);
+	afx_msg void OnButtonNote();
+	afx_msg void OnUpdateButtonNote(CCmdUI* pCmdUI);
+	afx_msg void OnButtonPackage();
+	afx_msg void OnUpdateButtonPackage(CCmdUI* pCmdUI);
+	afx_msg void OnButtonTemplate();
+	afx_msg void OnUpdateButtonTemplate(CCmdUI* pCmdUI);
 	afx_msg void OnButtonDisplayProperties();
-	afx_msg void OnEditUndo();
-	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI);
-	afx_msg void OnEditCopy();
-	afx_msg void OnUpdateEditCopy(CCmdUI* pCmdUI);
-	afx_msg void OnEditCut();
-	afx_msg void OnUpdateEditCut(CCmdUI* pCmdUI);
-	afx_msg void OnEditPaste();
-	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
-	afx_msg void OnSelectAll();
-	afx_msg void OnUpdateSelectAll(CCmdUI* pCmdUI);
 	afx_msg void OnExport();
 	afx_msg void OnExportCpp();
 	afx_msg void OnExportEmf();
@@ -80,51 +83,18 @@ protected:
 	afx_msg void OnUpdateExport(CCmdUI* pCmdUI);
 	afx_msg void OnFlipLink();
 	afx_msg void OnUpdateFlipLink(CCmdUI* pCmdUI);
-	afx_msg void OnSettings();
-	afx_msg void OnProperty();
-	afx_msg void OnUpdateProperty(CCmdUI* pCmdUI);
-	afx_msg void OnZoom();
-	afx_msg void OnZoom100();
-	afx_msg void OnZoom150();
-	afx_msg void OnZoom200();
-	afx_msg void OnZoom25();
-	afx_msg void OnZoom50();
-	afx_msg void OnSnap();
-	afx_msg void OnUpdateSnap(CCmdUI* pCmdUI);
-	afx_msg void OnShowGrid();
-	afx_msg void OnUpdateShowGrid(CCmdUI* pCmdUI);
-	afx_msg void OnMargins();
-	afx_msg void OnUpdateMargins(CCmdUI* pCmdUI);
-	afx_msg void OnRestraints();
-	afx_msg void OnUpdateRestraints(CCmdUI* pCmdUI);
-	afx_msg void OnBottom();
-	afx_msg void OnUpdateBottom(CCmdUI* pCmdUI);
-	afx_msg void OnBottomAlign();
-	afx_msg void OnUpdateBottomAlign(CCmdUI* pCmdUI);
-	afx_msg void OnDown();
-	afx_msg void OnUpdateDown(CCmdUI* pCmdUI);
-	afx_msg void OnFront();
-	afx_msg void OnUpdateFront(CCmdUI* pCmdUI);
-	afx_msg void OnLeftAlign();
-	afx_msg void OnUpdateLeftAlign(CCmdUI* pCmdUI);
-	afx_msg void OnMakeSameSize();
-	afx_msg void OnUpdateMakeSameSize(CCmdUI* pCmdUI);
-	afx_msg void OnRightAlign();
-	afx_msg void OnUpdateRightAlign(CCmdUI* pCmdUI);
-	afx_msg void OnTopAlign();
-	afx_msg void OnUpdateTopAlign(CCmdUI* pCmdUI);
-	afx_msg void OnUp();
-	afx_msg void OnUpdateUp(CCmdUI* pCmdUI);
+	afx_msg virtual void OnProperty();
+	afx_msg virtual void OnUpdateProperty(CCmdUI* pCmdUI);
 	afx_msg void OnImport();
 	afx_msg void OnUpdateImport(CCmdUI* pCmdUI);
-	afx_msg void OnEditDelete();
-	afx_msg void OnUpdateEditDelete(CCmdUI* pCmdUI);
-	afx_msg void OnButtonTemplate();
+	afx_msg void OnOpenPackage();
+	afx_msg void OnUpdateOpenPackage(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()
 
 private:
 	CUMLEditor	m_editor;
 	int			m_screenResolutionX;
+	int			m_drawObject;			// What type of object we are drawing
 	BOOL		m_onlyh;
 };
 

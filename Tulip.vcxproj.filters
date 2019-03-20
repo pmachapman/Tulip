@@ -186,9 +186,6 @@
     <ClInclude Include="UMLEditor\UMLLinkPropertyDialog.h">
       <Filter>Header Files\UMLEditor</Filter>
     </ClInclude>
-    <ClInclude Include="UMLEditor\UMLMenu.h">
-      <Filter>Header Files\UMLEditor</Filter>
-    </ClInclude>
     <ClInclude Include="UMLEditor\UMLNotePropertyDialog.h">
       <Filter>Header Files\UMLEditor</Filter>
     </ClInclude>
@@ -250,9 +247,6 @@
       <Filter>Header Files\NetworkEditor</Filter>
     </ClInclude>
     <ClInclude Include="NetworkEditor\NetworkEditorClipboardHandler.h">
-      <Filter>Header Files\NetworkEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="NetworkEditor\NetworkEditorMenu.h">
       <Filter>Header Files\NetworkEditor</Filter>
     </ClInclude>
     <ClInclude Include="NetworkEditor\NetworkEntityContainer.h">
@@ -324,9 +318,6 @@
     <ClInclude Include="FlowchartEditor\FlowchartLinkPropertiesDialog.h">
       <Filter>Header Files\FlowchartEditor</Filter>
     </ClInclude>
-    <ClInclude Include="FlowchartEditor\FlowchartMenu.h">
-      <Filter>Header Files\FlowchartEditor</Filter>
-    </ClInclude>
     <ClInclude Include="FlowchartEditor\LabelPropertyDialog.h">
       <Filter>Header Files\FlowchartEditor</Filter>
     </ClInclude>
@@ -388,6 +379,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MyVisualManagerWindows7.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DiagramView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -509,9 +503,6 @@
     <ClCompile Include="UMLEditor\UMLLinkPropertyDialog.cpp">
       <Filter>Source Files\UMLEditor</Filter>
     </ClCompile>
-    <ClCompile Include="UMLEditor\UMLMenu.cpp">
-      <Filter>Source Files\UMLEditor</Filter>
-    </ClCompile>
     <ClCompile Include="UMLEditor\UMLNotePropertyDialog.cpp">
       <Filter>Source Files\UMLEditor</Filter>
     </ClCompile>
@@ -578,9 +569,6 @@
     <ClCompile Include="NetworkEditor\NetworkEditorClipboardHandler.cpp">
       <Filter>Source Files\NetworkEditor</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkEditor\NetworkEditorMenu.cpp">
-      <Filter>Source Files\NetworkEditor</Filter>
-    </ClCompile>
     <ClCompile Include="NetworkEditor\NetworkEntityContainer.cpp">
       <Filter>Source Files\NetworkEditor</Filter>
     </ClCompile>
@@ -644,9 +632,6 @@
     <ClCompile Include="FlowchartEditor\FlowchartLinkPropertiesDialog.cpp">
       <Filter>Source Files\FlowchartEditor</Filter>
     </ClCompile>
-    <ClCompile Include="FlowchartEditor\FlowchartMenu.cpp">
-      <Filter>Source Files\FlowchartEditor</Filter>
-    </ClCompile>
     <ClCompile Include="FlowchartEditor\LabelPropertyDialog.cpp">
       <Filter>Source Files\FlowchartEditor</Filter>
     </ClCompile>
@@ -708,6 +693,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyVisualManagerWindows7.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiagramView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -29,7 +29,7 @@ public:
 	virtual void	Copy( CDiagramEntity* obj );
 	virtual CString	Export( UINT format = 0 ) const;
 	virtual BOOL	DoMessage( UINT msg, CDiagramEntity* sender, CWnd* from = NULL );
-	virtual void	ShowPopup( CPoint point, CWnd* parent );
+	virtual int		GetMenuResourceId() const;
 	virtual void	SetTitle( CString title );
 
 // Implementation

@@ -24,7 +24,9 @@ public:
 	virtual void			RemoveAllSelected();
 	virtual CDiagramEntity* GetAt(INT_PTR index) const;
 	virtual void			Undo();
+	virtual void			Redo();
 	virtual void			Snapshot();
+	virtual void			Push(CObArray* stack);
 	virtual void			Export(CStringArray& stra, UINT format = 0) const;
 
 	// Objects
