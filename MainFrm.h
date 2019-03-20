@@ -14,6 +14,8 @@
 
 #pragma once
 
+const UINT WM_RESETMEMBER = ::RegisterWindowMessage(_T("WM_RESETMEMBER"));
+
 class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -50,9 +52,14 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();
 	afx_msg void OnApplicationLook(UINT id);
+	afx_msg void OnPropertyPane();
 	afx_msg void OnUpdateApplicationLook(CCmdUI* pCmdUI);
+	afx_msg LRESULT OnClosePane(WPARAM, LPARAM lp);
+	afx_msg LRESULT OnResetMember(WPARAM wp, LPARAM);
 	DECLARE_MESSAGE_MAP()
 
+private:
+	CDockablePane* m_propertyPane;
 };
 
 

@@ -18,6 +18,8 @@
 #include "MyVisualManagerOffice2007.h"
 #include "MyVisualManagerWindows7.h"
 
+#include "PropertyPane.h"
+
 #include "MainFrm.h"
 
 #ifdef _DEBUG
@@ -33,6 +35,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_WINDOW_MANAGER, &CMainFrame::OnWindowManager)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
+	ON_REGISTERED_MESSAGE(AFX_WM_ON_PRESS_CLOSE_BUTTON, OnClosePane)
+	ON_REGISTERED_MESSAGE(WM_RESETMEMBER, OnResetMember)
+	ON_COMMAND(ID_PROPERTY, OnPropertyPane)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -41,10 +46,23 @@ CMainFrame::CMainFrame()
 {
 	// TODO: add member initialization code here
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_OFF_2007_BLUE);
+	m_propertyPane = NULL;
 }
 
 CMainFrame::~CMainFrame()
 {
+}
+
+LRESULT CMainFrame::OnClosePane(WPARAM, LPARAM lp)
+{
+	CBasePane* pane = (CBasePane*)lp;
+	int id = pane->GetDlgCtrlID();
+	pane->ShowPane(FALSE, FALSE, FALSE);
+	RemovePaneFromDockManager(pane, TRUE, TRUE, TRUE, NULL);
+	AdjustDockingLayout();
+	pane->PostMessage(WM_CLOSE);
+	PostMessage(WM_RESETMEMBER, id, 0);
+	return (LRESULT)TRUE; // Prevent close, we have already close it
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -78,6 +96,44 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ModifyStyle(0, FWS_PREFIXTITLE);
 
 	return 0;
+}
+
+void CMainFrame::OnPropertyPane()
+{
+	if (m_propertyPane && m_propertyPane->GetSafeHwnd())
+	{
+		m_propertyPane->ShowPane(TRUE, FALSE, TRUE);
+		return;
+	}
+
+	m_propertyPane = new CPropertyPane;
+	UINT style = WS_CHILD | CBRS_RIGHT | CBRS_FLOAT_MULTI;
+	CString strTitle = _T("Properties");
+	if (!m_propertyPane->Create(strTitle, this, CRect(0, 0, 200, 400), TRUE, IDC_PROPERTY_PANE, style))
+	{
+		delete m_propertyPane;
+		m_propertyPane = NULL;
+		return;
+	}
+
+	m_propertyPane->EnableDocking(CBRS_ALIGN_ANY);
+	DockPane((CBasePane*)m_propertyPane, AFX_IDW_DOCKBAR_RIGHT);
+	m_propertyPane->ShowPane(TRUE, FALSE, TRUE);
+	RecalcLayout();
+}
+
+LRESULT CMainFrame::OnResetMember(WPARAM wp, LPARAM)
+{
+	int id = (int)wp;
+	switch (id)
+	{
+	case IDC_PROPERTY_PANE:
+		delete m_propertyPane;
+		m_propertyPane = NULL;
+		break;
+	}
+
+	return TRUE;
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
@@ -122,17 +178,20 @@ void CMainFrame::OnApplicationLook(UINT id)
 	{
 	case ID_VIEW_APPLOOK_WIN_2000:
 		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManager));
+		CDockingManager::SetDockingMode(DT_SMART);
 		m_wndRibbonBar.SetWindows7Look(FALSE);
 		break;
 
 	case ID_VIEW_APPLOOK_OFF_XP:
 		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOfficeXP));
+		CDockingManager::SetDockingMode(DT_SMART);
 		m_wndRibbonBar.SetWindows7Look(FALSE);
 		break;
 
 	case ID_VIEW_APPLOOK_WIN_XP:
 		CMFCVisualManagerWindows::m_b3DTabsXPTheme = TRUE;
 		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
+		CDockingManager::SetDockingMode(DT_SMART);
 		m_wndRibbonBar.SetWindows7Look(FALSE);
 		break;
 

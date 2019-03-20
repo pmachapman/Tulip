@@ -36,8 +36,6 @@ BEGIN_MESSAGE_MAP(CDiagramView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, OnUpdateEditDelete)
 	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_SELECT_ALL, OnUpdateEditSelectAll)
-	ON_COMMAND(ID_PROPERTY, OnProperty)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
 	ON_COMMAND(ID_DUPLICATE, OnDuplicate)
 	ON_UPDATE_COMMAND_UI(ID_DUPLICATE, OnUpdateDuplicate)
 	ON_COMMAND(ID_EDIT_GROUP, OnGroup)
@@ -271,19 +269,6 @@ void CDiagramView::OnUpdateUngroup(CCmdUI* pCmdUI)
 	}
 
 	pCmdUI->Enable(enable);
-}
-
-void CDiagramView::OnProperty()
-{
-	if (m_editor->GetSelectCount() == 1)
-	{
-		m_editor->ShowProperties();
-	}
-}
-
-void CDiagramView::OnUpdateProperty(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor->GetSelectCount() == 1);
 }
 
 void CDiagramView::OnZoom()

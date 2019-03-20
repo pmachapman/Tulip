@@ -62,8 +62,6 @@ BEGIN_MESSAGE_MAP(CFlowchartView, CDiagramView)
 	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_LINK_LABEL, OnUpdateLinkLabel)
 	ON_COMMAND(ID_FLOWCHART_FLIP_LINK, OnFlipLink)
 	ON_UPDATE_COMMAND_UI(ID_FLOWCHART_FLIP_LINK, OnUpdateFlipLink)
-	ON_COMMAND(ID_PROPERTY, OnProperty)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -409,20 +407,6 @@ void CFlowchartView::OnUpdateButtonLabel(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LABEL);
 }
 
-// Edit menu
-
-void CFlowchartView::OnProperty()
-{
-	if (m_editor.IsLinked())
-	{
-		m_editor.OnLinkProperties();
-	}
-	else
-	{
-		m_editor.ShowProperties();
-	}
-}
-
 // File menu
 
 void CFlowchartView::OnExport()
@@ -479,13 +463,6 @@ void CFlowchartView::OnFlipLink()
 
 /////////////////////////////////////////////////////////////////////////////
 // CFlowchartView command enablers
-
-// Edit menu
-
-void CFlowchartView::OnUpdateProperty(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_editor.GetSelectCount() == 1 || m_editor.IsLinked());
-}
 
 // Links menu
 void CFlowchartView::OnUpdateButtonLink(CCmdUI* pCmdUI)

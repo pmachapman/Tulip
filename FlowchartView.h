@@ -80,8 +80,6 @@ protected:
 	afx_msg void OnUpdateLinkLabel(CCmdUI* pCmdUI);
 	afx_msg void OnFlipLink();
 	afx_msg void OnUpdateFlipLink(CCmdUI* pCmdUI);
-	afx_msg virtual void OnProperty();
-	afx_msg virtual void OnUpdateProperty(CCmdUI* pCmdUI);
 	afx_msg void OnExport();
 	afx_msg void OnUpdateExport(CCmdUI* pCmdUI);
 	//}}AFX_MSG

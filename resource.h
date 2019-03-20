@@ -28,6 +28,7 @@
 #define IDB_NET_BITMAP_SYMBOL_SERVER    143
 #define IDD_FLOWCHART_DIALOG_PROPERTY_LABEL 144
 #define IDD_FLOWCHART_DIALOG_LINK_TITLE 145
+#define IDC_PROPERTY_PANE               146
 #define IDR_PASTE_MENU                  151
 #define IDR_WINDOWS_MENU                152
 #define IDB_DARROW                      160
@@ -161,6 +162,7 @@
 #define IDD_DIALOG_SETTINGS             3130
 #define IDD_DIALOG_BUTTON_PROPERTIES    3131
 #define IDD_DIALOG_EDIT_PROPERTIES      3132
+#define IDC_PROPERTY_GRID               22773
 #define IDC_SETTINGS                    22774
 #define ID_DIALOG_ADD_BUTTON            22775
 #define ID_DIALOG_ADD_EDIT              22776
@@ -210,7 +212,6 @@
 #define ID_BUTTON_PACKAGE               32774
 #define ID_BUTTON_LABEL                 32775
 #define ID_BUTTON_INTERFACE             32776
-#define ID_BUTTON_DISPLAY_PROPERTIES    32778
 #define ID_EXPORT                       32779
 #define ID_PROPERTY                     32780
 #define ID_ZOOM                         32781
