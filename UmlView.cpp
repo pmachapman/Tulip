@@ -62,7 +62,6 @@ BEGIN_MESSAGE_MAP(CUmlView, CDiagramView)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_PACKAGE, OnUpdateButtonPackage)
 	ON_COMMAND(ID_BUTTON_TEMPLATE, OnButtonTemplate)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_TEMPLATE, OnUpdateButtonTemplate)
-	ON_COMMAND(ID_BUTTON_DISPLAY_PROPERTIES, OnButtonDisplayProperties)
 	ON_COMMAND(ID_EXPORT, OnExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT, OnUpdateExport)
 	ON_COMMAND(ID_EXPORT_CPP, OnExportCpp)
@@ -73,8 +72,6 @@ BEGIN_MESSAGE_MAP(CUmlView, CDiagramView)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT_HTML, OnUpdateExport)
 	ON_COMMAND(ID_FLIP_LINK, OnFlipLink)
 	ON_UPDATE_COMMAND_UI(ID_FLIP_LINK, OnUpdateFlipLink)
-	ON_COMMAND(ID_PROPERTY, OnProperty)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTY, OnUpdateProperty)
 	ON_COMMAND(ID_IMPORT, OnImport)
 	ON_UPDATE_COMMAND_UI(ID_IMPORT, OnUpdateImport)
 	ON_COMMAND(ID_UML_OPEN_PACKAGE, OnOpenPackage)
@@ -402,6 +399,7 @@ void CUmlView::OnUpdateButtonTemplate(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_TEMPLATE);
 }
 
+/*
 void CUmlView::OnButtonDisplayProperties()
 {
 	CUMLEditorPropertyDialog dlg;
@@ -479,29 +477,12 @@ void CUmlView::OnButtonDisplayProperties()
 		m_editor.SetDisplayOptions(displayOptions);
 		m_editor.RedrawWindow();
 	}
-}
+}*/
 
 void CUmlView::OnFlipLink()
 {
 	m_editor.FlipLink();
 	m_editor.RedrawWindow();
-}
-
-void CUmlView::OnProperty()
-{
-	if (m_editor.GetSelectCount() == 1)
-	{
-		m_editor.ShowProperties();
-	}
-	else
-	{
-		OnButtonDisplayProperties();
-	}
-}
-
-void CUmlView::OnUpdateProperty(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(TRUE);
 }
 
 void CUmlView::OnImport()

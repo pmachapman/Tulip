@@ -249,6 +249,7 @@
     <ClInclude Include="NetworkEditor\NetworkLink.h" />
     <ClInclude Include="NetworkEditor\NetworkSymbol.h" />
     <ClInclude Include="NetworkEditor\PropertyDialog.h" />
+    <ClInclude Include="PropertyPane.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -357,6 +358,7 @@
     <ClCompile Include="NetworkEditor\NetworkLink.cpp" />
     <ClCompile Include="NetworkEditor\NetworkSymbol.cpp" />
     <ClCompile Include="NetworkEditor\PropertyDialog.cpp" />
+    <ClCompile Include="PropertyPane.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

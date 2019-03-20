@@ -75,7 +75,6 @@ protected:
 	afx_msg void OnUpdateButtonPackage(CCmdUI* pCmdUI);
 	afx_msg void OnButtonTemplate();
 	afx_msg void OnUpdateButtonTemplate(CCmdUI* pCmdUI);
-	afx_msg void OnButtonDisplayProperties();
 	afx_msg void OnExport();
 	afx_msg void OnExportCpp();
 	afx_msg void OnExportEmf();
@@ -83,8 +82,6 @@ protected:
 	afx_msg void OnUpdateExport(CCmdUI* pCmdUI);
 	afx_msg void OnFlipLink();
 	afx_msg void OnUpdateFlipLink(CCmdUI* pCmdUI);
-	afx_msg virtual void OnProperty();
-	afx_msg virtual void OnUpdateProperty(CCmdUI* pCmdUI);
 	afx_msg void OnImport();
 	afx_msg void OnUpdateImport(CCmdUI* pCmdUI);
 	afx_msg void OnOpenPackage();

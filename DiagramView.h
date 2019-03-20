@@ -43,8 +43,6 @@ protected:
 	afx_msg void OnEditSelectAll();
 	afx_msg void OnUpdateEditSelectAll(CCmdUI* pCmdUI);
 	afx_msg void OnSettings();
-	afx_msg void OnProperty();
-	afx_msg void OnUpdateProperty(CCmdUI* pCmdUI);
 	afx_msg void OnDuplicate();
 	afx_msg void OnUpdateDuplicate(CCmdUI* pCmdUI);
 	afx_msg void OnGroup();
