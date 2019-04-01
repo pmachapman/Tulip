@@ -292,5 +292,9 @@ void CMainFrame::SetRibbonContextCategory(UINT uiCategoryID, BOOL bShow)
 
 		SendMessage(WM_NCPAINT, 0, 0);
 	}
+}
 
+CPropertyPane* CMainFrame::GetPropertyPane()
+{
+	return m_propertyPane;
 }
