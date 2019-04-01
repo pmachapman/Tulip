@@ -40,6 +40,7 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 	virtual void SetRibbonContextCategory(UINT uiCategoryID, BOOL bShow);
+	virtual CPropertyPane* GetPropertyPane();
 
 protected:  // control bar embedded members
 	CMFCRibbonBar     m_wndRibbonBar;
@@ -59,7 +60,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CDockablePane* m_propertyPane;
+	CPropertyPane* m_propertyPane;
 };
 
 
