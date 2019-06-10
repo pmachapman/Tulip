@@ -205,7 +205,6 @@ void CNetworkSymbol::Draw(CDC* dc, CRect rect)
 
    ============================================================*/
 {
-	ASSERT(m_symbol);
 
 	dc->SelectStockObject(BLACK_PEN);
 	dc->SelectStockObject(WHITE_BRUSH);
@@ -231,7 +230,16 @@ void CNetworkSymbol::Draw(CDC* dc, CRect rect)
 	else
 	{
 		CBitmap* oldbitmap = memDC.SelectObject(m_image);
-		dc->TransparentBlt(rect.left, rect.top, rect.Width(), rect.Height() - round(12 * GetZoom()), &memDC, 0, 0, 32, 32, RGB(230, 230, 230));
+		BITMAP bm;
+		m_image->GetBitmap(&bm);
+
+		BLENDFUNCTION blender;
+		blender.BlendOp = AC_SRC_OVER;
+		blender.BlendFlags = 0;
+		blender.SourceConstantAlpha = RGB(230, 230, 230);
+		blender.AlphaFormat = 0x01;
+
+		dc->AlphaBlend(rect.left, rect.top, rect.Width(), rect.Height() - round(12 * GetZoom()), &memDC, 0, 0, bm.bmWidth, bm.bmHeight, blender);
 		memDC.SelectObject(oldbitmap);
 	}
 
