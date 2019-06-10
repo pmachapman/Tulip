@@ -8,6 +8,7 @@ class CNetworkSymbol : public CDiagramEntity
 {
 public:
 	CNetworkSymbol(UINT resid);
+	CNetworkSymbol(CBitmap* image);
 	~CNetworkSymbol();
 
 	virtual CDiagramEntity* Clone();
@@ -26,12 +27,16 @@ public:
 	UINT			GetSymbol() const;
 
 	virtual BOOL	AutoGenerateName() const;
+	static CBitmap*	GetCustomImageFromFile();
+	void			SetImage(CBitmap* image);
+	CBitmap*		GetImage() const;
 
 private:
 	UINT	m_symbol;
 
 	CPropertyDialog	m_dlg;
 
+	CBitmap* m_image;
 };
 
 #endif // _NETWORKSYMBOL_H_

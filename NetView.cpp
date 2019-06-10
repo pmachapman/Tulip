@@ -49,6 +49,8 @@ BEGIN_MESSAGE_MAP(CNetView, CDiagramView)
 	// Custom to the document type
 	ON_COMMAND(ID_NET_BUTTON_ADD_CLIENT, OnButtonAddClient)
 	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_CLIENT, OnUpdateButtonAddClient)
+	ON_COMMAND(ID_NET_BUTTON_ADD_CUSTOM, OnButtonAddCustom)
+	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_CUSTOM, OnUpdateButtonAddCustom)
 	ON_COMMAND(ID_NET_BUTTON_ADD_HUB, OnButtonAddHub)
 	ON_UPDATE_COMMAND_UI(ID_NET_BUTTON_ADD_HUB, OnUpdateButtonAddHub)
 	ON_COMMAND(ID_NET_BUTTON_ADD_INTERNET, OnButtonAddInternet)
@@ -71,6 +73,7 @@ END_MESSAGE_MAP()
 
 CNetView::CNetView()
 {
+	m_drawObject = DRAW_OBJECT_NONE;
 	m_screenResolutionX = 0;
 	m_onlyh = FALSE;
 }
@@ -273,6 +276,24 @@ void CNetView::OnButtonAddClient()
 	}
 }
 
+void CNetView::OnButtonAddCustom()
+{
+	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CUSTOM)
+	{
+		m_editor.StartDrawingObject(NULL);
+		m_drawObject = DRAW_OBJECT_NONE;
+	}
+	else
+	{
+		CBitmap* image = CNetworkSymbol::GetCustomImageFromFile();
+		if (image != NULL)
+		{
+			m_editor.StartDrawingObject(new CNetworkSymbol(image));
+			m_drawObject = DRAW_OBJECT_CUSTOM;
+		}
+	}
+}
+
 void CNetView::OnButtonAddHub()
 {
 	if (m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_HUB)
@@ -346,6 +367,11 @@ void CNetView::OnButtonAddServer()
 void CNetView::OnUpdateButtonAddClient(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CLIENT);
+}
+
+void CNetView::OnUpdateButtonAddCustom(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CUSTOM);
 }
 
 void CNetView::OnUpdateButtonAddHub(CCmdUI* pCmdUI)

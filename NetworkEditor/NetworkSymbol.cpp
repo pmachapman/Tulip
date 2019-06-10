@@ -45,6 +45,33 @@ CNetworkSymbol::CNetworkSymbol(UINT resid)
 	SetType(_T("network_symbol"));
 	SetTitle(_T("title"));
 	SetName(CLinkFactory::GetID());
+	SetImage(NULL);
+
+	SetMarkerSize(CSize(6, 6));
+	SetPropertyDialog(&m_dlg, CPropertyDialog::IDD);
+
+}
+
+
+CNetworkSymbol::CNetworkSymbol(CBitmap* image)
+/* ============================================================
+	Function :		CNetworkSymbol::CNetworkSymbol
+	Description :	constructor
+
+	Return :		void
+	Parameters :	CBitmap image	-	Bitmap image to show
+
+	Usage :
+
+   ============================================================*/
+{
+
+	m_symbol = NULL;
+	SetConstraints(CSize(32, 44), CSize(-1, -1));
+	SetType(_T("network_symbol"));
+	SetTitle(_T("title"));
+	SetName(CLinkFactory::GetID());
+	SetImage(image);
 
 	SetMarkerSize(CSize(6, 6));
 	SetPropertyDialog(&m_dlg, CPropertyDialog::IDD);
@@ -59,7 +86,7 @@ CNetworkSymbol::~CNetworkSymbol()
 	Return :		void
 	Parameters :	none
 
-	Usage :
+	Usage :			If this is true, the name will be unique for all entities.
 
    ============================================================*/
 {
@@ -147,7 +174,7 @@ CDiagramEntity* CNetworkSymbol::CreateFromString(const CString& str)
    ============================================================*/
 {
 
-	CNetworkSymbol* obj = new CNetworkSymbol(0);
+	CNetworkSymbol* obj = new CNetworkSymbol(0U);
 	if (!obj->FromString(str))
 	{
 		delete obj;
@@ -360,7 +387,7 @@ UINT CNetworkSymbol::GetSymbol() const
 void CNetworkSymbol::SetSymbol(UINT resid)
 /* ============================================================
 	Function :		CNetworkSymbol::SetSymbol
-	Description :	Sets the reource id for the symbol
+	Description :	Sets the resource id for the symbol
 
 	Return :		void
 	Parameters :	UINT resid	-	Resource id of icon
@@ -371,5 +398,60 @@ void CNetworkSymbol::SetSymbol(UINT resid)
 {
 
 	m_symbol = resid;
+
+}
+
+CBitmap* CNetworkSymbol::GetImage() const
+/* ============================================================
+	Function :		CNetworkSymbol::GetImage
+	Description :	Gets the bitmap for the custom image
+	Access :
+
+	Return :		CBitmap*	-	Current bitmap data
+	Parameters :	none
+
+	Usage :			Call to get the current custom image bitmap
+
+   ============================================================*/
+{
+
+	return m_image;
+
+}
+
+void CNetworkSymbol::SetImage(CBitmap* image)
+/* ============================================================
+	Function :		CNetworkSymbol::SetSymbol
+	Description :	Sets the bitmap for the custom image
+
+	Return :		void
+	Parameters :	CBitmap* image	-	Image Bitmap
+
+	Usage :
+
+   ============================================================*/
+{
+
+	m_image = image;
+
+}
+
+CBitmap* CNetworkSymbol::GetCustomImageFromFile()
+/* ============================================================
+	Function :		CNetworkSymbol::GetImage
+	Description :	Gets a bitmap for a new custom image
+	Access :
+
+	Return :		CBitmap*	-	New bitmap data
+	Parameters :	none
+
+	Usage :			Call to get the new custom image bitmap
+
+   ============================================================*/
+{
+
+	// TODO: Load the image via a common dialog
+	CBitmap* image = new CBitmap();
+	return image;
 
 }

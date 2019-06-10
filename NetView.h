@@ -24,6 +24,7 @@
 #define DRAW_OBJECT_MODEM		4
 #define DRAW_OBJECT_PRINTER		5
 #define DRAW_OBJECT_SERVER		6
+#define DRAW_OBJECT_CUSTOM		7
 
 class CNetView : public CDiagramView
 {
@@ -64,6 +65,8 @@ protected:
 protected:
 	afx_msg void OnButtonAddClient();
 	afx_msg void OnUpdateButtonAddClient(CCmdUI* pCmdUI);
+	afx_msg void OnButtonAddCustom();
+	afx_msg void OnUpdateButtonAddCustom(CCmdUI* pCmdUI);
 	afx_msg void OnButtonAddHub();
 	afx_msg void OnUpdateButtonAddHub(CCmdUI* pCmdUI);
 	afx_msg void OnButtonAddInternet();
