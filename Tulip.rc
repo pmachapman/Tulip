@@ -1180,6 +1180,7 @@ STRINGTABLE
 BEGIN
     ID_DUPLICATE            "Duplicate the selected object\nDuplicate"
     ID_UML_OPEN_PACKAGE     "Opens a package for editing\nOpen Package"
+    ID_NET_BUTTON_ADD_CUSTOM "Add a custom image\nCustom Image"
 END
 
 #endif    // English (United States) resources

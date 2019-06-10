@@ -239,6 +239,7 @@
 #define ID_EXPORT_CPP                   32821
 #define ID_DUPLICATE                    32823
 #define ID_UML_OPEN_PACKAGE             32824
+#define ID_NET_BUTTON_ADD_CUSTOM        32825
 #define IDM_NETWORKEDITOR_LINK          33442
 #define IDM_NETWORKEDITOR_UNLINK        33445
 #define IDS_UML_CLASS                   33447
