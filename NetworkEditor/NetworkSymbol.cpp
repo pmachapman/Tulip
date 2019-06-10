@@ -149,6 +149,7 @@ void CNetworkSymbol::Copy(CDiagramEntity* obj)
 
 	CDiagramEntity::Copy(obj);
 	m_symbol = static_cast<CNetworkSymbol*>(obj)->m_symbol;
+	m_image = static_cast<CNetworkSymbol*>(obj)->m_image;
 
 }
 
@@ -209,19 +210,28 @@ void CNetworkSymbol::Draw(CDC* dc, CRect rect)
 
 	CDC memDC;
 	memDC.CreateCompatibleDC(dc);
-	HBITMAP hbitmap = (HBITMAP)::LoadImage(AfxGetResourceHandle(),
-		MAKEINTRESOURCE(m_symbol == 0 ? 1 : m_symbol),
-		IMAGE_BITMAP,
-		0, 0,
-		LR_CREATEDIBSECTION
-	);
+	if (m_symbol != NULL)
+	{
+		HBITMAP hbitmap = (HBITMAP)::LoadImage(AfxGetResourceHandle(),
+			MAKEINTRESOURCE(m_symbol == 0 ? 1 : m_symbol),
+			IMAGE_BITMAP,
+			0, 0,
+			LR_CREATEDIBSECTION
+		);
 
-	CBitmap* bitmap = CBitmap::FromHandle(hbitmap);
-	CBitmap* oldbitmap = memDC.SelectObject(bitmap);
+		CBitmap* bitmap = CBitmap::FromHandle(hbitmap);
+		CBitmap* oldbitmap = memDC.SelectObject(bitmap);
 
-	dc->TransparentBlt(rect.left, rect.top, rect.Width(), rect.Height() - round(12 * GetZoom()), &memDC, 0, 0, 32, 32, RGB(230, 230, 230));
-	memDC.SelectObject(oldbitmap);
-	bitmap->DeleteObject();
+		dc->TransparentBlt(rect.left, rect.top, rect.Width(), rect.Height() - round(12 * GetZoom()), &memDC, 0, 0, 32, 32, RGB(230, 230, 230));
+		memDC.SelectObject(oldbitmap);
+		bitmap->DeleteObject();
+	}
+	else
+	{
+		CBitmap* oldbitmap = memDC.SelectObject(m_image);
+		dc->TransparentBlt(rect.left, rect.top, rect.Width(), rect.Height() - round(12 * GetZoom()), &memDC, 0, 0, 32, 32, RGB(230, 230, 230));
+		memDC.SelectObject(oldbitmap);
+	}
 
 	CRect r(rect);
 	r.top = r.bottom - round(12.0 * GetZoom());
@@ -449,9 +459,18 @@ CBitmap* CNetworkSymbol::GetCustomImageFromFile()
 
    ============================================================*/
 {
-
-	// TODO: Load the image via a common dialog
-	CBitmap* image = new CBitmap();
-	return image;
-
+	// Load the image via a common dialog
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Supported Images |*.bmp;*.gif;*.jpeg;*.jpg;*.png;*.tiff|All Files (*.*)|*.*||"));
+	if (dlg.DoModal() == IDOK)
+	{
+		CImage image;
+		image.Load(dlg.GetPathName());
+		CBitmap* bitmap = new CBitmap();
+		bitmap->Attach(image.Detach());
+		return bitmap;
+	}
+	else
+	{
+		return NULL;
+	}
 }
