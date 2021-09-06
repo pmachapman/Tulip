@@ -29,6 +29,7 @@ public:
 	BOOL	m_in;
 	BOOL	m_out;
 	BOOL	m_reference;
+	BOOL	m_const;
 	//}}AFX_DATA
 
 	void			SetParameter(CParameter* parameter);

@@ -48,9 +48,10 @@ CFlowchartEntityIO::CFlowchartEntityIO()
 	SetType(_T("flowchart_IO"));
 
 	CString title;
-	title.LoadString(IDS_FLOWCHART_IO);
-	SetTitle(title);
-
+	if (title.LoadString(IDS_FLOWCHART_IO) > 0)
+	{
+		SetTitle(title);
+	}
 }
 
 CFlowchartEntityIO::~CFlowchartEntityIO()

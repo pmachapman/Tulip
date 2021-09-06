@@ -726,8 +726,8 @@ CString CUMLEntity::GetString() const
 	MakeSaveString(package);
 
 	str.Format(_T(",%s,%s,%i;"),
-		package,
-		GetFont(),
+		package.GetString(),
+		GetFont().GetString(),
 		static_cast<int>(GetBkColor())
 	);
 

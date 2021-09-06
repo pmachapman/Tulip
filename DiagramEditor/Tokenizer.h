@@ -11,16 +11,16 @@ class CTokenizer
 {
 public:
 	// Construction/destruction
-	CTokenizer(CString strInput, const CString & strDelimiter = _T(","));
+	CTokenizer(CString strInput, const CString& strDelimiter = _T(","), const CString& strEscapeStart = _T(""), const CString& strEscapeEnd = _T(""));
 
 	// Operations
-	void Init(const CString & strInput, const CString & strDelimiter = _T(","));
+	void Init(const CString& strInput, const CString& strDelimiter = _T(","), const CString& strEscapeStart = _T(""), const CString& strEscapeEnd = _T(""));
 	INT_PTR GetSize() const;
-	void GetAt(INT_PTR nIndex, CString & str) const;
-	void GetAt(INT_PTR nIndex, int & var) const;
-	void GetAt(INT_PTR nIndex, WORD & var) const;
-	void GetAt(INT_PTR nIndex, double & var) const;
-	void GetAt(INT_PTR nIndex, DWORD & var) const;
+	void GetAt(INT_PTR nIndex, CString& str) const;
+	void GetAt(INT_PTR nIndex, int& var) const;
+	void GetAt(INT_PTR nIndex, WORD& var) const;
+	void GetAt(INT_PTR nIndex, double& var) const;
+	void GetAt(INT_PTR nIndex, DWORD& var) const;
 
 
 	// Attributes

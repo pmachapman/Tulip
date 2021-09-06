@@ -49,9 +49,10 @@ CFlowchartEntityConnector::CFlowchartEntityConnector()
 	SetType(_T("flowchart_connector"));
 
 	CString title;
-	title.LoadString(IDS_FLOWCHART_CONNECTOR);
-	SetTitle(title);
-
+	if (title.LoadString(IDS_FLOWCHART_CONNECTOR) > 0)
+	{
+		SetTitle(title);
+	}
 }
 
 CFlowchartEntityConnector::~CFlowchartEntityConnector()

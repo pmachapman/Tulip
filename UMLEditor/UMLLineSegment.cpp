@@ -1054,21 +1054,21 @@ CString CUMLLineSegment::GetString() const
 	MakeSaveString(endLabel2);
 
 	str.Format(_T(",%s,%s,%s,%s,%i,%i,%i,%s,%i,%s,%s,%i,%i,%s,%s;"),
-		package,
-		stereotype,
-		GetLink(LINK_START),
-		GetLink(LINK_END),
+		package.GetString(),
+		stereotype.GetString(),
+		GetLink(LINK_START).GetString(),
+		GetLink(LINK_END).GetString(),
 		GetLinkType(LINK_START),
 		GetLinkType(LINK_END),
 		GetStyle(),
-		GetFont(),
+		GetFont().GetString(),
 		static_cast<int>(GetBkColor()),
-		startLabel1,
-		endLabel1,
+		startLabel1.GetString(),
+		endLabel1.GetString(),
 		GetOffset(LINK_START),
 		GetOffset(LINK_END),
-		startLabel2,
-		endLabel2
+		startLabel2.GetString(),
+		endLabel2.GetString()
 	);
 
 	str = GetDefaultGetString() + str;
@@ -1930,10 +1930,10 @@ CString CUMLLineSegment::ExportHTML() const
 			orientation = _T("top");
 
 		CString line;
-		line.Format(_T("border-%s:1px %s black"), orientation, linetype);
+		line.Format(_T("border-%s:1px %s black"), orientation.GetString(), linetype.GetString());
 
 		result.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;%s;'>&nbsp;</div>"),
-			rect.left, rect.top, width, height, line);
+			rect.left, rect.top, width, height, line.GetString());
 
 		if (GetStyle() & STYLE_ARROWHEAD)
 			result += GetArrowHeadHTML();
@@ -1965,7 +1965,7 @@ CString CUMLLineSegment::ExportHTML() const
 				CRect r(rect.left, rect.top - (14 + cut), rect.right, rect.bottom);
 				r.NormalizeRect();
 				label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:center;'>%s</div>"),
-					r.left, r.top, r.Width(), r.Height(), GetFont(), str);
+					r.left, r.top, r.Width(), r.Height(), GetFont().GetString(), str.GetString());
 				result += label;
 			}
 			else
@@ -1975,7 +1975,7 @@ CString CUMLLineSegment::ExportHTML() const
 				r.top += r.Height() / 2 - 7;
 				r.bottom = r.top + 14;
 				label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:right;'>%s</div>"),
-					r.left, r.top, r.Width(), r.Height(), GetFont(), str);
+					r.left, r.top, r.Width(), r.Height(), GetFont().GetString(), str.GetString());
 				result += label;
 			}
 
@@ -1995,7 +1995,7 @@ CString CUMLLineSegment::ExportHTML() const
 					rectTemp.left += cut;
 					rectTemp.right -= cut;
 					label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:right;'>%s</div>"),
-						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 					result += label;
 				}
 				else
@@ -2004,7 +2004,7 @@ CString CUMLLineSegment::ExportHTML() const
 					rectTemp.left = rectTemp.right + cut;
 					rectTemp.right = temp - cut;
 					label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:left;'>%s</div>"),
-						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 					result += label;
 				}
 
@@ -2022,7 +2022,7 @@ CString CUMLLineSegment::ExportHTML() const
 				}
 
 				label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:right;'>%s</div>"),
-					rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+					rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 				result += label;
 			}
 
@@ -2042,7 +2042,7 @@ CString CUMLLineSegment::ExportHTML() const
 					rectTemp.left += cut;
 					rectTemp.right -= cut;
 					label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:right;'>%s</div>"),
-						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 					result += label;
 				}
 				else
@@ -2051,7 +2051,7 @@ CString CUMLLineSegment::ExportHTML() const
 					rectTemp.left = rectTemp.right + cut;
 					rectTemp.right = temp - cut;
 					label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:left;'>%s</div>"),
-						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 					result += label;
 				}
 
@@ -2070,7 +2070,7 @@ CString CUMLLineSegment::ExportHTML() const
 				}
 
 				label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:right;'>%s</div>"),
-					rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+					rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 				result += label;
 			}
 
@@ -2090,7 +2090,7 @@ CString CUMLLineSegment::ExportHTML() const
 					rectTemp.left += cut;
 					rectTemp.right -= cut;
 					label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:left;'>%s</div>"),
-						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 					result += label;
 				}
 				else
@@ -2099,7 +2099,7 @@ CString CUMLLineSegment::ExportHTML() const
 					rectTemp.left = rectTemp.right + cut;
 					rectTemp.right = temp - cut;
 					label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:right;'>%s</div>"),
-						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 					result += label;
 				}
 
@@ -2116,7 +2116,7 @@ CString CUMLLineSegment::ExportHTML() const
 					rectTemp.bottom = rectTemp.top + 14;
 				}
 				label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:right;'>%s</div>"),
-					rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+					rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 				result += label;
 			}
 		}
@@ -2135,7 +2135,7 @@ CString CUMLLineSegment::ExportHTML() const
 					rectTemp.left += cut;
 					rectTemp.right -= cut;
 					label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:left;'>%s</div>"),
-						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 					result += label;
 				}
 				else
@@ -2144,7 +2144,7 @@ CString CUMLLineSegment::ExportHTML() const
 					rectTemp.left = rectTemp.right + cut;
 					rectTemp.right = temp - cut;
 					label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:right;'>%s</div>"),
-						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+						rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 					result += label;
 				}
 
@@ -2161,7 +2161,7 @@ CString CUMLLineSegment::ExportHTML() const
 					rectTemp.bottom = rectTemp.top + 14;
 				}
 				label.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:12;background-color:transparent;text-align:right;'>%s</div>"),
-					rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont(), str);
+					rectTemp.left, rectTemp.top, rectTemp.Width(), rectTemp.Height(), GetFont().GetString(), str.GetString());
 				result += label;
 			}
 		}
@@ -2244,7 +2244,7 @@ CString CUMLLineSegment::GetArrowHeadHTML() const
 
 	CString arrow;
 	arrow.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;background-image:url(\"%s\");background-repeat:no-repeat;'>&nbsp;</div>"),
-		pos.x, pos.y, width, height, img);
+		pos.x, pos.y, width, height, img.GetString());
 
 	return arrow;
 
@@ -2320,7 +2320,7 @@ CString CUMLLineSegment::GetFilledArrowHeadHTML() const
 
 	CString arrow;
 	arrow.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;background-image:url(\"%s\");background-repeat:no-repeat;'>&nbsp;</div>"),
-		pos.x, pos.y, width, height, img);
+		pos.x, pos.y, width, height, img.GetString());
 
 	return arrow;
 
@@ -2364,7 +2364,7 @@ CString CUMLLineSegment::GetFilledDiamondHTML() const
 
 	CString arrow;
 	arrow.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;background-image:url(\"%s\");background-repeat:no-repeat;'>&nbsp;</div>"),
-		pos.x, pos.y, width, height, img);
+		pos.x, pos.y, width, height, img.GetString());
 
 	return arrow;
 
@@ -2389,7 +2389,7 @@ CString CUMLLineSegment::GetCircleCrossHTML() const
 
 	CString arrow;
 	arrow.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;background-image:url(\"%s\");background-repeat:no-repeat;'>&nbsp;</div>"),
-		pos.x, pos.y, marker.cx, marker.cy, GetImageResourceAsDataUri(IDB_PARTOF));
+		pos.x, pos.y, marker.cx, marker.cy, GetImageResourceAsDataUri(IDB_PARTOF).GetString());
 
 	return arrow;
 }

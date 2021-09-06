@@ -31,6 +31,7 @@ public:
 	BOOL	reference;
 	BOOL	in;
 	BOOL	out;
+	BOOL	constant;
 
 };
 

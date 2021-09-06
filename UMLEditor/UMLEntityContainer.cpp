@@ -1678,7 +1678,7 @@ void CUMLEntityContainer::ExportHTML(CStringArray& stra) const
 	else
 	{
 		CString title;
-		title.Format(_T("<title>%s</title>"), GetProjectName());
+		title.Format(_T("<title>%s</title>"), GetProjectName().GetString());
 		stra.Add(_T("<html>"));
 		stra.Add(_T("<head>"));
 		stra.Add(title);

@@ -52,8 +52,10 @@ CUMLEntityInterface::CUMLEntityInterface()
 	SetDefaultSize(CSize(32, 32));
 
 	CString title;
-	title.LoadString(IDS_UML_INTERFACE);
-	SetTitle(title);
+	if (title.LoadString(IDS_UML_INTERFACE) > 0)
+	{
+		SetTitle(title);
+	}
 
 	SetType(_T("uml_interface"));
 	SetConstraints(GetDefaultSize(), GetDefaultSize());
@@ -353,7 +355,7 @@ CString CUMLEntityInterface::Export(UINT format) const
 		}
 
 		result.Format(_T("<div style='position:absolute;left:%i;top:%i;width:32;height:32;background-color:#%s;background-image:url(\"%s\");background-repeat:no-repeat;'>&nbsp;</div>\n<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:%i;font-weight:bold;text-align:center;'>%s</div>"),
-			rect.left, rect.top, color, GetImageResourceAsDataUri(IDB_INTERFACE), textRect.left, textRect.top, textRect.Width(), textRect.Height(), GetFont(), font_size, GetTitle());
+			rect.left, rect.top, color.GetString(), GetImageResourceAsDataUri(IDB_INTERFACE).GetString(), textRect.left, textRect.top, textRect.Width(), textRect.Height(), GetFont().GetString(), font_size, GetTitle().GetString());
 	}
 
 	return result;

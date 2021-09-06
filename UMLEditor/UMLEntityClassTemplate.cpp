@@ -37,8 +37,10 @@ CUMLEntityClassTemplate::CUMLEntityClassTemplate()
 	SetType(_T("uml_template"));
 
 	CString title;
-	title.LoadString(IDS_UML_TEMPLATE);
-	SetTitle(title);
+	if (title.LoadString(IDS_UML_TEMPLATE) > 0)
+	{
+		SetTitle(title);
+	}
 
 	SetPropertyDialog(&m_dlg, CUMLTemplatePropertyDialog::IDD);
 
@@ -244,13 +246,13 @@ CString CUMLEntityClassTemplate::GetString() const
 	INT_PTR operations = GetOperations();
 
 	str.Format(_T(",%s,%s,%i,%s,%s,%i,%s,%i,%i"),
-		package,
-		GetFont(),
+		package.GetString(),
+		GetFont().GetString(),
 		static_cast<int>(GetBkColor()),
-		stereotype,
-		propertylist,
+		stereotype.GetString(),
+		propertylist.GetString(),
 		GetDisplayOptions(),
-		param,
+		param.GetString(),
 		attributes,
 		operations
 	);
@@ -451,7 +453,7 @@ CString CUMLEntityClassTemplate::ExportHTML() const
 		top,
 		width,
 		height,
-		param);
+		param.GetString());
 
 	result += prefix;
 	return result;
@@ -638,8 +640,11 @@ BOOL CUMLEntityClassTemplate::ImportH(const CString& filename)
 			else
 			{
 				CString err;
-				err.LoadString(IDS_UML_MALFORMED_COMMENT);
-				GetUMLContainer()->SetErrorMessage(err);
+				if (err.LoadString(IDS_UML_MALFORMED_COMMENT) > 0)
+				{
+					GetUMLContainer()->SetErrorMessage(err);
+				}
+
 				return FALSE;
 			}
 
@@ -711,8 +716,11 @@ BOOL CUMLEntityClassTemplate::ImportH(const CString& filename)
 			else
 			{
 				CString err;
-				err.LoadString(IDS_UML_MISSING_BRACKET);
-				GetUMLContainer()->SetErrorMessage(err);
+				if (err.LoadString(IDS_UML_MISSING_BRACKET) > 0)
+				{
+					GetUMLContainer()->SetErrorMessage(err);
+				}
+
 				return FALSE;
 			}
 
@@ -876,7 +884,7 @@ BOOL CUMLEntityClassTemplate::ImportH(const CString& filename)
 					int paramlen = params.GetLength();
 					if (paramlen)
 					{
-						tok.Init(params);
+						tok.Init(params, _T(","), _T("<"), _T(">"));
 						INT_PTR size = tok.GetSize();
 						for (INT_PTR i = 0; i < size; i++)
 						{
@@ -954,7 +962,7 @@ BOOL CUMLEntityClassTemplate::ImportH(const CString& filename)
 
 				// A member variable
 				// Parse into type and name
-				data = data.Left(data.GetLength() - 1); // remove semiconol
+				data = data.Left(data.GetLength() - 1); // remove semicolon
 				int space = data.Find(_TCHAR(' '));
 				if (space != -1)
 				{
@@ -969,7 +977,24 @@ BOOL CUMLEntityClassTemplate::ImportH(const CString& filename)
 						attr->maintype |= ENTITY_TYPE_STATIC;
 					}
 
+					// See if there is an end angle bracked (i.e. this is a map)
+					int escapeStart = data.Find(_TCHAR('<'));
+					int escapeEnd = -1;
+					if (escapeStart > -1)
+					{
+						escapeEnd = data.Find(_TCHAR('>'), escapeStart);
+					}
+
+					// Look for the space
 					int space = data.Find(_TCHAR(' '));
+
+					// Make sure the delimiter is after the escape end
+					if (space < escapeEnd)
+					{
+						space = data.Find(_TCHAR(' '), escapeEnd);
+					}
+
+					// Get the type
 					CString type = data.Left(space);
 					CString name = data.Right(data.GetLength() - (space + 1));
 					int bracket = name.Find(_TCHAR('['));

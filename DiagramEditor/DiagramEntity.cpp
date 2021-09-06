@@ -454,7 +454,16 @@ CString CDiagramEntity::GetDefaultGetString() const
 	name.Replace(_T(","), _T("\\comma"));
 	name.Replace(_T("\r\n"), _T("\\newline"));
 
-	str.Format(_T("%s:%f,%f,%f,%f,%s,%s,%i"), GetType(), GetLeft(), GetTop(), GetRight(), GetBottom(), title, name, GetGroup());
+	str.Format(_T("%s:%f,%f,%f,%f,%s,%s,%i"),
+		GetType().GetString(),
+		GetLeft(),
+		GetTop(),
+		GetRight(),
+		GetBottom(),
+		title.GetString(),
+		name.GetString(),
+		GetGroup()
+	);
 
 	return str;
 }

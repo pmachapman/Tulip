@@ -50,8 +50,10 @@ CUMLEntityNote::CUMLEntityNote()
 	SetDefaultSize(CSize(96, 64));
 
 	CString title;
-	title.LoadString(IDS_UML_NOTE);
-	SetTitle(title);
+	if (title.LoadString(IDS_UML_NOTE) > 0)
+	{
+		SetTitle(title);
+	}
 
 	SetType(_T("uml_note"));
 	SetConstraints(GetDefaultSize(), CSize(-1, -1));
@@ -410,7 +412,7 @@ CString CUMLEntityNote::ExportHTML() const
 	title.Replace(_T("\r\n"), _T("<br>"));
 
 	result.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;'><div style='position:absolute;left:%i;top:-1;width:9;height:9;background-image:url(\"%s\");background-repeat:no-repeat;'>&nbsp;&nbsp;&nbsp;&nbsp;</div><div style='position:absolute;left:1;top:10;width:%i;height:%i;font-size:%i;font-family:%s;text-align:left;overflow:hidden;'>%s</div></div>"),
-		rect.left, rect.top, rect.Width(), rect.Height(), color, rect.Width() - 8, GetImageResourceAsDataUri(IDB_NOTE), rect.Width() - 2, rect.Height() - 11, font_size, GetFont(), title);
+		rect.left, rect.top, rect.Width(), rect.Height(), color.GetString(), rect.Width() - 8, GetImageResourceAsDataUri(IDB_NOTE).GetString(), rect.Width() - 2, rect.Height() - 11, font_size, GetFont().GetString(), title.GetString());
 
 	return result;
 

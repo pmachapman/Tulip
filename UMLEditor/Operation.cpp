@@ -254,14 +254,14 @@ CString COperation::GetString(int format) const
 		result.Format(_T("%i|%i|%s|%s|%s|%s|%i|%i|%s|%s"),
 			maintype,
 			access,
-			name,
-			type,
-			propertylist,
-			stereo,
+			name.GetString(),
+			type.GetString(),
+			propertylist.GetString(),
+			stereo.GetString(),
 			getter,
 			setter,
-			getset,
-			params);
+			getset.GetString(),
+			params.GetString());
 	}
 	break;
 
@@ -284,11 +284,11 @@ CString COperation::GetString(int format) const
 			result += _T("void ");
 
 		// function name and parameters
-		result += name + _T("( ");
+		result += name + _T("(");
 		result += parameters.GetString(STRING_FORMAT_H);
 
 		// const
-		result += _T(" )");
+		result += _T(")");
 		if (properties.GetPropertyValue(_T("query")) == _T("true"))
 			result += _T(" const");
 
@@ -319,11 +319,11 @@ CString COperation::GetString(int format) const
 			result += _T("void ");
 
 		// function name and parameters
-		result += name + _T("( ");
+		result += name + _T("(");
 		result += parameters.GetString(STRING_FORMAT_H);
 
 		// const
-		result += _T(" )");
+		result += _T(")");
 		if (properties.GetPropertyValue(_T("query")) == _T("true"))
 			result += _T(" const");
 
@@ -347,9 +347,9 @@ CString COperation::GetString(int format) const
 			result += _T("virtual ");
 
 		// function name and parameters
-		result += name + _T("( ");
+		result += name + _T("(");
 		result += parameters.GetString(STRING_FORMAT_H);
-		result += _T(" );");
+		result += _T(");");
 
 	}
 	break;
@@ -365,9 +365,9 @@ CString COperation::GetString(int format) const
 			result += _T("virtual ");
 
 		// function name and parameters
-		result += name + _T("( ");
+		result += name + _T("(");
 		result += parameters.GetString(STRING_FORMAT_H);
-		result += _T(" ) {\r\n\t\t//TODO: Implement\r\n\t};");
+		result += _T(") {\r\n\t\t//TODO: Implement\r\n\t};");
 
 	}
 	break;

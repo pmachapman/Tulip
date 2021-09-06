@@ -43,9 +43,10 @@ CFlowchartLabel::CFlowchartLabel()
 	SetPropertyDialog(&m_dlg, CLabelPropertyDialog::IDD);
 
 	CString title;
-	title.LoadString(IDS_FLOWCHART_LABEL);
-	SetTitle(title);
-
+	if (title.LoadString(IDS_FLOWCHART_LABEL) > 0)
+	{
+		SetTitle(title);
+	}
 }
 
 CFlowchartLabel::~CFlowchartLabel()

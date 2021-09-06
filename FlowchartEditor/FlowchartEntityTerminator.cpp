@@ -44,9 +44,10 @@ CFlowchartEntityTerminator::CFlowchartEntityTerminator()
 	SetType(_T("flowchart_start"));
 
 	CString title;
-	title.LoadString(IDS_FLOWCHART_TERMINATOR);
-	SetTitle(title);
-
+	if (title.LoadString(IDS_FLOWCHART_TERMINATOR) > 0)
+	{
+		SetTitle(title);
+	}
 }
 
 CFlowchartEntityTerminator::~CFlowchartEntityTerminator()

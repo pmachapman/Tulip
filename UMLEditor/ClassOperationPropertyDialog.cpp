@@ -127,8 +127,9 @@ void CClassOperationPropertyDialog::OnButtonAdd()
 	if (dlg.DoModal() == IDOK)
 	{
 
-		CParameter* param = dlg.GetParameter();;
+		CParameter* param = dlg.GetParameter();
 		param->reference = dlg.m_reference;
+		param->constant = dlg.m_const;
 
 		CString out = param->GetString(STRING_FORMAT_UML);
 		int index = m_parameter.AddString(out);

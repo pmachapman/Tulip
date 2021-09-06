@@ -242,7 +242,7 @@ void CDiagramEditor::Clear()
 
 }
 
-BOOL CDiagramEditor::Create(DWORD dwStyle, const RECT &rect, CWnd *pParentWnd, CDiagramEntityContainer* data)
+BOOL CDiagramEditor::Create(DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, CDiagramEntityContainer* data)
 /* ============================================================
 	Function :		CDiagramEditor::Create
 	Description :	Creates a "CDiagramEditor" window.
@@ -639,7 +639,7 @@ void CDiagramEditor::DrawGrid(CBitmap* bmp, CRect rect, double zoom) const
 {
 	// Get the grid color
 	COLORREF color = GetGridColor();
-	
+
 	// Get the bitmap bits for manual modification
 	BITMAP bitmap;
 	bmp->GetBitmap(&bitmap);
@@ -670,7 +670,7 @@ void CDiagramEditor::DrawGrid(CBitmap* bmp, CRect rect, double zoom) const
 	bmp->SetBitmapBits(bitmap.bmWidthBytes * bitmap.bmHeight, dib);
 
 	// Clean up
-	delete dib;
+	delete[] dib;
 }
 
 void CDiagramEditor::DrawMargins(CDC* dc, CRect rect, double zoom) const
@@ -6085,7 +6085,6 @@ HCURSOR CDiagramEditor::GetCursor()
 	}
 	else if (m_objs)
 	{
-
 		int count = 0;
 		CDiagramEntity* obj = NULL;
 		const MSG* msg = GetCurrentMessage();
@@ -6102,21 +6101,25 @@ HCURSOR CDiagramEditor::GetCursor()
 
 				int hitCode = obj->GetHitCode(point, rect);
 				if (hitCode != DEHT_NONE && hitCode != DEHT_BODY)
+				{
 					result = obj->GetCursor(hitCode);
+				}
 
 			}
 		}
 
 		if (result == NULL)
 		{
+			ScreenToVirtual(point);
 			int hitCode = GetHitCode(point);
 			if (hitCode != DEHT_NONE && hitCode != DEHT_BODY && m_bgResizeSelected)
+			{
 				result = GetCursor(hitCode);
+			}
 		}
 	}
 
 	return result;
-
 }
 
 void CDiagramEditor::SetScrollWheelMode(int mode)

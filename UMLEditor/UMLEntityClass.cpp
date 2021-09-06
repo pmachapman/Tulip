@@ -69,8 +69,10 @@ CUMLEntityClass::CUMLEntityClass()
 	SetType(_T("uml_class"));
 
 	CString title;
-	title.LoadString(IDS_UML_CLASS);
-	SetTitle(title);
+	if (title.LoadString(IDS_UML_CLASS) > 0)
+	{
+		SetTitle(title);
+	}
 
 	SetPropertyDialog(&m_dlg, CUMLClassPropertyDialog::IDD);
 
@@ -478,11 +480,11 @@ CString CUMLEntityClass::GetString() const
 	INT_PTR operations = GetOperations();
 
 	str.Format(_T(",%s,%s,%i,%s,%s,%i,%i,%i"),
-		package,
-		GetFont(),
+		package.GetString(),
+		GetFont().GetString(),
 		static_cast<int>(GetBkColor()),
-		stereotype,
-		propertylist,
+		stereotype.GetString(),
+		propertylist.GetString(),
 		GetDisplayOptions(),
 		attributes,
 		operations
@@ -1337,9 +1339,9 @@ CString CUMLEntityClass::ExportCPP() const
 							signature = _T("void ");
 					}
 
-					signature += className + _T("::") + op->name + _T("( ");
+					signature += className + _T("::") + op->name + _T("(");
 					signature += op->parameters.GetString(STRING_FORMAT_CPP);
-					signature += _T(" )");
+					signature += _T(")");
 					if (op->properties.GetPropertyValue(_T("query")) == _T("true"))
 						signature += _T(" const");
 
@@ -1664,7 +1666,7 @@ BOOL CUMLEntityClass::DoMessage(UINT msg, CDiagramEntity* sender, CWnd* from)
 	BOOL result = FALSE;
 	if (msg == CMD_IMPORT)
 	{
-		CFileDialog	dlg(TRUE, _T("h"), _T("*.h"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Header File (*.h)|*.h|All Files (*.*)|*.*||"));
+		CFileDialog	dlg(TRUE, _T("h"), _T("*.h"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Header File (*.h)|*.h;*.hpp|All Files (*.*)|*.*||"));
 		if (dlg.DoModal() == IDOK)
 			ImportH(dlg.GetPathName());
 
@@ -1716,8 +1718,11 @@ BOOL CUMLEntityClass::ImportH(const CString& filename)
 			else
 			{
 				CString err;
-				err.LoadString(IDS_UML_MALFORMED_COMMENT);
-				GetUMLContainer()->SetErrorMessage(err);
+				if (err.LoadString(IDS_UML_MALFORMED_COMMENT) > 0)
+				{
+					GetUMLContainer()->SetErrorMessage(err);
+				}
+
 				return FALSE;
 			}
 
@@ -1856,11 +1861,12 @@ BOOL CUMLEntityClass::ImportH(const CString& filename)
 
 				}
 			}
-
 		}
 
 		if (className.IsEmpty())
+		{
 			return FALSE;
+		}
 
 		// Now, we are left with a list of the declarations and access markers from the header file. Now, we will start to create attributes and operations from those. We will recognize an operation as it will have a paranthesis somewhere in the string.
 		max = classContents.GetSize();
@@ -1945,7 +1951,7 @@ BOOL CUMLEntityClass::ImportH(const CString& filename)
 					int paramlen = params.GetLength();
 					if (paramlen)
 					{
-						tok.Init(params);
+						tok.Init(params, _T(","), _T("<"), _T(">"));
 						INT_PTR size = tok.GetSize();
 						for (INT_PTR i = 0; i < size; i++)
 						{
@@ -1985,10 +1991,9 @@ BOOL CUMLEntityClass::ImportH(const CString& filename)
 								int constmarkerfound = type.Find(constmarker);
 								if (constmarkerfound != -1)
 								{
-
 									type = type.Left(constmarkerfound) + type.Right(type.GetLength() - (constmarkerfound + constmarker.GetLength()));
 									param->out = FALSE;
-
+									param->constant = TRUE;
 								}
 
 								param->type = type;
@@ -2016,14 +2021,12 @@ BOOL CUMLEntityClass::ImportH(const CString& filename)
 				}
 
 				AddOperation(op);
-
 			}
 			else
 			{
-
 				// A member variable
 				// Parse into type and name
-				data = data.Left(data.GetLength() - 1); // remove semiconol
+				data = data.Left(data.GetLength() - 1); // remove semicolon
 				int space = data.Find(_TCHAR(' '));
 				if (space != -1)
 				{
@@ -2038,7 +2041,24 @@ BOOL CUMLEntityClass::ImportH(const CString& filename)
 						attr->maintype |= ENTITY_TYPE_STATIC;
 					}
 
+					// See if there is an end angle bracked (i.e. this is a map)
+					int escapeStart = data.Find(_TCHAR('<'));
+					int escapeEnd = -1;
+					if (escapeStart > -1)
+					{
+						escapeEnd = data.Find(_TCHAR('>'), escapeStart);
+					}
+
+					// Look for the space
 					int space = data.Find(_TCHAR(' '));
+
+					// Make sure the delimiter is after the escape end
+					if (space < escapeEnd)
+					{
+						space = data.Find(_TCHAR(' '), escapeEnd);
+					}
+
+					// Get the type
 					CString type = data.Left(space);
 					CString name = data.Right(data.GetLength() - (space + 1));
 					int bracket = name.Find(_TCHAR('['));
@@ -2278,18 +2298,18 @@ CString CUMLEntityClass::ExportHTML() const
 
 	CString nameCompartment;
 	nameCompartment.Format(_T("<div style=\'position:absolute;overflow:hidden;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;font-size:%i;font-family:%s;text-align:center;\'>%s</div>"),
-		left, top, width, height_of_name_compartment, background_color_string, font_size_in_pixels, font_name,
-		contents_of_name_compartment);
+		left, top, width, height_of_name_compartment, background_color_string.GetString(), font_size_in_pixels, font_name.GetString(),
+		contents_of_name_compartment.GetString());
 
 	CString attributeCompartment;
 	attributeCompartment.Format(_T("<div style=\'position:absolute;overflow:hidden;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;font-size:%i;font-family:%s;text-align:left;\'>%s</div>"),
-		left, top + height_of_name_compartment - 1, width, height_of_attribute_compartment, background_color_string, font_size_in_pixels, font_name,
-		contents_of_attribute_compartment);
+		left, top + height_of_name_compartment - 1, width, height_of_attribute_compartment, background_color_string.GetString(), font_size_in_pixels, font_name.GetString(),
+		contents_of_attribute_compartment.GetString());
 
 	CString operationCompartment;
 	operationCompartment.Format(_T("<div style=\'position:absolute;overflow:hidden;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;font-size:%i;font-family:%s;text-align:left;\'>%s</div>"),
-		left, top + (height_of_name_compartment - 1) + (height_of_attribute_compartment - 1), width, height_of_operation_compartment, background_color_string, font_size_in_pixels, font_name,
-		contents_of_operation_compartment);
+		left, top + (height_of_name_compartment - 1) + (height_of_attribute_compartment - 1), width, height_of_operation_compartment, background_color_string.GetString(), font_size_in_pixels, font_name.GetString(),
+		contents_of_operation_compartment.GetString());
 
 	result = nameCompartment + attributeCompartment + operationCompartment;
 

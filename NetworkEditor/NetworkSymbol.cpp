@@ -203,7 +203,7 @@ void CNetworkSymbol::Draw(CDC* dc, CRect rect)
 	CDC memDC;
 	memDC.CreateCompatibleDC(dc);
 	HBITMAP hbitmap = (HBITMAP)::LoadImage(AfxGetResourceHandle(),
-		MAKEINTRESOURCE(m_symbol),
+		MAKEINTRESOURCE(m_symbol == 0 ? 1 : m_symbol),
 		IMAGE_BITMAP,
 		0, 0,
 		LR_CREATEDIBSECTION

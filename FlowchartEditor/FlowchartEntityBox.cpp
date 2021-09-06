@@ -44,9 +44,10 @@ CFlowchartEntityBox::CFlowchartEntityBox()
 	SetConstraints(CSize(128, 64), CSize(128, 64));
 	SetType(_T("flowchart_box"));
 	CString title;
-	title.LoadString(IDS_FLOWCHART_BOX);
-	SetTitle(title);
-
+	if (title.LoadString(IDS_FLOWCHART_BOX) > 0)
+	{
+		SetTitle(title);
+	}
 }
 
 CFlowchartEntityBox::~CFlowchartEntityBox()

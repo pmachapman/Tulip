@@ -170,25 +170,28 @@ CAttribute* CAttribute::FromString(const CString& str)
 	if (tok.GetSize() >= 8)
 	{
 		at = new CAttribute;
-		CString	multi;
-		CString	defaultvalue;
-		CString	propertylist;
+		CString type;
+		CString multi;
+		CString defaultvalue;
+		CString propertylist;
 		CString stereotype;
 
 		tok.GetAt(0, at->maintype);
 		tok.GetAt(1, at->access);
 		tok.GetAt(2, at->name);
-		tok.GetAt(3, at->type);
+		tok.GetAt(3, type);
 		tok.GetAt(4, multi);
 		tok.GetAt(5, defaultvalue);
 		tok.GetAt(6, propertylist);
 		tok.GetAt(7, stereotype);
 
+		UnmakeSaveString(type);
 		UnmakeSaveString(multi);
 		UnmakeSaveString(defaultvalue);
 		UnmakeSaveString(propertylist);
 		UnmakeSaveString(stereotype);
 
+		at->type = type;
 		at->multiplicity = multi;
 		at->defaultvalue = defaultvalue;
 		at->properties.FromString(propertylist);
@@ -224,25 +227,27 @@ CString CAttribute::GetString(int format) const
 	CString result;
 	if (format == STRING_FORMAT_SAVE)
 	{
+		CString type(type);
 		CString multi(multiplicity);
 		CString defval(defaultvalue);
 		CString propertylist(properties.GetString(STRING_FORMAT_SAVE));
 		CString stereo(stereotype);
 
+		MakeSaveString(type);
 		MakeSaveString(multi);
 		MakeSaveString(defval);
 		MakeSaveString(propertylist);
 		MakeSaveString(stereo);
 
-		result.Format(_T("%i|%i|%s|%s|%s|%s|%s|%s"),
+		result.Format(_T("%i|%i|%ws|%ws|%s|%s|%s|%s"),
 			maintype,
 			access,
-			name,
-			type,
-			multi,
-			defval,
-			propertylist,
-			stereo
+			name.GetString(),
+			type.GetString(),
+			multi.GetString(),
+			defval.GetString(),
+			propertylist.GetString(),
+			stereo.GetString()
 		);
 	}
 

@@ -31,7 +31,7 @@
    ////////////////////////////////////////////////////////////////////
    // Public functions
    //
-CTokenizer::CTokenizer(CString strInput, const CString & strDelimiter)
+CTokenizer::CTokenizer(CString strInput, const CString& strDelimiter, const CString& strEscapeStart, const CString& strEscapeEnd)
 /* ============================================================
 	Function :		CTokenizer::CTokenizer
 	Description :	Constructor.
@@ -40,19 +40,19 @@ CTokenizer::CTokenizer(CString strInput, const CString & strDelimiter)
 	Return :		void
 	Parameters :	CString strInput				-	String to
 														tokenize
-					const CString & strDelimiter	-	Delimiter,
-														defaults to
-														comma.
+					const CString & strDelimiter	-	Delimiter, defaults to comma
+					const CString & strEscapeStart	-	Starting Escape Character, defaults to empty string
+					const CString & strEscapeEnd	-	Ending Escape Character, defaults to empty string
 	Usage :			Should normally be created on the stack.
 
    ============================================================*/
 {
 
-	Init(strInput, strDelimiter);
+	Init(strInput, strDelimiter, strEscapeStart, strEscapeEnd);
 
 }
 
-void CTokenizer::Init(const CString & strInput, const CString & strDelimiter)
+void CTokenizer::Init(const CString& strInput, const CString& strDelimiter, const CString& strEscapeStart, const CString& strEscapeEnd)
 /* ============================================================
 	Function :		CTokenizer::Init
 	Description :	Reinitializes and tokenizes the tokenizer
@@ -62,31 +62,76 @@ void CTokenizer::Init(const CString & strInput, const CString & strDelimiter)
 
 	Return :		void
 	Parameters :	const CString & strInput		-	New string
-					const CString & strDelimiter	-	Delimiter,
-														defaults to
-														comma
+					const CString & strDelimiter	-	Delimiter, defaults to comma
+					const CString & strEscapeStart	-	Starting Escape Character, defaults to empty string
+					const CString & strEscapeEnd	-	Ending Escape Character, defaults to empty string
 
 	Usage :			Call to reinitialize the tokenizer.
 
    ============================================================*/
 {
-
+	// Set up the copy of the string we will work with
 	CString copy(strInput);
 	m_stra.RemoveAll();
+
+	// Get the first escape character, if it is set
+	int escapeStart = -1;
+	if (strEscapeStart != _T(""))
+	{
+		escapeStart = copy.Find(strEscapeStart);
+	}
+
+	// Get the end escape character, if it is set and there is a start escape character
+	int escapeEnd = -1;
+	if (escapeStart > -1 && strEscapeEnd != _T(""))
+	{
+		escapeEnd = copy.Find(strEscapeEnd, escapeStart);
+	}
+
+	// Look for the delimiter
 	int nFound = copy.Find(strDelimiter);
 
+	// Make sure the delimiter is not between the escape start and end
+	if (nFound > escapeStart && nFound < escapeEnd)
+	{
+		nFound = copy.Find(strDelimiter, escapeEnd);
+	}
+
+	// While we can find the delimiter
 	while (nFound != -1)
 	{
+		// Get the token, and remove it from our string copy
 		CString strLeft;
 		strLeft = copy.Left(nFound);
 		copy = copy.Right(copy.GetLength() - (nFound + 1));
 
+		// Add the token to the list
 		m_stra.Add(strLeft);
+
+		// Get the first escape character, if it is set
+		if (strEscapeStart != _T(""))
+		{
+			escapeStart = copy.Find(strEscapeStart);
+		}
+
+		// Get the end escape character, if it is set and there is a start escape character
+		if (escapeStart > -1 && strEscapeEnd != _T(""))
+		{
+			escapeEnd = copy.Find(strEscapeEnd, escapeStart);
+		}
+
+		// Look for the next occurence of the delimiter
 		nFound = copy.Find(strDelimiter);
+
+		// Make sure the delimiter is not between the escape start and end
+		if (nFound > escapeStart && nFound < escapeEnd)
+		{
+			nFound = copy.Find(strDelimiter, escapeEnd);
+		}
 	}
 
+	// Add what is left of our string copy as a token to the list
 	m_stra.Add(copy);
-
 }
 
 INT_PTR CTokenizer::GetSize() const
@@ -108,7 +153,7 @@ INT_PTR CTokenizer::GetSize() const
 
 }
 
-void CTokenizer::GetAt(INT_PTR nIndex, CString & str) const
+void CTokenizer::GetAt(INT_PTR nIndex, CString& str) const
 /* ============================================================
 	Function :		CTokenizer::GetAt
 	Description :	Get the token at "nIndex" and put it in
@@ -132,7 +177,7 @@ void CTokenizer::GetAt(INT_PTR nIndex, CString & str) const
 
 }
 
-void CTokenizer::GetAt(INT_PTR nIndex, int & var) const
+void CTokenizer::GetAt(INT_PTR nIndex, int& var) const
 /* ============================================================
 	Function :		CTokenizer::GetAt
 	Description :	Get the token at "nIndex" and put it in
@@ -156,7 +201,7 @@ void CTokenizer::GetAt(INT_PTR nIndex, int & var) const
 
 }
 
-void CTokenizer::GetAt(INT_PTR nIndex, WORD & var) const
+void CTokenizer::GetAt(INT_PTR nIndex, WORD& var) const
 /* ============================================================
 	Function :		CTokenizer::GetAt
 	Description :	Get the token at "nIndex" and put it in
@@ -180,7 +225,7 @@ void CTokenizer::GetAt(INT_PTR nIndex, WORD & var) const
 
 }
 
-void CTokenizer::GetAt(INT_PTR nIndex, double & var) const
+void CTokenizer::GetAt(INT_PTR nIndex, double& var) const
 /* ============================================================
 	Function :		CTokenizer::GetAt
 	Description :	Get the token at "nIndex" and put it in
@@ -197,7 +242,7 @@ void CTokenizer::GetAt(INT_PTR nIndex, double & var) const
    ============================================================*/
 {
 
-	TCHAR   *stop;
+	TCHAR* stop;
 	if (nIndex < m_stra.GetSize())
 		var = _tcstod(m_stra.GetAt(nIndex), &stop);
 	else
@@ -205,7 +250,7 @@ void CTokenizer::GetAt(INT_PTR nIndex, double & var) const
 
 }
 
-void CTokenizer::GetAt(INT_PTR nIndex, DWORD & var) const
+void CTokenizer::GetAt(INT_PTR nIndex, DWORD& var) const
 /* ============================================================
 	Function :		CTokenizer::GetAt
 	Description :	Get the token at "nIndex" and put it in

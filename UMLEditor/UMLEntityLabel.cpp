@@ -51,8 +51,10 @@ CUMLEntityLabel::CUMLEntityLabel()
 	SetDefaultSize(CSize(48, 14));
 
 	CString title;
-	title.LoadString(IDS_UML_LABEL);
-	SetTitle(title);
+	if (title.LoadString(IDS_UML_LABEL) > 0)
+	{
+		SetTitle(title);
+	}
 
 	SetType(_T("uml_label"));
 	SetConstraints(GetDefaultSize(), CSize(-1, -1));
@@ -282,8 +284,8 @@ CString CUMLEntityLabel::GetString() const
 	MakeSaveString(package);
 
 	str.Format(_T(",%s,%s,%i,%i,%i,%i,%i;"),
-		package,
-		GetFont(),
+		package.GetString(),
+		GetFont().GetString(),
 		static_cast<int>(GetBkColor()),
 		GetPointsize(),
 		GetBold(),
@@ -479,7 +481,17 @@ CString CUMLEntityLabel::ExportHTML() const
 	title.Replace(_T("\r\n"), _T("<br>"));
 
 	result.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;font-family:%s;font-size:%i;overflow:hidden;font-weight:%s;font-style:%s;text-decoration:%s;'>%s</div>"),
-		rect.left, rect.top, rect.Width(), rect.Height(), GetFont(), font_size, fontweight, fontstyle, textdecoration, title);
+		rect.left,
+		rect.top,
+		rect.Width(),
+		rect.Height(),
+		GetFont().GetString(),
+		font_size,
+		fontweight.GetString(),
+		fontstyle.GetString(),
+		textdecoration.GetString(),
+		title.GetString()
+	);
 
 	return result;
 }

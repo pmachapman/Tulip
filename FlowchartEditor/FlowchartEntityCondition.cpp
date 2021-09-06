@@ -47,9 +47,10 @@ CFlowchartEntityCondition::CFlowchartEntityCondition()
 	SetType(_T("flowchart_condition"));
 
 	CString title;
-	title.LoadString(IDS_FLOWCHART_CONDITION);
-	SetTitle(title);
-
+	if (title.LoadString(IDS_FLOWCHART_CONDITION) > 0)
+	{
+		SetTitle(title);
+	}
 }
 
 CFlowchartEntityCondition::~CFlowchartEntityCondition()

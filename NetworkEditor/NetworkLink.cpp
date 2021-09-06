@@ -90,7 +90,7 @@ CString CNetworkLink::GetString() const
 {
 
 	CString str;
-	str.Format(_T("network_link:%s,%s;"), from, to);
+	str.Format(_T("network_link:%s,%s;"), from.GetString(), to.GetString());
 	return str;
 
 }

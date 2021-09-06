@@ -40,11 +40,10 @@ CParameter::CParameter()
 
    ============================================================*/
 {
-
+	constant = FALSE;
 	reference = FALSE;
 	out = FALSE;
 	in = TRUE;
-
 }
 
 CParameter::~CParameter()
@@ -77,14 +76,13 @@ CParameter::CParameter(CParameter* parameter)
 
    ============================================================*/
 {
-
 	name = parameter->name;
 	type = parameter->type;
 	defaultvalue = parameter->defaultvalue;
 	reference = parameter->reference;
 	in = parameter->in;
 	out = parameter->out;
-
+	constant = parameter->constant;
 }
 
 // Implementation
@@ -108,14 +106,15 @@ CParameter* CParameter::FromString(const CString& str)
 
 	CTokenizer tok(str, _T("#"));
 	INT_PTR max = tok.GetSize();
-	if (max == 6)
+	if (max >= 6)
 	{
 		CString name;
 		CString type;
 		CString defaultvalue;
-		int		reference;
-		int		in;
-		int		out;
+		int reference;
+		int in;
+		int out;
+		int constant;
 		INT_PTR count = 0;
 		tok.GetAt(count++, name);
 		tok.GetAt(count++, type);
@@ -123,6 +122,15 @@ CParameter* CParameter::FromString(const CString& str)
 		tok.GetAt(count++, reference);
 		tok.GetAt(count++, in);
 		tok.GetAt(count++, out);
+		if (max >= 7)
+		{
+			tok.GetAt(count++, constant);
+		}
+		else
+		{
+			// Backwards compatibility
+			constant = reference == TRUE && out != TRUE;
+		}
 
 		result = new CParameter;
 		result->name = name;
@@ -131,7 +139,7 @@ CParameter* CParameter::FromString(const CString& str)
 		result->reference = reference;
 		result->in = in;
 		result->out = out;
-
+		result->constant = constant;
 	}
 
 	return result;
@@ -166,31 +174,61 @@ CString CParameter::GetString(int format) const
 	{
 	case STRING_FORMAT_SAVE:
 
-		result.Format(_T("%s#%s#%s#%i#%i#%i"),
-			name,
-			type,
-			defaultvalue,
+		result.Format(_T("%s#%s#%s#%i#%i#%i#%i"),
+			name.GetString(),
+			type.GetString(),
+			defaultvalue.GetString(),
 			static_cast<int>(reference),
 			static_cast<int>(in),
-			static_cast<int>(out)
+			static_cast<int>(out),
+			static_cast<int>(constant)
 		);
 
 		break;
 	case STRING_FORMAT_CPP:
 	{
-
-		result = type + _T(" ");
-		if (reference)
+		if (constant)
 		{
-			if (out) // alias
-				result += _T("& ");
-			else // const ref
-				result = _T("const ") + result + _T("& ");
+			result = _T("const ") + type;
 		}
 		else
 		{
-			if (out) // pointer
+			result = type;
+		}
+
+		if (reference)
+		{
+			if (out)
+			{
+				// alias
+				result += _T("& ");
+			}
+			else
+			{
+				// const ref
+				if (constant)
+				{
+					// const has already been applied
+					result += _T("& ");
+				}
+				else
+				{
+					// const is required
+					result = _T("const ") + result + _T("& ");
+				}
+			}
+		}
+		else
+		{
+			if (out)
+			{
+				// pointer
 				result += _T("* ");
+			}
+			else
+			{
+				result += _T(" ");
+			}
 		}
 
 		result += name;
@@ -200,19 +238,48 @@ CString CParameter::GetString(int format) const
 
 	case STRING_FORMAT_H:
 	{
-
-		result = type + _T(" ");
-		if (reference)
+		if (constant)
 		{
-			if (out) // alias
-				result += _T("& ");
-			else // const ref
-				result = _T("const ") + result + _T("& ");
+			result = _T("const ") + type;
 		}
 		else
 		{
-			if (out) // pointer
+			result = type;
+		}
+
+		if (reference)
+		{
+			if (out)
+			{
+				// alias
+				result += _T("& ");
+			}
+			else
+			{
+				// const ref
+				if (constant)
+				{
+					// const has already been applied
+					result += _T("& ");
+				}
+				else
+				{
+					// const is required
+					result = _T("const ") + result + _T("& ");
+				}
+			}
+		}
+		else
+		{
+			if (out)
+			{
+				// pointer
 				result += _T("* ");
+			}
+			else
+			{
+				result += _T(" ");
+			}
 		}
 
 		result += name;
@@ -225,17 +292,26 @@ CString CParameter::GetString(int format) const
 
 	case STRING_FORMAT_UML:
 	{
-
 		if (in && out)
+		{
 			result = _T("inout ");
+		}
 		else if (out)
+		{
 			result = _T("out ");
+		}
+
+		if (constant)
+		{
+			result = _T("const ") + result;
+		}
 
 		result += name + _T(":") + type;
 
 		if (defaultvalue.GetLength())
+		{
 			result += _T(" = ") + defaultvalue;
-
+		}
 	}
 	break;
 	}
@@ -264,17 +340,30 @@ CString CParameter::ToString(BOOL nooperationattributenames) const
 	CString result;
 
 	if (in && out)
+	{
 		result = _T("inout ");
+	}
 	else if (out)
+	{
 		result = _T("out ");
+	}
+
+	if (constant)
+	{
+		result = _T("const ") + result;
+	}
 
 	if (!nooperationattributenames)
+	{
 		result += name + _T(":");
+	}
 
 	result += type;
 
 	if (defaultvalue.GetLength())
+	{
 		result += _T(" = ") + defaultvalue;
+	}
 
 	return result;
 
@@ -300,6 +389,7 @@ BOOL CParameter::operator==(const CParameter& parameter)
 
 	if (type == parameter.type &&
 		reference == parameter.reference &&
+		constant == parameter.constant &&
 		in == parameter.in &&
 		out == parameter.out)
 		result = TRUE;

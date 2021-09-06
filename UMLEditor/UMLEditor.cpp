@@ -1315,7 +1315,6 @@ CString CUMLEditor::BrowseForFolder()
 	CString str;
 
 	CString title;
-	title.LoadString(IDS_UML_SELECT_FOLDER);
 
 	_TCHAR initialPath[_MAX_PATH];
 	lstrcpy(initialPath, m_exportPath);
@@ -1326,7 +1325,11 @@ CString CUMLEditor::BrowseForFolder()
 	bi.hwndOwner = AfxGetMainWnd()->m_hWnd;
 	bi.pidlRoot = NULL;
 	bi.pszDisplayName = NULL;
-	bi.lpszTitle = title;
+	if (title.LoadString(IDS_UML_SELECT_FOLDER) > 0)
+	{
+		bi.lpszTitle = title;
+	}
+
 	bi.ulFlags = BIF_USENEWUI;
 	bi.lpfn = NULL;
 	bi.lpfn = BFFCallbackProc;
@@ -1334,7 +1337,7 @@ CString CUMLEditor::BrowseForFolder()
 
 	if ((pidl = ::SHBrowseForFolder(&bi)) != NULL)
 	{
-		if (SUCCEEDED(::SHGetPathFromIDList(pidl, buffer)))
+		if (::SHGetPathFromIDList(pidl, buffer) == TRUE)
 		{
 			m_exportPath = buffer;
 			str = buffer;

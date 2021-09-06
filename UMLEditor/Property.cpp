@@ -128,8 +128,8 @@ CString CProperty::GetString( int format ) const
 		case STRING_FORMAT_SAVE:
 
 			result.Format( _T( "%s=%s" ),
-					key,
-					value
+					key.GetString(),
+					value.GetString()
 				);
 
 			break;
@@ -138,8 +138,8 @@ CString CProperty::GetString( int format ) const
 			if( value.GetLength() )
 			{
 				result.Format( _T( "%s = %s" ),
-						key,
-						value
+						key.GetString(),
+						value.GetString()
 					);
 			}
 			else

@@ -55,8 +55,10 @@ CUMLEntityPackage::CUMLEntityPackage()
 	SetPropertyDialog(&m_dlg, CUMLPackagePropertyDialog::IDD);
 
 	CString title;
-	title.LoadString(IDS_UML_PACKAGE);
-	SetTitle(title);
+	if (title.LoadString(IDS_UML_PACKAGE) > 0)
+	{
+		SetTitle(title);
+	}
 
 	SetType(_T("uml_package"));
 	SetConstraints(GetDefaultSize(), CSize(-1, -1));
@@ -361,13 +363,17 @@ BOOL CUMLEntityPackage::ModifyTitle(const CString& title)
 	CUMLEntityContainer* objs = GetUMLContainer();
 	CString package = GetPackage();
 	CString deftitle;
-	deftitle.LoadString(IDS_UML_PACKAGE);
+	if (deftitle.LoadString(IDS_UML_PACKAGE) == 0)
+	{
+		deftitle = _T("PackageName");
+	}
+
 	if (objs && title.GetLength() && title != deftitle)
 	{
 		if (objs->PackageExists(title, this))
 		{
 			AfxMessageBox(IDS_UML_PACKAGE_EXISTS);
-			result = FALSE;;
+			result = FALSE;
 		}
 		else
 		{
@@ -434,7 +440,7 @@ CString CUMLEntityPackage::ExportHTML() const
 	CString color = ColorrefToString(GetBkColor());
 
 	result.Format(_T("<div style='position:absolute;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;'>&nbsp;</div><div style='position:absolute;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;text-align:center;font-family:%s;font-size:%i;overflow:hidden;z-index:-1'><b>%s</b></div>"),
-		rect.left + cut, rect.top, cut * 10, cut * 2, color, rect.left, rect.top + cut * 2, rect.Width(), rect.Height() - cut * 2, color, GetFont(), font_size, GetTitle());
+		rect.left + cut, rect.top, cut * 10, cut * 2, color.GetString(), rect.left, rect.top + cut * 2, rect.Width(), rect.Height() - cut * 2, color.GetString(), GetFont().GetString(), font_size, GetTitle().GetString());
 
 	return result;
 

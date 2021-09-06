@@ -53,6 +53,7 @@ CAddParameterDialog::CAddParameterDialog(CWnd* pParent /*=NULL*/)
 	m_in = FALSE;
 	m_out = FALSE;
 	m_reference = FALSE;
+	m_const = FALSE;
 	//}}AFX_DATA_INIT
 
 	m_parameter = NULL;
@@ -84,6 +85,7 @@ void CAddParameterDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_IN, m_in);
 	DDX_Check(pDX, IDC_CHECK_OUT, m_out);
 	DDX_Check(pDX, IDC_CHECK_REFERENCE, m_reference);
+	DDX_Check(pDX, IDC_CHECK_CONST, m_const);
 	//}}AFX_DATA_MAP
 }
 
@@ -132,6 +134,7 @@ void CAddParameterDialog::OnOK()
 	m_parameter->in = m_in;
 	m_parameter->out = m_out;
 	m_parameter->reference = m_reference;
+	m_parameter->constant = m_const;
 
 	CDialog::OnOK();
 
@@ -161,7 +164,7 @@ BOOL CAddParameterDialog::OnInitDialog()
 		m_in = m_parameter->in;
 		m_out = m_parameter->out;
 		m_reference = m_parameter->reference;
-
+		m_const = m_parameter->constant;
 	}
 	else
 		m_parameter = new CParameter;

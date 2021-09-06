@@ -97,7 +97,13 @@ CString CFlowchartLink::GetString() const
 	writetitle.Replace(_T(";"), _T("\\semicolon"));
 	writetitle.Replace(_T("\r\n"), _T("\\newline"));
 
-	str.Format(_T("flowchart_link:%i,%i,%s,%s,%s;"), fromtype, totype, writetitle, from, to);
+	str.Format(_T("flowchart_link:%i,%i,%s,%s,%s;"),
+		fromtype,
+		totype,
+		writetitle.GetString(),
+		from.GetString(),
+		to.GetString()
+	);
 	return str;
 
 }
