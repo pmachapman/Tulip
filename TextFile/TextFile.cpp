@@ -156,7 +156,6 @@ BOOL CTextFile::ReadTextFile(CString& filename, CString& contents)
 					into a "CString".
    ============================================================*/
 {
-
 	contents = _T("");
 
 	// Error handling
@@ -167,36 +166,34 @@ BOOL CTextFile::ReadTextFile(CString& filename, CString& contents)
 	BOOL result = TRUE;
 
 	if (filename.IsEmpty())
+	{
 		result = GetFilename(FALSE, filename);
+	}
 
 	if (result)
 	{
-
 		// Reading the file
 		if (file.Open(filename, CFile::modeRead, &feError))
 		{
-
 			CString line;
 			while (file.ReadString(line))
+			{
 				contents += line + m_eol;
+			}
 
 			file.Close();
-
 		}
 		else
 		{
-
 			// Setting error message
-			TCHAR	errBuff[256];
+			TCHAR errBuff[256];
 			feError.GetErrorMessage(errBuff, 256);
 			m_error = errBuff;
 			result = FALSE;
-
 		}
 	}
 
 	return result;
-
 }
 
 BOOL CTextFile::WriteTextFile(CString& filename, const CStringArray& contents)

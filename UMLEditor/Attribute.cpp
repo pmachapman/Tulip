@@ -103,7 +103,7 @@ CString CAttribute::ToString(BOOL nomarkers)
 	output += type;
 
 	if (multiplicity.GetLength())
-		output += _T("[ ") + multiplicity + _T(" ]");
+		output += _T("[") + multiplicity + _T("]");
 
 	if (defaultvalue.GetLength())
 		output += _T(" = ") + defaultvalue;
@@ -268,7 +268,7 @@ CString CAttribute::GetString(int format) const
 				found = multiplicity.Find(_T("."));
 			}
 
-			result += _T("[ ") + multiplicity + _T(" ]");
+			result += _T("[") + multiplicity + _T("]");
 		}
 		result += _T(";");
 	}

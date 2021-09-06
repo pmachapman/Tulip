@@ -103,10 +103,10 @@ CString COperation::ToString(BOOL nomarkers, BOOL nooperationattributenames)
 	}
 
 	output += name;
-	output += _T("( ");
+	output += _T("(");
 	output += parameters.ToString(nooperationattributenames);
 
-	output += _T(" )");
+	output += _T(")");
 	if (type.GetLength())
 	{
 		output += _T(":");
@@ -169,24 +169,24 @@ COperation* COperation::FromString(const CString& str)
 
    ============================================================*/
 {
-
 	COperation* op = NULL;
 	CTokenizer tok(str, _T("|"));
 	if (tok.GetSize() == 10)
 	{
 		op = new COperation;
 		CString params;
+		CString type;
 		CString propertylist;
 		CString stereotype;
-		BOOL	getter;
-		BOOL	setter;
+		BOOL getter;
+		BOOL setter;
 		CString getsetvariable;
 
 		int count = 0;
 		tok.GetAt(count++, op->maintype);
 		tok.GetAt(count++, op->access);
 		tok.GetAt(count++, op->name);
-		tok.GetAt(count++, op->type);
+		tok.GetAt(count++, type);
 		tok.GetAt(count++, propertylist);
 		tok.GetAt(count++, stereotype);
 		tok.GetAt(count++, getter);
@@ -194,6 +194,7 @@ COperation* COperation::FromString(const CString& str)
 		tok.GetAt(count++, getsetvariable);
 		tok.GetAt(count++, params);
 
+		UnmakeSaveString(type);
 		UnmakeSaveString(propertylist);
 		UnmakeSaveString(params);
 		UnmakeSaveString(stereotype);
@@ -202,15 +203,14 @@ COperation* COperation::FromString(const CString& str)
 		op->properties.FromString(propertylist);
 		op->parameters.FromString(params);
 
+		op->type = type;
 		op->stereotype = stereotype;
 		op->getter = getter;
 		op->setter = setter;
 		op->getsetvariable = getsetvariable;
-
 	}
 
 	return op;
-
 }
 
 CString COperation::GetString(int format) const
@@ -241,11 +241,13 @@ CString COperation::GetString(int format) const
 	{
 	case STRING_FORMAT_SAVE:
 	{
+		CString type(type);
 		CString propertylist(properties.GetString());
 		CString stereo(stereotype);
 		CString getset(getsetvariable);
 		CString params(parameters.GetString());
 
+		MakeSaveString(type);
 		MakeSaveString(propertylist);
 		MakeSaveString(stereo);
 		MakeSaveString(getset);

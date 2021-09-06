@@ -1700,15 +1700,16 @@ BOOL CUMLEntityClass::ImportH(const CString& filename)
    ============================================================*/
 {
 
-	ClearAttributes();
-	ClearOperations();
-	ClearProperties();
-
 	CTextFile		file(_T(""), _T("\n"));;
 	CString			localfilename(filename);
 	CString			str;
 	if (file.ReadTextFile(localfilename, str))
 	{
+		// Clear the class, only if we can open the file
+		ClearAttributes();
+		ClearOperations();
+		ClearProperties();
+
 		int comment = str.Find(_T("/*"));
 		while (comment != -1)
 		{
@@ -2109,6 +2110,8 @@ BOOL CUMLEntityClass::ImportH(const CString& filename)
 		return TRUE;
 	}
 
+	// Display the error message
+	AfxMessageBox(file.GetErrorMessage());
 	return FALSE;
 }
 
@@ -2297,17 +2300,17 @@ CString CUMLEntityClass::ExportHTML() const
 	CString contents_of_operation_compartment = GetOperationList(EXPORT_HTML);
 
 	CString nameCompartment;
-	nameCompartment.Format(_T("<div style=\'position:absolute;overflow:hidden;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;font-size:%i;font-family:%s;text-align:center;\'>%s</div>"),
+	nameCompartment.Format(_T("<div style=\'position:absolute;overflow:hidden;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;font-size:%i;font-family:%s;text-align:center;white-space:nowrap;overflow:hidden;\'>%s</div>"),
 		left, top, width, height_of_name_compartment, background_color_string.GetString(), font_size_in_pixels, font_name.GetString(),
 		contents_of_name_compartment.GetString());
 
 	CString attributeCompartment;
-	attributeCompartment.Format(_T("<div style=\'position:absolute;overflow:hidden;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;font-size:%i;font-family:%s;text-align:left;\'>%s</div>"),
+	attributeCompartment.Format(_T("<div style=\'position:absolute;overflow:hidden;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;font-size:%i;font-family:%s;text-align:left;white-space:nowrap;overflow:hidden;\'>%s</div>"),
 		left, top + height_of_name_compartment - 1, width, height_of_attribute_compartment, background_color_string.GetString(), font_size_in_pixels, font_name.GetString(),
 		contents_of_attribute_compartment.GetString());
 
 	CString operationCompartment;
-	operationCompartment.Format(_T("<div style=\'position:absolute;overflow:hidden;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;font-size:%i;font-family:%s;text-align:left;\'>%s</div>"),
+	operationCompartment.Format(_T("<div style=\'position:absolute;overflow:hidden;left:%i;top:%i;width:%i;height:%i;border:1px solid black;background-color:#%s;font-size:%i;font-family:%s;text-align:left;white-space:nowrap;overflow:hidden;\'>%s</div>"),
 		left, top + (height_of_name_compartment - 1) + (height_of_attribute_compartment - 1), width, height_of_operation_compartment, background_color_string.GetString(), font_size_in_pixels, font_name.GetString(),
 		contents_of_operation_compartment.GetString());
 
@@ -2421,10 +2424,8 @@ CString CUMLEntityClass::GetHeaderTemplate() const
 			_T("{\r\n")
 			_T("public:\r\n")
 			_T("[%operationlist%]\r\n")
-			_T("\r\n")
 			_T("// Attributes\r\n")
 			_T("[%attributelist%]\r\n")
-			_T("\r\n")
 			_T("};\r\n")
 			_T("#endif //[%definename%]\r\n");
 	}

@@ -518,10 +518,8 @@ CString CUMLEntityClassTemplate::GetHeaderTemplate() const
 			_T("{\r\n")
 			_T("public:\r\n")
 			_T("[%operationlist%]\r\n")
-			_T("\r\n")
 			_T("// Attributes\r\n")
 			_T("[%attributelist%]\r\n")
-			_T("\r\n")
 			_T("};\r\n")
 			_T("#endif //[%definename%]\r\n");
 	}
@@ -621,16 +619,16 @@ BOOL CUMLEntityClassTemplate::ImportH(const CString& filename)
 
    ============================================================*/
 {
-
-	ClearAttributes();
-	ClearOperations();
-	ClearProperties();
-
 	CTextFile		file(_T(""), _T("\n"));;
 	CString			localfilename(filename);
 	CString			str;
 	if (file.ReadTextFile(localfilename, str))
 	{
+		// Clear the class, only if we can open the file
+		ClearAttributes();
+		ClearOperations();
+		ClearProperties();
+
 		int comment = str.Find(_T("/*"));
 		while (comment != -1)
 		{
@@ -1046,6 +1044,8 @@ BOOL CUMLEntityClassTemplate::ImportH(const CString& filename)
 		return TRUE;
 	}
 
+	// Display the error message
+	AfxMessageBox(file.GetErrorMessage());
 	return FALSE;
 }
 
