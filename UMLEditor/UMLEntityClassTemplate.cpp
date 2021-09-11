@@ -514,7 +514,7 @@ CString CUMLEntityClassTemplate::GetHeaderTemplate() const
 			_T("//\r\n")
 			_T("\r\n")
 			_T("[%includelist%]\r\n")
-			_T("template< [%parametertype%] > class [%classname%][%baseclass%]\r\n")
+			_T("template<[%parametertype%]> class [%classname%][%baseclass%]\r\n")
 			_T("{\r\n")
 			_T("public:\r\n")
 			_T("[%operationlist%]\r\n")

@@ -1666,7 +1666,7 @@ BOOL CUMLEntityClass::DoMessage(UINT msg, CDiagramEntity* sender, CWnd* from)
 	BOOL result = FALSE;
 	if (msg == CMD_IMPORT)
 	{
-		CFileDialog	dlg(TRUE, _T("h"), _T("*.h"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Header File (*.h)|*.h;*.hpp|All Files (*.*)|*.*||"));
+		CFileDialog	dlg(TRUE, _T("h"), _T("*.h"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, _T("Header File (*.h;*.hh;*.hpp;*.hxx)|*.h;*.hh;*.hpp;*.hxx|All Files (*.*)|*.*||"));
 		if (dlg.DoModal() == IDOK)
 			ImportH(dlg.GetPathName());
 
