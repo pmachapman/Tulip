@@ -119,6 +119,10 @@ void CTokenizer::Init(const CString& strInput, const CString& strDelimiter, cons
 		{
 			escapeEnd = copy.Find(strEscapeEnd, escapeStart);
 		}
+		else
+		{
+			escapeEnd = -1;
+		}
 
 		// Look for the next occurence of the delimiter
 		nFound = copy.Find(strDelimiter);
