@@ -284,7 +284,7 @@ void CUmlView::OnButtonClass()
 
 void CUmlView::OnUpdateButtonClass(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CLASS);
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_CLASS ? 1 : 0);
 }
 
 void CUmlView::OnButtonInterface()
@@ -303,7 +303,7 @@ void CUmlView::OnButtonInterface()
 
 void CUmlView::OnUpdateButtonInterface(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_INTERFACE);
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_INTERFACE ? 1 : 0);
 }
 
 void CUmlView::OnButtonLabel()
@@ -322,7 +322,7 @@ void CUmlView::OnButtonLabel()
 
 void CUmlView::OnUpdateButtonLabel(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_UML_LABEL);
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_UML_LABEL ? 1 : 0);
 }
 
 void CUmlView::OnButtonLink()
@@ -342,7 +342,7 @@ void CUmlView::OnButtonLink()
 void CUmlView::OnUpdateButtonLink(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_editor.GetObjectCount() > 1);
-	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LINK);
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_LINK ? 1 : 0);
 }
 
 void CUmlView::OnButtonNote()
@@ -361,7 +361,7 @@ void CUmlView::OnButtonNote()
 
 void CUmlView::OnUpdateButtonNote(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_NOTE);
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_NOTE ? 1 : 0);
 }
 
 void CUmlView::OnButtonPackage()
@@ -380,7 +380,7 @@ void CUmlView::OnButtonPackage()
 
 void CUmlView::OnUpdateButtonPackage(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_PACKAGE);
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_PACKAGE ? 1 : 0);
 }
 
 void CUmlView::OnButtonTemplate()
@@ -399,7 +399,7 @@ void CUmlView::OnButtonTemplate()
 
 void CUmlView::OnUpdateButtonTemplate(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_TEMPLATE);
+	pCmdUI->SetCheck(m_editor.IsDrawing() && m_drawObject == DRAW_OBJECT_TEMPLATE ? 1 : 0);
 }
 
 void CUmlView::OnButtonDisplayProperties()
