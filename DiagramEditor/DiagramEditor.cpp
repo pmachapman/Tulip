@@ -456,10 +456,10 @@ void CDiagramEditor::Draw(CDC* dc, CRect rect)
    ============================================================*/
 {
 	// Getting co-ordinate data
-	SCROLLINFO sih;
+	SCROLLINFO sih{};
 	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
-	SCROLLINFO siv;
+	SCROLLINFO siv{};
 	siv.cbSize = sizeof(SCROLLINFO);
 	siv.fMask = SIF_POS;
 	if (!GetScrollInfo(SB_HORZ, &sih))
@@ -3544,7 +3544,7 @@ void CDiagramEditor::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
    ============================================================*/
 {
 
-	SCROLLINFO si;
+	SCROLLINFO si{};
 	si.cbSize = sizeof(SCROLLINFO);
 	si.fMask = SIF_POS | SIF_RANGE;
 	GetScrollInfo(SB_HORZ, &si);
@@ -3601,7 +3601,7 @@ void CDiagramEditor::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
    ============================================================*/
 {
 
-	SCROLLINFO si;
+	SCROLLINFO si{};
 	si.cbSize = sizeof(SCROLLINFO);
 	si.fMask = SIF_POS | SIF_RANGE;
 	GetScrollInfo(SB_VERT, &si);
@@ -3668,7 +3668,7 @@ int CDiagramEditor::HScroll(int scroll)
 		{
 			int desiredpos = 0;
 
-			SCROLLINFO si;
+			SCROLLINFO si{};
 			si.cbSize = sizeof(SCROLLINFO);
 			if (GetScrollInfo(SB_HORZ, &si))
 			{
@@ -3715,7 +3715,7 @@ int CDiagramEditor::VScroll(int scroll)
 		{
 			int desiredpos = 0;
 
-			SCROLLINFO si;
+			SCROLLINFO si{};
 			si.cbSize = sizeof(SCROLLINFO);
 			if (GetScrollInfo(SB_VERT, &si))
 			{
@@ -3819,7 +3819,7 @@ void CDiagramEditor::SetupScrollbars()
 				add |= WS_VSCROLL;
 		}
 
-		SCROLLINFO si;
+		SCROLLINFO si{};
 		si.cbSize = sizeof(SCROLLINFO);
 		si.fMask = SIF_RANGE | SIF_PAGE;
 		si.nMin = 0;
@@ -3906,8 +3906,8 @@ void CDiagramEditor::ScreenToVirtual(CRect& rect) const
 
 	rect.NormalizeRect();
 
-	SCROLLINFO sih;
-	SCROLLINFO siv;
+	SCROLLINFO sih{};
+	SCROLLINFO siv{};
 
 	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
@@ -3946,8 +3946,8 @@ void CDiagramEditor::ScreenToVirtual(CPoint& point) const
 	// add scroll bar positions and apply current 
 	// scale.
 
-	SCROLLINFO sih;
-	SCROLLINFO siv;
+	SCROLLINFO sih{};
+	SCROLLINFO siv{};
 
 	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
@@ -3983,8 +3983,8 @@ void CDiagramEditor::ScreenToVirtual(CSize& size) const
 	// and apply current zoom.
 
 
-	SCROLLINFO sih;
-	SCROLLINFO siv;
+	SCROLLINFO sih{};
+	SCROLLINFO siv{};
 
 	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
@@ -4022,8 +4022,8 @@ void CDiagramEditor::VirtualToScreen(CRect& rect) const
 
 	rect.NormalizeRect();
 
-	SCROLLINFO sih;
-	SCROLLINFO siv;
+	SCROLLINFO sih{};
+	SCROLLINFO siv{};
 
 	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
@@ -5653,7 +5653,7 @@ BOOL CDiagramEditor::ZoomToFit(CPoint start, CSize size)
 	{
 
 		// Set scrollbar positions
-		SCROLLINFO si;
+		SCROLLINFO si{};
 		si.cbSize = sizeof(SCROLLINFO);
 		si.fMask = SIF_POS;
 		if (GetScrollInfo(SB_HORZ, &si))
@@ -5731,10 +5731,10 @@ BOOL CDiagramEditor::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
 	if (GetScrollWheelMode() == WHEEL_SCROLL)
 	{
-		SCROLLINFO si;
+		SCROLLINFO si{};
 		si.cbSize = sizeof(SCROLLINFO);
 		si.fMask = SIF_POS | SIF_RANGE;
-		static int mouseDelta;
+		static int mouseDelta = 0;
 
 		mouseDelta += zDelta;
 		int increment = (mouseDelta / WHEEL_DELTA);
@@ -5829,11 +5829,11 @@ void CDiagramEditor::OnTimer(UINT_PTR nIDEvent)
 		int diffx = (point.x - test.x) / 16;
 		int diffy = (point.y - test.y) / 16;
 
-		SCROLLINFO sih;
+		SCROLLINFO sih{};
 		sih.cbSize = sizeof(SCROLLINFO);
 		sih.fMask = SIF_POS;
 		sih.nPos = 0;
-		SCROLLINFO siv;
+		SCROLLINFO siv{};
 		siv.cbSize = sizeof(SCROLLINFO);
 		siv.fMask = SIF_POS;
 		siv.nPos = 0;
@@ -5981,10 +5981,10 @@ void CDiagramEditor::DrawPanning(CDC* dc) const
 
 	CDiagramEditor* const local = const_cast<CDiagramEditor* const>(this);
 
-	SCROLLINFO sih;
+	SCROLLINFO sih{};
 	sih.cbSize = sizeof(SCROLLINFO);
 	sih.fMask = SIF_POS;
-	SCROLLINFO siv;
+	SCROLLINFO siv{};
 	siv.cbSize = sizeof(SCROLLINFO);
 	siv.fMask = SIF_POS;
 	if (!local->GetScrollInfo(SB_HORZ, &sih))
@@ -6179,7 +6179,7 @@ void CDiagramEditor::SetHScroll(int pos)
 
 	pos = max(0, pos);
 
-	SCROLLINFO si;
+	SCROLLINFO si{};
 	si.cbSize = sizeof(SCROLLINFO);
 	si.fMask = SIF_POS;
 	si.nPos = pos;
@@ -6207,7 +6207,7 @@ void CDiagramEditor::SetVScroll(int pos)
 
 	pos = max(0, pos);
 
-	SCROLLINFO si;
+	SCROLLINFO si{};
 	si.cbSize = sizeof(SCROLLINFO);
 	si.fMask = SIF_POS;
 	si.nPos = pos;
