@@ -89,6 +89,8 @@
 								Made IsUndoPossible const.
    ========================================================================
 					16/3  2019	Added Redo support, removed PopUndo
+   ========================================================================
+					13/1  2022	Added auto-generated name support
    ========================================================================*/
 
 #include "stdafx.h"
@@ -96,6 +98,7 @@
 #include "DiagramEntity.h"
 #include "Tokenizer.h"
 #include "GroupFactory.h"
+#include "../UMLEditor/LinkFactory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1045,6 +1048,12 @@ void CDiagramEntityContainer::Duplicate(CDiagramEntity* obj)
 	{
 		// Clone the object
 		CDiagramEntity* newobj = obj->Clone();
+
+		// Set the name if it is to be auto-generated
+		if (newobj->AutoGenerateName())
+		{
+			newobj->SetName(CLinkFactory::GetID());
+		}
 
 		// Move it by the grid size
 		CSize gridSize = GetGridSize();

@@ -26,6 +26,8 @@ public:
 	void			SetMoved(BOOL moved);
 	BOOL			GetMoved();
 
+	virtual BOOL	AutoGenerateName() const;
+
 protected:
 	// Overrides
 	virtual void	DrawSelectionMarkers(CDC* dc, CRect rect) const;

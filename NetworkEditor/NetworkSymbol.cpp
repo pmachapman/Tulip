@@ -69,21 +69,20 @@ CNetworkSymbol::~CNetworkSymbol()
 
 }
 
-void CNetworkSymbol::SetSymbol(UINT resid)
+BOOL CNetworkSymbol::AutoGenerateName() const
 /* ============================================================
-	Function :		CNetworkSymbol::SetSymbol
-	Description :	Sets the reource id for the symbol
+	Function :		CNetworkSymbol::AutoGenerateName
+	Description :	Determines whether we should autogenerate the name.
+	Access :		Public
 
 	Return :		void
-	Parameters :	UINT resid	-	Resource id of icon
+	Parameters :
 
-	Usage :
+	Usage :			If this is true, the name will be unique for all entities.
 
    ============================================================*/
 {
-
-	m_symbol = resid;
-
+	return true;
 }
 
 CDiagramEntity* CNetworkSymbol::Clone()
@@ -103,6 +102,26 @@ CDiagramEntity* CNetworkSymbol::Clone()
 	CNetworkSymbol* obj = new CNetworkSymbol(m_symbol);
 	obj->Copy(this);
 	return obj;
+
+}
+
+void CNetworkSymbol::Copy(CDiagramEntity* obj)
+/* ============================================================
+	Function :		CNetworkSymbol::Copy
+	Description :	Copy the information in obj to this object.
+
+	Return :		void
+	Parameters :	CDiagramEntity* obj	-	The object to copy
+											from.
+
+	Usage :			Copies basic information. from obj to this.
+					GetType can be used to check for the correct
+					object type in overridden versions.
+   ============================================================*/
+{
+
+	CDiagramEntity::Copy(obj);
+	m_symbol = static_cast<CNetworkSymbol*>(obj)->m_symbol;
 
 }
 
@@ -136,45 +155,6 @@ CDiagramEntity* CNetworkSymbol::CreateFromString(const CString& str)
 	}
 
 	return obj;
-
-}
-
-int CNetworkSymbol::GetHitCode(CPoint point) const
-/* ============================================================
-	Function :		CNetworkSymbol::GetHitCode
-	Description :	Returns the hit point constant for point.
-
-	Return :		int				-	The hit point,
-										DEHT_NONE if none.
-	Parameters :	CPoint point	-	The point to check
-
-	Usage :			Call to see in what part of the object point
-					lies.
-
-   ============================================================*/
-{
-	return CDiagramEntity::GetHitCode(point);
-}
-
-
-CPoint CNetworkSymbol::GetLinkPosition()
-/* ============================================================
-	Function :		CNetworkSymbol::GetLinkPosition
-	Description :	Returns the position of a link.
-
-	Return :		CPoint		-	The position of the link,
-	Parameters :	none
-
-	Usage :			Called while drawing links
-
-   ============================================================*/
-{
-
-	CPoint point(-1, -1);
-	CRect rect = GetRect();
-	point.x = rect.left + rect.Width() / 2;
-	point.y = rect.top + rect.Height() / 2;
-	return point;
 
 }
 
@@ -237,26 +217,6 @@ void CNetworkSymbol::Draw(CDC* dc, CRect rect)
 
 }
 
-void CNetworkSymbol::Copy(CDiagramEntity* obj)
-/* ============================================================
-	Function :		CNetworkSymbol::Copy
-	Description :	Copy the information in obj to this object.
-
-	Return :		void
-	Parameters :	CDiagramEntity* obj	-	The object to copy
-											from.
-
-	Usage :			Copies basic information. from obj to this.
-					GetType can be used to check for the correct
-					object type in overridden versions.
-   ============================================================*/
-{
-
-	CDiagramEntity::Copy(obj);
-	m_symbol = static_cast<CNetworkSymbol*>(obj)->m_symbol;
-
-}
-
 void CNetworkSymbol::DrawSelectionMarkers(CDC* dc, CRect rect) const
 /* ============================================================
 	Function :		CNetworkSymbol::DrawSelectionMarkers
@@ -316,6 +276,45 @@ BOOL CNetworkSymbol::FromString(const CString& str)
 
 }
 
+int CNetworkSymbol::GetHitCode(CPoint point) const
+/* ============================================================
+	Function :		CNetworkSymbol::GetHitCode
+	Description :	Returns the hit point constant for point.
+
+	Return :		int				-	The hit point,
+										DEHT_NONE if none.
+	Parameters :	CPoint point	-	The point to check
+
+	Usage :			Call to see in what part of the object point
+					lies.
+
+   ============================================================*/
+{
+	return CDiagramEntity::GetHitCode(point);
+}
+
+
+CPoint CNetworkSymbol::GetLinkPosition()
+/* ============================================================
+	Function :		CNetworkSymbol::GetLinkPosition
+	Description :	Returns the position of a link.
+
+	Return :		CPoint		-	The position of the link,
+	Parameters :	none
+
+	Usage :			Called while drawing links
+
+   ============================================================*/
+{
+
+	CPoint point(-1, -1);
+	CRect rect = GetRect();
+	point.x = rect.left + rect.Width() / 2;
+	point.y = rect.top + rect.Height() / 2;
+	return point;
+
+}
+
 CString CNetworkSymbol::GetString() const
 /* ============================================================
 	Function :		CNetworkSymbol::GetString
@@ -355,5 +354,22 @@ UINT CNetworkSymbol::GetSymbol() const
 {
 
 	return m_symbol;
+
+}
+
+void CNetworkSymbol::SetSymbol(UINT resid)
+/* ============================================================
+	Function :		CNetworkSymbol::SetSymbol
+	Description :	Sets the reource id for the symbol
+
+	Return :		void
+	Parameters :	UINT resid	-	Resource id of icon
+
+	Usage :
+
+   ============================================================*/
+{
+
+	m_symbol = resid;
 
 }

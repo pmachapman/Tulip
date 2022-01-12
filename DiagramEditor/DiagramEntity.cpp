@@ -74,6 +74,8 @@
 					19/8 2004	Setting m_parent to NULL in the ctor (Marc G)
    ========================================================================
 					23/1 2005	Made SetParent/GetParent public.
+   ========================================================================
+					13/1 2022	Added auto-generated name support
    ========================================================================*/
 #include "stdafx.h"
 #include "resource.h"
@@ -124,6 +126,22 @@ CDiagramEntity::~CDiagramEntity()
 
    ============================================================*/
 {
+}
+
+BOOL CDiagramEntity::AutoGenerateName() const
+/* ============================================================
+	Function :		CDiagramEntity::AutoGenerateName
+	Description :	Determines whether we should autogenerate the name.
+	Access :		Public
+
+	Return :		void
+	Parameters :
+
+	Usage :			If this is true, the name will be unique for all entities.
+
+   ============================================================*/
+{
+	return false;
 }
 
 void CDiagramEntity::Clear()
@@ -805,7 +823,7 @@ BOOL CDiagramEntity::DoMessage(UINT msg, CDiagramEntity* sender, CWnd* from)
 
 int CDiagramEntity::GetMenuResourceId() const
 /* ============================================================
-	Function :		CDiagramEntity::ShowPopup
+	Function :		CDiagramEntity::GetMenuResourceId
 	Description :	Gets the resource id for the popup menu for the object.
 	Access :		Public
 

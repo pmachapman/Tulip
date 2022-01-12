@@ -23,11 +23,14 @@
 					handler.
    ========================================================================
 					26/6 2004	Added group handling (Unruled Boy).
+   ========================================================================
+					13/1 2022	Added auto-generated name support
    ========================================================================*/
 #include "stdafx.h"
 #include "DiagramClipboardHandler.h"
 #include "DiagramEntityContainer.h"
 #include "GroupFactory.h"
+#include "../UMLEditor/LinkFactory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -244,6 +247,12 @@ void CDiagramClipboardHandler::Paste(CDiagramEntityContainer* container)
 
 		// Clone the object
 		CDiagramEntity* clone = obj->Clone();
+
+		// Set the name if it is to be auto-generated
+		if (clone->AutoGenerateName())
+		{
+			clone->SetName(CLinkFactory::GetID());
+		}
 
 		int group = 0;
 		if (obj->GetGroup())

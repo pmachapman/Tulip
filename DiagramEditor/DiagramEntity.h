@@ -120,6 +120,8 @@ public:
 
 	virtual int		GetMenuResourceId() const;
 
+	virtual BOOL	AutoGenerateName() const;
+
 protected:
 
 	// Selection

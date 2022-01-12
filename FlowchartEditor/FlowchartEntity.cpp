@@ -94,6 +94,64 @@ CFlowchartEntity::~CFlowchartEntity()
 
 }
 
+int CFlowchartEntity::AllowLink()
+/* ============================================================
+	Function :		CFlowchartEntity::AllowLink
+	Description :	Returns the allowed link types for this
+					object.
+
+	Return :		int		-	The allowed link types
+	Parameters :	none
+
+	Usage :			Call this function to get the link types
+					allowed for this object. Several link-types
+					can be ORed together. The possible link
+					types are:
+
+					LINK_TOP		Links are allowed to the
+									top of the object.
+					LINK_BOTTOM		Links are allowed to the
+									bottom.
+					LINK_LEFT		Links are allowed to the
+									left.
+					LINK_RIGHT		Links are allowed to the
+									right.
+					LINK_ALL		Links are allowed to all
+									of the above.
+					LINK_START		Links are allowed to the
+									start of a line (normally
+									the top-left corner of
+									the non-normalized bounding
+									rect).
+					LINK_END		Links are allowed to the
+									end of a line (normally the
+									bottom-right corner of the
+									non-normalized bounding
+									rect).
+
+   ============================================================*/
+{
+
+	return LINK_ALL;
+
+}
+
+BOOL CFlowchartEntity::AutoGenerateName() const
+/* ============================================================
+	Function :		CFlowchartEntity::AutoGenerateName
+	Description :	Determines whether we should autogenerate the name.
+	Access :		Public
+
+	Return :		void
+	Parameters :
+
+	Usage :			If this is true, the name will be unique for all entities.
+
+   ============================================================*/
+{
+	return true;
+}
+
 CDiagramEntity* CFlowchartEntity::Clone()
 /* ============================================================
 	Function :		CFlowchartEntity::Clone
@@ -144,31 +202,6 @@ CDiagramEntity* CFlowchartEntity::CreateFromString(const CString& str)
 	}
 
 	return obj;
-
-}
-
-int CFlowchartEntity::GetHitCode(CPoint point) const
-/* ============================================================
-	Function :		CFlowchartEntity::GetHitCode
-	Description :	Returns the hit point constant for point.
-
-	Return :		int				-	The hit point,
-										DEHT_NONE if none.
-	Parameters :	CPoint point	-	The point to check
-
-	Usage :			Call to see in what part of the object point
-					lies.
-
-   ============================================================*/
-{
-
-	int result = DEHT_NONE;
-	CRect rect = GetRect();
-
-	if (rect.PtInRect(point))
-		result = DEHT_BODY;
-
-	return result;
 
 }
 
@@ -231,66 +264,28 @@ HCURSOR CFlowchartEntity::GetCursor(int /*hit*/) const
 
 }
 
-int CFlowchartEntity::AllowLink()
+int CFlowchartEntity::GetHitCode(CPoint point) const
 /* ============================================================
-	Function :		CFlowchartEntity::AllowLink
-	Description :	Returns the allowed link types for this
-					object.
+	Function :		CFlowchartEntity::GetHitCode
+	Description :	Returns the hit point constant for point.
 
-	Return :		int		-	The allowed link types
-	Parameters :	none
+	Return :		int				-	The hit point,
+										DEHT_NONE if none.
+	Parameters :	CPoint point	-	The point to check
 
-	Usage :			Call this function to get the link types
-					allowed for this object. Several link-types
-					can be ORed together. The possible link
-					types are:
-
-					LINK_TOP		Links are allowed to the
-									top of the object.
-					LINK_BOTTOM		Links are allowed to the
-									bottom.
-					LINK_LEFT		Links are allowed to the
-									left.
-					LINK_RIGHT		Links are allowed to the
-									right.
-					LINK_ALL		Links are allowed to all
-									of the above.
-					LINK_START		Links are allowed to the
-									start of a line (normally
-									the top-left corner of
-									the non-normalized bounding
-									rect).
-					LINK_END		Links are allowed to the
-									end of a line (normally the
-									bottom-right corner of the
-									non-normalized bounding
-									rect).
+	Usage :			Call to see in what part of the object point
+					lies.
 
    ============================================================*/
 {
 
-	return LINK_ALL;
+	int result = DEHT_NONE;
+	CRect rect = GetRect();
 
-}
+	if (rect.PtInRect(point))
+		result = DEHT_BODY;
 
-void CFlowchartEntity::SetMoved(BOOL moved)
-/* ============================================================
-	Function :		CFlowchartEntity::SetMoved
-	Description :	Sets the moved-flag of the object.
-
-	Return :		void
-	Parameters :	BOOL moved	-	TRUE if the object is moved
-									while moving linked objects,
-									FALSE if not.
-
-	Usage :			To avoid infinite recursion while moving
-					linked objects, we use a flag to mark this
-					object as already moved.
-
-   ============================================================*/
-{
-
-	m_moved = moved;
+	return result;
 
 }
 
@@ -374,3 +369,25 @@ CPoint CFlowchartEntity::GetLinkPosition(int type)
 	return point;
 
 }
+
+void CFlowchartEntity::SetMoved(BOOL moved)
+/* ============================================================
+	Function :		CFlowchartEntity::SetMoved
+	Description :	Sets the moved-flag of the object.
+
+	Return :		void
+	Parameters :	BOOL moved	-	TRUE if the object is moved
+									while moving linked objects,
+									FALSE if not.
+
+	Usage :			To avoid infinite recursion while moving
+					linked objects, we use a flag to mark this
+					object as already moved.
+
+   ============================================================*/
+{
+
+	m_moved = moved;
+
+}
+

@@ -119,7 +119,7 @@ void CUmlView::OnDraw(CDC* pDC)
 
 		// Print zoom is the difference between screen- 
 		// and printer resolution.
-		double zoom = pDC->GetDeviceCaps(LOGPIXELSX) / m_screenResolutionX;
+		double zoom = (double)pDC->GetDeviceCaps(LOGPIXELSX) / m_screenResolutionX;
 
 		CRect rect(0, 0,
 			round(static_cast<double>(m_editor.GetVirtualSize().cx) * zoom),
@@ -214,7 +214,7 @@ void CUmlView::OnInitialUpdate()
 			HDC	hdc = printer.GetPrinterDC();
 			if (hdc)
 			{
-				double zoom = GetDeviceCaps(hdc, LOGPIXELSX) / m_screenResolutionX;
+				double zoom = (double)::GetDeviceCaps(hdc, LOGPIXELSX) / m_screenResolutionX;
 				int horzSize = ::GetDeviceCaps(hdc, PHYSICALWIDTH);
 				int vertSize = ::GetDeviceCaps(hdc, PHYSICALHEIGHT);
 

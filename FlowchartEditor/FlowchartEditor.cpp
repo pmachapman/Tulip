@@ -143,7 +143,7 @@ void CFlowchartEditor::DrawObjects(CDC* dc, double zoom) const
 
 		INT_PTR max = objs->GetLinks();
 		int seg = round((double)GetMarkerSize().cx * zoom / 2);
-		POINT pts[3];
+		POINT pts[3]{};
 
 		for (INT_PTR i = 0; i < count; i++)
 		{

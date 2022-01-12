@@ -516,7 +516,7 @@ int CUMLLineSegment::GetHitCode(CPoint point) const
 
 	CRect rect = GetRect();
 
-	hitParams hit;
+	hitParams hit{};
 	hit.hit = FALSE;
 	hit.x = point.x;
 	hit.y = point.y;
@@ -1094,7 +1094,7 @@ void CUMLLineSegment::DrawDiamond(CDC* dc, const CRect& rect)
 	dc->SelectStockObject(BLACK_PEN);
 	dc->SelectStockObject(BLACK_BRUSH);
 
-	POINT pts[4];
+	POINT pts[4]{};
 	pts[0].x = rect.left + ((rect.right - rect.left) / 2);
 	pts[0].y = rect.top;
 	pts[1].x = rect.right;
@@ -1756,7 +1756,7 @@ void CUMLLineSegment::DrawDirectionArrow(CDC* dc)
 		y1 = GetTop();
 	}
 
-	POINT pts[3];
+	POINT pts[3]{};
 	if (IsHorizontal())
 	{
 		if (x1 < x2)
@@ -1841,7 +1841,7 @@ void CUMLLineSegment::DrawInheritanceArrow(CDC* dc)
 		y2 = GetTop();
 	}
 
-	POINT pts[3];
+	POINT pts[3]{};
 	if (IsHorizontal())
 	{
 		if (x1 < x2)

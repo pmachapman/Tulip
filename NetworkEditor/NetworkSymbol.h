@@ -25,6 +25,8 @@ public:
 	void			SetSymbol(UINT resid);
 	UINT			GetSymbol() const;
 
+	virtual BOOL	AutoGenerateName() const;
+
 private:
 	UINT	m_symbol;
 

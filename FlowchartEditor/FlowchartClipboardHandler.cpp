@@ -78,7 +78,6 @@ void CFlowchartClipboardHandler::Copy(CDiagramEntity* obj)
 		ClearPaste();
 		CDiagramEntity* newobj = obj->Clone();
 		newobj->Select(TRUE);
-		newobj->SetName(CLinkFactory::GetID());
 		GetData()->Add(newobj);
 	}
 
