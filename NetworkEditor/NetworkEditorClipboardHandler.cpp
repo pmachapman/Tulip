@@ -95,13 +95,42 @@ void CNetworkEditorClipboardHandler::Paste(CDiagramEntityContainer* container)
 
    ============================================================*/
 {
-
 	CDiagramClipboardHandler::Paste(container);
-	INT_PTR max = m_pasteLinks.GetSize();
 	CNetworkEntityContainer* flow = static_cast<CNetworkEntityContainer*>(container);
-	for (INT_PTR t = 0; t < max; t++)
-		flow->AddLink((static_cast<CNetworkLink*>(m_pasteLinks[t]))->Clone());
+	INT_PTR maxLinks = m_pasteLinks.GetSize();
+	CObArray* paste = GetData();
+	CObArray* lastPaste = GetPastedData();
+	INT_PTR maxObjs = paste->GetSize();
+	if (maxObjs != lastPaste->GetSize())
+	{
+		// An error has occured, we will not add links
+		return;
+	}
 
+	for (INT_PTR t = 0; t < maxLinks; t++)
+	{
+		// Get the link
+		CNetworkLink* link = static_cast<CNetworkLink*>(m_pasteLinks[t])->Clone();
+
+		// Make sure we have the correct names
+		for (INT_PTR i = 0; i < maxObjs; i++)
+		{
+			CDiagramEntity* obj = static_cast<CDiagramEntity*>(paste->GetAt(i));
+			CDiagramEntity* newObj = static_cast<CDiagramEntity*>(lastPaste->GetAt(i));
+			if (link->from == obj->GetName())
+			{
+				link->from = newObj->GetName();
+			}
+
+			if (link->to == obj->GetName())
+			{
+				link->to = newObj->GetName();
+			}
+		}
+
+		// Add the link
+		flow->AddLink(link);
+	}
 }
 
 void CNetworkEditorClipboardHandler::CopyAllSelected(CDiagramEntityContainer* container)
@@ -134,7 +163,8 @@ void CNetworkEditorClipboardHandler::CopyAllSelected(CDiagramEntityContainer* co
 	CObArray* paste = GetData();
 	max = paste->GetSize();
 
-	for (int t = 0; t < max; t++)
+	// Fix the links
+	for (INT_PTR t = 0; t < max; t++)
 	{
 		CDiagramEntity* obj = static_cast<CDiagramEntity*>(paste->GetAt(t));
 		CString newID = CLinkFactory::GetID();
@@ -150,9 +180,7 @@ void CNetworkEditorClipboardHandler::CopyAllSelected(CDiagramEntityContainer* co
 		}
 
 		obj->SetName(newID);
-
 	}
-
 }
 
 void CNetworkEditorClipboardHandler::ClearPaste()

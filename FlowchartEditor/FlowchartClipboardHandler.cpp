@@ -96,13 +96,42 @@ void CFlowchartClipboardHandler::Paste(CDiagramEntityContainer* container)
 
    ============================================================*/
 {
-
 	CDiagramClipboardHandler::Paste(container);
-	INT_PTR max = m_pasteLinks.GetSize();
 	CFlowchartEntityContainer* flow = static_cast<CFlowchartEntityContainer*>(container);
-	for (INT_PTR t = 0; t < max; t++)
-		flow->AddLink((static_cast<CFlowchartLink*>(m_pasteLinks[t]))->Clone());
+	INT_PTR maxLinks = m_pasteLinks.GetSize();
+	CObArray* paste = GetData();
+	CObArray* lastPaste = GetPastedData();
+	INT_PTR maxObjs = paste->GetSize();
+	if (maxObjs != lastPaste->GetSize())
+	{
+		// An error has occured, we will not add links
+		return;
+	}
 
+	for (INT_PTR t = 0; t < maxLinks; t++)
+	{
+		// Get the link
+		CFlowchartLink* link = static_cast<CFlowchartLink*>(m_pasteLinks[t])->Clone();
+
+		// Make sure we have the correct names
+		for (INT_PTR i = 0; i < maxObjs; i++)
+		{
+			CDiagramEntity* obj = static_cast<CDiagramEntity*>(paste->GetAt(i));
+			CDiagramEntity* newObj = static_cast<CDiagramEntity*>(lastPaste->GetAt(i));
+			if (link->from == obj->GetName())
+			{
+				link->from = newObj->GetName();
+			}
+
+			if (link->to == obj->GetName())
+			{
+				link->to = newObj->GetName();
+			}
+		}
+
+		// Add the link
+		flow->AddLink(link);
+	}
 }
 
 void CFlowchartClipboardHandler::CopyAllSelected(CDiagramEntityContainer* container)

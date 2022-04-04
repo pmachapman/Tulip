@@ -69,9 +69,7 @@ CDiagramClipboardHandler::~CDiagramClipboardHandler()
 
    ============================================================*/
 {
-
 	ClearPaste();
-
 }
 
 void CDiagramClipboardHandler::Copy(CDiagramEntity* obj)
@@ -150,9 +148,7 @@ INT_PTR CDiagramClipboardHandler::ObjectsInPaste()
 
    ============================================================*/
 {
-
 	return m_paste.GetSize();
-
 }
 
 void CDiagramClipboardHandler::ClearPaste()
@@ -169,12 +165,10 @@ void CDiagramClipboardHandler::ClearPaste()
 
    ============================================================*/
 {
-
 	INT_PTR count = m_paste.GetSize() - 1;
 	for (INT_PTR t = count; t >= 0; t--)
 		delete static_cast<CDiagramEntity*>(m_paste.GetAt(t));
 	m_paste.RemoveAll();
-
 }
 
 void CDiagramClipboardHandler::Paste(CDiagramEntityContainer* container)
@@ -192,7 +186,6 @@ void CDiagramClipboardHandler::Paste(CDiagramEntityContainer* container)
 
    ============================================================*/
 {
-
 	CDWordArray	oldgroup;
 	CDWordArray	newgroup;
 
@@ -215,6 +208,9 @@ void CDiagramClipboardHandler::Paste(CDiagramEntityContainer* container)
 			}
 		}
 	}
+	
+	// Clear the old paste results
+	m_lastPaste.RemoveAll();
 
 	for (INT_PTR t = 0; t < max; t++)
 	{
@@ -248,6 +244,9 @@ void CDiagramClipboardHandler::Paste(CDiagramEntityContainer* container)
 		// Clone the object
 		CDiagramEntity* clone = obj->Clone();
 
+		// Remember it in the last paste list
+		m_lastPaste.Add(clone);
+
 		// Set the name if it is to be auto-generated
 		if (clone->AutoGenerateName())
 		{
@@ -266,7 +265,6 @@ void CDiagramClipboardHandler::Paste(CDiagramEntityContainer* container)
 		clone->SetGroup(group);
 		container->Add(clone);
 	}
-
 }
 
 CObArray* CDiagramClipboardHandler::GetData()
@@ -282,7 +280,21 @@ CObArray* CDiagramClipboardHandler::GetData()
 
    ============================================================*/
 {
-
 	return &m_paste;
+}
 
+CObArray* CDiagramClipboardHandler::GetPastedData()
+/* ============================================================
+	Function :		CDiagramClipboardHandler::GetPastedData
+	Description :	Get a pointer to the pasted clipboard data
+	Access :		Protected
+
+	Return :		CObArray*	-	The pasted clipboard data
+	Parameters :	none
+
+	Usage :			Call to get the pasted clipboard data.
+
+   ============================================================*/
+{
+	return &m_lastPaste;
 }

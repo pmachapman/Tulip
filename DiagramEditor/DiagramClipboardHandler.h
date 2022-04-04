@@ -20,10 +20,14 @@ public:
 
 	virtual CObArray* GetData();
 
+protected:
+
+	virtual CObArray* GetPastedData();
+
 private:
 	// Private data
 	CObArray		m_paste;
-
+	CObArray		m_lastPaste;
 };
 
 #endif // _DIAGRAMCLIPBOARDHANDLER_H_
