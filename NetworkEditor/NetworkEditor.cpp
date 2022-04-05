@@ -78,11 +78,9 @@ void CNetworkEditor::DrawObjects(CDC* dc, double zoom) const
 	CNetworkEntityContainer* objs = static_cast<CNetworkEntityContainer*> (GetDiagramEntityContainer());
 	if (objs)
 	{
-
 		INT_PTR max = objs->GetLinks();
 		for (INT_PTR t = 0; t < max; t++)
 		{
-
 			CNetworkLink* link = objs->GetLinkAt(t);
 			CNetworkSymbol* from = GetNamedObject(link->from);
 			CNetworkSymbol* to = GetNamedObject(link->to);
@@ -99,10 +97,14 @@ void CNetworkEditor::DrawObjects(CDC* dc, double zoom) const
 			}
 			else
 			{
+				// Delete this link
 				objs->DeleteLink(link);
+
+				// Decrement the counter and reset the max
+				t--;
+				max = objs->GetLinks();
 			}
 		}
-
 	}
 
 	// Draw objects
