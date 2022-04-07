@@ -10,8 +10,8 @@
 #define IDB_BUTTONS                     113
 #define IDB_FILELARGE                   114
 #define IDB_FILESMALL                   115
-#define IDR_DIALOGTYPE                  127
-#define IDR_MAINFRAME                   128
+#define IDR_MAINFRAME                   127
+#define IDR_DIALOGTYPE                  128
 #define IDR_MAINFRAME_256               129
 #define IDR_UMLTYPE                     130
 #define ID_WINDOW_MANAGER               131

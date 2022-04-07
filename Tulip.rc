@@ -30,9 +30,9 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_DIALOGTYPE          ICON                    "res\\DialogDoc.ico"
-
 IDR_MAINFRAME           ICON                    "res\\Tulip.ico"
+
+IDR_DIALOGTYPE          ICON                    "res\\DialogDoc.ico"
 
 IDR_UMLTYPE             ICON                    "res\\UmlDoc.ico"
 
